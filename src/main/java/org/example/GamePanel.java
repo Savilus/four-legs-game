@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import org.example.entity.Player;
+import org.example.tile.TileManager;
 
 // Game screen
 public class GamePanel extends JPanel implements Runnable {
@@ -21,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   final int FPS = 60;
 
+  TileManager tileManager = new TileManager(this);
   KeyHandler keyHandler = new KeyHandler();
   Thread gameThread;
   Player player = new Player(this, keyHandler);
@@ -45,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D graphic2d = (Graphics2D) g;
+    tileManager.draw(graphic2d);
     player.draw(graphic2d);
     graphic2d.dispose();
   }
