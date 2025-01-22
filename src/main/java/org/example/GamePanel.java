@@ -4,6 +4,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import org.example.entity.Player;
+
 // Game screen
 public class GamePanel extends JPanel implements Runnable {
 
@@ -11,7 +13,7 @@ public class GamePanel extends JPanel implements Runnable {
   final int originalTitleSize = 16; // 16x16 tile
   final int scale = 3;
 
-  final int tileSize = originalTitleSize * scale;
+  public final int tileSize = originalTitleSize * scale;
   final int maxScreenColumn = 16;
   final int maxScreenRow = 12;
   final int screenWidth = tileSize * maxScreenColumn;
@@ -21,11 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   KeyHandler keyHandler = new KeyHandler();
   Thread gameThread;
-
-  // player starting position
-  int playerX = 100;
-  int playerY = 100;
-  int playerSpped = 4;
+  Player player = new Player(this, keyHandler);
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -41,23 +39,13 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void update() {
-    if (keyHandler.upPressed) {
-      playerY -= playerSpped;
-    } else if (keyHandler.downPressed) {
-      playerY += playerSpped;
-    } else if (keyHandler.leftPressed) {
-      playerX -= playerSpped;
-    } else if (keyHandler.rightPressed) {
-      playerX += playerSpped;
-
-    }
+    player.update();
   }
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D graphic2d = (Graphics2D) g;
-    graphic2d.setColor(Color.WHITE);
-    graphic2d.fillRect(playerX, playerY, tileSize, tileSize);
+    player.draw(graphic2d);
     graphic2d.dispose();
   }
 
@@ -92,35 +80,5 @@ public class GamePanel extends JPanel implements Runnable {
       }
     }
   }
-
-//  @Override
-//  public void run() {
-//
-//    double drawInterval = (double) 1000000000 / FPS; // 0.1666 seconds
-//    double nextDrawTime = System.nanoTime() + drawInterval;
-//
-//    while (gameThread != null) {
-//      //1 UPDATE: update information such charachter position
-//      update();
-//      //2 DRAW: draw screen with updated information
-//      repaint();
-//
-//      try {
-//        double remainingTime = nextDrawTime - System.nanoTime();
-//        remainingTime = remainingTime / 1000000;
-//
-//        if (remainingTime < 0) {
-//          remainingTime = 0;
-//        }
-//
-//        Thread.sleep((long) remainingTime);
-//
-//        nextDrawTime += drawInterval;
-//      } catch (InterruptedException e) {
-//        throw new RuntimeException(e);
-//      }
-//    }
-//  }
-
 
 }
