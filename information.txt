@@ -1,0 +1,4 @@
+tile and sprite size 16 x 16
+for tile background is transparent
+saved as png
+PIKSEL program for creating tiles
