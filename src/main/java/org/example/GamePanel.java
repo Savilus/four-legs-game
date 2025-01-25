@@ -26,11 +26,12 @@ public class GamePanel extends JPanel implements Runnable {
   public final int worldWidth = tileSize * maxWorldCol;
   public final int worldHeight = tileSize * maxWorldRow;
 
-  final int FPS = 60;
+  static final int FPS = 60;
 
   TileManager tileManager = new TileManager(this);
   KeyHandler keyHandler = new KeyHandler();
   Thread gameThread;
+  public CollisionDetector collisionDetector = new CollisionDetector(this);
   public Player player = new Player(this, keyHandler);
 
   public GamePanel() {
@@ -50,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
     player.update();
   }
 
+  @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D graphic2d = (Graphics2D) g;
@@ -60,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   @Override
   public void run() {
-    double drawInterval = 1000000000 / FPS;
+    double drawInterval = (double) 1000000000 / FPS;
     double delta = 0;
     long lastTime = System.nanoTime();
     long currentTime;
