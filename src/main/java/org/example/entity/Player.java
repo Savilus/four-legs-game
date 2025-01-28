@@ -17,7 +17,7 @@ public class Player extends Entity {
 
   public final int screenX;
   public final int screenY;
-  int playerKeys = 0;
+  public int playerKeys = 0;
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     this.gamePanel = gamePanel;
@@ -144,15 +144,23 @@ public class Player extends Entity {
       switch (objectName) {
         case "Key":
           playerKeys++;
+          gamePanel.playSoundEffect(1);
           gamePanel.obj[objectIndex] = null;
-          System.out.println("KEY:" + playerKeys);
+          gamePanel.ui.showMessage("You got a key");
           break;
         case "Door":
           if (playerKeys > 0) {
-            gamePanel.obj[objectIndex] = null;
-            System.out.println("KEY:" + playerKeys);
             playerKeys--;
+            gamePanel.playSoundEffect(3);
+            gamePanel.obj[objectIndex] = null;
+            System.out.println("KEY DOWN:" + playerKeys);
           }
+          break;
+        case "Boots":
+          speed += 1;
+          gamePanel.playSoundEffect(2);
+          gamePanel.obj[objectIndex] = null;
+          break;
       }
 
     }
