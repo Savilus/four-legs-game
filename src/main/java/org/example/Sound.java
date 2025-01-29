@@ -1,5 +1,11 @@
 package org.example;
 
+import static org.example.config.GameNameFactory.BACKGROUND_SONG;
+import static org.example.config.GameNameFactory.COIN;
+import static org.example.config.GameNameFactory.FANFARE;
+import static org.example.config.GameNameFactory.POWER_UP;
+import static org.example.config.GameNameFactory.UNLOCK;
+
 import java.net.URL;
 import java.util.Objects;
 
@@ -13,11 +19,11 @@ public class Sound {
   URL[] soundUrl = new URL[30];
 
   public Sound() {
-    soundUrl[0] = Objects.requireNonNull(getClass().getResource("/sound/BlueBoyAdventure.wav"));
-    soundUrl[1] = Objects.requireNonNull(getClass().getResource("/sound/coin.wav"));
-    soundUrl[2] = Objects.requireNonNull(getClass().getResource("/sound/powerup.wav"));
-    soundUrl[3] = Objects.requireNonNull(getClass().getResource("/sound/unlock.wav"));
-    soundUrl[4] = Objects.requireNonNull(getClass().getResource("/sound/fanfare.wav"));
+    soundUrl[0] = Objects.requireNonNull(getClass().getResource(BACKGROUND_SONG));
+    soundUrl[1] = Objects.requireNonNull(getClass().getResource(COIN));
+    soundUrl[2] = Objects.requireNonNull(getClass().getResource(POWER_UP));
+    soundUrl[3] = Objects.requireNonNull(getClass().getResource(UNLOCK));
+    soundUrl[4] = Objects.requireNonNull(getClass().getResource(FANFARE));
   }
 
   public void setFile(int i) {

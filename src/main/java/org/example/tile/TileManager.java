@@ -1,6 +1,15 @@
 package org.example.tile;
 
+import static org.example.config.GameNameFactory.EARTH;
+import static org.example.config.GameNameFactory.GRASS;
+import static org.example.config.GameNameFactory.MAP_PATH;
+import static org.example.config.GameNameFactory.SAND;
+import static org.example.config.GameNameFactory.TREE;
+import static org.example.config.GameNameFactory.WALL;
+import static org.example.config.GameNameFactory.WATER;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +25,6 @@ public class TileManager {
   GamePanel gamePanel;
   public Tile[] tile;
   public int[][] mapTileNum;
-  private final String mapPath = "/maps/world01.txt";
 
   public TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -24,31 +32,31 @@ public class TileManager {
     mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 
     getTileImage();
-    loadMap(mapPath);
+    loadMap(MAP_PATH);
   }
 
   public void getTileImage() {
     try {
       tile[0] = new Tile();
-      tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/grass.png")));
+      tile[0].image = loadImage(GRASS);
 
       tile[1] = new Tile();
-      tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
+      tile[1].image = loadImage(WALL);
       tile[1].collision = true;
 
       tile[2] = new Tile();
-      tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/water.png")));
+      tile[2].image = loadImage(WATER);
       tile[2].collision = true;
 
       tile[3] = new Tile();
-      tile[3].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+      tile[3].image = loadImage(EARTH);
 
       tile[4] = new Tile();
-      tile[4].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tree.png")));
+      tile[4].image = loadImage(TREE);
       tile[4].collision = true;
 
       tile[5] = new Tile();
-      tile[5].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/sand.png")));
+      tile[5].image = loadImage(SAND);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -111,5 +119,9 @@ public class TileManager {
         worldRow++;
       }
     }
+  }
+
+  private BufferedImage loadImage(String imageName) throws IOException {
+    return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
   }
 }

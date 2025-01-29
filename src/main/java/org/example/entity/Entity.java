@@ -3,6 +3,8 @@ package org.example.entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import org.example.enums.DirectionType;
+
 public class Entity {
 
   public int worldX, worldY;
@@ -17,4 +19,8 @@ public class Entity {
   public Rectangle solidArea;
   public int solidAreaDefaultX, solidAreaDefaultY;
   public boolean collisionOn = false;
+
+  public DirectionType getDirection() {
+    return DirectionType.fromString(direction);
+  }
 }

@@ -1,0 +1,33 @@
+player:
+  images:
+    boyUp1: /player/boy_up_1.png
+    boyUp2: /player/boy_up_2.png
+    boyDown1: /player/boy_down_1.png
+    boyDown2: /player/boy_down_2.png
+    boyLeft1: /player/boy_left_1.png
+    boyLeft2: /player/boy_left_2.png
+    boyRight1: /player/boy_right_1.png
+    boyRight2: /player/boy_right_2.png
+items:
+  images:
+    boots: /objects/boots.png
+    chest: /objects/chest.png
+    door: /objects/door.png
+    key: /objects/key.png
+world:
+  mapPath: /maps/world01.txt
+  tile:
+    images:
+      grass: /tiles/grass.png
+      wall: /tiles/wall.png
+      water: /tiles/water.png
+      earth: /tiles/earth.png
+      tree: /tiles/tree.png
+      sand: /tiles/sand.png
+sound:
+  path:
+    backgroundSong: /sound/BlueBoyAdventure.wav
+    coin: /sound/coin.wav
+    powerUp: /sound/powerup.wav
+    unlock: /sound/unlock.wav
+    fanfare: /sound/fanfare.wav
