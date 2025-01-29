@@ -23,8 +23,8 @@ public class CollisionDetector {
 
     int tileNum1, tileNum2;
 
-    switch (entity.direction) {
-      case "up":
+    switch (entity.getDirection()) {
+      case UP:
         entityTopRow = (entityTopWorldY - entity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityRightCol][entityTopRow];
@@ -32,7 +32,7 @@ public class CollisionDetector {
           entity.collisionOn = true;
         }
         break;
-      case "down":
+      case DOWN:
         entityBottomRow = (entityBottomWorldY + entity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
@@ -40,7 +40,7 @@ public class CollisionDetector {
           entity.collisionOn = true;
         }
         break;
-      case "left":
+      case LEFT:
         entityLeftCol = (entityLeftWorldX - entity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
@@ -48,7 +48,7 @@ public class CollisionDetector {
           entity.collisionOn = true;
         }
         break;
-      case "right":
+      case RIGHT:
         entityRightCol = (entityRightWorldX + entity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
@@ -70,9 +70,8 @@ public class CollisionDetector {
         // get object's solid area position
         gamePanel.obj[i].solidArea.x = gamePanel.obj[i].worldX + gamePanel.obj[i].solidArea.x;
         gamePanel.obj[i].solidArea.y = gamePanel.obj[i].worldY + gamePanel.obj[i].solidArea.y;
-
-        switch (entity.direction) {
-          case "up":
+        switch (entity.getDirection()) {
+          case UP:
             entity.solidArea.y -= entity.speed;
             if (entity.solidArea.intersects(gamePanel.obj[i].solidArea)) {
               if (gamePanel.obj[i].collision) {
@@ -83,7 +82,7 @@ public class CollisionDetector {
               }
             }
             break;
-          case "down":
+          case DOWN:
             entity.solidArea.y += entity.speed;
             if (entity.solidArea.intersects(gamePanel.obj[i].solidArea)) {
               if (gamePanel.obj[i].collision) {
@@ -94,7 +93,7 @@ public class CollisionDetector {
               }
             }
             break;
-          case "left":
+          case LEFT:
             entity.solidArea.x -= entity.speed;
             if (entity.solidArea.intersects(gamePanel.obj[i].solidArea)) {
               if (gamePanel.obj[i].collision) {
@@ -105,7 +104,7 @@ public class CollisionDetector {
               }
             }
             break;
-          case "right":
+          case RIGHT:
             entity.solidArea.x += entity.speed;
             if (entity.solidArea.intersects(gamePanel.obj[i].solidArea)) {
               if (gamePanel.obj[i].collision) {

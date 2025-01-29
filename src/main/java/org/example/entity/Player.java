@@ -1,5 +1,18 @@
 package org.example.entity;
 
+import static org.example.config.GameMessageFactory.BOOST;
+import static org.example.config.GameMessageFactory.GOT_KEY;
+import static org.example.config.GameMessageFactory.NEED_KEY;
+import static org.example.config.GameMessageFactory.OPEN_DOOR;
+import static org.example.config.GameNameFactory.boyDown1Image;
+import static org.example.config.GameNameFactory.boyDown2Image;
+import static org.example.config.GameNameFactory.boyLeft1Image;
+import static org.example.config.GameNameFactory.boyLeft2Image;
+import static org.example.config.GameNameFactory.boyRight1Image;
+import static org.example.config.GameNameFactory.boyRight2Image;
+import static org.example.config.GameNameFactory.boyUp1Image;
+import static org.example.config.GameNameFactory.boyUp2Image;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -9,8 +22,11 @@ import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
 import org.example.KeyHandler;
+import org.example.enums.DirectionType;
+import org.example.enums.GameObjectType;
 
 public class Player extends Entity {
+
 
   GamePanel gamePanel;
   KeyHandler keyHandler;
@@ -42,13 +58,13 @@ public class Player extends Entity {
 
     if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
       if (keyHandler.upPressed) {
-        direction = "up";
+        direction = DirectionType.UP.getValue();
       } else if (keyHandler.downPressed) {
-        direction = "down";
+        direction = DirectionType.DOWN.getValue();
       } else if (keyHandler.leftPressed) {
-        direction = "left";
+        direction = DirectionType.LEFT.getValue();
       } else if (keyHandler.rightPressed) {
-        direction = "right";
+        direction = DirectionType.RIGHT.getValue();
       }
 
       // CHECK TILE COLLISION
@@ -58,20 +74,21 @@ public class Player extends Entity {
       // CHECK OBJECT COLLISION
       int objectIndex = gamePanel.collisionDetector.checkObject(this, true);
       pickUpObject(objectIndex);
+      DirectionType directionType = getDirection();
 
       // IF COLLISION IS FALSE, PLAYER CAN MOVE
       if (!collisionOn) {
-        switch (direction) {
-          case "up":
+        switch (directionType) {
+          case UP:
             worldY -= speed;
             break;
-          case "down":
+          case DOWN:
             worldY += speed;
             break;
-          case "left":
+          case LEFT:
             worldX -= speed;
             break;
-          case "right":
+          case RIGHT:
             worldX += speed;
             break;
         }
@@ -88,50 +105,50 @@ public class Player extends Entity {
 
   public void getPlayerImage() {
     try {
-      up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_1.png")));
-      up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_2.png")));
-      down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_down_1.png")));
-      down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_down_2.png")));
-      left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_left_1.png")));
-      left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_left_2.png")));
-      right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_right_1.png")));
-      right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_right_2.png")));
+      up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyUp1Image)));
+      up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyUp2Image)));
+      down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyDown1Image)));
+      down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyDown2Image)));
+      left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyLeft1Image)));
+      left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyLeft2Image)));
+      right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyRight1Image)));
+      right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyRight2Image)));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   public void draw(Graphics2D graphic2d) {
-    BufferedImage image = switch (direction) {
-      case "up" -> {
+    DirectionType directionType = getDirection();
+    BufferedImage image = switch (directionType) {
+      case UP -> {
         if (spriteNum == 1)
           yield up1;
         else if (spriteNum == 2)
           yield up2;
         yield null;
       }
-      case "down" -> {
+      case DOWN -> {
         if (spriteNum == 1)
           yield down1;
         else if (spriteNum == 2)
           yield down2;
         yield null;
       }
-      case "left" -> {
+      case LEFT -> {
         if (spriteNum == 1)
           yield left1;
         else if (spriteNum == 2)
           yield left2;
         yield null;
       }
-      case "right" -> {
+      case RIGHT -> {
         if (spriteNum == 1)
           yield right1;
         if (spriteNum == 2)
           yield right2;
         yield null;
       }
-      default -> throw new IllegalStateException("Unexpected direction: " + direction);
     };
 
     graphic2d.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
@@ -140,26 +157,34 @@ public class Player extends Entity {
   public void pickUpObject(int objectIndex) {
     if (objectIndex != 999) {
       String objectName = gamePanel.obj[objectIndex].name;
-
-      switch (objectName) {
-        case "Key":
+      GameObjectType objectType = GameObjectType.fromString(objectName);
+      switch (objectType) {
+        case KEY:
           playerKeys++;
           gamePanel.playSoundEffect(1);
           gamePanel.obj[objectIndex] = null;
-          gamePanel.ui.showMessage("You got a key");
+          gamePanel.ui.showMessage(GOT_KEY);
           break;
-        case "Door":
+        case DOOR:
           if (playerKeys > 0) {
             playerKeys--;
             gamePanel.playSoundEffect(3);
             gamePanel.obj[objectIndex] = null;
-            System.out.println("KEY DOWN:" + playerKeys);
+            gamePanel.ui.showMessage(OPEN_DOOR);
+          } else {
+            gamePanel.ui.showMessage(NEED_KEY);
           }
           break;
-        case "Boots":
+        case BOOTS:
           speed += 1;
           gamePanel.playSoundEffect(2);
           gamePanel.obj[objectIndex] = null;
+          gamePanel.ui.showMessage(BOOST);
+          break;
+        case CHEST:
+          gamePanel.ui.gameFinished = true;
+          gamePanel.stopMusic();
+          gamePanel.playSoundEffect(4);
           break;
       }
 
@@ -170,6 +195,7 @@ public class Player extends Entity {
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
     speed = 4;
-    direction = "down";
+    direction = DirectionType.DOWN.getValue();
   }
+
 }
