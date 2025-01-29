@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
 import org.example.KeyHandler;
+import org.example.UtilityTool;
 import org.example.enums.DirectionType;
 import org.example.enums.GameObjectType;
 
@@ -34,6 +35,7 @@ public class Player extends Entity {
   public final int screenX;
   public final int screenY;
   public int playerKeys = 0;
+  public int standCounter = 0;
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     this.gamePanel = gamePanel;
@@ -99,23 +101,26 @@ public class Player extends Entity {
         spriteNum = spriteNum == 1 ? 2 : 1;
         spriteCounter = 0;
       }
+    } else {
+      standCounter++;
+      if (standCounter == 20) {
+        spriteNum = 1;
+        standCounter = 0;
+      }
     }
 
   }
 
   public void getPlayerImage() {
-    try {
-      up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyUp1Image)));
-      up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyUp2Image)));
-      down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyDown1Image)));
-      down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyDown2Image)));
-      left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyLeft1Image)));
-      left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyLeft2Image)));
-      right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyRight1Image)));
-      right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(boyRight2Image)));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    up1 = setup(boyUp1Image);
+    up2 = setup(boyUp2Image);
+    down1 = setup(boyDown1Image);
+    down2 = setup(boyDown2Image);
+    left1 = setup(boyLeft1Image);
+    up1 = setup(boyUp1Image);
+    left2 = setup(boyLeft2Image);
+    right1 = setup(boyRight1Image);
+    right2 = setup(boyRight2Image);
   }
 
   public void draw(Graphics2D graphic2d) {
@@ -151,7 +156,11 @@ public class Player extends Entity {
       }
     };
 
-    graphic2d.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+    graphic2d.drawImage(image, screenX, screenY,null);
+
+    // COLLISION RECTANGLE
+    graphic2d.setColor(Color.RED);
+    graphic2d.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
   }
 
   public void pickUpObject(int objectIndex) {
@@ -196,6 +205,20 @@ public class Player extends Entity {
     worldY = gamePanel.tileSize * 21;
     speed = 4;
     direction = DirectionType.DOWN.getValue();
+  }
+
+  private BufferedImage setup(String imageName) {
+    UtilityTool utilityTool = new UtilityTool();
+    BufferedImage scaledImage = null;
+
+    try {
+      scaledImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+      scaledImage = utilityTool.scaleImage(scaledImage, gamePanel.tileSize, gamePanel.tileSize);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+    return scaledImage;
+
   }
 
 }

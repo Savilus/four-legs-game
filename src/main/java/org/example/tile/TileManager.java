@@ -9,7 +9,6 @@ import static org.example.config.GameNameFactory.WALL;
 import static org.example.config.GameNameFactory.WATER;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +18,7 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
+import org.example.UtilityTool;
 
 public class TileManager {
 
@@ -36,30 +36,12 @@ public class TileManager {
   }
 
   public void getTileImage() {
-    try {
-      tile[0] = new Tile();
-      tile[0].image = loadImage(GRASS);
-
-      tile[1] = new Tile();
-      tile[1].image = loadImage(WALL);
-      tile[1].collision = true;
-
-      tile[2] = new Tile();
-      tile[2].image = loadImage(WATER);
-      tile[2].collision = true;
-
-      tile[3] = new Tile();
-      tile[3].image = loadImage(EARTH);
-
-      tile[4] = new Tile();
-      tile[4].image = loadImage(TREE);
-      tile[4].collision = true;
-
-      tile[5] = new Tile();
-      tile[5].image = loadImage(SAND);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    setUp(0, GRASS, false);
+    setUp(1, WALL, true);
+    setUp(2, WATER, true);
+    setUp(3, EARTH, false);
+    setUp(4, TREE, true);
+    setUp(5, SAND, false);
   }
 
   public void loadMap(String mapPath) {
@@ -110,7 +92,7 @@ public class TileManager {
           worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
           worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
           worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
-        graphics2D.drawImage(tile[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+        graphics2D.drawImage(tile[tileNum].image, screenX, screenY,null);
       }
       worldCol++;
 
@@ -121,7 +103,15 @@ public class TileManager {
     }
   }
 
-  private BufferedImage loadImage(String imageName) throws IOException {
-    return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+  private void setUp(int index, String imageName, boolean collision) {
+    UtilityTool utilityTool = new UtilityTool();
+    try {
+      tile[index] = new Tile();
+      tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+      tile[index].image = utilityTool.scaleImage(tile[index].image, gamePanel.tileSize, gamePanel.tileSize);
+      tile[index].collision = collision;
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
   }
 }

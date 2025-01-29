@@ -7,14 +7,17 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
+import org.example.GamePanel;
 import org.example.enums.GameObjectType;
 
 public class ChestObject extends SuperObject {
 
-  public ChestObject() {
+  public ChestObject(GamePanel gamePanel) {
+    super(gamePanel);
     name = GameObjectType.CHEST.getValue();
     try {
       image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(CHEST)));
+      utilityTool.scaleImage(image, gamePanel.tileSize, gamePanel.tileSize);
     } catch (IOException e) {
       e.printStackTrace();
     }
