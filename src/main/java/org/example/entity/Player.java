@@ -1,9 +1,5 @@
 package org.example.entity;
 
-import static org.example.config.GameMessageFactory.BOOST;
-import static org.example.config.GameMessageFactory.GOT_KEY;
-import static org.example.config.GameMessageFactory.NEED_KEY;
-import static org.example.config.GameMessageFactory.OPEN_DOOR;
 import static org.example.config.GameNameFactory.boyDown1Image;
 import static org.example.config.GameNameFactory.boyDown2Image;
 import static org.example.config.GameNameFactory.boyLeft1Image;
@@ -21,10 +17,9 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
+import org.example.enums.DirectionType;
 import org.example.utility.KeyHandler;
 import org.example.utility.UtilityTool;
-import org.example.enums.DirectionType;
-import org.example.enums.GameObjectType;
 
 public class Player extends Entity {
 
@@ -34,7 +29,6 @@ public class Player extends Entity {
 
   public final int screenX;
   public final int screenY;
-  public int playerKeys = 0;
   public int standCounter = 0;
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
@@ -156,7 +150,7 @@ public class Player extends Entity {
       }
     };
 
-    graphic2d.drawImage(image, screenX, screenY,null);
+    graphic2d.drawImage(image, screenX, screenY, null);
 
     // COLLISION RECTANGLE
     graphic2d.setColor(Color.RED);
@@ -165,38 +159,6 @@ public class Player extends Entity {
 
   public void pickUpObject(int objectIndex) {
     if (objectIndex != 999) {
-      String objectName = gamePanel.obj[objectIndex].name;
-      GameObjectType objectType = GameObjectType.fromString(objectName);
-      switch (objectType) {
-        case KEY:
-          playerKeys++;
-          gamePanel.playSoundEffect(1);
-          gamePanel.obj[objectIndex] = null;
-          gamePanel.ui.showMessage(GOT_KEY);
-          break;
-        case DOOR:
-          if (playerKeys > 0) {
-            playerKeys--;
-            gamePanel.playSoundEffect(3);
-            gamePanel.obj[objectIndex] = null;
-            gamePanel.ui.showMessage(OPEN_DOOR);
-          } else {
-            gamePanel.ui.showMessage(NEED_KEY);
-          }
-          break;
-        case BOOTS:
-          speed += 1;
-          gamePanel.playSoundEffect(2);
-          gamePanel.obj[objectIndex] = null;
-          gamePanel.ui.showMessage(BOOST);
-          break;
-        case CHEST:
-          gamePanel.ui.gameFinished = true;
-          gamePanel.stopMusic();
-          gamePanel.playSoundEffect(4);
-          break;
-      }
-
     }
   }
 
