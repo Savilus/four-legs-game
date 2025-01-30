@@ -1,5 +1,6 @@
-package org.example;
+package org.example.utility;
 
+import org.example.GamePanel;
 import org.example.entity.Entity;
 
 public class CollisionDetector {

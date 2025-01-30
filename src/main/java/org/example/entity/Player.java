@@ -21,8 +21,8 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
-import org.example.KeyHandler;
-import org.example.UtilityTool;
+import org.example.utility.KeyHandler;
+import org.example.utility.UtilityTool;
 import org.example.enums.DirectionType;
 import org.example.enums.GameObjectType;
 
