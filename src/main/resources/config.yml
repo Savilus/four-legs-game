@@ -8,6 +8,21 @@ player:
     boyLeft2: /player/boy_left_2.png
     boyRight1: /player/boy_right_1.png
     boyRight2: /player/boy_right_2.png
+npc:
+  images:
+    merchantDown1: /npc/merchant_down_1.png
+    merchantDown2: /npc/merchant_down_2.png
+    bigrock: /npc/bigrock.png
+    oldMan:
+      down1: /npc/oldman_down_1.png
+      down2: /npc/oldman_down_2.png
+      up1: /npc/oldman_up_1.png
+      up2: /npc/oldman_up_2.png
+      left1: /npc/oldman_left_1.png
+      left2: /npc/oldman_left_2.png
+      right1: /npc/oldman_right_1.png
+      right2: /npc/oldman_right_2.png
+
 items:
   images:
     boots: /objects/boots.png

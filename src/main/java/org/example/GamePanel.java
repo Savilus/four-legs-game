@@ -4,6 +4,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import org.example.entity.Entity;
 import org.example.entity.Player;
 import org.example.object.SuperObject;
 import org.example.tile.TileManager;
@@ -42,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
   public SuperObject[] obj = new SuperObject[10];
+  public Entity[] npc = new Entity[10];
 
   // GAME STATE
   public int gameState;
@@ -66,6 +68,11 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if(gameState == playState) {
       player.update();
+      for (Entity entity : npc) {
+        if (entity != null) {
+          entity.update();
+        }
+      }
     } else if (gameState == pauseState) {
       // nothing
     }
@@ -74,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   public void setupGame() {
     assetSetter.setObject();
+    assetSetter.setNPC();
     playMusic(0);
   }
 
@@ -95,11 +103,17 @@ public class GamePanel extends JPanel implements Runnable {
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+
     Graphics2D graphic2d = (Graphics2D) g;
     tileManager.draw(graphic2d);
     for (SuperObject superObject : obj) {
       if (superObject != null) {
         superObject.draw(graphic2d, this);
+      }
+    }
+    for(int i = 0; i < npc.length; i++) {
+      if(npc[i] != null) {
+        npc[i].draw(graphic2d);
       }
     }
     player.draw(graphic2d);
