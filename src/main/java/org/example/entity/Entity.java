@@ -27,6 +27,8 @@ public abstract class Entity {
   public int solidAreaDefaultX, solidAreaDefaultY;
   public boolean collisionOn = false;
   public int actionLockCounter = 0;
+  String[] dialogues = new String[20];
+  int dialogueIndex = 0;
 
   public Entity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -36,7 +38,28 @@ public abstract class Entity {
     return DirectionType.fromString(direction);
   }
 
-  public void setAction() {
+  public void setAction() {}
+  public void speak() {
+    if (dialogues[dialogueIndex] == null) {
+      dialogueIndex = 0;
+    }
+    gamePanel.ui.currentDialogue = dialogues[dialogueIndex];
+    dialogueIndex++;
+
+    switch (gamePanel.player.getDirection()) {
+      case UP:
+        direction = DirectionType.DOWN.getValue();
+        break;
+      case DOWN:
+        direction = DirectionType.UP.getValue();
+        break;
+      case LEFT:
+        direction = DirectionType.RIGHT.getValue();
+        break;
+      case RIGHT:
+        direction = DirectionType.LEFT.getValue();
+        break;
+    }
   }
 
   public void update() {

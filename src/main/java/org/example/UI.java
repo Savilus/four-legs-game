@@ -1,7 +1,6 @@
 package org.example;
 
 import java.awt.*;
-import java.text.DecimalFormat;
 
 public class UI {
 
@@ -12,8 +11,7 @@ public class UI {
   public String message = "";
   int messageCounter = 0;
   public boolean gameFinished = false;
-  double playTime;
-  DecimalFormat decimalFormat = new DecimalFormat("#.00");
+  public String currentDialogue = "";
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -35,7 +33,38 @@ public class UI {
 
     } else if (gamePanel.gameState == gamePanel.pauseState) {
       drawPauseScreen();
+    } else if (gamePanel.gameState == gamePanel.dialogueState) {
+      drawDialogueScreen();
     }
+  }
+
+  private void drawDialogueScreen() {
+    // WINDOW
+    int x = gamePanel.tileSize * 2;
+    int y = gamePanel.tileSize / 2;
+    int width = gamePanel.screenWidth - (gamePanel.tileSize * 4);
+    int height = gamePanel.tileSize * 4;
+    drawSubWindow(x, y, width, height);
+
+    graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, 25F));
+    x += gamePanel.tileSize;
+    y += gamePanel.tileSize;
+
+    for (String line : currentDialogue.split("\n")) {
+      graphics2D.drawString(line, x, y);
+      y += 40;
+    }
+
+  }
+
+  private void drawSubWindow(int x, int y, int width, int height) {
+    graphics2D.setColor(new Color(0, 0, 0, 220));
+    graphics2D.fillRoundRect(x, y, width, height, 35, 35);
+
+    graphics2D.setStroke(new BasicStroke(5));
+    graphics2D.setColor(new Color(255, 255, 255));
+    graphics2D.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+
   }
 
   private void drawPauseScreen() {
