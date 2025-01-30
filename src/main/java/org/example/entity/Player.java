@@ -1,30 +1,23 @@
 package org.example.entity;
 
-import static org.example.config.GameNameFactory.boyDown1Image;
-import static org.example.config.GameNameFactory.boyDown2Image;
-import static org.example.config.GameNameFactory.boyLeft1Image;
-import static org.example.config.GameNameFactory.boyLeft2Image;
-import static org.example.config.GameNameFactory.boyRight1Image;
-import static org.example.config.GameNameFactory.boyRight2Image;
-import static org.example.config.GameNameFactory.boyUp1Image;
-import static org.example.config.GameNameFactory.boyUp2Image;
+import static org.example.config.GameNameFactory.BOY_DOWN1;
+import static org.example.config.GameNameFactory.BOY_DOWN2;
+import static org.example.config.GameNameFactory.BOY_LEFT1;
+import static org.example.config.GameNameFactory.BOY_LEFT2;
+import static org.example.config.GameNameFactory.BOY_RIGHT1;
+import static org.example.config.GameNameFactory.BOY_RIGHT2;
+import static org.example.config.GameNameFactory.BOY_UP1;
+import static org.example.config.GameNameFactory.BOY_UP2;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 import org.example.utility.KeyHandler;
-import org.example.utility.UtilityTool;
 
 public class Player extends Entity {
 
-
-  GamePanel gamePanel;
   KeyHandler keyHandler;
 
   public final int screenX;
@@ -32,7 +25,7 @@ public class Player extends Entity {
   public int standCounter = 0;
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-    this.gamePanel = gamePanel;
+    super(gamePanel);
     this.keyHandler = keyHandler;
 
     screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
@@ -70,11 +63,14 @@ public class Player extends Entity {
       // CHECK OBJECT COLLISION
       int objectIndex = gamePanel.collisionDetector.checkObject(this, true);
       pickUpObject(objectIndex);
-      DirectionType directionType = getDirection();
+
+      //CHECK NPC COLLISION
+      int npcIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
+      interactNPC(npcIndex);
 
       // IF COLLISION IS FALSE, PLAYER CAN MOVE
       if (!collisionOn) {
-        switch (directionType) {
+        switch (getDirection()) {
           case UP:
             worldY -= speed;
             break;
@@ -105,21 +101,21 @@ public class Player extends Entity {
 
   }
 
+
   public void getPlayerImage() {
-    up1 = setup(boyUp1Image);
-    up2 = setup(boyUp2Image);
-    down1 = setup(boyDown1Image);
-    down2 = setup(boyDown2Image);
-    left1 = setup(boyLeft1Image);
-    up1 = setup(boyUp1Image);
-    left2 = setup(boyLeft2Image);
-    right1 = setup(boyRight1Image);
-    right2 = setup(boyRight2Image);
+    up1 = setup(BOY_UP1);
+    up2 = setup(BOY_UP2);
+    down1 = setup(BOY_DOWN1);
+    down2 = setup(BOY_DOWN2);
+    left1 = setup(BOY_LEFT1);
+    up1 = setup(BOY_UP1);
+    left2 = setup(BOY_LEFT2);
+    right1 = setup(BOY_RIGHT1);
+    right2 = setup(BOY_RIGHT2);
   }
 
   public void draw(Graphics2D graphic2d) {
-    DirectionType directionType = getDirection();
-    BufferedImage image = switch (directionType) {
+    BufferedImage image = switch (getDirection()) {
       case UP -> {
         if (spriteNum == 1)
           yield up1;
@@ -162,25 +158,18 @@ public class Player extends Entity {
     }
   }
 
+
+  private void interactNPC(int npcIndex) {
+    if (npcIndex != 999) {
+      System.out.println("HIT NPC!");
+    }
+  }
+
   private void setDefaultValues() {
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
     speed = 4;
     direction = DirectionType.DOWN.getValue();
-  }
-
-  private BufferedImage setup(String imageName) {
-    UtilityTool utilityTool = new UtilityTool();
-    BufferedImage scaledImage = null;
-
-    try {
-      scaledImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
-      scaledImage = utilityTool.scaleImage(scaledImage, gamePanel.tileSize, gamePanel.tileSize);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-    return scaledImage;
-
   }
 
 }
