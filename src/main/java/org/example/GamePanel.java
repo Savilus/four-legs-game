@@ -7,6 +7,9 @@ import javax.swing.*;
 import org.example.entity.Player;
 import org.example.object.SuperObject;
 import org.example.tile.TileManager;
+import org.example.utility.AssetSetter;
+import org.example.utility.CollisionDetector;
+import org.example.utility.KeyHandler;
 
 // Game screen
 public class GamePanel extends JPanel implements Runnable {
@@ -27,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   static final int FPS = 60;
   // SYSTEM
-  TileManager tileManager = new TileManager(this);
+  public TileManager tileManager = new TileManager(this);
   KeyHandler keyHandler = new KeyHandler();
   Sound music = new Sound();
   Sound soundEffect = new Sound();

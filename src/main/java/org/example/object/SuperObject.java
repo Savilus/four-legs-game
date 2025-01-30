@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import org.example.GamePanel;
-import org.example.UtilityTool;
+import org.example.utility.UtilityTool;
 
 public class SuperObject {
 

@@ -1,12 +1,38 @@
 package org.example.tile;
 
 import static org.example.config.GameNameFactory.EARTH;
-import static org.example.config.GameNameFactory.GRASS;
+import static org.example.config.GameNameFactory.GRASS0;
+import static org.example.config.GameNameFactory.GRASS1;
 import static org.example.config.GameNameFactory.MAP_PATH;
-import static org.example.config.GameNameFactory.SAND;
+import static org.example.config.GameNameFactory.ROAD0;
+import static org.example.config.GameNameFactory.ROAD1;
+import static org.example.config.GameNameFactory.ROAD10;
+import static org.example.config.GameNameFactory.ROAD11;
+import static org.example.config.GameNameFactory.ROAD12;
+import static org.example.config.GameNameFactory.ROAD2;
+import static org.example.config.GameNameFactory.ROAD3;
+import static org.example.config.GameNameFactory.ROAD4;
+import static org.example.config.GameNameFactory.ROAD5;
+import static org.example.config.GameNameFactory.ROAD6;
+import static org.example.config.GameNameFactory.ROAD7;
+import static org.example.config.GameNameFactory.ROAD8;
+import static org.example.config.GameNameFactory.ROAD9;
 import static org.example.config.GameNameFactory.TREE;
 import static org.example.config.GameNameFactory.WALL;
-import static org.example.config.GameNameFactory.WATER;
+import static org.example.config.GameNameFactory.WATER0;
+import static org.example.config.GameNameFactory.WATER1;
+import static org.example.config.GameNameFactory.WATER10;
+import static org.example.config.GameNameFactory.WATER11;
+import static org.example.config.GameNameFactory.WATER12;
+import static org.example.config.GameNameFactory.WATER13;
+import static org.example.config.GameNameFactory.WATER2;
+import static org.example.config.GameNameFactory.WATER3;
+import static org.example.config.GameNameFactory.WATER4;
+import static org.example.config.GameNameFactory.WATER5;
+import static org.example.config.GameNameFactory.WATER6;
+import static org.example.config.GameNameFactory.WATER7;
+import static org.example.config.GameNameFactory.WATER8;
+import static org.example.config.GameNameFactory.WATER9;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -18,7 +44,7 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
-import org.example.UtilityTool;
+import org.example.utility.UtilityTool;
 
 public class TileManager {
 
@@ -28,7 +54,7 @@ public class TileManager {
 
   public TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    tile = new Tile[10];
+    tile = new Tile[50];
     mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 
     getTileImage();
@@ -36,12 +62,50 @@ public class TileManager {
   }
 
   public void getTileImage() {
-    setUp(0, GRASS, false);
-    setUp(1, WALL, true);
-    setUp(2, WATER, true);
-    setUp(3, EARTH, false);
-    setUp(4, TREE, true);
-    setUp(5, SAND, false);
+//    setUp(0, GRASS0, false);
+//    setUp(1, GRASS0, true);
+//    setUp(2, GRASS0, true);
+//    setUp(3, GRASS0, false);
+//    setUp(4, GRASS0, true);
+//    setUp(5, GRASS0, false);
+//    setUp(6, GRASS0, false);
+//    setUp(7, GRASS0, false);
+//    setUp(8, GRASS0, false);
+//    setUp(9, GRASS0, false);
+
+    setUp(10, GRASS0, false);
+    setUp(11, GRASS1, false);
+    setUp(12, WATER0, true);
+    setUp(13, WATER1, true);
+    setUp(14, WATER2, true);
+    setUp(15, WATER3, true);
+    setUp(16, WATER4, true);
+    setUp(17, WATER5, true);
+    setUp(18, WATER6, true);
+    setUp(19, WATER7, true);
+    setUp(20, WATER8, true);
+    setUp(21, WATER9, true);
+    setUp(22, WATER10, true);
+    setUp(23, WATER11, true);
+    setUp(24, WATER12, true);
+    setUp(25, WATER13, true);
+    setUp(26, ROAD0, false);
+    setUp(27, ROAD1, false);
+    setUp(28, ROAD2, false);
+    setUp(29, ROAD3, false);
+    setUp(30, ROAD4, false);
+    setUp(31, ROAD5, false);
+    setUp(32, ROAD6, false);
+    setUp(33, ROAD7, false);
+    setUp(34, ROAD8, false);
+    setUp(35, ROAD9, false);
+    setUp(36, ROAD10, false);
+    setUp(37, ROAD11, false);
+    setUp(38, ROAD12, false);
+    setUp(39, EARTH, false);
+    setUp(40, WALL, true);
+    setUp(41, TREE, true);
+
   }
 
   public void loadMap(String mapPath) {
@@ -92,7 +156,7 @@ public class TileManager {
           worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
           worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
           worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
-        graphics2D.drawImage(tile[tileNum].image, screenX, screenY,null);
+        graphics2D.drawImage(tile[tileNum].image, screenX, screenY, null);
       }
       worldCol++;
 
@@ -104,6 +168,9 @@ public class TileManager {
   }
 
   private void setUp(int index, String imageName, boolean collision) {
+    if (index <= 9) {
+      return;
+    }
     UtilityTool utilityTool = new UtilityTool();
     try {
       tile[index] = new Tile();

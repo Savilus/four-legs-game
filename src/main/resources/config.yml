@@ -15,15 +15,48 @@ items:
     door: /objects/door.png
     key: /objects/key.png
 world:
-  mapPath: /maps/world01.txt
+  mapPath: /maps/worldV2.txt
   tile:
     images:
-      grass: /tiles/grass.png
+      water:
+        "0": /tiles/water00.png
+        "1": /tiles/water01.png
+        "2": /tiles/water02.png
+        "3": /tiles/water03.png
+        "4": /tiles/water04.png
+        "5": /tiles/water05.png
+        "6": /tiles/water06.png
+        "7": /tiles/water07.png
+        "8": /tiles/water08.png
+        "9": /tiles/water09.png
+        "10": /tiles/water10.png
+        "11": /tiles/water11.png
+        "12": /tiles/water12.png
+        "13": /tiles/water13.png
+      grass:
+        "0": /tiles/grass00.png
+        "1": /tiles/grass01.png
+      road:
+        "0": /tiles/road00.png
+        "1": /tiles/road01.png
+        "2": /tiles/road02.png
+        "3": /tiles/road03.png
+        "4": /tiles/road04.png
+        "5": /tiles/road05.png
+        "6": /tiles/road06.png
+        "7": /tiles/road07.png
+        "8": /tiles/road08.png
+        "9": /tiles/road09.png
+        "10": /tiles/road10.png
+        "11": /tiles/road11.png
+        "12": /tiles/road12.png
       wall: /tiles/wall.png
-      water: /tiles/water.png
       earth: /tiles/earth.png
       tree: /tiles/tree.png
       sand: /tiles/sand.png
+      table: /tiles/table01.png
+      floor: /tiles/floor01.png
+      hut: /tiles/hut.png
 sound:
   path:
     backgroundSong: /sound/BlueBoyAdventure.wav
