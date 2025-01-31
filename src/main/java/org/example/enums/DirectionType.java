@@ -1,5 +1,8 @@
 package org.example.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum DirectionType {
   UP("up"),
   DOWN("down"),
@@ -10,10 +13,6 @@ public enum DirectionType {
 
   DirectionType(String value) {
     this.value = value;
-  }
-
-  public String getValue() {
-    return value;
   }
 
   public static DirectionType fromString(String text) {

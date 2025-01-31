@@ -1,22 +1,37 @@
 package org.example;
 
+import static org.example.config.GameNameFactory.MARU_MONICA_FONT;
+import static org.example.config.GameNameFactory.PURISA_BOLD_FONT;
+
 import java.awt.*;
+import java.util.Objects;
 
 public class UI {
+  private static final String TITLE = "Four Legs";
+  private static final String NEW_GAME = "New Game";
+  private static final String LOAD_GAME = "Load game";
+  private static final String QUIT = "Quit";
 
   GamePanel gamePanel;
   Graphics2D graphics2D;
-  Font arialFont, arialFontBold;
+  Font maruMonica, purisaBoldFont;
   public boolean messageOn = false;
   public String message = "";
   int messageCounter = 0;
   public boolean gameFinished = false;
   public String currentDialogue = "";
+  public int commandNum = 0;
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    arialFont = new Font("Arial", Font.PLAIN, 30);
-    arialFontBold = new Font("Arial", Font.BOLD, 80);
+    try {
+      var fontInputStream = Objects.requireNonNull(getClass().getResourceAsStream(MARU_MONICA_FONT));
+      maruMonica = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
+      fontInputStream = Objects.requireNonNull(getClass().getResourceAsStream(PURISA_BOLD_FONT));
+      purisaBoldFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public void showMessage(String text) {
@@ -26,15 +41,61 @@ public class UI {
 
   public void draw(Graphics2D graphics2D) {
     this.graphics2D = graphics2D;
-    graphics2D.setFont(arialFont);
+    graphics2D.setFont(purisaBoldFont);
+    graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     graphics2D.setColor(Color.WHITE);
 
-    if (gamePanel.gameState == gamePanel.playState) {
+    switch (gamePanel.gameState) {
+      case TITLE_STATE -> drawTitleScreen();
+      case PLAY_STATE -> {
+      }
+      case PAUSE_STATE -> drawPauseScreen();
+      case DIALOG_STATE -> drawDialogueScreen();
+    }
 
-    } else if (gamePanel.gameState == gamePanel.pauseState) {
-      drawPauseScreen();
-    } else if (gamePanel.gameState == gamePanel.dialogueState) {
-      drawDialogueScreen();
+  }
+
+  private void drawTitleScreen() {
+    // TITLE NAME
+    graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 96F));
+    int x = getXForCenteredText(TITLE);
+    int y = gamePanel.tileSize * 3;
+
+    // SHADOW
+    graphics2D.setColor(Color.GRAY);
+    graphics2D.drawString(TITLE, x + 5, y + 5);
+    // MAIN COLOR
+    graphics2D.setColor(Color.WHITE);
+    graphics2D.drawString(TITLE, x, y);
+
+    // BLUE BOY IMAGE
+    x = gamePanel.screenWidth / 2 - (gamePanel.tileSize * 2) / 2;
+    y += gamePanel.tileSize * 2;
+
+    graphics2D.drawImage(gamePanel.player.down1, x, y, gamePanel.tileSize * 2, gamePanel.tileSize * 2, null);
+
+    // MENU
+    graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 48F));
+
+    x = getXForCenteredText(NEW_GAME);
+    y += gamePanel.tileSize * 3;
+    graphics2D.drawString(NEW_GAME, x, y);
+    if (commandNum == 0) {
+      graphics2D.drawString(">", x - gamePanel.tileSize, y);
+    }
+
+    x = getXForCenteredText(LOAD_GAME);
+    y += gamePanel.tileSize;
+    graphics2D.drawString(LOAD_GAME, x, y);
+    if (commandNum == 1) {
+      graphics2D.drawString(">", x - gamePanel.tileSize, y);
+    }
+
+    x = getXForCenteredText(QUIT);
+    y += gamePanel.tileSize;
+    graphics2D.drawString(QUIT, x, y);
+    if (commandNum == 2) {
+      graphics2D.drawString(">", x - gamePanel.tileSize, y);
     }
   }
 

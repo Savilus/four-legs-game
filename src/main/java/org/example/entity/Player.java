@@ -8,6 +8,7 @@ import static org.example.config.GameNameFactory.BOY_RIGHT1;
 import static org.example.config.GameNameFactory.BOY_RIGHT2;
 import static org.example.config.GameNameFactory.BOY_UP1;
 import static org.example.config.GameNameFactory.BOY_UP2;
+import static org.example.enums.GameStateType.DIALOG_STATE;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -162,7 +163,7 @@ public class Player extends Entity {
   private void interactNPC(int npcIndex) {
     if (npcIndex != 999) {
       if (gamePanel.keyHandler.enterPressed) {
-        gamePanel.gameState = gamePanel.dialogueState;
+        gamePanel.gameState = DIALOG_STATE;
         gamePanel.npc[npcIndex].speak();
       }
     }

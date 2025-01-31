@@ -1,5 +1,8 @@
 package org.example.config;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class GameNameFactory {
 
   public static final String CONFIG_PATH = "/config.yml";
@@ -152,7 +155,11 @@ public class GameNameFactory {
   @YamlValue("sound.path.fanfare")
   public static String FANFARE;
 
-
+  // FONT
+  @YamlValue("font.maruMonica")
+  public static String MARU_MONICA_FONT;
+  @YamlValue("font.purisaBold")
+  public static String PURISA_BOLD_FONT;
 
   static {
     YamlConfigLoader.loadConfig(GameNameFactory.class, CONFIG_PATH);

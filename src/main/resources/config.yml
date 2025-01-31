@@ -1,3 +1,6 @@
+font:
+  maruMonica: /font/MaruMonica.ttf
+  purisaBold: /font/PurisaBold.ttf
 player:
   images:
     boyUp1: /player/boy_up_1.png
