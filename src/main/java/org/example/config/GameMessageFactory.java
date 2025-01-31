@@ -1,5 +1,8 @@
 package org.example.config;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class GameMessageFactory {
 
   public static final String CONFIG_PATH = "/messageConfig.yml";

@@ -7,6 +7,9 @@ import java.util.Map;
 import org.example.Main;
 import org.yaml.snakeyaml.Yaml;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class YamlConfigLoader {
 
   public static final String ERROR_MESSAGE = "Error during loading value for path: %s. Failed field: %s";

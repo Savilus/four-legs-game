@@ -1,5 +1,8 @@
 package org.example.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum GameObjectType {
   KEY("Key"),
   DOOR("Door"),
@@ -10,10 +13,6 @@ public enum GameObjectType {
 
   GameObjectType(String value) {
     this.value = value;
-  }
-
-  public String getValue() {
-    return value;
   }
 
   public static GameObjectType fromString(String text) {

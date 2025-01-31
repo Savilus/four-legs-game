@@ -1,11 +1,16 @@
 package org.example;
 
+import static org.example.enums.GameStateType.PAUSE_STATE;
+import static org.example.enums.GameStateType.PLAY_STATE;
+import static org.example.enums.GameStateType.TITLE_STATE;
+
 import java.awt.*;
 
 import javax.swing.*;
 
 import org.example.entity.Entity;
 import org.example.entity.Player;
+import org.example.enums.GameStateType;
 import org.example.object.SuperObject;
 import org.example.tile.TileManager;
 import org.example.utility.AssetSetter;
@@ -46,11 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
   public Entity[] npc = new Entity[10];
 
   // GAME STATE
-  public int gameState;
-  public final int playState = 1;
-  public final int pauseState = 2;
-  public final int dialogueState = 3;
-
+  public GameStateType gameState;
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -58,7 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
     this.setDoubleBuffered(true);
     this.addKeyListener(keyHandler);
     this.setFocusable(true);
-    gameState = playState;
+    gameState = TITLE_STATE;
   }
 
   public void startGameThread() {
@@ -67,14 +68,14 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void update() {
-    if(gameState == playState) {
+    if (gameState == PLAY_STATE) {
       player.update();
       for (Entity entity : npc) {
         if (entity != null) {
           entity.update();
         }
       }
-    } else if (gameState == pauseState) {
+    } else if (gameState == PAUSE_STATE) {
       // nothing
     }
 
@@ -83,7 +84,6 @@ public class GamePanel extends JPanel implements Runnable {
   public void setupGame() {
     assetSetter.setObject();
     assetSetter.setNPC();
-    playMusic(0);
   }
 
   public void playMusic(int soundIndex) {
@@ -106,20 +106,24 @@ public class GamePanel extends JPanel implements Runnable {
     super.paintComponent(g);
 
     Graphics2D graphic2d = (Graphics2D) g;
-    tileManager.draw(graphic2d);
-    for (SuperObject superObject : obj) {
-      if (superObject != null) {
-        superObject.draw(graphic2d, this);
+    if (gameState == TITLE_STATE) {
+      ui.draw(graphic2d);
+    } else {
+      tileManager.draw(graphic2d);
+      for (SuperObject superObject : obj) {
+        if (superObject != null) {
+          superObject.draw(graphic2d, this);
+        }
       }
-    }
-    for(int i = 0; i < npc.length; i++) {
-      if(npc[i] != null) {
-        npc[i].draw(graphic2d);
+      for (int i = 0; i < npc.length; i++) {
+        if (npc[i] != null) {
+          npc[i].draw(graphic2d);
+        }
       }
+      player.draw(graphic2d);
+      ui.draw(graphic2d);
+      graphic2d.dispose();
     }
-    player.draw(graphic2d);
-    ui.draw(graphic2d);
-    graphic2d.dispose();
   }
 
   @Override
