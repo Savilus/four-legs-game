@@ -22,6 +22,7 @@ public class NPC extends Entity {
     direction = DirectionType.DOWN.getValue();
     speed = 1;
     getPlayerImage();
+    setDialogue();
   }
 
   public void getPlayerImage() {
@@ -33,6 +34,17 @@ public class NPC extends Entity {
     left2 = setup(OLD_MAN_LEFT2);
     right1 = setup(OLD_MAN_RIGHT1);
     right2 = setup(OLD_MAN_RIGHT2);
+  }
+
+  public void speak() {
+    super.speak();
+  }
+
+  private void setDialogue() {
+    dialogues[0] = "Hello, lad";
+    dialogues[1] = "So you've come to this island \n to find the treasure?";
+    dialogues[2] = "I used to be a great wizard but now... \n I'm a bit too old for taking and adventure";
+    dialogues[3] = "Well, good luck on you";
   }
 
   @Override
