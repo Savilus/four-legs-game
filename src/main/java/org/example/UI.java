@@ -4,7 +4,11 @@ import static org.example.config.GameNameFactory.MARU_MONICA_FONT;
 import static org.example.config.GameNameFactory.PURISA_BOLD_FONT;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
+
+import org.example.object.HeartObject;
+import org.example.object.SuperObject;
 
 public class UI {
   private static final String TITLE = "Four Legs";
@@ -12,6 +16,7 @@ public class UI {
   private static final String LOAD_GAME = "Load game";
   private static final String QUIT = "Quit";
 
+  BufferedImage heartFull, heartHalf, heartBlank;
   GamePanel gamePanel;
   Graphics2D graphics2D;
   Font maruMonica, purisaBoldFont;
@@ -32,6 +37,11 @@ public class UI {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+
+    SuperObject heart = new HeartObject(gamePanel);
+    heartFull = heart.image;
+    heartHalf = heart.image2;
+    heartBlank = heart.image3;
   }
 
   public void showMessage(String text) {
@@ -47,12 +57,44 @@ public class UI {
 
     switch (gamePanel.gameState) {
       case TITLE_STATE -> drawTitleScreen();
-      case PLAY_STATE -> {
+      case PLAY_STATE -> drawPlayerLife();
+      case PAUSE_STATE -> {
+        drawPlayerLife();
+        drawPauseScreen();
       }
-      case PAUSE_STATE -> drawPauseScreen();
-      case DIALOG_STATE -> drawDialogueScreen();
+      case DIALOG_STATE -> {
+        drawPlayerLife();
+        drawDialogueScreen();
+      }
     }
 
+  }
+
+  private void drawPlayerLife() {
+    int x = gamePanel.tileSize / 2;
+    int y = gamePanel.tileSize / 2;
+    int i = 0;
+
+    // DRAW MAX LIFE
+    while (i < gamePanel.player.maxLife / 2) {
+      graphics2D.drawImage(heartBlank, x, y, null);
+      i++;
+      x += gamePanel.tileSize;
+    }
+
+    x = gamePanel.tileSize / 2;
+    i = 0;
+
+    // DRAW CURRENT LIFE
+    while (i < gamePanel.player.currentLife) {
+      graphics2D.drawImage(heartHalf, x, y, null);
+      i++;
+      if (i < gamePanel.player.currentLife) {
+        graphics2D.drawImage(heartFull, x, y, null);
+      }
+      i++;
+      x += gamePanel.tileSize;
+    }
   }
 
   private void drawTitleScreen() {

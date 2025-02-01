@@ -58,6 +58,12 @@ public class GameNameFactory {
   public static String DOOR;
   @YamlValue("items.images.key")
   public static String KEY;
+  @YamlValue("items.images.heartFull")
+  public static String HEART_FULL;
+  @YamlValue("items.images.heartHalf")
+  public static String HEART_HALF;
+  @YamlValue("items.images.heartBlank")
+  public static String HEART_BLANK;
 
   // TILES IMAGES
   @YamlValue("world.tile.images.grass.0")
