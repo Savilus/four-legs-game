@@ -7,6 +7,7 @@ public enum GameObjectType {
   KEY("Key"),
   DOOR("Door"),
   BOOTS("Boots"),
+  HEART("Heart"),
   CHEST("Chest");
 
   private final String value;

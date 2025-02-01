@@ -32,6 +32,9 @@ items:
     chest: /objects/chest.png
     door: /objects/door.png
     key: /objects/key.png
+    heartFull: /objects/heart_full.png
+    heartHalf: /objects/heart_half.png
+    heartBlank: /objects/heart_blank.png
 world:
   mapPath: /maps/worldV2.txt
   tile:
