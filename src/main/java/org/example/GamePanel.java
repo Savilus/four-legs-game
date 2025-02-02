@@ -15,6 +15,7 @@ import org.example.object.SuperObject;
 import org.example.tile.TileManager;
 import org.example.utility.AssetSetter;
 import org.example.utility.CollisionDetector;
+import org.example.utility.EventHandler;
 import org.example.utility.KeyHandler;
 
 // Game screen
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
   public AssetSetter assetSetter = new AssetSetter(this);
   Thread gameThread;
   public UI ui = new UI(this);
+  public EventHandler eventHandler = new EventHandler(this);
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);

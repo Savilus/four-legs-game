@@ -135,6 +135,7 @@ public abstract class Entity {
             yield right2;
           yield null;
         }
+        case ANY -> null;
       };
       graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
     }
