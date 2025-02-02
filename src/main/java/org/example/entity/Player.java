@@ -69,6 +69,11 @@ public class Player extends Entity {
       int npcIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
       interactNPC(npcIndex);
 
+      // CHECK EVENT
+      gamePanel.eventHandler.checkEvent();
+
+      gamePanel.keyHandler.enterPressed = false;
+
       // IF COLLISION IS FALSE, PLAYER CAN MOVE
       if (!collisionOn) {
         switch (getDirection()) {
@@ -145,6 +150,7 @@ public class Player extends Entity {
           yield right2;
         yield null;
       }
+      case ANY -> null;
     };
 
     graphic2d.drawImage(image, screenX, screenY, null);
@@ -167,7 +173,6 @@ public class Player extends Entity {
         gamePanel.npc[npcIndex].speak();
       }
     }
-    gamePanel.keyHandler.enterPressed = false;
   }
 
   private void setDefaultValues() {
