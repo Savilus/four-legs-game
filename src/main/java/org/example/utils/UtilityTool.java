@@ -1,4 +1,4 @@
-package org.example.utility;
+package org.example.utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

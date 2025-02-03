@@ -1,4 +1,4 @@
-package org.example.utility;
+package org.example.utils;
 
 import org.example.GamePanel;
 import org.example.entity.NPC;

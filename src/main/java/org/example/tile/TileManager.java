@@ -44,7 +44,7 @@ import java.util.Objects;
 import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
-import org.example.utility.UtilityTool;
+import org.example.utils.UtilityTool;
 
 public class TileManager {
 
@@ -62,16 +62,6 @@ public class TileManager {
   }
 
   public void getTileImage() {
-//    setUp(0, GRASS0, false);
-//    setUp(1, GRASS0, true);
-//    setUp(2, GRASS0, true);
-//    setUp(3, GRASS0, false);
-//    setUp(4, GRASS0, true);
-//    setUp(5, GRASS0, false);
-//    setUp(6, GRASS0, false);
-//    setUp(7, GRASS0, false);
-//    setUp(8, GRASS0, false);
-//    setUp(9, GRASS0, false);
 
     setUp(10, GRASS0, false);
     setUp(11, GRASS1, false);

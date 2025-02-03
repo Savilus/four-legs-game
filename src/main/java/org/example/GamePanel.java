@@ -13,10 +13,10 @@ import org.example.entity.Player;
 import org.example.enums.GameStateType;
 import org.example.object.SuperObject;
 import org.example.tile.TileManager;
-import org.example.utility.AssetSetter;
-import org.example.utility.CollisionDetector;
-import org.example.utility.EventHandler;
-import org.example.utility.KeyHandler;
+import org.example.utils.AssetSetter;
+import org.example.utils.CollisionDetector;
+import org.example.utils.EventHandler;
+import org.example.utils.KeyHandler;
 
 // Game screen
 public class GamePanel extends JPanel implements Runnable {
