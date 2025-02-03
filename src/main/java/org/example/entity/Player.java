@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
-import org.example.utility.KeyHandler;
+import org.example.utils.KeyHandler;
 
 public class Player extends Entity {
 

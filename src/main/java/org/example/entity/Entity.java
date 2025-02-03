@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
-import org.example.utility.UtilityTool;
+import org.example.utils.UtilityTool;
 
 public abstract class Entity {
 

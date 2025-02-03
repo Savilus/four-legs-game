@@ -1,4 +1,4 @@
-package org.example.utility;
+package org.example.utils;
 
 import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import org.example.GamePanel;
-import org.example.enums.GameStateType;
 
 public class KeyHandler implements KeyListener {
 
