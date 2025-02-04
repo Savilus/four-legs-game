@@ -17,7 +17,7 @@ import org.example.GamePanel;
 import org.example.enums.DirectionType;
 import org.example.utils.KeyHandler;
 
-public class Player extends Entity {
+public class Player extends GameEntity {
 
   KeyHandler keyHandler;
 
@@ -48,13 +48,13 @@ public class Player extends Entity {
 
     if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
       if (keyHandler.upPressed) {
-        direction = DirectionType.UP.getValue();
+        direction = DirectionType.UP;
       } else if (keyHandler.downPressed) {
-        direction = DirectionType.DOWN.getValue();
+        direction = DirectionType.DOWN;
       } else if (keyHandler.leftPressed) {
-        direction = DirectionType.LEFT.getValue();
+        direction = DirectionType.LEFT;
       } else if (keyHandler.rightPressed) {
-        direction = DirectionType.RIGHT.getValue();
+        direction = DirectionType.RIGHT;
       }
 
       // CHECK TILE COLLISION
@@ -179,7 +179,7 @@ public class Player extends Entity {
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
     speed = 4;
-    direction = DirectionType.DOWN.getValue();
+    direction = DirectionType.DOWN;
 
     maxLife = 6;
     currentLife = maxLife;

@@ -7,8 +7,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+import org.example.entity.GameEntity;
 import org.example.object.HeartObject;
-import org.example.object.SuperObject;
 
 public class UI {
   private static final String TITLE = "Four Legs";
@@ -38,7 +38,7 @@ public class UI {
       throw new RuntimeException(e);
     }
 
-    SuperObject heart = new HeartObject(gamePanel);
+    GameEntity heart = new HeartObject(gamePanel);
     heartFull = heart.image;
     heartHalf = heart.image2;
     heartBlank = heart.image3;
