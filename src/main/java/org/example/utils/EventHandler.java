@@ -46,14 +46,14 @@ public class EventHandler {
     }
 
     if (canTouchEvent) {
-      if (hit(27, 16, DirectionType.RIGHT.getValue())) damagePit(27, 16, GameStateType.DIALOG_STATE);
-      if (hit(23, 19, DirectionType.ANY.getValue())) damagePit(23, 19, GameStateType.DIALOG_STATE);
+      if (hit(27, 16, DirectionType.RIGHT)) damagePit(27, 16, GameStateType.DIALOG_STATE);
+      if (hit(23, 19, DirectionType.ANY)) damagePit(23, 19, GameStateType.DIALOG_STATE);
 //    if (hit(27, 16, DirectionType.RIGHT.getValue())) teleport(GameStateType.DIALOG_STATE);
-      if (hit(23, 12, DirectionType.UP.getValue())) healingPool(23, 12, GameStateType.DIALOG_STATE);
+      if (hit(23, 12, DirectionType.UP)) healingPool(23, 12, GameStateType.DIALOG_STATE);
     }
   }
 
-  public boolean hit(int col, int row, String requiredDirection) {
+  public boolean hit(int col, int row, DirectionType requiredDirection) {
     boolean hit = false;
     gamePanel.player.solidArea.x = gamePanel.player.worldX + gamePanel.player.solidArea.x;
     gamePanel.player.solidArea.y = gamePanel.player.worldY + gamePanel.player.solidArea.y;
@@ -61,7 +61,7 @@ public class EventHandler {
     eventRect[col][row].y = row * gamePanel.tileSize + eventRect[col][row].y;
 
     if (gamePanel.player.solidArea.intersects(eventRect[col][row]) && !eventRect[col][row].oneTimeEventDone) {
-      if (gamePanel.player.direction.contentEquals(requiredDirection) || requiredDirection.contentEquals(DirectionType.ANY.getValue()))
+      if (gamePanel.player.direction.equals(requiredDirection) || requiredDirection.equals(DirectionType.ANY))
         hit = true;
 
       previousEventX = gamePanel.player.worldX;

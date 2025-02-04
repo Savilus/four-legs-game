@@ -14,12 +14,12 @@ import java.util.Random;
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 
-public class NPC extends Entity {
+public class NPC extends GameEntity {
 
   public NPC(GamePanel gamePanel) {
     super(gamePanel);
 
-    direction = DirectionType.DOWN.getValue();
+    direction = DirectionType.DOWN;
     speed = 1;
     getPlayerImage();
     setDialogue();
@@ -55,15 +55,11 @@ public class NPC extends Entity {
       Random random = new Random();
       int randomNumber = random.nextInt(100) + 1;
 
-      if (randomNumber <= 25) {
-        direction = DirectionType.UP.getValue();
-      } else if (randomNumber <= 50) {
-        direction = DirectionType.DOWN.getValue();
-      } else if (randomNumber <= 75) {
-        direction = DirectionType.LEFT.getValue();
-      } else if (randomNumber <= 100) {
-        direction = DirectionType.RIGHT.getValue();
-      }
+      if (randomNumber <= 25) direction = DirectionType.UP;
+      else if (randomNumber <= 50) direction = DirectionType.DOWN;
+      else if (randomNumber <= 75) direction = DirectionType.LEFT;
+      else if (randomNumber <= 100) direction = DirectionType.RIGHT;
+
       actionLockCounter = 0;
     }
 

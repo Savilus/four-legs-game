@@ -5,13 +5,15 @@ import static org.example.enums.GameStateType.PLAY_STATE;
 import static org.example.enums.GameStateType.TITLE_STATE;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.*;
 
-import org.example.entity.Entity;
+import org.example.entity.GameEntity;
 import org.example.entity.Player;
 import org.example.enums.GameStateType;
-import org.example.object.SuperObject;
 import org.example.tile.TileManager;
 import org.example.utils.AssetSetter;
 import org.example.utils.CollisionDetector;
@@ -49,8 +51,9 @@ public class GamePanel extends JPanel implements Runnable {
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
-  public SuperObject[] obj = new SuperObject[10];
-  public Entity[] npc = new Entity[10];
+  public GameEntity[] obj = new GameEntity[10];
+  public GameEntity[] npc = new GameEntity[10];
+  ArrayList<GameEntity> gameObjects = new ArrayList<>();
 
   // GAME STATE
   public GameStateType gameState;
@@ -72,9 +75,9 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if (gameState == PLAY_STATE) {
       player.update();
-      for (Entity entity : npc) {
-        if (entity != null) {
-          entity.update();
+      for (GameEntity gameEntity : npc) {
+        if (gameEntity != null) {
+          gameEntity.update();
         }
       }
     } else if (gameState == PAUSE_STATE) {
@@ -112,20 +115,38 @@ public class GamePanel extends JPanel implements Runnable {
       ui.draw(graphic2d);
     } else {
       tileManager.draw(graphic2d);
-      for (SuperObject superObject : obj) {
-        if (superObject != null) {
-          superObject.draw(graphic2d, this);
+      gameObjects.add(player);
+      // ADD ENTITY TO THE LIST
+      for (GameEntity npc : npc) {
+        if (npc != null) {
+          gameObjects.add(npc);
         }
       }
-      for (int i = 0; i < npc.length; i++) {
-        if (npc[i] != null) {
-          npc[i].draw(graphic2d);
+
+      for (GameEntity object : obj) {
+        if (object != null) {
+          gameObjects.add(object);
         }
       }
-      player.draw(graphic2d);
+      // SORT
+      Collections.sort(gameObjects, new Comparator<GameEntity>() {
+        @Override
+        public int compare(GameEntity gameEntity1, GameEntity gameEntity2) {
+          return Integer.compare(gameEntity1.worldY, gameEntity2.worldY);
+        }
+      });
+
+      // DRAW ENTITIES
+      for (GameEntity gameObject : gameObjects) {
+        gameObject.draw(graphic2d);
+      }
+
+      // EMPLTY ENTITY LIST
+      gameObjects.clear();
+
       ui.draw(graphic2d);
-      graphic2d.dispose();
     }
+    graphic2d.dispose();
   }
 
   @Override

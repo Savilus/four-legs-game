@@ -11,35 +11,35 @@ import org.example.GamePanel;
 import org.example.enums.DirectionType;
 import org.example.utils.UtilityTool;
 
-public abstract class Entity {
+public abstract class GameEntity {
 
   GamePanel gamePanel;
   public int worldX, worldY;
   public int speed;
-
   public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-  public String direction;
-
+  public DirectionType direction = DirectionType.ANY;
   public int spriteCounter = 0;
   public int spriteNum = 1;
-
   public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
   public int solidAreaDefaultX, solidAreaDefaultY;
   public boolean collisionOn = false;
   public int actionLockCounter = 0;
   String[] dialogues = new String[20];
   int dialogueIndex = 0;
+  public BufferedImage image, image2, image3;
+  public String name;
+  public boolean collision = false;
 
   // CHARACTER STATUS
   public int maxLife;
   public int currentLife;
 
-  public Entity(GamePanel gamePanel) {
+  public GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
   }
 
   public DirectionType getDirection() {
-    return DirectionType.fromString(direction);
+    return direction;
   }
 
   public void setAction() {}
@@ -52,16 +52,16 @@ public abstract class Entity {
 
     switch (gamePanel.player.getDirection()) {
       case UP:
-        direction = DirectionType.DOWN.getValue();
+        direction = DirectionType.DOWN;
         break;
       case DOWN:
-        direction = DirectionType.UP.getValue();
+        direction = DirectionType.UP;
         break;
       case LEFT:
-        direction = DirectionType.RIGHT.getValue();
+        direction = DirectionType.RIGHT;
         break;
       case RIGHT:
-        direction = DirectionType.LEFT.getValue();
+        direction = DirectionType.LEFT;
         break;
     }
   }
@@ -135,7 +135,7 @@ public abstract class Entity {
             yield right2;
           yield null;
         }
-        case ANY -> null;
+        case ANY ->  this.image;
       };
       graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
     }
