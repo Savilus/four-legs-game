@@ -6,7 +6,6 @@ import static org.example.enums.GameStateType.TITLE_STATE;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.*;
@@ -141,12 +140,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
       // SORT
-      Collections.sort(gameObjects, new Comparator<GameEntity>() {
-        @Override
-        public int compare(GameEntity gameEntity1, GameEntity gameEntity2) {
-          return Integer.compare(gameEntity1.worldY, gameEntity2.worldY);
-        }
-      });
+      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.worldY));
 
       // DRAW ENTITIES
       for (GameEntity gameObject : gameObjects) {

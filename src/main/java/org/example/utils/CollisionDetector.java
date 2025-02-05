@@ -103,12 +103,11 @@ public class CollisionDetector {
         target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
         target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
         checkGameEntityCollision(gameEntity);
-        if (gameEntity.solidArea.intersects(target[i].solidArea)) {
-          if (target[i] != gameEntity) {
-            gameEntity.collisionOn = true;
-            index = i;
-          }
+        if (gameEntity.solidArea.intersects(target[i].solidArea) && target[i] != gameEntity) {
+          gameEntity.collisionOn = true;
+          index = i;
         }
+
         gameEntity.solidArea.x = gameEntity.solidAreaDefaultX;
         gameEntity.solidArea.y = gameEntity.solidAreaDefaultY;
         target[i].solidArea.x = target[i].solidAreaDefaultX;
@@ -118,7 +117,8 @@ public class CollisionDetector {
     return index;
   }
 
-  public void checkPlayer(GameEntity gameEntity) {
+  public boolean checkPlayer(GameEntity gameEntity) {
+    boolean contactPlayer = false;
     //get entity's solid area position
     gameEntity.solidArea.x = gameEntity.worldX + gameEntity.solidArea.x;
     gameEntity.solidArea.y = gameEntity.worldY + gameEntity.solidArea.y;
@@ -129,11 +129,14 @@ public class CollisionDetector {
     checkGameEntityCollision(gameEntity);
     if (gameEntity.solidArea.intersects(gamePanel.player.solidArea)) {
       gameEntity.collisionOn = true;
+      contactPlayer = true;
     }
     gameEntity.solidArea.x = gameEntity.solidAreaDefaultX;
     gameEntity.solidArea.y = gameEntity.solidAreaDefaultY;
     gamePanel.player.solidArea.x = gamePanel.player.solidAreaDefaultX;
     gamePanel.player.solidArea.y = gamePanel.player.solidAreaDefaultY;
+
+    return contactPlayer;
   }
 
   private void checkGameEntityCollision(GameEntity gameEntity) {

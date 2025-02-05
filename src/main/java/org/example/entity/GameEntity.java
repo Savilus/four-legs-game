@@ -10,18 +10,22 @@ import javax.imageio.ImageIO;
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 import org.example.utils.UtilityTool;
+
+import lombok.Getter;
+
 /*
-* SOLID AREA X - WHEN WE START ON AXIS X COUNTING FROM LEFT
-* SOLID AREA Y - WHEN WE START ON AXIS Y COUNTING FROM TOP
-* WIDTH - WIDTH OF THE SOLID AREA, TILE HAS 48 PIXELS
-* HEIGHT - SAME AS WIDTH
-* */
+ * SOLID AREA X - WHEN WE START ON AXIS X COUNTING FROM LEFT
+ * SOLID AREA Y - WHEN WE START ON AXIS Y COUNTING FROM TOP
+ * WIDTH - WIDTH OF THE SOLID AREA, TILE HAS 48 PIXELS
+ * HEIGHT - SAME AS WIDTH
+ * */
 public abstract class GameEntity {
 
   GamePanel gamePanel;
   public int worldX, worldY;
   public int speed;
   public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+  @Getter
   public DirectionType direction = DirectionType.ANY;
   public int spriteCounter = 0;
   public int spriteNum = 1;
@@ -34,20 +38,20 @@ public abstract class GameEntity {
   public BufferedImage image, image2, image3;
   public String name;
   public boolean collision = false;
-
+  public int invincibleCounter = 0;
+  public boolean invincible = false;
   // CHARACTER STATUS
   public int maxLife;
   public int currentLife;
+  public int type;
 
-  public GameEntity(GamePanel gamePanel) {
+  protected GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
   }
 
-  public DirectionType getDirection() {
-    return direction;
+  public void setAction() {
   }
 
-  public void setAction() {}
   public void speak() {
     if (dialogues[dialogueIndex] == null) {
       dialogueIndex = 0;
@@ -76,7 +80,14 @@ public abstract class GameEntity {
     collisionOn = false;
     gamePanel.collisionDetector.checkTile(this);
     gamePanel.collisionDetector.checkObject(this, false);
-    gamePanel.collisionDetector.checkPlayer(this);
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
+    boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
+
+    if(this.type == 2 && contactPlayer && !gamePanel.player.invincible) {
+      gamePanel.player.currentLife -= 1;
+      gamePanel.player.invincible = true;
+    }
     // IF COLLISION IS FALSE, PLAYER CAN MOVE
     if (!collisionOn) {
       switch (getDirection()) {
@@ -140,7 +151,7 @@ public abstract class GameEntity {
             yield right2;
           yield null;
         }
-        case ANY ->  this.image;
+        case ANY -> this.image;
       };
       graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
     }

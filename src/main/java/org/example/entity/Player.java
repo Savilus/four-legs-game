@@ -28,7 +28,7 @@ public class Player extends GameEntity {
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     super(gamePanel);
     this.keyHandler = keyHandler;
-
+    type = 0;
     screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
     screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize / 2);
 
@@ -71,6 +71,7 @@ public class Player extends GameEntity {
 
       // CHECK MONSTER COLLISION
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
+      detectMonsterContact(monsterIndex);
 
       // CHECK EVENT
       gamePanel.eventHandler.checkEvent();
@@ -108,8 +109,14 @@ public class Player extends GameEntity {
       }
     }
 
+    if(invincible){
+      invincibleCounter++;
+      if(invincibleCounter > 60){
+        invincible = false;
+        invincibleCounter = 0;
+      }
+    }
   }
-
 
   public void getPlayerImage() {
     up1 = setup(BOY_UP1);
@@ -123,6 +130,34 @@ public class Player extends GameEntity {
     right2 = setup(BOY_RIGHT2);
   }
 
+  private void interactNPC(int npcIndex) {
+    if (npcIndex != 999) {
+      if (gamePanel.keyHandler.enterPressed) {
+        gamePanel.gameState = DIALOG_STATE;
+        gamePanel.npc[npcIndex].speak();
+      }
+    }
+  }
+
+  private void setDefaultValues() {
+    worldX = gamePanel.tileSize * 23;
+    worldY = gamePanel.tileSize * 21;
+    speed = 4;
+    direction = DirectionType.DOWN;
+
+    maxLife = 6;
+    currentLife = maxLife;
+  }
+
+  private void detectMonsterContact(int monsterIndex) {
+//    long currentTime = System.currentTimeMillis();
+    if (monsterIndex != 999 && !invincible) {
+      invincible = true;
+      currentLife -= 1;
+    }
+  }
+
+  @Override
   public void draw(Graphics2D graphic2d) {
     BufferedImage image = switch (getDirection()) {
       case UP -> {
@@ -156,8 +191,12 @@ public class Player extends GameEntity {
       case ANY -> null;
     };
 
-    graphic2d.drawImage(image, screenX, screenY, null);
 
+    if(invincible){
+      graphic2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+    }
+    graphic2d.drawImage(image, screenX, screenY, null);
+    graphic2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     // COLLISION RECTANGLE
     graphic2d.setColor(Color.RED);
     graphic2d.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
@@ -166,28 +205,6 @@ public class Player extends GameEntity {
   public void pickUpObject(int objectIndex) {
     if (objectIndex != 999) {
     }
-  }
-
-
-  private void interactNPC(int npcIndex) {
-    if (npcIndex != 999) {
-      if (gamePanel.keyHandler.enterPressed) {
-        gamePanel.gameState = DIALOG_STATE;
-        gamePanel.npc[npcIndex].speak();
-      }
-    }
-  }
-
-  private void setDefaultValues() {
-    worldX = gamePanel.tileSize * 10;
-//    worldX = gamePanel.tileSize * 23;
-//    worldY = gamePanel.tileSize * 21;
-    worldY = gamePanel.tileSize * 13;
-    speed = 4;
-    direction = DirectionType.DOWN;
-
-    maxLife = 6;
-    currentLife = maxLife;
   }
 
 }

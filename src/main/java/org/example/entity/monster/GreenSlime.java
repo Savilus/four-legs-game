@@ -14,10 +14,11 @@ public class GreenSlime extends GameEntity {
 
   public GreenSlime(GamePanel gamePanel) {
     super(gamePanel);
-    name = "Green Slime";
+    name = MonsterObjectType.GREEN_SLIME.getName();
     speed = 1;
     maxLife = 4;
     currentLife = maxLife;
+    type = 2;
 
     solidArea.x = 3;
     solidArea.y = 18;
