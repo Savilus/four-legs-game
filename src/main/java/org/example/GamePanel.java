@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
   public Player player = new Player(this, keyHandler);
   public GameEntity[] obj = new GameEntity[10];
   public GameEntity[] npc = new GameEntity[10];
+  public GameEntity[] monsters = new GameEntity[20];
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
 
   // GAME STATE
@@ -83,12 +84,17 @@ public class GamePanel extends JPanel implements Runnable {
     } else if (gameState == PAUSE_STATE) {
       // nothing
     }
-
+    for (GameEntity monster : monsters) {
+      if (monster != null) {
+        monster.update();
+      }
+    }
   }
 
   public void setupGame() {
     assetSetter.setObject();
     assetSetter.setNPC();
+    assetSetter.setMonster();
   }
 
   public void playMusic(int soundIndex) {
@@ -126,6 +132,12 @@ public class GamePanel extends JPanel implements Runnable {
       for (GameEntity object : obj) {
         if (object != null) {
           gameObjects.add(object);
+        }
+      }
+
+      for (GameEntity monster : monsters) {
+        if (monster != null) {
+          gameObjects.add(monster);
         }
       }
       // SORT

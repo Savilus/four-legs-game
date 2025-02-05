@@ -10,7 +10,12 @@ import javax.imageio.ImageIO;
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 import org.example.utils.UtilityTool;
-
+/*
+* SOLID AREA X - WHEN WE START ON AXIS X COUNTING FROM LEFT
+* SOLID AREA Y - WHEN WE START ON AXIS Y COUNTING FROM TOP
+* WIDTH - WIDTH OF THE SOLID AREA, TILE HAS 48 PIXELS
+* HEIGHT - SAME AS WIDTH
+* */
 public abstract class GameEntity {
 
   GamePanel gamePanel;

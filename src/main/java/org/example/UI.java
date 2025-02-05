@@ -1,14 +1,14 @@
 package org.example;
 
-import static org.example.config.GameNameFactory.MARU_MONICA_FONT;
-import static org.example.config.GameNameFactory.PURISA_BOLD_FONT;
+import static org.example.config.GameEntityNameFactory.MARU_MONICA_FONT;
+import static org.example.config.GameEntityNameFactory.PURISA_BOLD_FONT;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 import org.example.entity.GameEntity;
-import org.example.object.HeartObject;
+import org.example.entity.object.HeartObject;
 
 public class UI {
   private static final String TITLE = "Four Legs";

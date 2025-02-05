@@ -1,13 +1,13 @@
 package org.example.entity;
 
-import static org.example.config.GameNameFactory.BOY_DOWN1;
-import static org.example.config.GameNameFactory.BOY_DOWN2;
-import static org.example.config.GameNameFactory.BOY_LEFT1;
-import static org.example.config.GameNameFactory.BOY_LEFT2;
-import static org.example.config.GameNameFactory.BOY_RIGHT1;
-import static org.example.config.GameNameFactory.BOY_RIGHT2;
-import static org.example.config.GameNameFactory.BOY_UP1;
-import static org.example.config.GameNameFactory.BOY_UP2;
+import static org.example.config.GameEntityNameFactory.BOY_DOWN1;
+import static org.example.config.GameEntityNameFactory.BOY_DOWN2;
+import static org.example.config.GameEntityNameFactory.BOY_LEFT1;
+import static org.example.config.GameEntityNameFactory.BOY_LEFT2;
+import static org.example.config.GameEntityNameFactory.BOY_RIGHT1;
+import static org.example.config.GameEntityNameFactory.BOY_RIGHT2;
+import static org.example.config.GameEntityNameFactory.BOY_UP1;
+import static org.example.config.GameEntityNameFactory.BOY_UP2;
 import static org.example.enums.GameStateType.DIALOG_STATE;
 
 import java.awt.*;
@@ -68,6 +68,9 @@ public class Player extends GameEntity {
       //CHECK NPC COLLISION
       int npcIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
       interactNPC(npcIndex);
+
+      // CHECK MONSTER COLLISION
+      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
 
       // CHECK EVENT
       gamePanel.eventHandler.checkEvent();
@@ -176,8 +179,10 @@ public class Player extends GameEntity {
   }
 
   private void setDefaultValues() {
-    worldX = gamePanel.tileSize * 23;
-    worldY = gamePanel.tileSize * 21;
+    worldX = gamePanel.tileSize * 10;
+//    worldX = gamePanel.tileSize * 23;
+//    worldY = gamePanel.tileSize * 21;
+    worldY = gamePanel.tileSize * 13;
     speed = 4;
     direction = DirectionType.DOWN;
 

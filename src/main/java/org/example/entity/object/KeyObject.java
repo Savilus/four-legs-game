@@ -1,6 +1,6 @@
-package org.example.object;
+package org.example.entity.object;
 
-import static org.example.config.GameNameFactory.KEY;
+import static org.example.config.GameEntityNameFactory.KEY;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;

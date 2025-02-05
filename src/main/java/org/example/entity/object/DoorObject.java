@@ -1,6 +1,6 @@
-package org.example.object;
+package org.example.entity.object;
 
-import static org.example.config.GameNameFactory.DOOR;
+import static org.example.config.GameEntityNameFactory.DOOR;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;

@@ -1,8 +1,10 @@
 package org.example.enums;
 
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 public enum GameObjectType {
   KEY("Key"),
   DOOR("Door"),
@@ -11,10 +13,6 @@ public enum GameObjectType {
   CHEST("Chest");
 
   private final String value;
-
-  GameObjectType(String value) {
-    this.value = value;
-  }
 
   public static GameObjectType fromString(String text) {
     for (GameObjectType type : GameObjectType.values()) {

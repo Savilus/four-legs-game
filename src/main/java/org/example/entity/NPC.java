@@ -1,13 +1,13 @@
 package org.example.entity;
 
-import static org.example.config.GameNameFactory.OLD_MAN_DOWN1;
-import static org.example.config.GameNameFactory.OLD_MAN_DOWN2;
-import static org.example.config.GameNameFactory.OLD_MAN_LEFT1;
-import static org.example.config.GameNameFactory.OLD_MAN_LEFT2;
-import static org.example.config.GameNameFactory.OLD_MAN_RIGHT1;
-import static org.example.config.GameNameFactory.OLD_MAN_RIGHT2;
-import static org.example.config.GameNameFactory.OLD_MAN_UP1;
-import static org.example.config.GameNameFactory.OLD_MAN_UP2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_DOWN1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_DOWN2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_LEFT1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_LEFT2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_RIGHT1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_RIGHT2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_UP1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_UP2;
 
 import java.util.Random;
 

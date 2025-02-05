@@ -1,8 +1,10 @@
 package org.example.enums;
 
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 public enum DirectionType {
   UP("up"),
   DOWN("down"),
@@ -11,10 +13,6 @@ public enum DirectionType {
   ANY("any");
 
   private final String value;
-
-  DirectionType(String value) {
-    this.value = value;
-  }
 
   public static DirectionType fromString(String text) {
     for (DirectionType type : DirectionType.values()) {
