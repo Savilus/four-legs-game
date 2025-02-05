@@ -1,13 +1,13 @@
 package org.example.entity;
 
-import static org.example.config.GameNameFactory.OLD_MAN_DOWN1;
-import static org.example.config.GameNameFactory.OLD_MAN_DOWN2;
-import static org.example.config.GameNameFactory.OLD_MAN_LEFT1;
-import static org.example.config.GameNameFactory.OLD_MAN_LEFT2;
-import static org.example.config.GameNameFactory.OLD_MAN_RIGHT1;
-import static org.example.config.GameNameFactory.OLD_MAN_RIGHT2;
-import static org.example.config.GameNameFactory.OLD_MAN_UP1;
-import static org.example.config.GameNameFactory.OLD_MAN_UP2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_DOWN1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_DOWN2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_LEFT1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_LEFT2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_RIGHT1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_RIGHT2;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_UP1;
+import static org.example.config.GameEntityNameFactory.OLD_MAN_UP2;
 
 import java.util.Random;
 
@@ -21,6 +21,7 @@ public class NPC extends GameEntity {
 
     direction = DirectionType.DOWN;
     speed = 1;
+    type = 1;
     getPlayerImage();
     setDialogue();
   }
@@ -36,15 +37,16 @@ public class NPC extends GameEntity {
     right2 = setup(OLD_MAN_RIGHT2);
   }
 
-  public void speak() {
-    super.speak();
-  }
-
   private void setDialogue() {
     dialogues[0] = "Hello, lad";
     dialogues[1] = "So you've come to this island \n to find the treasure?";
     dialogues[2] = "I used to be a great wizard but now... \n I'm a bit too old for taking and adventure";
     dialogues[3] = "Well, good luck on you";
+  }
+
+  @Override
+  public void speak() {
+    super.speak();
   }
 
   @Override

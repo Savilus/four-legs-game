@@ -1,0 +1,59 @@
+package org.example.entity.monster;
+
+import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN1;
+import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN2;
+
+import java.util.Random;
+
+import org.example.GamePanel;
+import org.example.entity.GameEntity;
+import org.example.enums.DirectionType;
+import org.example.enums.MonsterObjectType;
+
+public class GreenSlime extends GameEntity {
+
+  public GreenSlime(GamePanel gamePanel) {
+    super(gamePanel);
+    name = MonsterObjectType.GREEN_SLIME.getName();
+    speed = 1;
+    maxLife = 4;
+    currentLife = maxLife;
+    type = 2;
+
+    solidArea.x = 3;
+    solidArea.y = 18;
+    solidArea.width = 42;
+    solidArea.height = 30;
+    solidAreaDefaultX = solidArea.x;
+    solidAreaDefaultY = solidArea.y;
+    getImage();
+  }
+
+  private void getImage(){
+    up1 = setup(GREEN_SLIME_DOWN1);
+    up2 = setup(GREEN_SLIME_DOWN2);
+    down1 = setup(GREEN_SLIME_DOWN1);
+    down2 = setup(GREEN_SLIME_DOWN2);
+    left1 = setup(GREEN_SLIME_DOWN1);
+    left2 = setup(GREEN_SLIME_DOWN2);
+    right1 = setup(GREEN_SLIME_DOWN1);
+    right2 = setup(GREEN_SLIME_DOWN2);
+  }
+
+  @Override
+  public void setAction(){
+    actionLockCounter++;
+
+    if (actionLockCounter == 120) {
+      Random random = new Random();
+      int randomNumber = random.nextInt(100) + 1;
+
+      if (randomNumber <= 25) direction = DirectionType.UP;
+      else if (randomNumber <= 50) direction = DirectionType.DOWN;
+      else if (randomNumber <= 75) direction = DirectionType.LEFT;
+      else if (randomNumber <= 100) direction = DirectionType.RIGHT;
+
+      actionLockCounter = 0;
+    }
+  }
+}

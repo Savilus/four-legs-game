@@ -1,8 +1,8 @@
-package org.example.object;
+package org.example.entity.object;
 
-import static org.example.config.GameNameFactory.HEART_BLANK;
-import static org.example.config.GameNameFactory.HEART_FULL;
-import static org.example.config.GameNameFactory.HEART_HALF;
+import static org.example.config.GameEntityNameFactory.HEART_BLANK;
+import static org.example.config.GameEntityNameFactory.HEART_FULL;
+import static org.example.config.GameEntityNameFactory.HEART_HALF;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;

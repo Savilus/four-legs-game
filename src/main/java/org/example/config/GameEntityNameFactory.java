@@ -3,7 +3,7 @@ package org.example.config;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class GameNameFactory {
+public class GameEntityNameFactory {
 
   public static final String CONFIG_PATH = "/config.yml";
 
@@ -24,6 +24,13 @@ public class GameNameFactory {
   public static String BOY_RIGHT1;
   @YamlValue("player.images.boyRight2")
   public static String BOY_RIGHT2;
+
+  // MONSTER IMAGES
+  @YamlValue("monster.images.greenSlime.down1")
+  public static String GREEN_SLIME_DOWN1;
+  @YamlValue("monster.images.greenSlime.down2")
+  public static String GREEN_SLIME_DOWN2;
+
 
   // NPC IMAGES
   @YamlValue("npc.images.merchantDown1")
@@ -168,6 +175,6 @@ public class GameNameFactory {
   public static String PURISA_BOLD_FONT;
 
   static {
-    YamlConfigLoader.loadConfig(GameNameFactory.class, CONFIG_PATH);
+    YamlConfigLoader.loadConfig(GameEntityNameFactory.class, CONFIG_PATH);
   }
 }

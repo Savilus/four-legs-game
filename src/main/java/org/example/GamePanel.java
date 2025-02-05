@@ -6,7 +6,6 @@ import static org.example.enums.GameStateType.TITLE_STATE;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.*;
@@ -53,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
   public Player player = new Player(this, keyHandler);
   public GameEntity[] obj = new GameEntity[10];
   public GameEntity[] npc = new GameEntity[10];
+  public GameEntity[] monsters = new GameEntity[20];
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
 
   // GAME STATE
@@ -83,12 +83,17 @@ public class GamePanel extends JPanel implements Runnable {
     } else if (gameState == PAUSE_STATE) {
       // nothing
     }
-
+    for (GameEntity monster : monsters) {
+      if (monster != null) {
+        monster.update();
+      }
+    }
   }
 
   public void setupGame() {
     assetSetter.setObject();
     assetSetter.setNPC();
+    assetSetter.setMonster();
   }
 
   public void playMusic(int soundIndex) {
@@ -128,13 +133,14 @@ public class GamePanel extends JPanel implements Runnable {
           gameObjects.add(object);
         }
       }
-      // SORT
-      Collections.sort(gameObjects, new Comparator<GameEntity>() {
-        @Override
-        public int compare(GameEntity gameEntity1, GameEntity gameEntity2) {
-          return Integer.compare(gameEntity1.worldY, gameEntity2.worldY);
+
+      for (GameEntity monster : monsters) {
+        if (monster != null) {
+          gameObjects.add(monster);
         }
-      });
+      }
+      // SORT
+      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.worldY));
 
       // DRAW ENTITIES
       for (GameEntity gameObject : gameObjects) {

@@ -1,10 +1,10 @@
 package org.example;
 
-import static org.example.config.GameNameFactory.BACKGROUND_SONG;
-import static org.example.config.GameNameFactory.COIN;
-import static org.example.config.GameNameFactory.FANFARE;
-import static org.example.config.GameNameFactory.POWER_UP;
-import static org.example.config.GameNameFactory.UNLOCK;
+import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
+import static org.example.config.GameEntityNameFactory.COIN;
+import static org.example.config.GameEntityNameFactory.FANFARE;
+import static org.example.config.GameEntityNameFactory.POWER_UP;
+import static org.example.config.GameEntityNameFactory.UNLOCK;
 
 import java.net.URL;
 import java.util.Objects;

@@ -1,6 +1,7 @@
 font:
   maruMonica: /font/MaruMonica.ttf
   purisaBold: /font/PurisaBold.ttf
+
 player:
   images:
     boyUp1: /player/boy_up_1.png
@@ -11,6 +12,7 @@ player:
     boyLeft2: /player/boy_left_2.png
     boyRight1: /player/boy_right_1.png
     boyRight2: /player/boy_right_2.png
+
 npc:
   images:
     merchantDown1: /npc/merchant_down_1.png
@@ -26,6 +28,12 @@ npc:
       right1: /npc/oldman_right_1.png
       right2: /npc/oldman_right_2.png
 
+monster:
+  images:
+    greenSlime:
+      down1: /monster/greenslime_down_1.png
+      down2: /monster/greenslime_down_2.png
+
 items:
   images:
     boots: /objects/boots.png
@@ -35,6 +43,7 @@ items:
     heartFull: /objects/heart_full.png
     heartHalf: /objects/heart_half.png
     heartBlank: /objects/heart_blank.png
+
 world:
   mapPath: /maps/worldV2.txt
   tile:
@@ -78,6 +87,7 @@ world:
       table: /tiles/table01.png
       floor: /tiles/floor01.png
       hut: /tiles/hut.png
+
 sound:
   path:
     backgroundSong: /sound/BlueBoyAdventure.wav

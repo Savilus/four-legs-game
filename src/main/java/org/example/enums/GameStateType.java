@@ -1,8 +1,10 @@
 package org.example.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum GameStateType {
   TITLE_STATE("titleState", 0),
   PLAY_STATE("playState", 1),
@@ -11,11 +13,6 @@ public enum GameStateType {
 
   private final String name;
   private final int stateId;
-
-  GameStateType(String name, int stateId) {
-    this.name = name;
-    this.stateId = stateId;
-  }
 
   public static GameStateType fromString(String text) {
     for (GameStateType type : GameStateType.values()) {
