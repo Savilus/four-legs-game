@@ -30,14 +30,14 @@ public class GreenSlime extends GameEntity {
   }
 
   private void getImage(){
-    up1 = setup(GREEN_SLIME_DOWN1);
-    up2 = setup(GREEN_SLIME_DOWN2);
-    down1 = setup(GREEN_SLIME_DOWN1);
-    down2 = setup(GREEN_SLIME_DOWN2);
-    left1 = setup(GREEN_SLIME_DOWN1);
-    left2 = setup(GREEN_SLIME_DOWN2);
-    right1 = setup(GREEN_SLIME_DOWN1);
-    right2 = setup(GREEN_SLIME_DOWN2);
+    up1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    up2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    down2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    left1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    left2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    right1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    right2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
   }
 
   @Override

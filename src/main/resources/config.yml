@@ -12,6 +12,15 @@ player:
     boyLeft2: /player/boy_left_2.png
     boyRight1: /player/boy_right_1.png
     boyRight2: /player/boy_right_2.png
+  attackImages:
+    attackUp1: /player/boy_attack_up_1.png
+    attackUp2: /player/boy_attack_up_2.png
+    attackDown1: /player/boy_attack_down_1.png
+    attackDown2: /player/boy_attack_down_2.png
+    attackRight1: /player/boy_attack_right_1.png
+    attackRight2: /player/boy_attack_right_2.png
+    attackLeft1: /player/boy_attack_left_1.png
+    attackLeft2: /player/boy_attack_left_2.png
 
 npc:
   images:
