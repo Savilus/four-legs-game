@@ -25,6 +25,25 @@ public class GameEntityNameFactory {
   @YamlValue("player.images.boyRight2")
   public static String BOY_RIGHT2;
 
+  // PLAYER ATTACK IMAGES
+  @YamlValue("player.attackImages.attackUp1")
+  public static String BOY_ATTACK_UP1;
+  @YamlValue("player.attackImages.attackUp2")
+  public static String BOY_ATTACK_UP2;
+  @YamlValue("player.attackImages.attackDown1")
+  public static String BOY_ATTACK_DOWN1;
+  @YamlValue("player.attackImages.attackDown2")
+  public static String BOY_ATTACK_DOWN2;
+  @YamlValue("player.attackImages.attackRight1")
+  public static String BOY_ATTACK_RIGHT1;
+  @YamlValue("player.attackImages.attackRight2")
+  public static String BOY_ATTACK_RIGHT2;
+  @YamlValue("player.attackImages.attackLeft1")
+  public static String BOY_ATTACK_LEFT1;
+  @YamlValue("player.attackImages.attackLeft2")
+  public static String BOY_ATTACK_LEFT2;
+
+
   // MONSTER IMAGES
   @YamlValue("monster.images.greenSlime.down1")
   public static String GREEN_SLIME_DOWN1;

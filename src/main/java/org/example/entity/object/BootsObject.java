@@ -11,7 +11,7 @@ public class BootsObject extends GameEntity {
   public BootsObject(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.BOOTS.getValue();
-    down1 = setup(BOOTS);
+    down1 = setup(BOOTS, gamePanel.tileSize, gamePanel.tileSize);
 
   }
 }

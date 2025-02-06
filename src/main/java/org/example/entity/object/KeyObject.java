@@ -11,6 +11,6 @@ public class KeyObject extends GameEntity {
   public KeyObject(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.KEY.getValue();
-    down1 = setup(KEY);
+    down1 = setup(KEY, gamePanel.tileSize, gamePanel.tileSize);
   }
 }

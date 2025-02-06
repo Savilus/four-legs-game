@@ -11,7 +11,7 @@ public class DoorObject extends GameEntity {
   public DoorObject(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.DOOR.toString();
-    image = setup(DOOR);
+    image = setup(DOOR, gamePanel.tileSize, gamePanel.tileSize);
     collision = true;
 
     solidArea.x = 0;

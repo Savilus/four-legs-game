@@ -11,6 +11,6 @@ public class ChestObject extends GameEntity {
   public ChestObject(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.CHEST.getValue();
-    down1 = setup(CHEST);
+    down1 = setup(CHEST, gamePanel.tileSize, gamePanel.tileSize);
   }
 }
