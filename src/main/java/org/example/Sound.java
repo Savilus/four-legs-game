@@ -3,7 +3,10 @@ package org.example;
 import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.config.GameEntityNameFactory.COIN;
 import static org.example.config.GameEntityNameFactory.FANFARE;
+import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
+import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
+import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
 import static org.example.config.GameEntityNameFactory.UNLOCK;
 
 import java.net.URL;
@@ -24,6 +27,9 @@ public class Sound {
     soundUrl[2] = Objects.requireNonNull(getClass().getResource(POWER_UP));
     soundUrl[3] = Objects.requireNonNull(getClass().getResource(UNLOCK));
     soundUrl[4] = Objects.requireNonNull(getClass().getResource(FANFARE));
+    soundUrl[5] = Objects.requireNonNull(getClass().getResource(HIT_MONSTER));
+    soundUrl[6] = Objects.requireNonNull(getClass().getResource(RECEIVE_DAMAGE));
+    soundUrl[7] = Objects.requireNonNull(getClass().getResource(SWING_WEAPON));
   }
 
   public void setFile(int i) {

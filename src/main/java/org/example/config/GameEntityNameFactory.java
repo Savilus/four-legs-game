@@ -186,6 +186,12 @@ public class GameEntityNameFactory {
   public static String UNLOCK;
   @YamlValue("sound.path.fanfare")
   public static String FANFARE;
+  @YamlValue("sound.path.hitMonster")
+  public static String HIT_MONSTER;
+  @YamlValue("sound.path.receiveDamage")
+  public static String RECEIVE_DAMAGE;
+  @YamlValue("sound.path.swingWeapon")
+  public static String SWING_WEAPON;
 
   // FONT
   @YamlValue("font.maruMonica")

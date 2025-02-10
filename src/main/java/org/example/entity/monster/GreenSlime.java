@@ -29,7 +29,7 @@ public class GreenSlime extends GameEntity {
     getImage();
   }
 
-  private void getImage(){
+  private void getImage() {
     up1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
     up2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
@@ -41,7 +41,13 @@ public class GreenSlime extends GameEntity {
   }
 
   @Override
-  public void setAction(){
+  public void damageReaction() {
+    actionLockCounter = 0;
+    direction = gamePanel.player.getDirection();
+  }
+
+  @Override
+  public void setAction() {
     actionLockCounter++;
 
     if (actionLockCounter == 120) {

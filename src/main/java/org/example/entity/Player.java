@@ -192,11 +192,13 @@ public class Player extends GameEntity {
 
   private void damageMonster(int monsterIndex) {
     if(monsterIndex != 999 && !gamePanel.monsters[monsterIndex].invincible){
+      gamePanel.playSoundEffect(5);
       gamePanel.monsters[monsterIndex].currentLife -= 1;
       gamePanel.monsters[monsterIndex].invincible = true;
+      gamePanel.monsters[monsterIndex].damageReaction();
 
-      if(gamePanel.monsters[monsterIndex].currentLife == 0){
-        gamePanel.monsters[monsterIndex] = null;
+      if(gamePanel.monsters[monsterIndex].currentLife <= 0){
+        gamePanel.monsters[monsterIndex].dying = true;
       }
     }
   }
@@ -220,6 +222,7 @@ public class Player extends GameEntity {
         gamePanel.gameState = DIALOG_STATE;
         gamePanel.npc[npcIndex].speak();
       } else
+        gamePanel.playSoundEffect(7);
         attacking = true;
     }
   }
@@ -237,6 +240,7 @@ public class Player extends GameEntity {
   private void detectMonsterContact(int monsterIndex) {
 //    long currentTime = System.currentTimeMillis();
     if (monsterIndex != 999 && !invincible) {
+      gamePanel.playSoundEffect(6);
       invincible = true;
       currentLife -= 1;
     }

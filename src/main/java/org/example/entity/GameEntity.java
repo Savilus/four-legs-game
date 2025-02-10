@@ -27,7 +27,7 @@ public abstract class GameEntity {
   public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
   public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
   public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-  public Rectangle attackingArea = new Rectangle(0,0,0,0);
+  public Rectangle attackingArea = new Rectangle(0, 0, 0, 0);
   public int solidAreaDefaultX, solidAreaDefaultY;
   String[] dialogues = new String[20];
   public boolean collision = false;
@@ -41,6 +41,9 @@ public abstract class GameEntity {
   public boolean collisionOn = false;
   public boolean attacking = false;
   public int worldX, worldY;
+  public boolean alive = true;
+  public boolean dying = false;
+  public boolean hpBarOn = false;
 
   // CHARACTER ATTRIBUTES
   public int speed;
@@ -53,12 +56,17 @@ public abstract class GameEntity {
   public int invincibleCounter = 0;
   public int actionLockCounter = 0;
   public int spriteCounter = 0;
+  public int dyingCounter = 0;
+  public int hpBarCounter = 0;
 
   protected GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
   }
 
   public void setAction() {
+  }
+
+  public void damageReaction() {
   }
 
   public void speak() {
@@ -93,7 +101,8 @@ public abstract class GameEntity {
     gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
     boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
 
-    if(this.type == 2 && contactPlayer && !gamePanel.player.invincible) {
+    if (this.type == 2 && contactPlayer && !gamePanel.player.invincible) {
+      gamePanel.playSoundEffect(6);
       gamePanel.player.currentLife -= 1;
       gamePanel.player.invincible = true;
     }
@@ -171,13 +180,40 @@ public abstract class GameEntity {
         case ANY -> this.image;
       };
 
+      // MONSTER HP BAR
+      if (type == 2 && hpBarOn) {
+
+        double oneScaleLifeBar = (double) gamePanel.tileSize / maxLife;
+        double hpBarValue = oneScaleLifeBar * currentLife;
+
+        graphics2D.setColor(new Color(35, 35, 35));
+        graphics2D.fillRect(screenX - 1, screenY - 16, gamePanel.tileSize + 2, 12);
+
+        graphics2D.setColor(new Color(255, 0, 30));
+        graphics2D.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
+
+        hpBarCounter++;
+
+        if (hpBarCounter > 600) {
+          hpBarCounter = 0;
+          hpBarOn = false;
+        }
+
+      }
+
       if (invincible) {
-        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
+        hpBarOn = true;
+        hpBarCounter = 0;
+        changeAlpha(graphics2D, 0.6F);
+      }
+
+      if (dying) {
+        dyingAnimation(graphics2D);
       }
 
       graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 
-      graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+      changeAlpha(graphics2D, 1F);
     }
   }
 
@@ -193,5 +229,36 @@ public abstract class GameEntity {
     }
     return scaledImage;
 
+  }
+
+
+  private void dyingAnimation(Graphics2D graphics2D) {
+    dyingCounter++;
+    int dyingAnimationInterval = 5;
+
+    if (dyingCounter <= dyingAnimationInterval) {
+      changeAlpha(graphics2D, 0F);
+    } else if (dyingCounter <= dyingAnimationInterval * 2) {
+      changeAlpha(graphics2D, 1F);
+    } else if (dyingCounter <= dyingAnimationInterval * 3) {
+      changeAlpha(graphics2D, 0F);
+    } else if (dyingCounter <= dyingAnimationInterval * 4) {
+      changeAlpha(graphics2D, 1F);
+    } else if (dyingCounter <= dyingAnimationInterval * 5) {
+      changeAlpha(graphics2D, 1F);
+    } else if (dyingCounter <= dyingAnimationInterval * 6) {
+      changeAlpha(graphics2D, 0F);
+    } else if (dyingCounter <= dyingAnimationInterval * 7) {
+      changeAlpha(graphics2D, 1F);
+    } else if (dyingCounter <= dyingAnimationInterval * 8) {
+      changeAlpha(graphics2D, 0F);
+    } else if (dyingCounter > dyingAnimationInterval * 8) {
+      dying = false;
+      alive = false;
+    }
+  }
+
+  private void changeAlpha(Graphics2D graphics2D, float alphaValue) {
+    graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
   }
 }

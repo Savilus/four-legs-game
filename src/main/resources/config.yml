@@ -104,3 +104,7 @@ sound:
     powerUp: /sound/powerup.wav
     unlock: /sound/unlock.wav
     fanfare: /sound/fanfare.wav
+    hitMonster: /sound/hitmonster.wav
+    receiveDamage: /sound/receiveDamage.wav
+    swingWeapon: /sound/swordSwing.wav
+
