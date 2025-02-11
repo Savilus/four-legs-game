@@ -90,6 +90,10 @@ public class GameEntityNameFactory {
   public static String HEART_HALF;
   @YamlValue("items.images.heartBlank")
   public static String HEART_BLANK;
+  @YamlValue("items.images.normalSword")
+  public static String NORMAL_SWORD;
+  @YamlValue("items.images.woodenShield")
+  public static String WOODEN_SHIELD;
 
   // TILES IMAGES
   @YamlValue("world.tile.images.grass.0")

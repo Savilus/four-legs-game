@@ -80,6 +80,7 @@ public class EventHandler {
     gamePanel.gameState = gameState;
     gamePanel.ui.currentDialogue = "You fall into a pit!";
     gamePanel.player.currentLife -= 1;
+    gamePanel.playSoundEffect(6);
 //    eventRect[col][row].eventDone = true;
     canTouchEvent = false;
   }
@@ -88,6 +89,8 @@ public class EventHandler {
 
     if (gamePanel.keyHandler.enterPressed) {
       gamePanel.gameState = gameState;
+      gamePanel.player.attackCancled = true;
+      gamePanel.playSoundEffect(2);
       gamePanel.ui.currentDialogue = "You dink the water. \n Your life has been recovered.";
       gamePanel.player.currentLife = gamePanel.player.maxLife;
     }
