@@ -51,6 +51,16 @@ public abstract class GameEntity {
   public int maxLife;
   public int currentLife;
   public int type;
+  public int level;
+  public int strength;
+  public int attack;
+  public int dexterity;
+  public int exp;
+  public int nextLevelExp;
+  public int money;
+  public int defense;
+  public GameEntity currentWeapon;
+  public GameEntity currentShield;
 
   // COUNTER
   public int invincibleCounter = 0;
@@ -58,6 +68,10 @@ public abstract class GameEntity {
   public int spriteCounter = 0;
   public int dyingCounter = 0;
   public int hpBarCounter = 0;
+
+  // ITEM ATTRIBUTES
+  public int attackValue;
+  public int defenseValue;
 
   protected GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;

@@ -52,6 +52,8 @@ items:
     heartFull: /objects/heart_full.png
     heartHalf: /objects/heart_half.png
     heartBlank: /objects/heart_blank.png
+    normalSword: /objects/shield_wood.png
+    woodenShield: /objects/sword_normal.png
 
 world:
   mapPath: /maps/worldV2.txt

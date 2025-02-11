@@ -23,6 +23,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import org.example.GamePanel;
+import org.example.entity.object.NormalSwordObject;
+import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
 import org.example.utils.KeyHandler;
 
@@ -33,6 +35,7 @@ public class Player extends GameEntity {
   public final int screenX;
   public final int screenY;
   public int standCounter = 0;
+  public boolean attackCancled = false;
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     super(gamePanel);
@@ -120,6 +123,13 @@ public class Player extends GameEntity {
         }
       }
 
+      if (keyHandler.enterPressed && !attackCancled) {
+        gamePanel.playSoundEffect(7);
+        attacking = true;
+        spriteCounter = 0;
+      }
+
+      attackCancled = false;
       gamePanel.keyHandler.enterPressed = false;
 
       spriteCounter++;
@@ -191,13 +201,13 @@ public class Player extends GameEntity {
   }
 
   private void damageMonster(int monsterIndex) {
-    if(monsterIndex != 999 && !gamePanel.monsters[monsterIndex].invincible){
+    if (monsterIndex != 999 && !gamePanel.monsters[monsterIndex].invincible) {
       gamePanel.playSoundEffect(5);
       gamePanel.monsters[monsterIndex].currentLife -= 1;
       gamePanel.monsters[monsterIndex].invincible = true;
       gamePanel.monsters[monsterIndex].damageReaction();
 
-      if(gamePanel.monsters[monsterIndex].currentLife <= 0){
+      if (gamePanel.monsters[monsterIndex].currentLife <= 0) {
         gamePanel.monsters[monsterIndex].dying = true;
       }
     }
@@ -219,11 +229,10 @@ public class Player extends GameEntity {
 
     if (gamePanel.keyHandler.enterPressed) {
       if (npcIndex != 999) {
+        attackCancled = true;
         gamePanel.gameState = DIALOG_STATE;
         gamePanel.npc[npcIndex].speak();
-      } else
-        gamePanel.playSoundEffect(7);
-        attacking = true;
+      }
     }
   }
 
@@ -233,8 +242,30 @@ public class Player extends GameEntity {
     speed = 4;
     direction = DirectionType.DOWN;
 
+    // PLAYER STATUS
     maxLife = 6;
     currentLife = maxLife;
+    level = 1;
+    strength = 1;
+    dexterity = 1;
+    exp = 0;
+    nextLevelExp = 5;
+    money = 0;
+    currentWeapon = new NormalSwordObject(gamePanel);
+    currentShield = new WoodShieldObject(gamePanel);
+    attack = getAttack();
+    defense = getDefense();
+
+  }
+
+  private int getDefense() {
+    defense = dexterity * currentShield.defenseValue;
+    return defense;
+  }
+
+  private int getAttack() {
+    attack = strength * currentWeapon.attackValue;
+    return  attack;
   }
 
   private void detectMonsterContact(int monsterIndex) {
@@ -252,7 +283,7 @@ public class Player extends GameEntity {
     int temporaryScreenY = screenY;
     BufferedImage image = switch (getDirection()) {
       case UP -> {
-        if(!attacking) {
+        if (!attacking) {
           if (spriteNum == 1)
             yield up1;
           else if (spriteNum == 2)
@@ -267,7 +298,7 @@ public class Player extends GameEntity {
         yield null;
       }
       case DOWN -> {
-        if(!attacking) {
+        if (!attacking) {
           if (spriteNum == 1)
             yield down1;
           else if (spriteNum == 2)
@@ -281,13 +312,13 @@ public class Player extends GameEntity {
         yield null;
       }
       case LEFT -> {
-        if(!attacking) {
+        if (!attacking) {
           if (spriteNum == 1)
             yield left1;
           else if (spriteNum == 2)
             yield left2;
         } else {
-          temporaryScreenX = screenX - gamePanel.tileSize; 
+          temporaryScreenX = screenX - gamePanel.tileSize;
           if (spriteNum == 1)
             yield attackLeft1;
           else if (spriteNum == 2)
@@ -296,7 +327,7 @@ public class Player extends GameEntity {
         yield null;
       }
       case RIGHT -> {
-        if(!attacking) {
+        if (!attacking) {
           if (spriteNum == 1)
             yield right1;
           else if (spriteNum == 2)
