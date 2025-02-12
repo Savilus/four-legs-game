@@ -12,5 +12,6 @@ public class KeyObject extends GameEntity {
     super(gamePanel);
     name = GameObjectType.KEY.getValue();
     down1 = setup(KEY, gamePanel.tileSize, gamePanel.tileSize);
+    description = "[" + name + "]\nIt opens a door";
   }
 }

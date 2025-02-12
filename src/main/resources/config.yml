@@ -110,4 +110,5 @@ sound:
     receiveDamage: /sound/receiveDamage.wav
     swingWeapon: /sound/swordSwing.wav
     levelUp: /sound/levelup.wav
+    cursor: /sound/cursor.wav
 

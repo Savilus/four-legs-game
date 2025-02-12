@@ -27,6 +27,8 @@ public class UI {
   public boolean gameFinished = false;
   public String currentDialogue = "";
   public int commandNum = 0;
+  public int slotCol = 0;
+  public int slotRow = 0;
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -52,7 +54,7 @@ public class UI {
 
   public void draw(Graphics2D graphics2D) {
     this.graphics2D = graphics2D;
-    graphics2D.setFont(purisaBoldFont);
+    graphics2D.setFont(maruMonica);
     graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     graphics2D.setColor(Color.WHITE);
 
@@ -70,10 +72,77 @@ public class UI {
         drawPlayerLife();
         drawDialogueScreen();
       }
-      case CHARACTER_STATE -> drawCharacterScreen();
+      case CHARACTER_STATE -> {
+        drawCharacterScreen();
+        drawInventory();
+      }
 
     }
 
+  }
+
+  private void drawInventory() {
+    // FRAME
+    int frameX = gamePanel.tileSize * 9;
+    int frameY = gamePanel.tileSize;
+    int frameWidth = gamePanel.tileSize * 6;
+    int frameHeight = gamePanel.tileSize * 5;
+    drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+    // SLOT
+    final int slotXStart = frameX + 20;
+    final int slotYStart = frameY + 20;
+    int slotX = slotXStart;
+    int slotY = slotYStart;
+    int slotSize = gamePanel.tileSize + 3;
+
+    //CURSOR
+    int cursorX = slotXStart + (slotSize * slotCol);
+    int cursorY = slotYStart + (slotSize * slotRow);
+    int cursorWidth = gamePanel.tileSize;
+    int cursorHeight = gamePanel.tileSize;
+
+    // DRAW PLAYER'S ITEMS
+
+    for (int inventoryItem = 0; inventoryItem < gamePanel.player.inventory.size(); inventoryItem++) {
+      graphics2D.drawImage(gamePanel.player.inventory.get(inventoryItem).down1, slotX, slotY, null);
+      slotX += slotSize;
+
+      if (inventoryItem == 4 || inventoryItem == 9 || inventoryItem == 14) {
+        slotX = slotXStart;
+        slotY += slotSize;
+      }
+    }
+
+    // DRAW CURSOR
+    graphics2D.setColor(Color.WHITE);
+    graphics2D.setStroke(new BasicStroke(3));
+    graphics2D.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+
+
+    // DESCRIPTION FRAME
+    int descriptionFrameX = frameX;
+    int descriptionFrameY = frameY + frameHeight;
+    int descriptionFrameWidth = frameWidth;
+    int descriptionFrameHeight = gamePanel.tileSize * 3;
+    drawSubWindow(descriptionFrameX, descriptionFrameY, descriptionFrameWidth, descriptionFrameHeight);
+
+    // DESCRIPTION TEXT
+    int textX = descriptionFrameX + 20;
+    int textY = descriptionFrameY + gamePanel.tileSize;
+    graphics2D.setFont(graphics2D.getFont().deriveFont(28F));
+
+    int itemIndex = getItemIndexFromInventory();
+    if (itemIndex < gamePanel.player.inventory.size()) {
+      for (String line : gamePanel.player.inventory.get(itemIndex).description.split("\n")) {
+        graphics2D.drawString(line, textX, textY);
+        textY += 32;
+      }
+    }
+  }
+
+  private int getItemIndexFromInventory() {
+    return slotCol + (slotRow * 5);
   }
 
   private void drawMessage() {
@@ -82,18 +151,18 @@ public class UI {
 
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 20F));
 
-    for ( int i = 0; i < messages.size(); i++ ) {
-      if(messages.get(i) != null){
+    for (int i = 0; i < messages.size(); i++) {
+      if (messages.get(i) != null) {
         graphics2D.setColor(Color.BLACK);
         graphics2D.drawString(messages.get(i), messageX + 2, messageY + 2);
         graphics2D.setColor(Color.WHITE);
         graphics2D.drawString(messages.get(i), messageX, messageY);
 
         int counter = messageCounter.get(i) + 1;
-        messageCounter.set(i,counter);
+        messageCounter.set(i, counter);
         messageY += 50;
 
-        if(messageCounter.get(i) > 180) {
+        if (messageCounter.get(i) > 180) {
           messages.remove(i);
           messageCounter.remove(i);
         }
@@ -105,7 +174,7 @@ public class UI {
     // CREATE A FRAME
     final int frameX = gamePanel.tileSize;
     final int frameY = gamePanel.tileSize;
-    final int frameWidth = gamePanel.tileSize * 8;
+    final int frameWidth = gamePanel.tileSize * 6;
     final int frameHeight = gamePanel.tileSize * 10;
 
     // TEXT

@@ -87,7 +87,8 @@ public class KeyHandler implements KeyListener {
         showDebugText = !showDebugText;
       }
       //REFRESH MAP
-      case KeyEvent.VK_R: gamePanel.tileManager.loadMap(MAP_PATH);
+      case KeyEvent.VK_R:
+        gamePanel.tileManager.loadMap(MAP_PATH);
     }
   }
 
@@ -101,6 +102,30 @@ public class KeyHandler implements KeyListener {
     switch (code) {
       case KeyEvent.VK_C:
         gamePanel.gameState = PLAY_STATE;
+        break;
+      case KeyEvent.VK_W:
+        if (gamePanel.ui.slotRow != 0) {
+          gamePanel.ui.slotRow--;
+          gamePanel.playSoundEffect(9);
+        }
+        break;
+      case KeyEvent.VK_A:
+        if (gamePanel.ui.slotCol != 0) {
+          gamePanel.ui.slotCol--;
+          gamePanel.playSoundEffect(9);
+        }
+        break;
+      case KeyEvent.VK_S:
+        if (gamePanel.ui.slotRow != 3) {
+          gamePanel.ui.slotRow++;
+          gamePanel.playSoundEffect(9);
+        }
+        break;
+      case KeyEvent.VK_D:
+        if (gamePanel.ui.slotCol != 4) {
+          gamePanel.ui.slotCol++;
+          gamePanel.playSoundEffect(9);
+        }
         break;
     }
   }

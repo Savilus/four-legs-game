@@ -198,6 +198,8 @@ public class GameEntityNameFactory {
   public static String SWING_WEAPON;
   @YamlValue("sound.path.levelUp")
   public static String LEVEL_UP;
+  @YamlValue("sound.path.cursor")
+  public static String CURSOR;
 
   // FONT
   @YamlValue("font.maruMonica")
