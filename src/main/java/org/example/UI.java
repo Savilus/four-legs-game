@@ -5,6 +5,7 @@ import static org.example.config.GameEntityNameFactory.PURISA_BOLD_FONT;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import org.example.entity.GameEntity;
@@ -20,9 +21,9 @@ public class UI {
   GamePanel gamePanel;
   Graphics2D graphics2D;
   Font maruMonica, purisaBoldFont;
+  ArrayList<String> messages = new ArrayList<>();
+  ArrayList<Integer> messageCounter = new ArrayList<>();
   public boolean messageOn = false;
-  public String message = "";
-  int messageCounter = 0;
   public boolean gameFinished = false;
   public String currentDialogue = "";
   public int commandNum = 0;
@@ -44,9 +45,9 @@ public class UI {
     heartBlank = heart.image3;
   }
 
-  public void showMessage(String text) {
-    message = text;
-    messageOn = true;
+  public void addMessage(String text) {
+    messages.add(text);
+    messageCounter.add(0);
   }
 
   public void draw(Graphics2D graphics2D) {
@@ -57,7 +58,10 @@ public class UI {
 
     switch (gamePanel.gameState) {
       case TITLE_STATE -> drawTitleScreen();
-      case PLAY_STATE -> drawPlayerLife();
+      case PLAY_STATE -> {
+        drawPlayerLife();
+        drawMessage();
+      }
       case PAUSE_STATE -> {
         drawPlayerLife();
         drawPauseScreen();
@@ -70,6 +74,31 @@ public class UI {
 
     }
 
+  }
+
+  private void drawMessage() {
+    int messageX = gamePanel.tileSize;
+    int messageY = gamePanel.tileSize * 4;
+
+    graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 20F));
+
+    for ( int i = 0; i < messages.size(); i++ ) {
+      if(messages.get(i) != null){
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.drawString(messages.get(i), messageX + 2, messageY + 2);
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.drawString(messages.get(i), messageX, messageY);
+
+        int counter = messageCounter.get(i) + 1;
+        messageCounter.set(i,counter);
+        messageY += 50;
+
+        if(messageCounter.get(i) > 180) {
+          messages.remove(i);
+          messageCounter.remove(i);
+        }
+      }
+    }
   }
 
   private void drawCharacterScreen() {

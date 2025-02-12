@@ -1,5 +1,6 @@
 package org.example.utils;
 
+import static org.example.config.GameEntityNameFactory.MAP_PATH;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
 import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
@@ -15,6 +16,8 @@ public class KeyHandler implements KeyListener {
 
   GamePanel gamePanel;
   public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+  //DEBUG
+  public boolean showDebugText;
 
   public KeyHandler(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -79,6 +82,12 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_C:
         gamePanel.gameState = CHARACTER_STATE;
         break;
+      //DEBUG
+      case KeyEvent.VK_T: {
+        showDebugText = !showDebugText;
+      }
+      //REFRESH MAP
+      case KeyEvent.VK_R: gamePanel.tileManager.loadMap(MAP_PATH);
     }
   }
 
@@ -105,19 +114,15 @@ public class KeyHandler implements KeyListener {
   public void keyPressed(KeyEvent keyEvent) {
     int code = keyEvent.getKeyCode();
 
-    if (PLAY_STATE == gamePanel.gameState ) {
+    if (PLAY_STATE == gamePanel.gameState) {
       playState(code);
-    }
-    else if (PAUSE_STATE == gamePanel.gameState) {
+    } else if (PAUSE_STATE == gamePanel.gameState) {
       pauseState(code);
-    }
-    else if (DIALOG_STATE == gamePanel.gameState) {
+    } else if (DIALOG_STATE == gamePanel.gameState) {
       dialogState(code);
-    }
-    else if (TITLE_STATE == gamePanel.gameState) {
+    } else if (TITLE_STATE == gamePanel.gameState) {
       titleState(code);
-    }
-    else if (CHARACTER_STATE == gamePanel.gameState) {
+    } else if (CHARACTER_STATE == gamePanel.gameState) {
       characterState(code);
     }
   }

@@ -117,7 +117,7 @@ public abstract class GameEntity {
 
     if (this.type == 2 && contactPlayer && !gamePanel.player.invincible) {
       gamePanel.playSoundEffect(6);
-      gamePanel.player.currentLife -= 1;
+      gamePanel.player.currentLife -= attack - gamePanel.player.defense;
       gamePanel.player.invincible = true;
     }
     // IF COLLISION IS FALSE, PLAYER CAN MOVE

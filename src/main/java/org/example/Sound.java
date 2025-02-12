@@ -4,6 +4,7 @@ import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.config.GameEntityNameFactory.COIN;
 import static org.example.config.GameEntityNameFactory.FANFARE;
 import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
+import static org.example.config.GameEntityNameFactory.LEVEL_UP;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
@@ -30,6 +31,7 @@ public class Sound {
     soundUrl[5] = Objects.requireNonNull(getClass().getResource(HIT_MONSTER));
     soundUrl[6] = Objects.requireNonNull(getClass().getResource(RECEIVE_DAMAGE));
     soundUrl[7] = Objects.requireNonNull(getClass().getResource(SWING_WEAPON));
+    soundUrl[8] = Objects.requireNonNull(getClass().getResource(LEVEL_UP));
   }
 
   public void setFile(int i) {

@@ -203,13 +203,36 @@ public class Player extends GameEntity {
   private void damageMonster(int monsterIndex) {
     if (monsterIndex != 999 && !gamePanel.monsters[monsterIndex].invincible) {
       gamePanel.playSoundEffect(5);
-      gamePanel.monsters[monsterIndex].currentLife -= 1;
+
+      int damage = Math.max(0, attack - gamePanel.monsters[monsterIndex].defense);
+
+      gamePanel.monsters[monsterIndex].currentLife -= damage;
+      gamePanel.ui.addMessage(damage + " damage");
       gamePanel.monsters[monsterIndex].invincible = true;
       gamePanel.monsters[monsterIndex].damageReaction();
 
       if (gamePanel.monsters[monsterIndex].currentLife <= 0) {
         gamePanel.monsters[monsterIndex].dying = true;
+        gamePanel.ui.addMessage("Killed the " + gamePanel.monsters[monsterIndex].name + "!");
+        gamePanel.ui.addMessage(gamePanel.monsters[monsterIndex].exp + "+ Exp!");
+        exp += gamePanel.monsters[monsterIndex].exp;
+        checkLevelUp();
       }
+    }
+  }
+
+  private void checkLevelUp() {
+    if (exp >= nextLevelExp) {
+      level++;
+      nextLevelExp = nextLevelExp * 2;
+      maxLife += 2;
+      strength++;
+      dexterity++;
+      attack = getAttack();
+      defense = getDefense();
+      gamePanel.playSoundEffect(8);
+      gamePanel.gameState = DIALOG_STATE;
+      gamePanel.ui.currentDialogue = "You are level " + level + " now!";
     }
   }
 
@@ -265,12 +288,15 @@ public class Player extends GameEntity {
 
   private int getAttack() {
     attack = strength * currentWeapon.attackValue;
-    return  attack;
+    return attack;
   }
 
   private void detectMonsterContact(int monsterIndex) {
 //    long currentTime = System.currentTimeMillis();
     if (monsterIndex != 999 && !invincible) {
+
+      int damage = gamePanel.monsters[monsterIndex].attack - defense;
+      currentLife -= damage;
       gamePanel.playSoundEffect(6);
       invincible = true;
       currentLife -= 1;
