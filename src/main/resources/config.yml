@@ -109,4 +109,5 @@ sound:
     hitMonster: /sound/hitmonster.wav
     receiveDamage: /sound/receiveDamage.wav
     swingWeapon: /sound/swordSwing.wav
+    levelUp: /sound/levelup.wav
 

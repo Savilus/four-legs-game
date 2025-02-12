@@ -196,6 +196,8 @@ public class GameEntityNameFactory {
   public static String RECEIVE_DAMAGE;
   @YamlValue("sound.path.swingWeapon")
   public static String SWING_WEAPON;
+  @YamlValue("sound.path.levelUp")
+  public static String LEVEL_UP;
 
   // FONT
   @YamlValue("font.maruMonica")

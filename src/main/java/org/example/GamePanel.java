@@ -95,8 +95,8 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
-    assetSetter.setObject();
     assetSetter.setNPC();
+    assetSetter.setObject();
     assetSetter.setMonster();
   }
 
@@ -120,6 +120,7 @@ public class GamePanel extends JPanel implements Runnable {
     super.paintComponent(g);
 
     Graphics2D graphic2d = (Graphics2D) g;
+
     if (gameState == TITLE_STATE) {
       ui.draw(graphic2d);
     } else {
@@ -156,6 +157,25 @@ public class GamePanel extends JPanel implements Runnable {
 
       ui.draw(graphic2d);
     }
+
+    //DEBUG
+    if (keyHandler.showDebugText) {
+
+      graphic2d.setFont(new Font("Arial", Font.PLAIN, 20));
+      graphic2d.setColor(Color.WHITE);
+      int x = 10;
+      int y = 400;
+      int lineHeight = 20;
+
+      graphic2d.drawString("WorldX -> " + player.worldX, x, y);
+      y += lineHeight;
+      graphic2d.drawString("WorldY ->" + player.worldY, x, y);
+      y += lineHeight;
+      graphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / tileSize, x, y);
+      y += lineHeight;
+      graphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+    }
+
     graphic2d.dispose();
   }
 

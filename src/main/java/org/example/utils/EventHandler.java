@@ -93,6 +93,7 @@ public class EventHandler {
       gamePanel.playSoundEffect(2);
       gamePanel.ui.currentDialogue = "You dink the water. \n Your life has been recovered.";
       gamePanel.player.currentLife = gamePanel.player.maxLife;
+      gamePanel.assetSetter.setMonster();
     }
   }
 
