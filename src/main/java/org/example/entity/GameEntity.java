@@ -72,6 +72,7 @@ public abstract class GameEntity {
   // ITEM ATTRIBUTES
   public int attackValue;
   public int defenseValue;
+  public String description;
 
   protected GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;

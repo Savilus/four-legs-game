@@ -12,5 +12,7 @@ public class WoodShieldObject extends GameEntity {
     name = "Wood Shield";
     down1 = setup(WOODEN_SHIELD, gamePanel.tileSize, gamePanel.tileSize);
     defenseValue = 1;
+    description = "[" + name + "]\nMade by wood.";
+
   }
 }

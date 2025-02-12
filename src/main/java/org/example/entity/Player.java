@@ -21,8 +21,10 @@ import static org.example.enums.GameStateType.DIALOG_STATE;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import org.example.GamePanel;
+import org.example.entity.object.KeyObject;
 import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
@@ -36,6 +38,8 @@ public class Player extends GameEntity {
   public final int screenY;
   public int standCounter = 0;
   public boolean attackCancled = false;
+  public final int maxInventorySize = 20;
+  public ArrayList<GameEntity> inventory = new ArrayList<>(maxInventorySize);
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     super(gamePanel);
@@ -58,6 +62,7 @@ public class Player extends GameEntity {
     setDefaultValues();
     getPlayerImage();
     getPlayerAttackImage();
+    setItems();
   }
 
   public void getPlayerAttackImage() {
@@ -279,6 +284,18 @@ public class Player extends GameEntity {
     attack = getAttack();
     defense = getDefense();
 
+  }
+
+  public void setItems() {
+    inventory.add(currentWeapon);
+    inventory.add(currentShield);
+    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
   }
 
   private int getDefense() {

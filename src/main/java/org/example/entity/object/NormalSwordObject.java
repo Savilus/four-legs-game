@@ -13,5 +13,6 @@ public class NormalSwordObject extends GameEntity {
     name = "Normal Sword";
     down1 = setup(NORMAL_SWORD, gamePanel.tileSize, gamePanel.tileSize);
     attackValue = 1;
+    description = "[" + name + "]\nAn old sword";
   }
 }
