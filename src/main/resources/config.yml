@@ -21,6 +21,15 @@ player:
     attackRight2: /player/boy_attack_right_2.png
     attackLeft1: /player/boy_attack_left_1.png
     attackLeft2: /player/boy_attack_left_2.png
+  axeAttackImages:
+    axeAttackUp1: /player/boy_axe_up_1.png
+    axeAttackUp2: /player/boy_axe_up_2.png
+    axeAttackDown1: /player/boy_axe_down_1.png
+    axeAttackDown2: /player/boy_axe_down_2.png
+    axeRightAttack1: /player/boy_axe_right_1.png
+    axeRightAttack2: /player/boy_axe_right_2.png
+    axeLeftAttack1: /player/boy_axe_left_1.png
+    axeLeftAttack2: /player/boy_axe_left_2.png
 
 npc:
   images:
@@ -52,8 +61,11 @@ items:
     heartFull: /objects/heart_full.png
     heartHalf: /objects/heart_half.png
     heartBlank: /objects/heart_blank.png
-    normalSword: /objects/shield_wood.png
-    woodenShield: /objects/sword_normal.png
+    normalSword: /objects/sword_normal.png
+    woodenShield: /objects/shield_wood.png
+    axe: /objects/axe.png
+    blueShield: /objects/shield_blue.png
+    redPotion: /objects/potion_red.png
 
 world:
   mapPath: /maps/worldV2.txt

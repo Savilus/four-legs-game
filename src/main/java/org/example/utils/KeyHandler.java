@@ -127,6 +127,9 @@ public class KeyHandler implements KeyListener {
           gamePanel.playSoundEffect(9);
         }
         break;
+      case KeyEvent.VK_ENTER:
+        gamePanel.player.selectItem();
+        break;
     }
   }
 

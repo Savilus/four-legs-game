@@ -105,6 +105,14 @@ public class UI {
     // DRAW PLAYER'S ITEMS
 
     for (int inventoryItem = 0; inventoryItem < gamePanel.player.inventory.size(); inventoryItem++) {
+
+      // EQUIP CURSOR
+      if (gamePanel.player.inventory.get(inventoryItem) == gamePanel.player.currentWeapon ||
+          gamePanel.player.inventory.get(inventoryItem) == gamePanel.player.currentShield) {
+        graphics2D.setColor(new Color(240, 190, 90));
+        graphics2D.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
+      }
+
       graphics2D.drawImage(gamePanel.player.inventory.get(inventoryItem).down1, slotX, slotY, null);
       slotX += slotSize;
 
@@ -125,7 +133,6 @@ public class UI {
     int descriptionFrameY = frameY + frameHeight;
     int descriptionFrameWidth = frameWidth;
     int descriptionFrameHeight = gamePanel.tileSize * 3;
-    drawSubWindow(descriptionFrameX, descriptionFrameY, descriptionFrameWidth, descriptionFrameHeight);
 
     // DESCRIPTION TEXT
     int textX = descriptionFrameX + 20;
@@ -134,6 +141,7 @@ public class UI {
 
     int itemIndex = getItemIndexFromInventory();
     if (itemIndex < gamePanel.player.inventory.size()) {
+      drawSubWindow(descriptionFrameX, descriptionFrameY, descriptionFrameWidth, descriptionFrameHeight);
       for (String line : gamePanel.player.inventory.get(itemIndex).description.split("\n")) {
         graphics2D.drawString(line, textX, textY);
         textY += 32;
@@ -141,7 +149,7 @@ public class UI {
     }
   }
 
-  private int getItemIndexFromInventory() {
+  public int getItemIndexFromInventory() {
     return slotCol + (slotRow * 5);
   }
 
@@ -221,7 +229,7 @@ public class UI {
     textY += lineHeight;
 
     // TODO: use String.format
-    value = String.valueOf(gamePanel.player.currentLife + "/" + gamePanel.player.maxLife);
+    value = gamePanel.player.currentLife + "/" + gamePanel.player.maxLife;
     textX = getXForAlignTextToRight(value, tailX);
     graphics2D.drawString(value, textX, textY);
     textY += lineHeight;

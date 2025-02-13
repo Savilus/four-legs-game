@@ -10,7 +10,8 @@ public class KeyObject extends GameEntity {
 
   public KeyObject(GamePanel gamePanel) {
     super(gamePanel);
-    name = GameObjectType.KEY.getValue();
+    name = GameObjectType.KEY.getName();
+    image = setup(KEY, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(KEY, gamePanel.tileSize, gamePanel.tileSize);
     description = "[" + name + "]\nIt opens a door";
   }

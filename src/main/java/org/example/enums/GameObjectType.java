@@ -1,10 +1,11 @@
 package org.example.enums;
 
+import static org.example.utils.IdEnumManager.getIdForEnum;
+
 import lombok.Getter;
 import lombok.AllArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 public enum GameObjectType {
   KEY("Key"),
   DOOR("Door"),
@@ -12,11 +13,17 @@ public enum GameObjectType {
   HEART("Heart"),
   CHEST("Chest");
 
-  private final String value;
+  private final String name;
+  private final int objectTypeId;
+
+  GameObjectType(String name) {
+    this.name = name;
+    this.objectTypeId = getIdForEnum(this);
+  }
 
   public static GameObjectType fromString(String text) {
     for (GameObjectType type : GameObjectType.values()) {
-      if (type.value.equalsIgnoreCase(text)) {
+      if (type.name.equalsIgnoreCase(text)) {
         return type;
       }
     }

@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
+import org.example.enums.WorldGameTypes;
 import org.example.utils.UtilityTool;
 
 import lombok.Getter;
@@ -27,7 +28,7 @@ public abstract class GameEntity {
   public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
   public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
   public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-  public Rectangle attackingArea = new Rectangle(0, 0, 0, 0);
+  public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
   public int solidAreaDefaultX, solidAreaDefaultY;
   String[] dialogues = new String[20];
   public boolean collision = false;
@@ -50,7 +51,6 @@ public abstract class GameEntity {
   public String name;
   public int maxLife;
   public int currentLife;
-  public int type;
   public int level;
   public int strength;
   public int attack;
@@ -74,6 +74,9 @@ public abstract class GameEntity {
   public int defenseValue;
   public String description;
 
+  //Type
+  public WorldGameTypes type;
+
   protected GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
   }
@@ -83,6 +86,7 @@ public abstract class GameEntity {
 
   public void damageReaction() {
   }
+  public void use(GameEntity gameEntity){};
 
   public void speak() {
     if (dialogues[dialogueIndex] == null) {
@@ -116,7 +120,7 @@ public abstract class GameEntity {
     gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
     boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
 
-    if (this.type == 2 && contactPlayer && !gamePanel.player.invincible) {
+    if (this.type == WorldGameTypes.MONSTER && contactPlayer && !gamePanel.player.invincible) {
       gamePanel.playSoundEffect(6);
       gamePanel.player.currentLife -= attack - gamePanel.player.defense;
       gamePanel.player.invincible = true;
@@ -196,7 +200,7 @@ public abstract class GameEntity {
       };
 
       // MONSTER HP BAR
-      if (type == 2 && hpBarOn) {
+      if (type == WorldGameTypes.MONSTER && hpBarOn) {
 
         double oneScaleLifeBar = (double) gamePanel.tileSize / maxLife;
         double hpBarValue = oneScaleLifeBar * currentLife;
@@ -245,7 +249,6 @@ public abstract class GameEntity {
     return scaledImage;
 
   }
-
 
   private void dyingAnimation(Graphics2D graphics2D) {
     dyingCounter++;
