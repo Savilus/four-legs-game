@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import org.example.entity.GameEntity;
 import org.example.entity.object.HeartObject;
+import org.example.entity.object.ManaCrystalObject;
 
 public class UI {
   private static final String TITLE = "Four Legs";
@@ -17,7 +18,7 @@ public class UI {
   private static final String LOAD_GAME = "Load game";
   private static final String QUIT = "Quit";
 
-  BufferedImage heartFull, heartHalf, heartBlank;
+  BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank;
   GamePanel gamePanel;
   Graphics2D graphics2D;
   Font maruMonica, purisaBoldFont;
@@ -40,11 +41,14 @@ public class UI {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
+    // CREATE HUD OBJECT
     GameEntity heart = new HeartObject(gamePanel);
     heartFull = heart.image;
     heartHalf = heart.image2;
     heartBlank = heart.image3;
+    GameEntity manaCrysta = new ManaCrystalObject(gamePanel);
+    manaCrystalFull = manaCrysta.image;
+    manaCrystalBlank = manaCrysta.image2;
   }
 
   public void addMessage(String text) {
@@ -299,6 +303,25 @@ public class UI {
       }
       i++;
       x += gamePanel.tileSize;
+    }
+
+    // DRAW MAX MANA
+    x = gamePanel.tileSize / 2 - 5;
+    y = (int) (gamePanel.tileSize * 1.5);
+    i = 0;
+    while (i < gamePanel.player.maxMana) {
+      graphics2D.drawImage(manaCrystalBlank, x, y, null);
+      i++;
+      x += 35;
+    }
+
+    // DRAW MANA
+    x = gamePanel.tileSize / 2 - 5;
+    i = 0;
+    while (i < gamePanel.player.mana) {
+      graphics2D.drawImage(manaCrystalFull, x, y, null);
+      i++;
+      x += 35;
     }
   }
 

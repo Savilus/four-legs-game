@@ -3,7 +3,7 @@ package org.example.entity;
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 
-public class Projectile extends GameEntity {
+public abstract class Projectile extends GameEntity {
 
   GameEntity owner;
   public int useCost;
@@ -11,6 +11,9 @@ public class Projectile extends GameEntity {
   protected Projectile(GamePanel gamePanel) {
     super(gamePanel);
   }
+
+  public abstract void substractResource(GameEntity user);
+  public abstract boolean haveResource(GameEntity user);
 
   public void set(int worldX, int worldY, DirectionType direction, boolean alive, GameEntity owner) {
     this.worldX = worldX;
@@ -27,6 +30,12 @@ public class Projectile extends GameEntity {
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
       if (monsterIndex != 999) {
         gamePanel.player.damageMonster(monsterIndex, attack);
+        alive = false;
+      }
+    } else {
+      boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
+      if (!gamePanel.player.invincible && contactPlayer) {
+        damagePlayer(attackValue);
         alive = false;
       }
     }

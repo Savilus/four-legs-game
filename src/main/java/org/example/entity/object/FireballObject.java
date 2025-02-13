@@ -10,15 +10,13 @@ import static org.example.config.GameEntityNameFactory.FIREBALL_UP1;
 import static org.example.config.GameEntityNameFactory.FIREBALL_UP2;
 
 import org.example.GamePanel;
+import org.example.entity.GameEntity;
 import org.example.entity.Projectile;
 
 public class FireballObject extends Projectile {
 
-  private final GamePanel gamePanel;
-
   public FireballObject(GamePanel gamePanel) {
     super(gamePanel);
-    this.gamePanel = gamePanel;
 
     name = "Fireball";
     speed = 5;
@@ -39,5 +37,15 @@ public class FireballObject extends Projectile {
       left2 = setup(FIREBALL_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
       right1 = setup(FIREBALL_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
       right2 = setup(FIREBALL_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+  }
+
+  @Override
+  public void substractResource(GameEntity user) {
+    user.mana -= useCost;
+  }
+
+  @Override
+  public boolean haveResource(GameEntity user){
+    return user.mana >= useCost;
   }
 }

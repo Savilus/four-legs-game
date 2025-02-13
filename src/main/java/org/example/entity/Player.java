@@ -33,8 +33,8 @@ import java.util.ArrayList;
 
 import org.example.GamePanel;
 import org.example.entity.object.FireballObject;
-import org.example.entity.object.KeyObject;
 import org.example.entity.object.NormalSwordObject;
+import org.example.entity.object.RockObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
@@ -161,9 +161,12 @@ public class Player extends GameEntity {
       }
     }
 
-    if (keyHandler.shotKeyPressed && !projectile.alive && shootAvailableCounter == 50) {
+    if (keyHandler.shotKeyPressed && !projectile.alive && shootAvailableCounter == 50 &&
+    projectile.haveResource(this)) {
       // SET DEFAULT COORDINATES, DIRECTION AND USER
       projectile.set(worldX, worldY, direction, true, this);
+
+      projectile.substractResource(this);
 
       gamePanel.projectiles.add(projectile);
       shootAvailableCounter = 0;
@@ -313,6 +316,9 @@ public class Player extends GameEntity {
     // PLAYER STATUS
     maxLife = 6;
     currentLife = maxLife;
+    maxMana = 4;
+    mana = maxMana;
+    ammo = 10;
     level = 1;
     strength = 1;
     dexterity = 1;

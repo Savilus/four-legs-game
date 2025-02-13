@@ -55,6 +55,7 @@ public abstract class GameEntity {
   public int strength;
   public int attack;
   public int dexterity;
+  public int ammo;
   public int exp;
   public int nextLevelExp;
   public int money;
@@ -119,9 +120,7 @@ public abstract class GameEntity {
     boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
 
     if (this.type == WorldGameTypes.MONSTER && contactPlayer && !gamePanel.player.invincible) {
-      gamePanel.playSoundEffect(6);
-      gamePanel.player.currentLife -= attack - gamePanel.player.defense;
-      gamePanel.player.invincible = true;
+      damagePlayer(attack);
     }
     // IF COLLISION IS FALSE, PLAYER CAN MOVE
     if (!collisionOn) {
@@ -145,6 +144,10 @@ public abstract class GameEntity {
         invincible = false;
         invincibleCounter = 0;
       }
+    }
+
+    if (shootAvailableCounter < 50) {
+      shootAvailableCounter++;
     }
   }
 
@@ -224,6 +227,12 @@ public abstract class GameEntity {
 
       changeAlpha(graphics2D, 1F);
     }
+  }
+
+  public void damagePlayer(int attack) {
+    gamePanel.playSoundEffect(6);
+    gamePanel.player.currentLife -= attack - gamePanel.player.defense;
+    gamePanel.player.invincible = true;
   }
 
   protected BufferedImage setup(String imagePath, int width, int height) {
