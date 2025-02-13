@@ -1,18 +1,14 @@
 package org.example.enums;
 
-import static org.example.utils.IdEnumManager.getIdForEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum MonsterObjectType {
   GREEN_SLIME("Green Slime");
 
   private final String name;
-  private final int monsterTypeId;
 
-  MonsterObjectType(String name) {
-    this.name = name;
-    this.monsterTypeId = getIdForEnum(this);
-  }
 }

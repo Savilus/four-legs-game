@@ -59,8 +59,11 @@ public abstract class GameEntity {
   public int nextLevelExp;
   public int money;
   public int defense;
+  public int maxMana;
+  public int mana;
   public GameEntity currentWeapon;
   public GameEntity currentShield;
+  public Projectile projectile;
 
   // COUNTER
   public int invincibleCounter = 0;
@@ -68,6 +71,7 @@ public abstract class GameEntity {
   public int spriteCounter = 0;
   public int dyingCounter = 0;
   public int hpBarCounter = 0;
+  public int shootAvailableCounter = 0;
 
   // ITEM ATTRIBUTES
   public int attackValue;
@@ -86,7 +90,9 @@ public abstract class GameEntity {
 
   public void damageReaction() {
   }
-  public void use(GameEntity gameEntity){};
+
+  public void use(GameEntity gameEntity) {
+  }
 
   public void speak() {
     if (dialogues[dialogueIndex] == null) {
@@ -96,18 +102,10 @@ public abstract class GameEntity {
     dialogueIndex++;
 
     switch (gamePanel.player.getDirection()) {
-      case UP:
-        direction = DirectionType.DOWN;
-        break;
-      case DOWN:
-        direction = DirectionType.UP;
-        break;
-      case LEFT:
-        direction = DirectionType.RIGHT;
-        break;
-      case RIGHT:
-        direction = DirectionType.LEFT;
-        break;
+      case UP -> direction = DirectionType.DOWN;
+      case DOWN -> direction = DirectionType.UP;
+      case LEFT -> direction = DirectionType.RIGHT;
+      case RIGHT -> direction = DirectionType.LEFT;
     }
   }
 
@@ -128,18 +126,10 @@ public abstract class GameEntity {
     // IF COLLISION IS FALSE, PLAYER CAN MOVE
     if (!collisionOn) {
       switch (getDirection()) {
-        case UP:
-          worldY -= speed;
-          break;
-        case DOWN:
-          worldY += speed;
-          break;
-        case LEFT:
-          worldX -= speed;
-          break;
-        case RIGHT:
-          worldX += speed;
-          break;
+        case UP -> worldY -= speed;
+        case DOWN -> worldY += speed;
+        case LEFT -> worldX -= speed;
+        case RIGHT -> worldX += speed;
       }
     }
 
@@ -271,7 +261,6 @@ public abstract class GameEntity {
     } else if (dyingCounter <= dyingAnimationInterval * 8) {
       changeAlpha(graphics2D, 0F);
     } else if (dyingCounter > dyingAnimationInterval * 8) {
-      dying = false;
       alive = false;
     }
   }

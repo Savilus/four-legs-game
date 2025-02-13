@@ -12,7 +12,7 @@ player:
     boyLeft2: /player/boy_left_2.png
     boyRight1: /player/boy_right_1.png
     boyRight2: /player/boy_right_2.png
-  attackImages:
+  swordAttackImages:
     attackUp1: /player/boy_attack_up_1.png
     attackUp2: /player/boy_attack_up_2.png
     attackDown1: /player/boy_attack_down_1.png
@@ -22,14 +22,14 @@ player:
     attackLeft1: /player/boy_attack_left_1.png
     attackLeft2: /player/boy_attack_left_2.png
   axeAttackImages:
-    axeAttackUp1: /player/boy_axe_up_1.png
-    axeAttackUp2: /player/boy_axe_up_2.png
-    axeAttackDown1: /player/boy_axe_down_1.png
-    axeAttackDown2: /player/boy_axe_down_2.png
-    axeRightAttack1: /player/boy_axe_right_1.png
-    axeRightAttack2: /player/boy_axe_right_2.png
-    axeLeftAttack1: /player/boy_axe_left_1.png
-    axeLeftAttack2: /player/boy_axe_left_2.png
+    attackUp1: /player/boy_axe_up_1.png
+    attackUp2: /player/boy_axe_up_2.png
+    attackDown1: /player/boy_axe_down_1.png
+    attackDown2: /player/boy_axe_down_2.png
+    rightAttack1: /player/boy_axe_right_1.png
+    rightAttack2: /player/boy_axe_right_2.png
+    leftAttack1: /player/boy_axe_left_1.png
+    leftAttack2: /player/boy_axe_left_2.png
 
 npc:
   images:
@@ -123,4 +123,17 @@ sound:
     swingWeapon: /sound/swordSwing.wav
     levelUp: /sound/levelup.wav
     cursor: /sound/cursor.wav
+    fireballShoot: /sound/burning.wav
+
+projectile:
+  fireball:
+    attackImages:
+      attackUp1: /projectile/fireball_up_1.png
+      attackUp2: /projectile/fireball_up_2.png
+      attackDown1: /projectile/fireball_down_1.png
+      attackDown2: /projectile/fireball_down_2.png
+      attackRight1: /projectile/fireball_right_1.png
+      attackRight2: /projectile/fireball_right_2.png
+      attackLeft1: /projectile/fireball_left_1.png
+      attackLeft2: /projectile/fireball_left_2.png
 

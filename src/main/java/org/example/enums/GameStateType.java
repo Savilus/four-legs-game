@@ -1,10 +1,11 @@
 package org.example.enums;
 
-import static org.example.utils.IdEnumManager.getIdForEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum GameStateType {
   TITLE_STATE("titleState"),
   PLAY_STATE("playState"),
@@ -13,12 +14,6 @@ public enum GameStateType {
   CHARACTER_STATE("characterState");
 
   private final String name;
-  private final int gameStateId;
-
-  GameStateType(String name) {
-    this.name = name;
-    this.gameStateId = getIdForEnum(this);
-  }
 
   public static GameStateType fromString(String text) {
     for (GameStateType type : GameStateType.values()) {

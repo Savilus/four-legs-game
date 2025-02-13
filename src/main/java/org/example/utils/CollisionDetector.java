@@ -25,38 +25,38 @@ public class CollisionDetector {
     int tileNum1, tileNum2;
 
     switch (gameEntity.getDirection()) {
-      case UP:
+      case UP -> {
         entityTopRow = (entityTopWorldY - gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityRightCol][entityTopRow];
         if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
           gameEntity.collisionOn = true;
         }
-        break;
-      case DOWN:
+      }
+      case DOWN -> {
         entityBottomRow = (entityBottomWorldY + gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
         if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
           gameEntity.collisionOn = true;
         }
-        break;
-      case LEFT:
+      }
+      case LEFT -> {
         entityLeftCol = (entityLeftWorldX - gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
         if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
           gameEntity.collisionOn = true;
         }
-        break;
-      case RIGHT:
+      }
+      case RIGHT -> {
         entityRightCol = (entityRightWorldX + gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
         if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
           gameEntity.collisionOn = true;
         }
-        break;
+      }
     }
   }
 
@@ -141,18 +141,10 @@ public class CollisionDetector {
 
   private void checkGameEntityCollision(GameEntity gameEntity) {
     switch (gameEntity.getDirection()) {
-      case UP:
-        gameEntity.solidArea.y -= gameEntity.speed;
-        break;
-      case DOWN:
-        gameEntity.solidArea.y += gameEntity.speed;
-        break;
-      case LEFT:
-        gameEntity.solidArea.x -= gameEntity.speed;
-        break;
-      case RIGHT:
-        gameEntity.solidArea.x += gameEntity.speed;
-        break;
+      case UP -> gameEntity.solidArea.y -= gameEntity.speed;
+      case DOWN -> gameEntity.solidArea.y += gameEntity.speed;
+      case LEFT -> gameEntity.solidArea.x -= gameEntity.speed;
+      case RIGHT -> gameEntity.solidArea.x += gameEntity.speed;
     }
   }
 }
