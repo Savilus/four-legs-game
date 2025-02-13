@@ -8,7 +8,6 @@ import org.example.enums.WorldGameTypes;
 
 public class NormalSwordObject extends GameEntity {
 
-
   public NormalSwordObject(GamePanel gamePanel) {
     super(gamePanel);
     name = "Normal Sword";

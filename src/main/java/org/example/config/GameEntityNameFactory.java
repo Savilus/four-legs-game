@@ -42,6 +42,8 @@ public class GameEntityNameFactory {
   public static String FIREBALL_LEFT1;
   @YamlValue("projectile.fireball.attackImages.attackLeft2")
   public static String FIREBALL_LEFT2;
+  @YamlValue("projectile.rock.attackImage")
+  public static String ROCK_ATTACK;
 
   // PLAYER ATTACK IMAGES
   @YamlValue("player.swordAttackImages.attackUp1")
@@ -84,6 +86,18 @@ public class GameEntityNameFactory {
   @YamlValue("monster.images.greenSlime.down2")
   public static String GREEN_SLIME_DOWN2;
 
+  // UI IMAGES
+  @YamlValue("ui.images.heartFull")
+  public static String HEART_FULL;
+  @YamlValue("ui.images.heartHalf")
+  public static String HEART_HALF;
+  @YamlValue("ui.images.heartBlank")
+  public static String HEART_BLANK;
+  @YamlValue("ui.images.manaCrystalFull")
+  public static String MANA_CRYSTAL_FULL;
+  @YamlValue("ui.images.manaCrystalBlank")
+  public static String MANA_CRYSTAL_BLANK;
+
 
   // NPC IMAGES
   @YamlValue("npc.images.merchantDown1")
@@ -118,12 +132,6 @@ public class GameEntityNameFactory {
   public static String DOOR;
   @YamlValue("items.images.key")
   public static String KEY;
-  @YamlValue("items.images.heartFull")
-  public static String HEART_FULL;
-  @YamlValue("items.images.heartHalf")
-  public static String HEART_HALF;
-  @YamlValue("items.images.heartBlank")
-  public static String HEART_BLANK;
   @YamlValue("items.images.normalSword")
   public static String NORMAL_SWORD;
   @YamlValue("items.images.woodenShield")

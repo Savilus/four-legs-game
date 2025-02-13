@@ -9,12 +9,10 @@ import org.example.enums.WorldGameTypes;
 
 public class RedPotionObject extends GameEntity {
 
-  private final GamePanel gamePanel;
   private final int healingValue = 5;
 
   public RedPotionObject(GamePanel gamePanel) {
     super(gamePanel);
-    this.gamePanel = gamePanel;
     type = WorldGameTypes.CONSUMABLE;
     name = "Red Potion";
     image = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);

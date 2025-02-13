@@ -58,14 +58,19 @@ items:
     chest: /objects/chest.png
     door: /objects/door.png
     key: /objects/key.png
-    heartFull: /objects/heart_full.png
-    heartHalf: /objects/heart_half.png
-    heartBlank: /objects/heart_blank.png
     normalSword: /objects/sword_normal.png
     woodenShield: /objects/shield_wood.png
     axe: /objects/axe.png
     blueShield: /objects/shield_blue.png
     redPotion: /objects/potion_red.png
+
+ui:
+  images:
+    heartFull: /objects/heart_full.png
+    heartHalf: /objects/heart_half.png
+    heartBlank: /objects/heart_blank.png
+    manaCrystalFull: /objects/manacrystal_full.png
+    manaCrystalBlank: /objects/manacrystal_blank.png
 
 world:
   mapPath: /maps/worldV2.txt
@@ -136,4 +141,6 @@ projectile:
       attackRight2: /projectile/fireball_right_2.png
       attackLeft1: /projectile/fireball_left_1.png
       attackLeft2: /projectile/fireball_left_2.png
+  rock:
+    attackImage: /projectile/rock_attack.png
 

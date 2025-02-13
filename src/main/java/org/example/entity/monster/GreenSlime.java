@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.entity.object.RockObject;
 import org.example.enums.DirectionType;
 import org.example.enums.MonsterObjectType;
 import org.example.enums.WorldGameTypes;
@@ -23,6 +24,7 @@ public class GreenSlime extends GameEntity {
     attack = 5;
     defense = 0;
     exp = 2;
+    projectile = new RockObject(gamePanel);
 
     solidArea.x = 3;
     solidArea.y = 18;
@@ -53,9 +55,9 @@ public class GreenSlime extends GameEntity {
   @Override
   public void setAction() {
     actionLockCounter++;
+    Random random = new Random();
 
     if (actionLockCounter == 120) {
-      Random random = new Random();
       int randomNumber = random.nextInt(100) + 1;
 
       if (randomNumber <= 25) direction = DirectionType.UP;
@@ -64,6 +66,14 @@ public class GreenSlime extends GameEntity {
       else if (randomNumber <= 100) direction = DirectionType.RIGHT;
 
       actionLockCounter = 0;
+    }
+
+    int randomNumber = random.nextInt(100) + 1;
+
+    if (randomNumber > 99 && !projectile.alive && shootAvailableCounter == 50) {
+      projectile.set(worldX, worldY, direction, true, this);
+      gamePanel.projectiles.add(projectile);
+      shootAvailableCounter = 0;
     }
   }
 }
