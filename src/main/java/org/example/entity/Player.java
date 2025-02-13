@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import org.example.GamePanel;
+import org.example.entity.object.FireballObject;
 import org.example.entity.object.KeyObject;
 import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.WoodShieldObject;
@@ -72,7 +73,7 @@ public class Player extends GameEntity {
   }
 
   public void getPlayerAttackImage() {
-    if(currentWeapon.type == WorldGameTypes.SWORD){
+    if (currentWeapon.type == WorldGameTypes.SWORD) {
       attackUp1 = setup(BOY_ATTACK_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
       attackUp2 = setup(BOY_ATTACK_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
       attackDown1 = setup(BOY_ATTACK_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
@@ -131,18 +132,10 @@ public class Player extends GameEntity {
       // IF COLLISION IS FALSE, PLAYER CAN MOVE
       if (!collisionOn && !keyHandler.enterPressed) {
         switch (getDirection()) {
-          case UP:
-            worldY -= speed;
-            break;
-          case DOWN:
-            worldY += speed;
-            break;
-          case LEFT:
-            worldX -= speed;
-            break;
-          case RIGHT:
-            worldX += speed;
-            break;
+          case UP -> worldY -= speed;
+          case DOWN -> worldY += speed;
+          case LEFT -> worldX -= speed;
+          case RIGHT -> worldX += speed;
         }
       }
 
@@ -168,12 +161,25 @@ public class Player extends GameEntity {
       }
     }
 
+    if (keyHandler.shotKeyPressed && !projectile.alive && shootAvailableCounter == 50) {
+      // SET DEFAULT COORDINATES, DIRECTION AND USER
+      projectile.set(worldX, worldY, direction, true, this);
+
+      gamePanel.projectiles.add(projectile);
+      shootAvailableCounter = 0;
+      gamePanel.playSoundEffect(10);
+    }
+
     if (invincible) {
       invincibleCounter++;
       if (invincibleCounter > 60) {
         invincible = false;
         invincibleCounter = 0;
       }
+    }
+
+    if (shootAvailableCounter < 50) {
+      shootAvailableCounter++;
     }
   }
 
@@ -192,25 +198,17 @@ public class Player extends GameEntity {
 
       // adjust player's worldX/Y for the attack area
       switch (getDirection()) {
-        case UP:
-          worldY -= attackArea.height;
-          break;
-        case DOWN:
-          worldY += attackArea.height;
-          break;
-        case LEFT:
-          worldX -= attackArea.width;
-          break;
-        case RIGHT:
-          worldX += attackArea.height;
-          break;
+        case UP -> worldY -= attackArea.height;
+        case DOWN -> worldY += attackArea.height;
+        case LEFT -> worldX -= attackArea.width;
+        case RIGHT -> worldX += attackArea.height;
       }
       // attackArea becomes solid area
       solidArea.width = attackArea.width;
       solidArea.height = attackArea.height;
       // check monster collision with updated worldX, worldY and solidArea
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
-      damageMonster(monsterIndex);
+      damageMonster(monsterIndex, attack);
 
       worldX = currentWorldX;
       worldY = currentWorldY;
@@ -223,7 +221,7 @@ public class Player extends GameEntity {
     }
   }
 
-  private void damageMonster(int monsterIndex) {
+  public void damageMonster(int monsterIndex, int attack) {
     if (monsterIndex != 999 && !gamePanel.monsters[monsterIndex].invincible) {
       gamePanel.playSoundEffect(5);
 
@@ -267,8 +265,6 @@ public class Player extends GameEntity {
       }
     }
   }
-
-  ;
 
   private void checkLevelUp() {
     if (exp >= nextLevelExp) {
@@ -325,6 +321,7 @@ public class Player extends GameEntity {
     money = 0;
     currentWeapon = new NormalSwordObject(gamePanel);
     currentShield = new WoodShieldObject(gamePanel);
+    projectile = new FireballObject(gamePanel);
     attack = getAttack();
     defense = getDefense();
 
@@ -348,7 +345,7 @@ public class Player extends GameEntity {
 
   private void detectMonsterContact(int monsterIndex) {
 //    long currentTime = System.currentTimeMillis();
-    if (monsterIndex != 999 && !invincible) {
+    if (monsterIndex != 999 && !invincible && !gamePanel.monsters[monsterIndex].dying) {
 
       int damage = gamePanel.monsters[monsterIndex].attack - defense;
       currentLife -= damage;

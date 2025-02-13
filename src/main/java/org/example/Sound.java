@@ -4,6 +4,7 @@ import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.config.GameEntityNameFactory.COIN;
 import static org.example.config.GameEntityNameFactory.CURSOR;
 import static org.example.config.GameEntityNameFactory.FANFARE;
+import static org.example.config.GameEntityNameFactory.FIREBALL_SOUND;
 import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
@@ -34,6 +35,7 @@ public class Sound {
     soundUrl[7] = Objects.requireNonNull(getClass().getResource(SWING_WEAPON));
     soundUrl[8] = Objects.requireNonNull(getClass().getResource(LEVEL_UP));
     soundUrl[9] = Objects.requireNonNull(getClass().getResource(CURSOR));
+    soundUrl[10] = Objects.requireNonNull(getClass().getResource(FIREBALL_SOUND));
   }
 
   public void setFile(int i) {

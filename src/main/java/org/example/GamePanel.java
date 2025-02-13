@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
   public GameEntity[] npc = new GameEntity[10];
   public GameEntity[] monsters = new GameEntity[20];
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
+  public ArrayList<GameEntity> projectiles = new ArrayList<>();
 
   // GAME STATE
   public GameStateType gameState;
@@ -84,12 +85,21 @@ public class GamePanel extends JPanel implements Runnable {
       // nothing
     }
 
-    for (int i = 0; i < monsters.length; i++) {
-      if (monsters[i] != null) {
-        if (monsters[i].alive && !monsters[i].dying)
-          monsters[i].update();
-        if (!monsters[i].alive)
-          monsters[i] = null;
+    for (int monsterIndex = 0; monsterIndex < monsters.length; monsterIndex++) {
+      if (monsters[monsterIndex] != null) {
+        if (monsters[monsterIndex].alive && !monsters[monsterIndex].dying)
+          monsters[monsterIndex].update();
+        if (!monsters[monsterIndex].alive)
+          monsters[monsterIndex] = null;
+      }
+    }
+
+    for (int projectileIndex = 0; projectileIndex < projectiles.size(); projectileIndex++) {
+      if (projectiles.get(projectileIndex) != null) {
+        if (projectiles.get(projectileIndex).alive)
+          projectiles.get(projectileIndex).update();
+        else
+          projectiles.remove(projectileIndex);
       }
     }
   }
@@ -144,6 +154,13 @@ public class GamePanel extends JPanel implements Runnable {
           gameObjects.add(monster);
         }
       }
+
+      for (GameEntity projectile : projectiles) {
+        if (projectile != null) {
+          gameObjects.add(projectile);
+        }
+      }
+
       // SORT
       gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.worldY));
 

@@ -15,7 +15,7 @@ import org.example.GamePanel;
 public class KeyHandler implements KeyListener {
 
   GamePanel gamePanel;
-  public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+  public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
   //DEBUG
   public boolean showDebugText;
 
@@ -25,21 +25,23 @@ public class KeyHandler implements KeyListener {
 
   private void titleState(int code) {
     switch (code) {
-      case KeyEvent.VK_W, KeyEvent.VK_UP:
+      case KeyEvent.VK_W, KeyEvent.VK_UP -> {
         upPressed = true;
         gamePanel.ui.commandNum--;
+
         if (gamePanel.ui.commandNum < 0) {
           gamePanel.ui.commandNum = 2;
         }
-        break;
-      case KeyEvent.VK_S, KeyEvent.VK_DOWN:
+      }
+      case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
         downPressed = true;
         gamePanel.ui.commandNum++;
+
         if (gamePanel.ui.commandNum > 2) {
           gamePanel.ui.commandNum = 0;
         }
-        break;
-      case KeyEvent.VK_ENTER:
+      }
+      case KeyEvent.VK_ENTER -> {
         if (gamePanel.ui.commandNum == 0) {
           gamePanel.gameState = PLAY_STATE;
           gamePanel.playMusic(0);
@@ -50,6 +52,7 @@ public class KeyHandler implements KeyListener {
         if (gamePanel.ui.commandNum == 2) {
           System.exit(0);
         }
+      }
     }
   }
 
@@ -61,34 +64,18 @@ public class KeyHandler implements KeyListener {
 
   private void playState(int code) {
     switch (code) {
-      case KeyEvent.VK_W:
-        upPressed = true;
-        break;
-      case KeyEvent.VK_S:
-        downPressed = true;
-        break;
-      case KeyEvent.VK_A:
-        leftPressed = true;
-        break;
-      case KeyEvent.VK_D:
-        rightPressed = true;
-        break;
-      case KeyEvent.VK_P:
-        gamePanel.gameState = PAUSE_STATE;
-        break;
-      case KeyEvent.VK_ENTER:
-        enterPressed = true;
-        break;
-      case KeyEvent.VK_C:
-        gamePanel.gameState = CHARACTER_STATE;
-        break;
+      case KeyEvent.VK_W -> upPressed = true;
+      case KeyEvent.VK_S -> downPressed = true;
+      case KeyEvent.VK_A -> leftPressed = true;
+      case KeyEvent.VK_D -> rightPressed = true;
+      case KeyEvent.VK_P -> gamePanel.gameState = PAUSE_STATE;
+      case KeyEvent.VK_ENTER -> enterPressed = true;
+      case KeyEvent.VK_C -> gamePanel.gameState = CHARACTER_STATE;
+      case KeyEvent.VK_F -> shotKeyPressed = true;
       //DEBUG
-      case KeyEvent.VK_T: {
-        showDebugText = !showDebugText;
-      }
+      case KeyEvent.VK_T -> showDebugText = !showDebugText;
       //REFRESH MAP
-      case KeyEvent.VK_R:
-        gamePanel.tileManager.loadMap(MAP_PATH);
+      case KeyEvent.VK_R -> gamePanel.tileManager.loadMap(MAP_PATH);
     }
   }
 
@@ -100,36 +87,32 @@ public class KeyHandler implements KeyListener {
 
   public void characterState(int code) {
     switch (code) {
-      case KeyEvent.VK_C:
-        gamePanel.gameState = PLAY_STATE;
-        break;
-      case KeyEvent.VK_W:
+      case KeyEvent.VK_C -> gamePanel.gameState = PLAY_STATE;
+      case KeyEvent.VK_W -> {
         if (gamePanel.ui.slotRow != 0) {
           gamePanel.ui.slotRow--;
           gamePanel.playSoundEffect(9);
         }
-        break;
-      case KeyEvent.VK_A:
+      }
+      case KeyEvent.VK_A -> {
         if (gamePanel.ui.slotCol != 0) {
           gamePanel.ui.slotCol--;
           gamePanel.playSoundEffect(9);
         }
-        break;
-      case KeyEvent.VK_S:
+      }
+      case KeyEvent.VK_S -> {
         if (gamePanel.ui.slotRow != 3) {
           gamePanel.ui.slotRow++;
           gamePanel.playSoundEffect(9);
         }
-        break;
-      case KeyEvent.VK_D:
+      }
+      case KeyEvent.VK_D -> {
         if (gamePanel.ui.slotCol != 4) {
           gamePanel.ui.slotCol++;
           gamePanel.playSoundEffect(9);
         }
-        break;
-      case KeyEvent.VK_ENTER:
-        gamePanel.player.selectItem();
-        break;
+      }
+      case KeyEvent.VK_ENTER -> gamePanel.player.selectItem();
     }
   }
 
@@ -160,22 +143,11 @@ public class KeyHandler implements KeyListener {
   public void keyReleased(KeyEvent e) {
     int code = e.getKeyCode();
     switch (code) {
-      case KeyEvent.VK_W: {
-        upPressed = false;
-        break;
-      }
-      case KeyEvent.VK_S: {
-        downPressed = false;
-        break;
-      }
-      case KeyEvent.VK_A: {
-        leftPressed = false;
-        break;
-      }
-      case KeyEvent.VK_D: {
-        rightPressed = false;
-        break;
-      }
+      case KeyEvent.VK_W -> upPressed = false;
+      case KeyEvent.VK_S -> downPressed = false;
+      case KeyEvent.VK_A -> leftPressed = false;
+      case KeyEvent.VK_D -> rightPressed = false;
+      case KeyEvent.VK_F -> shotKeyPressed = false;
     }
   }
 }

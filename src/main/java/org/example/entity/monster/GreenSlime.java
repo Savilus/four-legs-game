@@ -2,7 +2,6 @@ package org.example.entity.monster;
 
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN1;
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN2;
-import static org.example.utils.IdEnumManager.getIdForEnum;
 
 import java.util.Random;
 
