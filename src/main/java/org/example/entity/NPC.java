@@ -13,6 +13,7 @@ import java.util.Random;
 
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
+import org.example.enums.WorldGameTypes;
 
 public class NPC extends GameEntity {
 
@@ -21,7 +22,7 @@ public class NPC extends GameEntity {
 
     direction = DirectionType.DOWN;
     speed = 1;
-    type = 1;
+    type = WorldGameTypes.NPC;
     getPlayerImage();
     setDialogue();
   }

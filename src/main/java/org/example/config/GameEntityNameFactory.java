@@ -42,6 +42,22 @@ public class GameEntityNameFactory {
   public static String BOY_ATTACK_LEFT1;
   @YamlValue("player.attackImages.attackLeft2")
   public static String BOY_ATTACK_LEFT2;
+  @YamlValue("player.axeAttackImages.axeAttackUp1")
+  public static String BOY_AXE_ATTACK_UP1;
+  @YamlValue("player.axeAttackImages.axeAttackUp2")
+  public static String BOY_AXE_ATTACK_UP2;
+  @YamlValue("player.axeAttackImages.axeAttackDown1")
+  public static String BOY_AXE_ATTACK_DOWN1;
+  @YamlValue("player.axeAttackImages.axeAttackDown2")
+  public static String BOY_AXE_ATTACK_DOWN2;
+  @YamlValue("player.axeAttackImages.axeRightAttack1")
+  public static String BOY_AXE_ATTACK_RIGHT1;
+  @YamlValue("player.axeAttackImages.axeRightAttack2")
+  public static String BOY_AXE_ATTACK_RIGHT2;
+  @YamlValue("player.axeAttackImages.axeLeftAttack1")
+  public static String BOY_AXE_ATTACK_LEFT1;
+  @YamlValue("player.axeAttackImages.axeLeftAttack2")
+  public static String BOY_AXE_ATTACK_LEFT2;
 
 
   // MONSTER IMAGES
@@ -94,6 +110,12 @@ public class GameEntityNameFactory {
   public static String NORMAL_SWORD;
   @YamlValue("items.images.woodenShield")
   public static String WOODEN_SHIELD;
+  @YamlValue("items.images.blueShield")
+  public static String BLUE_SHIELD;
+  @YamlValue("items.images.axe")
+  public static String AXE;
+  @YamlValue("items.images.redPotion")
+  public static String RED_POTION;
 
   // TILES IMAGES
   @YamlValue("world.tile.images.grass.0")

@@ -2,6 +2,7 @@ package org.example.entity.monster;
 
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN1;
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN2;
+import static org.example.utils.IdEnumManager.getIdForEnum;
 
 import java.util.Random;
 
@@ -9,6 +10,7 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.DirectionType;
 import org.example.enums.MonsterObjectType;
+import org.example.enums.WorldGameTypes;
 
 public class GreenSlime extends GameEntity {
 
@@ -18,7 +20,7 @@ public class GreenSlime extends GameEntity {
     speed = 1;
     maxLife = 4;
     currentLife = maxLife;
-    type = 2;
+    type = WorldGameTypes.MONSTER;
     attack = 5;
     defense = 0;
     exp = 2;

@@ -8,6 +8,14 @@ import static org.example.config.GameEntityNameFactory.BOY_ATTACK_RIGHT1;
 import static org.example.config.GameEntityNameFactory.BOY_ATTACK_RIGHT2;
 import static org.example.config.GameEntityNameFactory.BOY_ATTACK_UP1;
 import static org.example.config.GameEntityNameFactory.BOY_ATTACK_UP2;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_DOWN1;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_DOWN2;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_LEFT1;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_LEFT2;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_RIGHT1;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_RIGHT2;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_UP1;
+import static org.example.config.GameEntityNameFactory.BOY_AXE_ATTACK_UP2;
 import static org.example.config.GameEntityNameFactory.BOY_DOWN1;
 import static org.example.config.GameEntityNameFactory.BOY_DOWN2;
 import static org.example.config.GameEntityNameFactory.BOY_LEFT1;
@@ -28,6 +36,7 @@ import org.example.entity.object.KeyObject;
 import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
+import org.example.enums.WorldGameTypes;
 import org.example.utils.KeyHandler;
 
 public class Player extends GameEntity {
@@ -39,12 +48,12 @@ public class Player extends GameEntity {
   public int standCounter = 0;
   public boolean attackCancled = false;
   public final int maxInventorySize = 20;
-  public ArrayList<GameEntity> inventory = new ArrayList<>(maxInventorySize);
+  public ArrayList<GameEntity> inventory = new ArrayList<>();
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     super(gamePanel);
     this.keyHandler = keyHandler;
-    type = 0;
+    type = WorldGameTypes.PLAYER;
     screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
     screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize / 2);
 
@@ -56,9 +65,6 @@ public class Player extends GameEntity {
     solidArea.width = 32;
     solidArea.height = 32;
 
-    attackingArea.width = 25;
-    attackingArea.height = 36;
-
     setDefaultValues();
     getPlayerImage();
     getPlayerAttackImage();
@@ -66,14 +72,26 @@ public class Player extends GameEntity {
   }
 
   public void getPlayerAttackImage() {
-    attackUp1 = setup(BOY_ATTACK_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackUp2 = setup(BOY_ATTACK_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackDown1 = setup(BOY_ATTACK_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackDown2 = setup(BOY_ATTACK_DOWN2, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackLeft1 = setup(BOY_ATTACK_LEFT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-    attackLeft2 = setup(BOY_ATTACK_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
-    attackRight1 = setup(BOY_ATTACK_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-    attackRight2 = setup(BOY_ATTACK_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+    if(currentWeapon.type == WorldGameTypes.SWORD){
+      attackUp1 = setup(BOY_ATTACK_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackUp2 = setup(BOY_ATTACK_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackDown1 = setup(BOY_ATTACK_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackDown2 = setup(BOY_ATTACK_DOWN2, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackLeft1 = setup(BOY_ATTACK_LEFT1, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackLeft2 = setup(BOY_ATTACK_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackRight1 = setup(BOY_ATTACK_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackRight2 = setup(BOY_ATTACK_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+    } else if (currentWeapon.type == WorldGameTypes.AXE) {
+      attackUp1 = setup(BOY_AXE_ATTACK_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackUp2 = setup(BOY_AXE_ATTACK_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackDown1 = setup(BOY_AXE_ATTACK_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackDown2 = setup(BOY_AXE_ATTACK_DOWN2, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackLeft1 = setup(BOY_AXE_ATTACK_LEFT1, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackLeft2 = setup(BOY_AXE_ATTACK_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackRight1 = setup(BOY_AXE_ATTACK_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackRight2 = setup(BOY_AXE_ATTACK_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+    }
+
   }
 
   public void update() {
@@ -175,21 +193,21 @@ public class Player extends GameEntity {
       // adjust player's worldX/Y for the attack area
       switch (getDirection()) {
         case UP:
-          worldY -= attackingArea.height;
+          worldY -= attackArea.height;
           break;
         case DOWN:
-          worldY += attackingArea.height;
+          worldY += attackArea.height;
           break;
         case LEFT:
-          worldX -= attackingArea.width;
+          worldX -= attackArea.width;
           break;
         case RIGHT:
-          worldX += attackingArea.height;
+          worldX += attackArea.height;
           break;
       }
       // attackArea becomes solid area
-      solidArea.width = attackingArea.width;
-      solidArea.height = attackingArea.height;
+      solidArea.width = attackArea.width;
+      solidArea.height = attackArea.height;
       // check monster collision with updated worldX, worldY and solidArea
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
       damageMonster(monsterIndex);
@@ -225,6 +243,32 @@ public class Player extends GameEntity {
       }
     }
   }
+
+  public void selectItem() {
+    int itemIndex = gamePanel.ui.getItemIndexFromInventory();
+
+    if (itemIndex < inventory.size()) {
+      GameEntity selectedItem = inventory.get(itemIndex);
+
+      switch (selectedItem.type) {
+        case SWORD, AXE -> {
+          currentWeapon = selectedItem;
+          attack = getAttack();
+          getPlayerAttackImage();
+        }
+        case SHIELD -> {
+          currentShield = selectedItem;
+          defense = getDefense();
+        }
+        case CONSUMABLE -> {
+          selectedItem.use(this);
+          inventory.remove(itemIndex);
+        }
+      }
+    }
+  }
+
+  ;
 
   private void checkLevelUp() {
     if (exp >= nextLevelExp) {
@@ -289,13 +333,6 @@ public class Player extends GameEntity {
   public void setItems() {
     inventory.add(currentWeapon);
     inventory.add(currentShield);
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
   }
 
   private int getDefense() {
@@ -304,6 +341,7 @@ public class Player extends GameEntity {
   }
 
   private int getAttack() {
+    attackArea = currentWeapon.attackArea;
     attack = strength * currentWeapon.attackValue;
     return attack;
   }
@@ -399,7 +437,16 @@ public class Player extends GameEntity {
 
   public void pickUpObject(int objectIndex) {
     if (objectIndex != 999) {
+      String text;
+      if (inventory.size() != maxInventorySize) {
+        inventory.add(gamePanel.obj[objectIndex]);
+        gamePanel.playSoundEffect(1);
+        text = "Picked up " + gamePanel.obj[objectIndex].name + "!";
+      } else {
+        text = "Inventory is full!";
+      }
+      gamePanel.ui.addMessage(text);
+      gamePanel.obj[objectIndex] = null;
     }
   }
-
 }
