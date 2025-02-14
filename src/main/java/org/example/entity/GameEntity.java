@@ -78,6 +78,7 @@ public abstract class GameEntity {
   public int attackValue;
   public int defenseValue;
   public String description;
+  public int value;
 
   //Type
   public WorldGameTypes type;
@@ -223,9 +224,23 @@ public abstract class GameEntity {
         dyingAnimation(graphics2D);
       }
 
-      graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+      graphics2D.drawImage(image, screenX, screenY, null);
 
       changeAlpha(graphics2D, 1F);
+    }
+  }
+
+  public void checkDrop() {
+  }
+
+  public void dropItem(GameEntity droppedItem) {
+    for (int i = 0; i < gamePanel.obj.length; i++) {
+      if (gamePanel.obj[i] == null) {
+        gamePanel.obj[i] = droppedItem;
+        gamePanel.obj[i].worldX = worldX;
+        gamePanel.obj[i].worldY = worldY;
+        break;
+      }
     }
   }
 

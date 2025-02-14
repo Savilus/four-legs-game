@@ -162,7 +162,7 @@ public class Player extends GameEntity {
     }
 
     if (keyHandler.shotKeyPressed && !projectile.alive && shootAvailableCounter == 50 &&
-    projectile.haveResource(this)) {
+        projectile.haveResource(this)) {
       // SET DEFAULT COORDINATES, DIRECTION AND USER
       projectile.set(worldX, worldY, direction, true, this);
 
@@ -183,6 +183,14 @@ public class Player extends GameEntity {
 
     if (shootAvailableCounter < 50) {
       shootAvailableCounter++;
+    }
+
+    if (currentLife > maxLife) {
+      currentLife = maxLife;
+    }
+
+    if (mana > maxMana) {
+      mana = maxMana;
     }
   }
 
@@ -439,17 +447,26 @@ public class Player extends GameEntity {
   }
 
   public void pickUpObject(int objectIndex) {
+
     if (objectIndex != 999) {
-      String text;
-      if (inventory.size() != maxInventorySize) {
-        inventory.add(gamePanel.obj[objectIndex]);
-        gamePanel.playSoundEffect(1);
-        text = "Picked up " + gamePanel.obj[objectIndex].name + "!";
+
+      // PICKUP ONLY ITEMS
+      if (gamePanel.obj[objectIndex].type == WorldGameTypes.PICK_UP) {
+        gamePanel.obj[objectIndex].use(this);
+        gamePanel.obj[objectIndex] = null;
       } else {
-        text = "Inventory is full!";
+        // INVENTORY ITEMS
+        String text;
+        if (inventory.size() != maxInventorySize) {
+          inventory.add(gamePanel.obj[objectIndex]);
+          gamePanel.playSoundEffect(1);
+          text = "Picked up " + gamePanel.obj[objectIndex].name + "!";
+        } else {
+          text = "Inventory is full!";
+        }
+        gamePanel.ui.addMessage(text);
+        gamePanel.obj[objectIndex] = null;
       }
-      gamePanel.ui.addMessage(text);
-      gamePanel.obj[objectIndex] = null;
     }
   }
 }

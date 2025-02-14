@@ -13,5 +13,6 @@ public enum WorldGameTypes {
   SWORD,
   AXE,
   SHIELD,
-  CONSUMABLE
+  CONSUMABLE,
+  PICK_UP;
 }

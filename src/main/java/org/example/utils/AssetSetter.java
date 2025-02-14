@@ -5,9 +5,10 @@ import org.example.entity.NPC;
 import org.example.entity.monster.GreenSlime;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.BlueShieldObject;
-import org.example.entity.object.BootsObject;
-import org.example.entity.object.DoorObject;
+import org.example.entity.object.BronzeCoinObject;
+import org.example.entity.object.HeartObject;
 import org.example.entity.object.KeyObject;
+import org.example.entity.object.ManaCrystalObject;
 import org.example.entity.object.RedPotionObject;
 
 public class AssetSetter {
@@ -20,11 +21,11 @@ public class AssetSetter {
 
   public void setObject() {
     int i = 0;
-    gamePanel.obj[i] = new KeyObject(gamePanel);
+    gamePanel.obj[i] = new BronzeCoinObject(gamePanel);
     gamePanel.obj[i].worldX = gamePanel.tileSize * 25;
     gamePanel.obj[i].worldY = gamePanel.tileSize * 23;
     i++;
-    gamePanel.obj[i] = new KeyObject(gamePanel);
+    gamePanel.obj[i] = new BronzeCoinObject(gamePanel);
     gamePanel.obj[i].worldX = gamePanel.tileSize * 21;
     gamePanel.obj[i].worldY = gamePanel.tileSize * 19;
     i++;
@@ -43,6 +44,15 @@ public class AssetSetter {
     gamePanel.obj[i] = new RedPotionObject(gamePanel);
     gamePanel.obj[i].worldX = gamePanel.tileSize * 22;
     gamePanel.obj[i].worldY = gamePanel.tileSize * 27;
+    i++;
+    gamePanel.obj[i] = new HeartObject(gamePanel);
+    gamePanel.obj[i].worldX = gamePanel.tileSize * 22;
+    gamePanel.obj[i].worldY = gamePanel.tileSize * 29;
+    i++;
+    gamePanel.obj[i] = new ManaCrystalObject(gamePanel);
+    gamePanel.obj[i].worldX = gamePanel.tileSize * 22;
+    gamePanel.obj[i].worldY = gamePanel.tileSize * 31;
+
   }
 
   public void setNPC() {

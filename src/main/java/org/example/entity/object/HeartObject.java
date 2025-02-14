@@ -7,15 +7,28 @@ import static org.example.config.GameEntityNameFactory.HEART_HALF;
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
+import org.example.enums.WorldGameTypes;
 
 public class HeartObject extends GameEntity {
 
   public HeartObject(GamePanel gamePanel) {
     super(gamePanel);
+    type = WorldGameTypes.PICK_UP;
+    name = "Heart";
+    value = 2;
+    down1 = setup(HEART_FULL, gamePanel.tileSize, gamePanel.tileSize);
+
     name = GameObjectType.HEART.getName();
     image = setup(HEART_FULL, gamePanel.tileSize, gamePanel.tileSize);
     image2 = setup(HEART_HALF, gamePanel.tileSize, gamePanel.tileSize);
     image3 = setup(HEART_BLANK, gamePanel.tileSize, gamePanel.tileSize);
 
+  }
+
+  @Override
+  public void use(GameEntity entity) {
+    gamePanel.playSoundEffect(2);
+    gamePanel.ui.addMessage("Life +" + value);
+    entity.currentLife += value;
   }
 }

@@ -7,6 +7,9 @@ import java.util.Random;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.entity.object.BronzeCoinObject;
+import org.example.entity.object.HeartObject;
+import org.example.entity.object.ManaCrystalObject;
 import org.example.entity.object.RockObject;
 import org.example.enums.DirectionType;
 import org.example.enums.MonsterObjectType;
@@ -44,6 +47,17 @@ public class GreenSlime extends GameEntity {
     left2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
     right1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
     right2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+  }
+
+  @Override
+  public void checkDrop() {
+    int percentForDrop = new Random().nextInt(100) + 1;
+
+    if (percentForDrop < 50)
+      dropItem(new BronzeCoinObject(gamePanel));
+    else if (percentForDrop < 75)
+      dropItem(new HeartObject(gamePanel));
+    else dropItem(new ManaCrystalObject(gamePanel));
   }
 
   @Override

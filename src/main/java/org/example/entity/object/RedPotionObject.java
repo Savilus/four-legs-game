@@ -25,10 +25,7 @@ public class RedPotionObject extends GameEntity {
     gamePanel.gameState = GameStateType.DIALOG_STATE;
     gamePanel.ui.currentDialogue = "You drink the " + name + "!\n" +
         "You feel much better!";
-
     gameEntity.currentLife += healingValue;
-    if (gamePanel.player.currentLife > gamePanel.player.maxLife)
-      gamePanel.player.currentLife = gamePanel.player.maxLife;
     gamePanel.playSoundEffect(2);
   }
 }
