@@ -5,13 +5,24 @@ import static org.example.config.GameEntityNameFactory.MANA_CRYSTAL_FULL;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.WorldGameTypes;
 
 public class ManaCrystalObject extends GameEntity {
 
   public ManaCrystalObject(GamePanel gamePanel) {
     super(gamePanel);
+    type = WorldGameTypes.PICK_UP;
     name = "Mana Crystal";
+    value = 1;
+    down1 = setup(MANA_CRYSTAL_FULL, gamePanel.tileSize, gamePanel.tileSize);
     image = setup(MANA_CRYSTAL_FULL, gamePanel.tileSize, gamePanel.tileSize);
     image2 = setup(MANA_CRYSTAL_BLANK, gamePanel.tileSize, gamePanel.tileSize);
+  }
+
+  @Override
+  public void use(GameEntity entity) {
+    gamePanel.playSoundEffect(2);
+    gamePanel.ui.addMessage("Mana +" + value);
+    entity.mana += value;
   }
 }

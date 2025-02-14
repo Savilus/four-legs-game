@@ -142,6 +142,8 @@ public class GameEntityNameFactory {
   public static String AXE;
   @YamlValue("items.images.redPotion")
   public static String RED_POTION;
+  @YamlValue("items.images.bronzeCoin")
+  public static String BRONZE_COIN;
 
   // TILES IMAGES
   @YamlValue("world.tile.images.grass.0")

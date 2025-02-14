@@ -63,6 +63,7 @@ items:
     axe: /objects/axe.png
     blueShield: /objects/shield_blue.png
     redPotion: /objects/potion_red.png
+    bronzeCoin: /objects/coin_bronze.png
 
 ui:
   images:
