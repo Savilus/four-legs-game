@@ -75,6 +75,10 @@ ui:
 
 world:
   mapPath: /maps/worldV2.txt
+  interactiveTiles:
+    images:
+      dryTree: /interactiveTiles/drytree.png
+      trunk: /interactiveTiles/trunk.png
   tile:
     images:
       water:
@@ -130,6 +134,7 @@ sound:
     levelUp: /sound/levelup.wav
     cursor: /sound/cursor.wav
     fireballShoot: /sound/burning.wav
+    cutTree: /sound/cuttree.wav
 
 projectile:
   fireball:

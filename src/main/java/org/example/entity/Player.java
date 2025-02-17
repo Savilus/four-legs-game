@@ -126,6 +126,9 @@ public class Player extends GameEntity {
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
       detectMonsterContact(monsterIndex);
 
+      // CHECK INTERACTIVE TILE COLLISION
+      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.interactiveTiles);
+
       // CHECK EVENT
       gamePanel.eventHandler.checkEvent();
 
@@ -221,6 +224,9 @@ public class Player extends GameEntity {
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
       damageMonster(monsterIndex, attack);
 
+      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.interactiveTiles);
+      damageInteractiveTile(interactiveTileIndex);
+
       worldX = currentWorldX;
       worldY = currentWorldY;
       solidArea.width = currentSolidAreaWidth;
@@ -229,6 +235,21 @@ public class Player extends GameEntity {
       spriteNum = 1;
       spriteCounter = 0;
       attacking = false;
+    }
+  }
+
+  private void damageInteractiveTile(int interactiveTileIndex) {
+
+    if (interactiveTileIndex != 999 && gamePanel.interactiveTiles[interactiveTileIndex].destructible
+        && gamePanel.interactiveTiles[interactiveTileIndex].isCorrectItem(this) && !gamePanel.interactiveTiles[interactiveTileIndex].invincible) {
+      gamePanel.interactiveTiles[interactiveTileIndex].playSoundEffect();
+      gamePanel.interactiveTiles[interactiveTileIndex].currentLife--;
+      gamePanel.interactiveTiles[interactiveTileIndex].invincible = true;
+
+      generateParticle(gamePanel.interactiveTiles[interactiveTileIndex], gamePanel.interactiveTiles[interactiveTileIndex]);
+
+      if (gamePanel.interactiveTiles[interactiveTileIndex].currentLife <= 0)
+        gamePanel.interactiveTiles[interactiveTileIndex] = gamePanel.interactiveTiles[interactiveTileIndex].getDestroyedForm();
     }
   }
 

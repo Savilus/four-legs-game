@@ -12,6 +12,7 @@ import javax.swing.*;
 
 import org.example.entity.GameEntity;
 import org.example.entity.Player;
+import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.enums.GameStateType;
 import org.example.tile.TileManager;
 import org.example.utils.AssetSetter;
@@ -53,6 +54,8 @@ public class GamePanel extends JPanel implements Runnable {
   public GameEntity[] obj = new GameEntity[20];
   public GameEntity[] npc = new GameEntity[10];
   public GameEntity[] monsters = new GameEntity[20];
+  public InteractiveTile[] interactiveTiles = new InteractiveTile[50];
+  public ArrayList<GameEntity> particleList = new ArrayList<>();
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
   public ArrayList<GameEntity> projectiles = new ArrayList<>();
 
@@ -104,11 +107,27 @@ public class GamePanel extends JPanel implements Runnable {
           projectiles.remove(projectileIndex);
       }
     }
+
+    for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
+      if (interactiveTiles[objIndex] != null) {
+        interactiveTiles[objIndex].update();
+      }
+    }
+
+    for (int particleIndex = 0; particleIndex < particleList.size(); particleIndex++) {
+      if (particleList.get(particleIndex) != null) {
+        if (particleList.get(particleIndex).alive)
+          particleList.get(particleIndex).update();
+        else
+          particleList.remove(particleIndex);
+      }
+    }
   }
 
   public void setupGame() {
     assetSetter.setNPC();
     assetSetter.setObject();
+    assetSetter.setInteractiveTiles();
     assetSetter.setMonster();
   }
 
@@ -117,6 +136,7 @@ public class GamePanel extends JPanel implements Runnable {
 //    music.play();
 //    music.loop();
   }
+
 
   public void stopMusic() {
     music.stop();
@@ -137,6 +157,13 @@ public class GamePanel extends JPanel implements Runnable {
       ui.draw(graphic2d);
     } else {
       tileManager.draw(graphic2d);
+      // INTERACTIVE TILE
+      for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
+        if (interactiveTiles[objIndex] != null) {
+          interactiveTiles[objIndex].draw(graphic2d);
+        }
+      }
+
       gameObjects.add(player);
       // ADD ENTITY TO THE LIST
       for (GameEntity npc : npc) {
@@ -160,6 +187,12 @@ public class GamePanel extends JPanel implements Runnable {
       for (GameEntity projectile : projectiles) {
         if (projectile != null) {
           gameObjects.add(projectile);
+        }
+      }
+
+      for (GameEntity particle : particleList) {
+        if (particle != null) {
+          gameObjects.add(particle);
         }
       }
 

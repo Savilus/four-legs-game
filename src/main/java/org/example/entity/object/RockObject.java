@@ -2,6 +2,8 @@ package org.example.entity.object;
 
 import static org.example.config.GameEntityNameFactory.ROCK_ATTACK;
 
+import java.awt.*;
+
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.entity.Projectile;
@@ -30,6 +32,23 @@ public class RockObject extends Projectile {
     left2 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
     right1 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
     right2 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
+  }
+
+  @Override
+  public Color getParticleColor() {
+    return new Color(40, 50, 0);
+  }
+  @Override
+  public int getParticleSize() {
+    return 10;  // 6 pixels
+  }
+  @Override
+  public int getParticleSpeed() {
+    return 1;
+  }
+  @Override
+  public int getParticleMaxLife() {
+    return 20;
   }
 
   @Override
