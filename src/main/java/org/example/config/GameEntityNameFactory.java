@@ -145,6 +145,13 @@ public class GameEntityNameFactory {
   @YamlValue("items.images.bronzeCoin")
   public static String BRONZE_COIN;
 
+  // INTERACTIVE TILES
+  @YamlValue("world.interactiveTiles.images.dryTree")
+  public static String DRY_TREE;
+  @YamlValue("world.interactiveTiles.images.trunk")
+  public static String TRUNK;
+
+
   // TILES IMAGES
   @YamlValue("world.tile.images.grass.0")
   public static String GRASS0;
@@ -252,6 +259,8 @@ public class GameEntityNameFactory {
   public static String CURSOR;
   @YamlValue("sound.path.fireballShoot")
   public static String FIREBALL_SOUND;
+  @YamlValue("sound.path.cutTree")
+  public static String CUT_TREE;
 
   // FONT
   @YamlValue("font.maruMonica")

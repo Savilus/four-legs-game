@@ -118,6 +118,7 @@ public abstract class GameEntity {
     gamePanel.collisionDetector.checkObject(this, false);
     gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
     gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.interactiveTiles);
     boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
 
     if (this.type == WorldGameTypes.MONSTER && contactPlayer && !gamePanel.player.invincible) {
@@ -242,6 +243,38 @@ public abstract class GameEntity {
         break;
       }
     }
+  }
+
+  public Color getParticleColor() {
+    return Color.WHITE;
+  }
+
+  public int getParticleSize() {
+    return 0;
+  }
+
+  public int getParticleSpeed() {
+    return 0;
+  }
+
+  public int getParticleMaxLife() {
+    return 0;
+  }
+
+  public void generateParticle(GameEntity generator, GameEntity target){
+    Color color = generator.getParticleColor();
+    int size = generator.getParticleSize();
+    int speed = generator.getParticleSpeed();
+    int maxLife = generator.getParticleMaxLife();
+
+    Particle particle1 = new Particle(gamePanel, target, color, size, speed, maxLife, -2, -1);
+    Particle particle2 = new Particle(gamePanel, target, color, size, speed, maxLife, 2, -1);
+    Particle particle3 = new Particle(gamePanel, target, color, size, speed, maxLife, -2, 1);
+    Particle particle4 = new Particle(gamePanel, target, color, size, speed, maxLife, 2, 1);
+    gamePanel.particleList.add(particle1);
+    gamePanel.particleList.add(particle2);
+    gamePanel.particleList.add(particle3);
+    gamePanel.particleList.add(particle4);
   }
 
   public void damagePlayer(int attack) {

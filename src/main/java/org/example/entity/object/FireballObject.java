@@ -9,6 +9,8 @@ import static org.example.config.GameEntityNameFactory.FIREBALL_RIGHT2;
 import static org.example.config.GameEntityNameFactory.FIREBALL_UP1;
 import static org.example.config.GameEntityNameFactory.FIREBALL_UP2;
 
+import java.awt.*;
+
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.entity.Projectile;
@@ -37,6 +39,23 @@ public class FireballObject extends Projectile {
       left2 = setup(FIREBALL_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
       right1 = setup(FIREBALL_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
       right2 = setup(FIREBALL_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+  }
+
+  @Override
+  public Color getParticleColor() {
+    return new Color(240, 50, 0);
+  }
+  @Override
+  public int getParticleSize() {
+    return 10;  // 6 pixels
+  }
+  @Override
+  public int getParticleSpeed() {
+    return 1;
+  }
+  @Override
+  public int getParticleMaxLife() {
+    return 20;
   }
 
   @Override

@@ -2,6 +2,7 @@ package org.example.utils;
 
 import org.example.GamePanel;
 import org.example.entity.NPC;
+import org.example.entity.interactiveTile.DryTreeInteractive;
 import org.example.entity.monster.GreenSlime;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.BlueShieldObject;
@@ -82,5 +83,22 @@ public class AssetSetter {
     gamePanel.monsters[i] = new GreenSlime(gamePanel);
     gamePanel.monsters[i].worldX = gamePanel.tileSize * 38;
     gamePanel.monsters[i].worldY = gamePanel.tileSize * 42;
+  }
+
+  public void setInteractiveTiles() {
+    int i = 0;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 27, 12);
+    i++;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 28, 12);
+    i++;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 29, 12);
+    i++;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 30, 12);
+    i++;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 31, 12);
+    i++;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 32, 12);
+    i++;
+    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 33, 12);
   }
 }

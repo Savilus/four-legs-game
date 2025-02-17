@@ -30,12 +30,14 @@ public abstract class Projectile extends GameEntity {
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
       if (monsterIndex != 999) {
         gamePanel.player.damageMonster(monsterIndex, attack);
+        generateParticle(owner.projectile, gamePanel.monsters[monsterIndex]);
         alive = false;
       }
     } else {
       boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
       if (!gamePanel.player.invincible && contactPlayer) {
         damagePlayer(attackValue);
+        generateParticle(owner.projectile, gamePanel.player);
         alive = false;
       }
     }
