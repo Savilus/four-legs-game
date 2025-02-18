@@ -1,10 +1,12 @@
 package org.example;
 
+import static org.example.Main.window;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
 import static org.example.enums.GameStateType.TITLE_STATE;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -28,14 +30,19 @@ public class GamePanel extends JPanel implements Runnable {
   final int scale = 3;
 
   public final int tileSize = originalTitleSize * scale; // 48 x 48 tile
-  public final int maxScreenColumn = 16;
+  public final int maxScreenColumn = 20;
   public final int maxScreenRow = 12;
-  public final int screenWidth = tileSize * maxScreenColumn; // 768 pixels
+  public final int screenWidth = tileSize * maxScreenColumn; // 960 pixels
   public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
   // WORLD SETTINGS
   public final int maxWorldCol = 50;
   public final int maxWorldRow = 50;
+  // FOR FULL SCREEN
+  int screenWidthFull = screenWidth;
+  int screenHeightFull = screenHeight;
+  BufferedImage tempScreen;
+  Graphics2D tempGraphic2d;
 
   static final int FPS = 60;
   // SYSTEM
@@ -129,6 +136,12 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setObject();
     assetSetter.setInteractiveTiles();
     assetSetter.setMonster();
+
+    tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+    tempGraphic2d = (Graphics2D) tempScreen.getGraphics();
+
+    // ENABLE FULL SCREEN
+//    setFullScreen();
   }
 
   public void playMusic(int soundIndex) {
@@ -147,20 +160,32 @@ public class GamePanel extends JPanel implements Runnable {
     soundEffect.play();
   }
 
-  @Override
-  public void paintComponent(Graphics g) {
-    super.paintComponent(g);
+  public void setFullScreen() {
+    // GET LOCAL SCREEN DEVICE
+    var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    var graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+    graphicsDevice.setFullScreenWindow(window);
 
-    Graphics2D graphic2d = (Graphics2D) g;
+    // GET FULL SCREEN WIDTH AND HEIGHT
+    screenWidthFull = window.getWidth();
+    screenHeightFull = window.getHeight();
+  }
 
+  public void drawToScreen() {
+    var screenGraphics = getGraphics();
+    screenGraphics.drawImage(tempScreen, 0, 0, screenWidthFull, screenHeightFull, null);
+    screenGraphics.dispose();
+  }
+
+  public void drawToTempScreen() {
     if (gameState == TITLE_STATE) {
-      ui.draw(graphic2d);
+      ui.draw(tempGraphic2d);
     } else {
-      tileManager.draw(graphic2d);
+      tileManager.draw(tempGraphic2d);
       // INTERACTIVE TILE
       for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
         if (interactiveTiles[objIndex] != null) {
-          interactiveTiles[objIndex].draw(graphic2d);
+          interactiveTiles[objIndex].draw(tempGraphic2d);
         }
       }
 
@@ -201,34 +226,32 @@ public class GamePanel extends JPanel implements Runnable {
 
       // DRAW ENTITIES
       for (GameEntity gameObject : gameObjects) {
-        gameObject.draw(graphic2d);
+        gameObject.draw(tempGraphic2d);
       }
 
       // EMPLTY ENTITY LIST
       gameObjects.clear();
 
-      ui.draw(graphic2d);
+      ui.draw(tempGraphic2d);
     }
 
     //DEBUG
     if (keyHandler.showDebugText) {
 
-      graphic2d.setFont(new Font("Arial", Font.PLAIN, 20));
-      graphic2d.setColor(Color.WHITE);
+      tempGraphic2d.setFont(new Font("Arial", Font.PLAIN, 20));
+      tempGraphic2d.setColor(Color.WHITE);
       int x = 10;
       int y = 400;
       int lineHeight = 20;
 
-      graphic2d.drawString("WorldX -> " + player.worldX, x, y);
+      tempGraphic2d.drawString("WorldX -> " + player.worldX, x, y);
       y += lineHeight;
-      graphic2d.drawString("WorldY ->" + player.worldY, x, y);
+      tempGraphic2d.drawString("WorldY ->" + player.worldY, x, y);
       y += lineHeight;
-      graphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / tileSize, x, y);
+      tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / tileSize, x, y);
       y += lineHeight;
-      graphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+      tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / tileSize, x, y);
     }
-
-    graphic2d.dispose();
   }
 
   @Override
@@ -250,7 +273,8 @@ public class GamePanel extends JPanel implements Runnable {
 
       if (delta >= 1) {
         update();
-        repaint();
+        drawToTempScreen(); // draw everything to the buffered image
+        drawToScreen(); // draw the buffered image to the screen
         delta--;
         drawCount++;
       }

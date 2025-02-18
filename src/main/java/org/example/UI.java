@@ -87,7 +87,7 @@ public class UI {
 
   private void drawInventory() {
     // FRAME
-    int frameX = gamePanel.tileSize * 9;
+    int frameX = gamePanel.tileSize * 12;
     int frameY = gamePanel.tileSize;
     int frameWidth = gamePanel.tileSize * 6;
     int frameHeight = gamePanel.tileSize * 5;
@@ -184,7 +184,7 @@ public class UI {
 
   private void drawCharacterScreen() {
     // CREATE A FRAME
-    final int frameX = gamePanel.tileSize;
+    final int frameX = gamePanel.tileSize*2;
     final int frameY = gamePanel.tileSize;
     final int frameWidth = gamePanel.tileSize * 6;
     final int frameHeight = gamePanel.tileSize * 10;
