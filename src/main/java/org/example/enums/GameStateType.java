@@ -11,7 +11,8 @@ public enum GameStateType {
   PLAY_STATE("playState"),
   PAUSE_STATE("pauseState"),
   DIALOG_STATE("dialogState"),
-  CHARACTER_STATE("characterState");
+  CHARACTER_STATE("characterState"),
+  OPTIONS_STATE("optionsState");
 
   private final String name;
 

@@ -19,11 +19,15 @@ import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class Sound {
 
   Clip clip;
   URL[] soundUrl = new URL[30];
+  FloatControl floatControl;
+  public int volumeScale = 3;
+  float volume;
 
   public Sound() {
     soundUrl[0] = Objects.requireNonNull(getClass().getResource(BACKGROUND_SONG));
@@ -45,6 +49,8 @@ public class Sound {
       AudioInputStream audio = AudioSystem.getAudioInputStream(soundUrl[i]);
       clip = AudioSystem.getClip();
       clip.open(audio);
+      floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+      checkVolume();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -60,5 +66,18 @@ public class Sound {
 
   public void stop() {
     clip.stop();
+  }
+
+  public void checkVolume() {
+    switch (volumeScale) {
+      case 0 -> volume = -80f;
+      case 1 -> volume = -20f;
+      case 2 -> volume = -12f;
+      case 3 -> volume = -5f;
+      case 4 -> volume = 1f;
+      case 5 -> volume = 6f;
+    }
+
+    floatControl.setValue(volume);
   }
 }

@@ -43,13 +43,14 @@ public class GamePanel extends JPanel implements Runnable {
   int screenHeightFull = screenHeight;
   BufferedImage tempScreen;
   Graphics2D tempGraphic2d;
+  public boolean fullScreenOn = false;
 
   static final int FPS = 60;
   // SYSTEM
   public TileManager tileManager = new TileManager(this);
   public KeyHandler keyHandler = new KeyHandler(this);
-  Sound music = new Sound();
-  Sound soundEffect = new Sound();
+  public Sound music = new Sound();
+  public Sound soundEffect = new Sound();
   public CollisionDetector collisionDetector = new CollisionDetector(this);
   public AssetSetter assetSetter = new AssetSetter(this);
   Thread gameThread;
@@ -146,8 +147,8 @@ public class GamePanel extends JPanel implements Runnable {
 
   public void playMusic(int soundIndex) {
     music.setFile(soundIndex);
-//    music.play();
-//    music.loop();
+    music.play();
+    music.loop();
   }
 
 
