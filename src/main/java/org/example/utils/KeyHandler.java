@@ -3,6 +3,7 @@ package org.example.utils;
 import static org.example.config.GameEntityNameFactory.MAP_PATH;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
 import static org.example.enums.GameStateType.DIALOG_STATE;
+import static org.example.enums.GameStateType.OPTIONS_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
 import static org.example.enums.GameStateType.TITLE_STATE;
@@ -72,6 +73,7 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_ENTER -> enterPressed = true;
       case KeyEvent.VK_C -> gamePanel.gameState = CHARACTER_STATE;
       case KeyEvent.VK_F -> shotKeyPressed = true;
+      case KeyEvent.VK_ESCAPE -> gamePanel.gameState = OPTIONS_STATE;
       //DEBUG
       case KeyEvent.VK_T -> showDebugText = !showDebugText;
       //REFRESH MAP
@@ -88,25 +90,25 @@ public class KeyHandler implements KeyListener {
   public void characterState(int code) {
     switch (code) {
       case KeyEvent.VK_C -> gamePanel.gameState = PLAY_STATE;
-      case KeyEvent.VK_W -> {
+      case KeyEvent.VK_W, KeyEvent.VK_UP-> {
         if (gamePanel.ui.slotRow != 0) {
           gamePanel.ui.slotRow--;
           gamePanel.playSoundEffect(9);
         }
       }
-      case KeyEvent.VK_A -> {
+      case KeyEvent.VK_A, KeyEvent.VK_LEFT-> {
         if (gamePanel.ui.slotCol != 0) {
           gamePanel.ui.slotCol--;
           gamePanel.playSoundEffect(9);
         }
       }
-      case KeyEvent.VK_S -> {
+      case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
         if (gamePanel.ui.slotRow != 3) {
           gamePanel.ui.slotRow++;
           gamePanel.playSoundEffect(9);
         }
       }
-      case KeyEvent.VK_D -> {
+      case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
         if (gamePanel.ui.slotCol != 4) {
           gamePanel.ui.slotCol++;
           gamePanel.playSoundEffect(9);
@@ -125,16 +127,69 @@ public class KeyHandler implements KeyListener {
   public void keyPressed(KeyEvent keyEvent) {
     int code = keyEvent.getKeyCode();
 
-    if (PLAY_STATE == gamePanel.gameState) {
-      playState(code);
-    } else if (PAUSE_STATE == gamePanel.gameState) {
-      pauseState(code);
-    } else if (DIALOG_STATE == gamePanel.gameState) {
-      dialogState(code);
-    } else if (TITLE_STATE == gamePanel.gameState) {
-      titleState(code);
-    } else if (CHARACTER_STATE == gamePanel.gameState) {
-      characterState(code);
+    switch (gamePanel.gameState) {
+      case PLAY_STATE -> playState(code);
+      case PAUSE_STATE -> pauseState(code);
+      case DIALOG_STATE -> dialogState(code);
+      case TITLE_STATE -> titleState(code);
+      case CHARACTER_STATE -> characterState(code);
+      case OPTIONS_STATE -> optionState(code);
+    }
+  }
+
+  private void optionState(int code) {
+    int maxCommandNum = 0;
+    switch (gamePanel.ui.subState) {
+      case 0 -> maxCommandNum = 5;
+      case 3 -> maxCommandNum = 1;
+    }
+    switch (code) {
+      case KeyEvent.VK_ESCAPE -> gamePanel.gameState = PLAY_STATE;
+      case KeyEvent.VK_ENTER -> enterPressed = true;
+      case KeyEvent.VK_W -> {
+        gamePanel.ui.commandNum--;
+        gamePanel.playSoundEffect(9);
+        if (gamePanel.ui.commandNum < 0) {
+          gamePanel.ui.commandNum = maxCommandNum;
+        }
+      }
+      case KeyEvent.VK_S -> {
+        gamePanel.ui.commandNum++;
+        gamePanel.playSoundEffect(9);
+        if (gamePanel.ui.commandNum > maxCommandNum) {
+          gamePanel.ui.commandNum = 0;
+        }
+      }
+      case KeyEvent.VK_A -> {
+        if (gamePanel.ui.subState == 0) {
+          if (gamePanel.ui.commandNum == 1 && gamePanel.music.volumeScale > 0) {
+            gamePanel.music.volumeScale--;
+            gamePanel.music.checkVolume();
+            gamePanel.playSoundEffect(9);
+          }
+        }
+        if (gamePanel.ui.subState == 0) {
+          if (gamePanel.ui.commandNum == 2 && gamePanel.soundEffect.volumeScale > 0) {
+            gamePanel.soundEffect.volumeScale--;
+            gamePanel.playSoundEffect(9);
+          }
+        }
+      }
+      case KeyEvent.VK_D -> {
+        if (gamePanel.ui.subState == 0) {
+          if (gamePanel.ui.commandNum == 1 && gamePanel.music.volumeScale < 5) {
+            gamePanel.music.volumeScale++;
+            gamePanel.music.checkVolume();
+            gamePanel.playSoundEffect(9);
+          }
+        }
+        if (gamePanel.ui.subState == 0) {
+          if (gamePanel.ui.commandNum == 2 && gamePanel.soundEffect.volumeScale < 5) {
+            gamePanel.soundEffect.volumeScale++;
+            gamePanel.playSoundEffect(9);
+          }
+        }
+      }
     }
   }
 
