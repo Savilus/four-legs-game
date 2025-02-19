@@ -25,14 +25,17 @@ public class DryTreeInteractive extends InteractiveTile {
   public Color getParticleColor() {
     return new Color(65, 50, 30);
   }
+
   @Override
   public int getParticleSize() {
     return 6;  // 6 pixels
   }
+
   @Override
   public int getParticleSpeed() {
     return 1;
   }
+
   @Override
   public int getParticleMaxLife() {
     return 20;

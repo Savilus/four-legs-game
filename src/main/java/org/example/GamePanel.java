@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
   public CollisionDetector collisionDetector = new CollisionDetector(this);
   public AssetSetter assetSetter = new AssetSetter(this);
   Thread gameThread;
+  Config config = new Config(this);
   public UI ui = new UI(this);
   public EventHandler eventHandler = new EventHandler(this);
 
@@ -141,8 +142,8 @@ public class GamePanel extends JPanel implements Runnable {
     tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
     tempGraphic2d = (Graphics2D) tempScreen.getGraphics();
 
-    // ENABLE FULL SCREEN
-//    setFullScreen();
+    if (fullScreenOn)
+      setFullScreen();
   }
 
   public void playMusic(int soundIndex) {

@@ -13,7 +13,6 @@ import java.util.Objects;
 import org.example.entity.GameEntity;
 import org.example.entity.object.HeartObject;
 import org.example.entity.object.ManaCrystalObject;
-import org.example.enums.GameStateType;
 
 public class UI {
   private static final String TITLE = "Four Legs";
@@ -101,7 +100,7 @@ public class UI {
 
     // TODO: switch subState for something else
     switch (subState) {
-      case 0 -> optionsTop(frameX, frameY);
+      case 0 -> optionsMainSettings(frameX, frameY);
       case 1 -> optionsFullScreenNotification(frameX, frameY);
       case 2 -> optionsControl(frameX, frameY);
       case 3 -> optionsEndGameConfirmation(frameX, frameY);
@@ -148,7 +147,7 @@ public class UI {
     }
   }
 
-  private void optionsTop(int frameX, int frameY) {
+  private void optionsMainSettings(int frameX, int frameY) {
     int textX;
     int textY;
 
@@ -235,6 +234,8 @@ public class UI {
     graphics2D.drawRect(textX, textY, 120, gamePanel.tileSize / 2);
     volumeWidth = 24 * gamePanel.soundEffect.volumeScale;
     graphics2D.fillRect(textX, textY, volumeWidth, 24);
+
+    gamePanel.config.saveConfig();
   }
 
   public void optionsControl(int frameX, int frameY) {
