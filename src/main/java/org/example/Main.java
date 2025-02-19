@@ -12,10 +12,14 @@ public class Main {
     window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     window.setResizable(false);
     window.setTitle("Four legs");
-//    window.setUndecorated(true);
 
     GamePanel gamePanel = new GamePanel();
     window.add(gamePanel);
+    gamePanel.config.loadConfig();
+
+    if (gamePanel.fullScreenOn) {
+      window.setUndecorated(true);
+    }
 
     window.pack();
 
