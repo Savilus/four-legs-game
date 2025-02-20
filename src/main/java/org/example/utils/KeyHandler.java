@@ -1,5 +1,7 @@
 package org.example.utils;
 
+import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
+import static org.example.config.GameEntityNameFactory.CURSOR;
 import static org.example.config.GameEntityNameFactory.MAP_PATH;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
 import static org.example.enums.GameStateType.OPTIONS_STATE;
@@ -44,7 +46,7 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_ENTER -> {
         if (gamePanel.ui.commandNum == 0) {
           gamePanel.gameState = PLAY_STATE;
-          gamePanel.playMusic(0);
+          gamePanel.playMusic(BACKGROUND_SONG);
         }
         if (gamePanel.ui.commandNum == 1) {
           // LATER
@@ -92,25 +94,25 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_W, KeyEvent.VK_UP -> {
         if (gamePanel.ui.slotRow != 0) {
           gamePanel.ui.slotRow--;
-          gamePanel.playSoundEffect(9);
+          gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
         if (gamePanel.ui.slotCol != 0) {
           gamePanel.ui.slotCol--;
-          gamePanel.playSoundEffect(9);
+          gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
         if (gamePanel.ui.slotRow != 3) {
           gamePanel.ui.slotRow++;
-          gamePanel.playSoundEffect(9);
+          gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
         if (gamePanel.ui.slotCol != 4) {
           gamePanel.ui.slotCol++;
-          gamePanel.playSoundEffect(9);
+          gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_ENTER -> gamePanel.player.selectItem();
@@ -144,14 +146,14 @@ public class KeyHandler implements KeyListener {
         if (gamePanel.ui.commandNum < 0) {
           gamePanel.ui.commandNum = 1;
         }
-        gamePanel.playSoundEffect(9);
+        gamePanel.playSoundEffect(CURSOR);
       }
       case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
         gamePanel.ui.commandNum++;
         if (gamePanel.ui.commandNum > 1) {
           gamePanel.ui.commandNum = 0;
         }
-        gamePanel.playSoundEffect(9);
+        gamePanel.playSoundEffect(CURSOR);
       }
       case KeyEvent.VK_ENTER -> {
         if (gamePanel.ui.commandNum == 0) {
@@ -176,14 +178,14 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_ENTER -> enterPressed = true;
       case KeyEvent.VK_W -> {
         gamePanel.ui.commandNum--;
-        gamePanel.playSoundEffect(9);
+        gamePanel.playSoundEffect(CURSOR);
         if (gamePanel.ui.commandNum < 0) {
           gamePanel.ui.commandNum = maxCommandNum;
         }
       }
       case KeyEvent.VK_S -> {
         gamePanel.ui.commandNum++;
-        gamePanel.playSoundEffect(9);
+        gamePanel.playSoundEffect(CURSOR);
         if (gamePanel.ui.commandNum > maxCommandNum) {
           gamePanel.ui.commandNum = 0;
         }
@@ -193,13 +195,13 @@ public class KeyHandler implements KeyListener {
           if (gamePanel.ui.commandNum == 1 && gamePanel.music.volumeScale > 0) {
             gamePanel.music.volumeScale--;
             gamePanel.music.checkVolume();
-            gamePanel.playSoundEffect(9);
+            gamePanel.playSoundEffect(CURSOR);
           }
         }
         if (gamePanel.ui.subState == 0) {
           if (gamePanel.ui.commandNum == 2 && gamePanel.soundEffect.volumeScale > 0) {
             gamePanel.soundEffect.volumeScale--;
-            gamePanel.playSoundEffect(9);
+            gamePanel.playSoundEffect(CURSOR);
           }
         }
       }
@@ -208,13 +210,13 @@ public class KeyHandler implements KeyListener {
           if (gamePanel.ui.commandNum == 1 && gamePanel.music.volumeScale < 5) {
             gamePanel.music.volumeScale++;
             gamePanel.music.checkVolume();
-            gamePanel.playSoundEffect(9);
+            gamePanel.playSoundEffect(CURSOR);
           }
         }
         if (gamePanel.ui.subState == 0) {
           if (gamePanel.ui.commandNum == 2 && gamePanel.soundEffect.volumeScale < 5) {
             gamePanel.soundEffect.volumeScale++;
-            gamePanel.playSoundEffect(9);
+            gamePanel.playSoundEffect(CURSOR);
           }
         }
       }

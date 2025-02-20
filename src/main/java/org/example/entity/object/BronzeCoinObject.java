@@ -1,6 +1,7 @@
 package org.example.entity.object;
 
 import static org.example.config.GameEntityNameFactory.BRONZE_COIN;
+import static org.example.config.GameEntityNameFactory.COIN;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
@@ -20,7 +21,7 @@ public class BronzeCoinObject extends GameEntity {
 
   @Override
   public void use(GameEntity entity) {
-    gamePanel.playSoundEffect(1);
+    gamePanel.playSoundEffect(COIN);
     gamePanel.ui.addMessage("Coin +" + value);
     gamePanel.player.money += value;
   }

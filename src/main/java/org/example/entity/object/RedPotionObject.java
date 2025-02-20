@@ -1,5 +1,6 @@
 package org.example.entity.object;
 
+import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RED_POTION;
 
 import org.example.GamePanel;
@@ -26,6 +27,6 @@ public class RedPotionObject extends GameEntity {
     gamePanel.ui.currentDialogue = "You drink the " + name + "!\n" +
         "You feel much better!";
     gameEntity.currentLife += healingValue;
-    gamePanel.playSoundEffect(2);
+    gamePanel.playSoundEffect(POWER_UP);
   }
 }

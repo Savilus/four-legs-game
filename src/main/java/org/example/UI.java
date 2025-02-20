@@ -7,6 +7,7 @@ import static org.example.enums.GameStateType.TITLE_STATE;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -14,11 +15,43 @@ import org.example.entity.GameEntity;
 import org.example.entity.object.HeartObject;
 import org.example.entity.object.ManaCrystalObject;
 
+import io.vavr.control.Try;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UI {
+  private static final String END_GAME_QUESTION = "Are you sure you want to \nend the game?";
+  private static final String FULL_SCREEN_NOTIFICATION = "The change will take \neffect after restarting \nthe game.";
+  private static final String CURSOR_SELECTOR = ">";
+  private static final String PLAYER_LIFE_FORMAT = "%s / %s";
+  private static final String PAUSED = "PAUSED";
+  private static final String DEFAULT_FONT = "SansSerif";
   private static final String TITLE = "Four Legs";
   private static final String NEW_GAME = "New Game";
   private static final String LOAD_GAME = "Load game";
+  private static final String END_GAME = "End Game";
+  private static final String GAME_OVER = "Game Over";
+  private static final String RETRY = "Retry";
+  private static final String OPTIONS = "Options";
+  private static final String FULL_SCREEN = "Full screen";
   private static final String QUIT = "Quit";
+  private static final String YES = "Yes";
+  private static final String BACK = "Back";
+  private static final String MUSIC = "Music";
+  private static final String SOUND_EFFECT = "Sound Effect";
+  private static final String NO = "No";
+  private static final String MOVE = "Move";
+  private static final String SHOOT_CAST = "Shoot/Cast";
+  private static final String CONFIRM_ATTACK = "Confirm/Attack";
+  private static final String CHARACTER_SCREEN = "Character Screen";
+  private static final String CONTROL = "Control";
+  private static final String PAUSE = "Pause";
+  private static final String CHARACTER_CONTROL = "WASD";
+  private static final String CONFIRM = "Enter";
+  private static final String PROJECTILE_KEY = "F";
+  private static final String CHARACTER_KEY = "C";
+  private static final String PAUSE_KEY = "P";
+  private static final String CLOSE_KEY = "ESC";
 
   BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank;
   GamePanel gamePanel;
@@ -36,14 +69,13 @@ public class UI {
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    try {
-      var fontInputStream = Objects.requireNonNull(getClass().getResourceAsStream(MARU_MONICA_FONT));
-      maruMonica = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
-      fontInputStream = Objects.requireNonNull(getClass().getResourceAsStream(PURISA_BOLD_FONT));
-      purisaBoldFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    maruMonica = Try.of(() -> loadFont(MARU_MONICA_FONT))
+        .recover(ignored -> getDefaultFont())
+        .get();
+    purisaBoldFont = Try.of(() -> loadFont(PURISA_BOLD_FONT))
+        .recover(ignored -> getDefaultFont())
+        .get();
+
     // CREATE HUD OBJECT
     GameEntity heart = new HeartObject(gamePanel);
     heartFull = heart.image;
@@ -93,35 +125,31 @@ public class UI {
     graphics2D.setColor(new Color(0, 0, 0, 150));
     graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
 
-    String text = "Game Over";
     // SHADOW
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 110F));
     graphics2D.setColor(Color.BLACK);
-    int x = getXForCenteredText(text);
+    int x = getXForCenteredText(GAME_OVER);
     int y = gamePanel.tileSize * 4;
-    graphics2D.drawString(text, x, y);
+    graphics2D.drawString(GAME_OVER, x, y);
 
     // MAIN
     graphics2D.setColor(Color.WHITE);
-    graphics2D.drawString(text, x - 4, y - 4);
+    graphics2D.drawString(GAME_OVER, x - 4, y - 4);
 
     // RETRY
     graphics2D.setFont(graphics2D.getFont().deriveFont(50F));
-    text = "Retry";
-    x = getXForCenteredText(text);
+    x = getXForCenteredText(RETRY);
     y += gamePanel.tileSize * 4;
-    graphics2D.drawString(text, x, y);
+    graphics2D.drawString(RETRY, x, y);
     if (commandNum == 0)
-      graphics2D.drawString(">", x - 40, y);
-
+      graphics2D.drawString(CURSOR_SELECTOR, x - 40, y);
 
     // BACK TO TITLE SCREEN
-    text = "Quit";
-    x = getXForCenteredText(text);
+    x = getXForCenteredText(QUIT);
     y += 55;
-    graphics2D.drawString(text, x, y);
+    graphics2D.drawString(QUIT, x, y);
     if (commandNum == 1)
-      graphics2D.drawString(">", x - 40, y);
+      graphics2D.drawString(CURSOR_SELECTOR, x - 40, y);
   }
 
   private void drawOptionsScreen() {
@@ -150,20 +178,17 @@ public class UI {
     int textX = frameX + gamePanel.tileSize;
     int textY = frameY + gamePanel.tileSize * 3;
 
-    currentDialogue = "Are you sure you want to \nend the game?";
-
-    for (String line : currentDialogue.split("\n")) {
+    for (String line : END_GAME_QUESTION.split("\n")) {
       graphics2D.drawString(line, textX, textY);
       textY += 40;
     }
 
     // YES OPTION
-    String text = "Yes";
-    textX = getXForCenteredText(text);
+    textX = getXForCenteredText(YES);
     textY += gamePanel.tileSize * 3;
-    graphics2D.drawString(text, textX, textY);
+    graphics2D.drawString(YES, textX, textY);
     if (commandNum == 0) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         subState = 0;
         gamePanel.gameState = TITLE_STATE;
@@ -171,12 +196,11 @@ public class UI {
     }
 
     // NO OPTION
-    text = "No";
-    textX = getXForCenteredText(text);
+    textX = getXForCenteredText(NO);
     textY += gamePanel.tileSize;
-    graphics2D.drawString(text, textX, textY);
+    graphics2D.drawString(NO, textX, textY);
     if (commandNum == 1) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         subState = 0;
         commandNum = 4;
@@ -189,40 +213,38 @@ public class UI {
     int textY;
 
     // TITLE
-    String title = "Options";
-    textX = getXForCenteredText(title);
+    textX = getXForCenteredText(OPTIONS);
     textY = frameY + gamePanel.tileSize;
-    graphics2D.drawString(title, textX, textY);
+    graphics2D.drawString(OPTIONS, textX, textY);
 
     // FULL SCREEN ON/OFF
     textX = frameX + gamePanel.tileSize;
     textY += gamePanel.tileSize * 2;
-    graphics2D.drawString("Full screen", textX, textY);
+    graphics2D.drawString(FULL_SCREEN, textX, textY);
     if (commandNum == 0) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         gamePanel.fullScreenOn = !gamePanel.fullScreenOn;
         subState = 1;
       }
     }
 
-
     // MUSIC
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Music", textX, textY);
+    graphics2D.drawString(MUSIC, textX, textY);
     if (commandNum == 1)
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
 
     // SE
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Sound Effect", textX, textY);
+    graphics2D.drawString(SOUND_EFFECT, textX, textY);
     if (commandNum == 2)
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
     // CONTROL
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Control", textX, textY);
+    graphics2D.drawString(CONTROL, textX, textY);
     if (commandNum == 3) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         subState = 2;
         commandNum = 0;
@@ -231,9 +253,9 @@ public class UI {
 
     // END GAME
     textY += gamePanel.tileSize;
-    graphics2D.drawString("End Game", textX, textY);
+    graphics2D.drawString(END_GAME, textX, textY);
     if (commandNum == 4) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         subState = 3;
         commandNum = 0;
@@ -242,9 +264,9 @@ public class UI {
     }
     // BACK
     textY += gamePanel.tileSize * 2;
-    graphics2D.drawString("Back", textX, textY);
+    graphics2D.drawString(BACK, textX, textY);
     if (commandNum == 5) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         gamePanel.gameState = PLAY_STATE;
         commandNum = 0;
@@ -276,59 +298,56 @@ public class UI {
   }
 
   public void optionsControl(int frameX, int frameY) {
-
     int textX;
     int textY;
 
-    String text = "Control";
-    textX = getXForCenteredText(text);
+    textX = getXForCenteredText(CONTROL);
     textY = frameY + gamePanel.tileSize;
-    graphics2D.drawString(text, textX, textY);
+    graphics2D.drawString(CONTROL, textX, textY);
 
     textX = frameX + gamePanel.tileSize;
     textY += gamePanel.tileSize;
 
-    graphics2D.drawString("Move", textX, textY);
+    graphics2D.drawString(MOVE, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Confirm/Attack", textX, textY);
+    graphics2D.drawString(CONFIRM_ATTACK, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Shoot/Cast", textX, textY);
+    graphics2D.drawString(SHOOT_CAST, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Character Screen", textX, textY);
+    graphics2D.drawString(CHARACTER_SCREEN, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Pause", textX, textY);
+    graphics2D.drawString(PAUSE, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("Options", textX, textY);
+    graphics2D.drawString(OPTIONS, textX, textY);
 
     textX = frameX + gamePanel.tileSize * 6;
     textY = frameY + gamePanel.tileSize * 2;
 
-    graphics2D.drawString("WASD", textX, textY);
+    graphics2D.drawString(CHARACTER_CONTROL, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("ENTER", textX, textY);
+    graphics2D.drawString(CONFIRM, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("F", textX, textY);
+    graphics2D.drawString(PROJECTILE_KEY, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("C", textX, textY);
+    graphics2D.drawString(CHARACTER_KEY, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("P", textX, textY);
+    graphics2D.drawString(PAUSE_KEY, textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString("ESC", textX, textY);
+    graphics2D.drawString(CLOSE_KEY, textX, textY);
     textY += gamePanel.tileSize;
 
     // BACK
     textX = frameX + gamePanel.tileSize;
     textY = frameY + gamePanel.tileSize * 9;
-    graphics2D.drawString("Back", textX, textY);
+    graphics2D.drawString(BACK, textX, textY);
 
     if (commandNum == 0) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         subState = 0;
         commandNum = 3;
       }
     }
-
   }
 
   private void drawInventory() {
@@ -407,18 +426,16 @@ public class UI {
     int textX = frameX + gamePanel.tileSize;
     int textY = frameY + gamePanel.tileSize * 3;
 
-    currentDialogue = "The change will take \neffect after restarting \nthe game.";
-
-    for (String line : currentDialogue.split("\n")) {
+    for (String line : FULL_SCREEN_NOTIFICATION.split("\n")) {
       graphics2D.drawString(line, textX, textY);
       textY += 40;
     }
 
     // BACK
     textY = frameY + gamePanel.tileSize * 9;
-    graphics2D.drawString("Back", textX, textY);
+    graphics2D.drawString(BACK, textX, textY);
     if (commandNum == 0) {
-      graphics2D.drawString(">", textX - 25, textY);
+      graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
         subState = 0;
       }
@@ -500,45 +517,37 @@ public class UI {
     graphics2D.drawString(value, textX, textY);
     textY += lineHeight;
 
-    // TODO: use String.format
-    value = gamePanel.player.currentLife + "/" + gamePanel.player.maxLife;
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    String playerLife = String.format(PLAYER_LIFE_FORMAT, gamePanel.player.currentLife, gamePanel.player.maxLife);
+    textX = getXForAlignTextToRight(playerLife, tailX);
+    graphics2D.drawString(playerLife, textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.strength);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.strength), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.strength), textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.dexterity);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.dexterity), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.dexterity), textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.attack);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.attack), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.attack), textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.defense);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.defense), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.defense), textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.exp);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.exp), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.exp), textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.nextLevelExp);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.nextLevelExp), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.nextLevelExp), textX, textY);
     textY += lineHeight;
 
-    value = String.valueOf(gamePanel.player.money);
-    textX = getXForAlignTextToRight(value, tailX);
-    graphics2D.drawString(value, textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.player.money), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.player.money), textX, textY);
     textY += lineHeight;
 
     graphics2D.drawImage(gamePanel.player.currentWeapon.down1, tailX - gamePanel.tileSize, textY - 14, null);
@@ -619,21 +628,21 @@ public class UI {
     y += gamePanel.tileSize * 3;
     graphics2D.drawString(NEW_GAME, x, y);
     if (commandNum == 0) {
-      graphics2D.drawString(">", x - gamePanel.tileSize, y);
+      graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
     }
 
     x = getXForCenteredText(LOAD_GAME);
     y += gamePanel.tileSize;
     graphics2D.drawString(LOAD_GAME, x, y);
     if (commandNum == 1) {
-      graphics2D.drawString(">", x - gamePanel.tileSize, y);
+      graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
     }
 
     x = getXForCenteredText(QUIT);
     y += gamePanel.tileSize;
     graphics2D.drawString(QUIT, x, y);
     if (commandNum == 2) {
-      graphics2D.drawString(">", x - gamePanel.tileSize, y);
+      graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
     }
   }
 
@@ -653,7 +662,6 @@ public class UI {
       graphics2D.drawString(line, x, y);
       y += 40;
     }
-
   }
 
   private void drawSubWindow(int x, int y, int width, int height) {
@@ -667,7 +675,7 @@ public class UI {
   }
 
   private void drawPauseScreen() {
-    String text = "PAUSED";
+    String text = PAUSED;
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, 80F));
     int x = getXForCenteredText(text);
     int length = (int) graphics2D.getFontMetrics().getStringBounds(text, graphics2D).getWidth();
@@ -685,5 +693,16 @@ public class UI {
   private int getXForAlignTextToRight(String text, int tailX) {
     int length = (int) graphics2D.getFontMetrics().getStringBounds(text, graphics2D).getWidth();
     return tailX - length;
+  }
+
+  private Font loadFont(String fontPath) throws Exception {
+    try (InputStream fontInputStream = Objects.requireNonNull(getClass().getResourceAsStream(fontPath))) {
+      return Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
+    }
+  }
+
+  private Font getDefaultFont() {
+    log.info("Loading default system font due to an error.");
+    return new Font(DEFAULT_FONT, Font.PLAIN, 12);
   }
 }

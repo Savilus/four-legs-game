@@ -4,6 +4,7 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 
 public class CollisionDetector {
+  public final static int INIT_INDEX = 999;
 
   GamePanel gamePanel;
 
@@ -61,7 +62,7 @@ public class CollisionDetector {
   }
 
   public int checkObject(GameEntity gameEntity, boolean player) {
-    int index = 999;
+    int index = INIT_INDEX;
 
     for (int i = 0; i < gamePanel.obj.length; i++) {
       if (gamePanel.obj[i] != null) {
@@ -92,7 +93,7 @@ public class CollisionDetector {
 
   // NPC OR MONSTER COLLISION
   public int checkEntity(GameEntity gameEntity, GameEntity[] target) {
-    int index = 999;
+    int index = INIT_INDEX;
 
     for (int i = 0; i < target.length; i++) {
       if (target[i] != null) {

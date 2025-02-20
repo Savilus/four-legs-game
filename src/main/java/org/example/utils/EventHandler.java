@@ -1,10 +1,16 @@
 package org.example.utils;
 
+import static org.example.config.GameEntityNameFactory.POWER_UP;
+import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
+
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 import org.example.enums.GameStateType;
 
 public class EventHandler {
+ private final static String TELEPORT_MESSAGE = "You got teleported!";
+ private final static String HEALING_POOL_MESSAGE = "You dink the water. \n Your life and mana has been recovered.";
+ private final static String DAMAGE_PIT_MESSAGE = "You fall into a pit!";
 
   GamePanel gamePanel;
   EventRect[][] eventRect;
@@ -75,12 +81,11 @@ public class EventHandler {
     return hit;
   }
 
-
   private void damagePit(int col, int row, GameStateType gameState) {
     gamePanel.gameState = gameState;
-    gamePanel.ui.currentDialogue = "You fall into a pit!";
+    gamePanel.ui.currentDialogue = DAMAGE_PIT_MESSAGE;
     gamePanel.player.currentLife -= 1;
-    gamePanel.playSoundEffect(6);
+    gamePanel.playSoundEffect(RECEIVE_DAMAGE);
 //    eventRect[col][row].eventDone = true;
     canTouchEvent = false;
   }
@@ -90,18 +95,17 @@ public class EventHandler {
     if (gamePanel.keyHandler.enterPressed) {
       gamePanel.gameState = gameState;
       gamePanel.player.attackCancled = true;
-      gamePanel.playSoundEffect(2);
-      gamePanel.ui.currentDialogue = "You dink the water. \n Your life and mana has been recovered.";
+      gamePanel.playSoundEffect(POWER_UP);
+      gamePanel.ui.currentDialogue = HEALING_POOL_MESSAGE;
       gamePanel.player.currentLife = gamePanel.player.maxLife;
       gamePanel.player.mana = gamePanel.player.maxMana;
       gamePanel.assetSetter.setMonster();
     }
   }
 
-
   private void teleport(GameStateType gameState) {
     gamePanel.gameState = gameState;
-    gamePanel.ui.currentDialogue = "You got teleported!";
+    gamePanel.ui.currentDialogue = TELEPORT_MESSAGE;
     gamePanel.player.worldX = gamePanel.tileSize * 37;
     gamePanel.player.worldY = gamePanel.tileSize * 10;
 

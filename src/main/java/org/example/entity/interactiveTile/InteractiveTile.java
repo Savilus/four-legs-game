@@ -1,11 +1,9 @@
 package org.example.entity.interactiveTile;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.enums.WorldGameTypes;
 
 public class InteractiveTile extends GameEntity {
 
