@@ -1,12 +1,10 @@
 package org.example.entity.interactiveTile;
 
-import static org.example.config.GameEntityNameFactory.DRY_TREE;
 import static org.example.config.GameEntityNameFactory.TRUNK;
 
 import org.example.GamePanel;
 
-public class TrunkInteractive extends InteractiveTile{
-
+public class TrunkInteractive extends InteractiveTile {
 
   public TrunkInteractive(GamePanel gamePanel, int col, int row) {
     super(gamePanel);

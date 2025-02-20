@@ -24,9 +24,17 @@ import static org.example.config.GameEntityNameFactory.BOY_RIGHT1;
 import static org.example.config.GameEntityNameFactory.BOY_RIGHT2;
 import static org.example.config.GameEntityNameFactory.BOY_UP1;
 import static org.example.config.GameEntityNameFactory.BOY_UP2;
+import static org.example.config.GameEntityNameFactory.COIN;
+import static org.example.config.GameEntityNameFactory.FIREBALL_SOUND;
+import static org.example.config.GameEntityNameFactory.GAME_OVER;
+import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
+import static org.example.config.GameEntityNameFactory.LEVEL_UP;
+import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
+import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
 import static org.example.enums.DirectionType.RIGHT;
 import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.GAME_OVER_STATE;
+import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -41,6 +49,12 @@ import org.example.enums.WorldGameTypes;
 import org.example.utils.KeyHandler;
 
 public class Player extends GameEntity {
+
+  private static final String PICKED_UP = "Picked up %s !";
+  private static final String DAMAGE_UI_MESSAGE =  "%s damage";
+  private static final String KILLED_UI_MESSAGE =  "Killed the %s !";
+  private static final String EXP_UI_MESSAGE =   "%s + Exp!";
+  private static final String INVENTORY_FULL = "Inventory is full!";
 
   KeyHandler keyHandler;
 
@@ -143,7 +157,7 @@ public class Player extends GameEntity {
       }
 
       if (keyHandler.enterPressed && !attackCancled) {
-        gamePanel.playSoundEffect(7);
+        gamePanel.playSoundEffect(SWING_WEAPON);
         attacking = true;
         spriteCounter = 0;
       }
@@ -173,7 +187,7 @@ public class Player extends GameEntity {
 
       gamePanel.projectiles.add(projectile);
       shootAvailableCounter = 0;
-      gamePanel.playSoundEffect(10);
+      gamePanel.playSoundEffect(FIREBALL_SOUND);
     }
 
     if (invincible) {
@@ -198,7 +212,7 @@ public class Player extends GameEntity {
 
     if (currentLife <= 0) {
       gamePanel.gameState = GAME_OVER_STATE;
-      gamePanel.playSoundEffect(12);
+      gamePanel.playSoundEffect(GAME_OVER);
     }
   }
 
@@ -245,7 +259,7 @@ public class Player extends GameEntity {
 
   private void damageInteractiveTile(int interactiveTileIndex) {
 
-    if (interactiveTileIndex != 999 && gamePanel.interactiveTiles[interactiveTileIndex].destructible
+    if (interactiveTileIndex != INIT_INDEX && gamePanel.interactiveTiles[interactiveTileIndex].destructible
         && gamePanel.interactiveTiles[interactiveTileIndex].isCorrectItem(this) && !gamePanel.interactiveTiles[interactiveTileIndex].invincible) {
       gamePanel.interactiveTiles[interactiveTileIndex].playSoundEffect();
       gamePanel.interactiveTiles[interactiveTileIndex].currentLife--;
@@ -259,20 +273,19 @@ public class Player extends GameEntity {
   }
 
   public void damageMonster(int monsterIndex, int attack) {
-    if (monsterIndex != 999 && !gamePanel.monsters[monsterIndex].invincible) {
-      gamePanel.playSoundEffect(5);
+    if (monsterIndex != INIT_INDEX && !gamePanel.monsters[monsterIndex].invincible) {
+      gamePanel.playSoundEffect(HIT_MONSTER);
 
       int damage = Math.max(0, attack - gamePanel.monsters[monsterIndex].defense);
-
       gamePanel.monsters[monsterIndex].currentLife -= damage;
-      gamePanel.ui.addMessage(damage + " damage");
+      gamePanel.ui.addMessage(String.format(DAMAGE_UI_MESSAGE, damage));
       gamePanel.monsters[monsterIndex].invincible = true;
       gamePanel.monsters[monsterIndex].damageReaction();
 
       if (gamePanel.monsters[monsterIndex].currentLife <= 0) {
         gamePanel.monsters[monsterIndex].dying = true;
-        gamePanel.ui.addMessage("Killed the " + gamePanel.monsters[monsterIndex].name + "!");
-        gamePanel.ui.addMessage(gamePanel.monsters[monsterIndex].exp + "+ Exp!");
+        gamePanel.ui.addMessage(String.format(KILLED_UI_MESSAGE, gamePanel.monsters[monsterIndex].name));
+        gamePanel.ui.addMessage(String.format(EXP_UI_MESSAGE, gamePanel.monsters[monsterIndex].exp));
         exp += gamePanel.monsters[monsterIndex].exp;
         checkLevelUp();
       }
@@ -312,7 +325,7 @@ public class Player extends GameEntity {
       dexterity++;
       attack = getAttack();
       defense = getDefense();
-      gamePanel.playSoundEffect(8);
+      gamePanel.playSoundEffect(LEVEL_UP);
       gamePanel.gameState = DIALOG_STATE;
       gamePanel.ui.currentDialogue = "You are level " + level + " now!";
     }
@@ -333,7 +346,7 @@ public class Player extends GameEntity {
   private void interactNPC(int npcIndex) {
 
     if (gamePanel.keyHandler.enterPressed) {
-      if (npcIndex != 999) {
+      if (npcIndex != INIT_INDEX) {
         attackCancled = true;
         gamePanel.gameState = DIALOG_STATE;
         gamePanel.npc[npcIndex].speak();
@@ -385,12 +398,11 @@ public class Player extends GameEntity {
   }
 
   private void detectMonsterContact(int monsterIndex) {
-//    long currentTime = System.currentTimeMillis();
-    if (monsterIndex != 999 && !invincible && !gamePanel.monsters[monsterIndex].dying) {
+    if (monsterIndex != INIT_INDEX && !invincible && !gamePanel.monsters[monsterIndex].dying) {
 
       int damage = gamePanel.monsters[monsterIndex].attack - defense;
       currentLife -= damage;
-      gamePanel.playSoundEffect(6);
+      gamePanel.playSoundEffect(RECEIVE_DAMAGE);
       invincible = true;
       currentLife -= 1;
     }
@@ -488,7 +500,7 @@ public class Player extends GameEntity {
 
   public void pickUpObject(int objectIndex) {
 
-    if (objectIndex != 999) {
+    if (objectIndex != INIT_INDEX) {
 
       // PICKUP ONLY ITEMS
       if (gamePanel.obj[objectIndex].type == WorldGameTypes.PICK_UP) {
@@ -499,10 +511,10 @@ public class Player extends GameEntity {
         String text;
         if (inventory.size() != maxInventorySize) {
           inventory.add(gamePanel.obj[objectIndex]);
-          gamePanel.playSoundEffect(1);
-          text = "Picked up " + gamePanel.obj[objectIndex].name + "!";
+          gamePanel.playSoundEffect(COIN);
+          text = String.format(PICKED_UP, gamePanel.obj[objectIndex].name);
         } else {
-          text = "Inventory is full!";
+          text = INVENTORY_FULL;
         }
         gamePanel.ui.addMessage(text);
         gamePanel.obj[objectIndex] = null;

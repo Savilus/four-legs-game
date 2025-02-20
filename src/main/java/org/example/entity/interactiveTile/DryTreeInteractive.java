@@ -1,5 +1,6 @@
 package org.example.entity.interactiveTile;
 
+import static org.example.config.GameEntityNameFactory.CUT_TREE;
 import static org.example.config.GameEntityNameFactory.DRY_TREE;
 
 import java.awt.*;
@@ -43,7 +44,7 @@ public class DryTreeInteractive extends InteractiveTile {
 
   @Override
   public void playSoundEffect() {
-    gamePanel.playSoundEffect(11);
+    gamePanel.playSoundEffect(CUT_TREE);
   }
 
   @Override

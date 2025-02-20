@@ -7,6 +7,7 @@ import java.util.Map;
 import org.example.Main;
 import org.yaml.snakeyaml.Yaml;
 
+import io.vavr.control.Try;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -32,21 +33,20 @@ public class YamlConfigLoader {
   }
 
   private static void setFieldValue(Class<?> clazz, Field field, Map<String, Object> data, String path) {
-    try {
-      String[] keys = path.split("\\.");
-      Object value = data;
+    Try.run(() -> {
+          String[] keys = path.split("\\.");
+          Object value = data;
 
-      for (String key : keys) {
-        value = ((Map<?, ?>) value).get(key);
-        if (value == null) {
-          throw new RuntimeException("Key not found in YAML: " + path);
-        }
-      }
+          for (String key : keys) {
+            value = ((Map<?, ?>) value).get(key);
+            if (value == null) {
+              throw new IllegalArgumentException("Key not found in YAML: " + path);
+            }
+          }
 
-      field.setAccessible(true);
-      field.set(null, value);
-    } catch (Exception e) {
-      throw new RuntimeException(String.format(ERROR_MESSAGE, path, field.getName()), e);
-    }
+          field.setAccessible(true);
+          field.set(null, value);
+        })
+        .getOrElseThrow(e -> new RuntimeException(String.format(ERROR_MESSAGE, path, field.getName()), e));
   }
 }

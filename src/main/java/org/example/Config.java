@@ -2,11 +2,10 @@ package org.example;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -19,44 +18,27 @@ public class Config {
   GamePanel gamePanel;
 
   public void saveConfig() {
-    try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter(GAME_CONFIG_FILE_NAME));
-
-      if (gamePanel.fullScreenOn) {
-        writer.write(FULL_SCREEN_ON);
-      } else {
-        writer.write(FULL_SCREEN_OFF);
+    Try.run(() -> {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(GAME_CONFIG_FILE_NAME))) {
+        writer.write(gamePanel.fullScreenOn ? FULL_SCREEN_ON : FULL_SCREEN_OFF);
+        writer.newLine();
+        writer.write(String.valueOf(gamePanel.music.volumeScale));
+        writer.newLine();
+        writer.write(String.valueOf(gamePanel.soundEffect.volumeScale));
       }
-
-      writer.newLine();
-      writer.write(String.valueOf(gamePanel.music.volumeScale));
-      writer.newLine();
-      writer.write(String.valueOf(gamePanel.soundEffect.volumeScale));
-      writer.newLine();
-      writer.close();
-
-    } catch (IOException e) {
-      throw new RuntimeException("Could not save config", e);
-    }
+    }).onFailure(e -> System.err.println("Could not save config: " + e.getMessage()));
   }
 
   public void loadConfig() {
-    try {
-
-      BufferedReader reader = new BufferedReader(new FileReader(GAME_CONFIG_FILE_NAME));
-      String configLine = reader.readLine();
-      gamePanel.fullScreenOn = configLine.equals(FULL_SCREEN_ON);
-      configLine = reader.readLine();
-      gamePanel.music.volumeScale = Integer.parseInt(configLine);
-      configLine = reader.readLine();
-      gamePanel.soundEffect.volumeScale = Integer.parseInt(configLine);
-
-      reader.close();
-
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException("Could not load config", e);
-    } catch (IOException e) {
-      throw new RuntimeException("Error while loading config", e);
-    }
+    Try.run(() -> {
+      try (BufferedReader reader = new BufferedReader(new FileReader(GAME_CONFIG_FILE_NAME))) {
+        String configLine = reader.readLine();
+        gamePanel.fullScreenOn = configLine.equals(FULL_SCREEN_ON);
+        configLine = reader.readLine();
+        gamePanel.music.volumeScale = Integer.parseInt(configLine);
+        configLine = reader.readLine();
+        gamePanel.soundEffect.volumeScale = Integer.parseInt(configLine);
+      }
+    }).onFailure(e -> System.err.println("Could not load config: " + e.getMessage()));
   }
 }

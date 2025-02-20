@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import static org.example.utils.CollisionDetector.INIT_INDEX;
+
 import org.example.GamePanel;
 import org.example.enums.DirectionType;
 
@@ -28,7 +30,7 @@ public abstract class Projectile extends GameEntity {
 
     if (owner == gamePanel.player) {
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
-      if (monsterIndex != 999) {
+      if (monsterIndex != INIT_INDEX) {
         gamePanel.player.damageMonster(monsterIndex, attack);
         generateParticle(owner.projectile, gamePanel.monsters[monsterIndex]);
         alive = false;

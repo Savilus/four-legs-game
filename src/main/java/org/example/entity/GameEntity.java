@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -278,7 +280,7 @@ public abstract class GameEntity {
   }
 
   public void damagePlayer(int attack) {
-    gamePanel.playSoundEffect(6);
+    gamePanel.playSoundEffect(RECEIVE_DAMAGE);
     gamePanel.player.currentLife -= attack - gamePanel.player.defense;
     gamePanel.player.invincible = true;
   }

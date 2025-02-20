@@ -3,6 +3,7 @@ package org.example.entity.object;
 import static org.example.config.GameEntityNameFactory.HEART_BLANK;
 import static org.example.config.GameEntityNameFactory.HEART_FULL;
 import static org.example.config.GameEntityNameFactory.HEART_HALF;
+import static org.example.config.GameEntityNameFactory.POWER_UP;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
@@ -27,7 +28,7 @@ public class HeartObject extends GameEntity {
 
   @Override
   public void use(GameEntity entity) {
-    gamePanel.playSoundEffect(2);
+    gamePanel.playSoundEffect(POWER_UP);
     gamePanel.ui.addMessage("Life +" + value);
     entity.currentLife += value;
   }

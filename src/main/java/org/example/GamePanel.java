@@ -146,8 +146,8 @@ public class GamePanel extends JPanel implements Runnable {
       setFullScreen();
   }
 
-  public void playMusic(int soundIndex) {
-    music.setFile(soundIndex);
+  public void playMusic(String sound) {
+    music.setFile(sound);
     music.play();
     music.loop();
   }
@@ -172,8 +172,8 @@ public class GamePanel extends JPanel implements Runnable {
     music.stop();
   }
 
-  public void playSoundEffect(int soundIndex) {
-    soundEffect.setFile(soundIndex);
+  public void playSoundEffect(String sound) {
+    soundEffect.setFile(sound);
     soundEffect.play();
   }
 
