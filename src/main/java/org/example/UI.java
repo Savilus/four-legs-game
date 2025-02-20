@@ -84,7 +84,44 @@ public class UI {
         drawInventory();
       }
       case OPTIONS_STATE -> drawOptionsScreen();
+      case GAME_OVER_STATE -> drawGameOverScreen();
     }
+  }
+
+  private void drawGameOverScreen() {
+
+    graphics2D.setColor(new Color(0, 0, 0, 150));
+    graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+
+    String text = "Game Over";
+    // SHADOW
+    graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 110F));
+    graphics2D.setColor(Color.BLACK);
+    int x = getXForCenteredText(text);
+    int y = gamePanel.tileSize * 4;
+    graphics2D.drawString(text, x, y);
+
+    // MAIN
+    graphics2D.setColor(Color.WHITE);
+    graphics2D.drawString(text, x - 4, y - 4);
+
+    // RETRY
+    graphics2D.setFont(graphics2D.getFont().deriveFont(50F));
+    text = "Retry";
+    x = getXForCenteredText(text);
+    y += gamePanel.tileSize * 4;
+    graphics2D.drawString(text, x, y);
+    if (commandNum == 0)
+      graphics2D.drawString(">", x - 40, y);
+
+
+    // BACK TO TITLE SCREEN
+    text = "Quit";
+    x = getXForCenteredText(text);
+    y += 55;
+    graphics2D.drawString(text, x, y);
+    if (commandNum == 1)
+      graphics2D.drawString(">", x - 40, y);
   }
 
   private void drawOptionsScreen() {
@@ -293,7 +330,6 @@ public class UI {
     }
 
   }
-
 
   private void drawInventory() {
     // FRAME

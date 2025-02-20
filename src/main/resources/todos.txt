@@ -1,0 +1,5 @@
+1) Find a better solution for drawing strings and window
+2) command num not just int
+3) use String.format
+4) switch subState for something else, not just numbers
+5) sound class add map instead of array

@@ -26,6 +26,7 @@ import static org.example.config.GameEntityNameFactory.BOY_UP1;
 import static org.example.config.GameEntityNameFactory.BOY_UP2;
 import static org.example.enums.DirectionType.RIGHT;
 import static org.example.enums.GameStateType.DIALOG_STATE;
+import static org.example.enums.GameStateType.GAME_OVER_STATE;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import org.example.GamePanel;
 import org.example.entity.object.FireballObject;
 import org.example.entity.object.NormalSwordObject;
-import org.example.entity.object.RockObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
@@ -195,6 +195,11 @@ public class Player extends GameEntity {
     if (mana > maxMana) {
       mana = maxMana;
     }
+
+    if (currentLife <= 0) {
+      gamePanel.gameState = GAME_OVER_STATE;
+      gamePanel.playSoundEffect(12);
+    }
   }
 
   private void playerAttacking() {
@@ -336,7 +341,7 @@ public class Player extends GameEntity {
     }
   }
 
-  private void setDefaultValues() {
+  public void setDefaultValues() {
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
     speed = 4;
@@ -363,6 +368,7 @@ public class Player extends GameEntity {
   }
 
   public void setItems() {
+    inventory.clear();
     inventory.add(currentWeapon);
     inventory.add(currentShield);
   }
@@ -388,6 +394,19 @@ public class Player extends GameEntity {
       invincible = true;
       currentLife -= 1;
     }
+  }
+
+  public void setDefaultPositions() {
+
+    worldX = gamePanel.tileSize * 23;
+    worldY = gamePanel.tileSize * 21;
+    direction = DirectionType.DOWN;
+  }
+
+  public void restoreLifeAndMana() {
+    currentLife = maxLife;
+    mana = maxMana;
+    invincible = false;
   }
 
   @Override

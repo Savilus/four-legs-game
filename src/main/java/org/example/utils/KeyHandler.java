@@ -2,7 +2,6 @@ package org.example.utils;
 
 import static org.example.config.GameEntityNameFactory.MAP_PATH;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
-import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.OPTIONS_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
@@ -90,13 +89,13 @@ public class KeyHandler implements KeyListener {
   public void characterState(int code) {
     switch (code) {
       case KeyEvent.VK_C -> gamePanel.gameState = PLAY_STATE;
-      case KeyEvent.VK_W, KeyEvent.VK_UP-> {
+      case KeyEvent.VK_W, KeyEvent.VK_UP -> {
         if (gamePanel.ui.slotRow != 0) {
           gamePanel.ui.slotRow--;
           gamePanel.playSoundEffect(9);
         }
       }
-      case KeyEvent.VK_A, KeyEvent.VK_LEFT-> {
+      case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
         if (gamePanel.ui.slotCol != 0) {
           gamePanel.ui.slotCol--;
           gamePanel.playSoundEffect(9);
@@ -134,6 +133,35 @@ public class KeyHandler implements KeyListener {
       case TITLE_STATE -> titleState(code);
       case CHARACTER_STATE -> characterState(code);
       case OPTIONS_STATE -> optionState(code);
+      case GAME_OVER_STATE -> gameOverState(code);
+    }
+  }
+
+  private void gameOverState(int code) {
+    switch (code) {
+      case KeyEvent.VK_W, KeyEvent.VK_UP -> {
+        gamePanel.ui.commandNum--;
+        if (gamePanel.ui.commandNum < 0) {
+          gamePanel.ui.commandNum = 1;
+        }
+        gamePanel.playSoundEffect(9);
+      }
+      case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
+        gamePanel.ui.commandNum++;
+        if (gamePanel.ui.commandNum > 1) {
+          gamePanel.ui.commandNum = 0;
+        }
+        gamePanel.playSoundEffect(9);
+      }
+      case KeyEvent.VK_ENTER -> {
+        if (gamePanel.ui.commandNum == 0) {
+          gamePanel.gameState = PLAY_STATE;
+          gamePanel.retryAfterGameOver();
+        } else if (gamePanel.ui.commandNum == 1) {
+          gamePanel.gameState = TITLE_STATE;
+          gamePanel.restartAfterGameOver();
+        }
+      }
     }
   }
 

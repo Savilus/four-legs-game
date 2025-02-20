@@ -135,6 +135,7 @@ sound:
     cursor: /sound/cursor.wav
     fireballShoot: /sound/burning.wav
     cutTree: /sound/cuttree.wav
+    gameOver: /sound/gameover.wav
 
 projectile:
   fireball:
