@@ -152,6 +152,21 @@ public class GamePanel extends JPanel implements Runnable {
     music.loop();
   }
 
+  public void retryAfterGameOver() {
+    player.setDefaultPositions();
+    player.restoreLifeAndMana();
+    assetSetter.setMonster();
+    assetSetter.setMonster();
+  }
+
+  public void restartAfterGameOver() {
+    player.setDefaultValues();
+    player.setItems();
+    assetSetter.setNPC();
+    assetSetter.setObject();
+    assetSetter.setInteractiveTiles();
+    assetSetter.setMonster();
+  }
 
   public void stopMusic() {
     music.stop();

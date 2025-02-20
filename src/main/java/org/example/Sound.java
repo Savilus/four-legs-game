@@ -6,6 +6,7 @@ import static org.example.config.GameEntityNameFactory.CURSOR;
 import static org.example.config.GameEntityNameFactory.CUT_TREE;
 import static org.example.config.GameEntityNameFactory.FANFARE;
 import static org.example.config.GameEntityNameFactory.FIREBALL_SOUND;
+import static org.example.config.GameEntityNameFactory.GAME_OVER;
 import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
@@ -42,6 +43,7 @@ public class Sound {
     soundUrl[9] = Objects.requireNonNull(getClass().getResource(CURSOR));
     soundUrl[10] = Objects.requireNonNull(getClass().getResource(FIREBALL_SOUND));
     soundUrl[11] = Objects.requireNonNull(getClass().getResource(CUT_TREE));
+    soundUrl[12] = Objects.requireNonNull(getClass().getResource(GAME_OVER));
   }
 
   public void setFile(int i) {

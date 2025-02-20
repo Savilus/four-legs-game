@@ -261,6 +261,8 @@ public class GameEntityNameFactory {
   public static String FIREBALL_SOUND;
   @YamlValue("sound.path.cutTree")
   public static String CUT_TREE;
+  @YamlValue("sound.path.gameOver")
+  public static String GAME_OVER;
 
   // FONT
   @YamlValue("font.maruMonica")

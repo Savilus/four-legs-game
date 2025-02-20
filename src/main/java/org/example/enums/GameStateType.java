@@ -12,7 +12,8 @@ public enum GameStateType {
   PAUSE_STATE("pauseState"),
   DIALOG_STATE("dialogState"),
   CHARACTER_STATE("characterState"),
-  OPTIONS_STATE("optionsState");
+  OPTIONS_STATE("optionsState"),
+  GAME_OVER_STATE("gameOverState");
 
   private final String name;
 
@@ -22,6 +23,6 @@ public enum GameStateType {
         return type;
       }
     }
-    throw new IllegalArgumentException("Unknown game object: " + text);
+    throw new IllegalArgumentException("Unknown game state: " + text);
   }
 }
