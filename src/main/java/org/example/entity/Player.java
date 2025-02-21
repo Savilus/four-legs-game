@@ -212,6 +212,8 @@ public class Player extends GameEntity {
 
     if (currentLife <= 0) {
       gamePanel.gameState = GAME_OVER_STATE;
+      gamePanel.ui.commandNum = -1;
+      gamePanel.stopMusic();
       gamePanel.playSoundEffect(GAME_OVER);
     }
   }
