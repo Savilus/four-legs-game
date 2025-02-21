@@ -26,16 +26,27 @@ public class UI {
   private static final String PLAYER_LIFE_FORMAT = "%s / %s";
   private static final String PAUSED = "PAUSED";
   private static final String DEFAULT_FONT = "SansSerif";
+  private static final String COIN = "Coin";
   private static final String TITLE = "Four Legs";
   private static final String NEW_GAME = "New Game";
   private static final String LOAD_GAME = "Load game";
   private static final String END_GAME = "End Game";
+  private static final String WEAPON = "Weapon";
+  private static final String LEVEL = "Level";
   private static final String GAME_OVER = "Game Over";
+  private static final String SHIELD = "Shield";
+  private static final String EXP = "Exp";
   private static final String RETRY = "Retry";
   private static final String OPTIONS = "Options";
+  private static final String ATTACK = "Attack";
+  private static final String NEXT_LEVEL = "Next Level";
+  private static final String DEFENSE = "Defense";
   private static final String FULL_SCREEN = "Full screen";
   private static final String QUIT = "Quit";
+  private static final String STRENGTH = "Strength";
   private static final String YES = "Yes";
+  private static final String LIFE = "Life";
+  private static final String DEXTERITY = "Dexterity";
   private static final String BACK = "Back";
   private static final String MUSIC = "Music";
   private static final String SOUND_EFFECT = "Sound Effect";
@@ -190,7 +201,10 @@ public class UI {
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
+        gamePanel.stopMusic();
         subState = 0;
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
         gamePanel.gameState = TITLE_STATE;
       }
     }
@@ -484,27 +498,27 @@ public class UI {
     final int lineHeight = 35;
 
     // NAMES
-    graphics2D.drawString("Level", textX, textY);
+    graphics2D.drawString(LEVEL, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Life", textX, textY);
+    graphics2D.drawString(LIFE, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Strength", textX, textY);
+    graphics2D.drawString(STRENGTH, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Dexterity", textX, textY);
+    graphics2D.drawString(DEXTERITY, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Attack", textX, textY);
+    graphics2D.drawString(ATTACK, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Defense", textX, textY);
+    graphics2D.drawString(DEFENSE, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Exp", textX, textY);
+    graphics2D.drawString(EXP, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Next Level", textX, textY);
+    graphics2D.drawString(NEXT_LEVEL, textX, textY);
     textY += lineHeight;
-    graphics2D.drawString("Coin", textX, textY);
+    graphics2D.drawString(COIN, textX, textY);
     textY += lineHeight + 20;
-    graphics2D.drawString("Weapon", textX, textY);
+    graphics2D.drawString(WEAPON, textX, textY);
     textY += lineHeight + 15;
-    graphics2D.drawString("Shield", textX, textY);
+    graphics2D.drawString(SHIELD, textX, textY);
 
     // VALUES
     int tailX = (frameX + frameWidth) - 30;
@@ -603,6 +617,9 @@ public class UI {
   }
 
   private void drawTitleScreen() {
+    // CLEAR
+    graphics2D.setColor(Color.BLACK);
+    graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
     // TITLE NAME
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 96F));
     int x = getXForCenteredText(TITLE);
@@ -618,33 +635,26 @@ public class UI {
     // BLUE BOY IMAGE
     x = gamePanel.screenWidth / 2 - (gamePanel.tileSize * 2) / 2;
     y += gamePanel.tileSize * 2;
-
     graphics2D.drawImage(gamePanel.player.down1, x, y, gamePanel.tileSize * 2, gamePanel.tileSize * 2, null);
 
     // MENU
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 48F));
 
-    x = getXForCenteredText(NEW_GAME);
+    String[] menuOptions = {NEW_GAME, LOAD_GAME, QUIT};
     y += gamePanel.tileSize * 3;
-    graphics2D.drawString(NEW_GAME, x, y);
-    if (commandNum == 0) {
-      graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
-    }
 
-    x = getXForCenteredText(LOAD_GAME);
-    y += gamePanel.tileSize;
-    graphics2D.drawString(LOAD_GAME, x, y);
-    if (commandNum == 1) {
-      graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
-    }
+    for (int i = 0; i < menuOptions.length; i++) {
+      x = getXForCenteredText(menuOptions[i]);
+      graphics2D.drawString(menuOptions[i], x, y);
 
-    x = getXForCenteredText(QUIT);
-    y += gamePanel.tileSize;
-    graphics2D.drawString(QUIT, x, y);
-    if (commandNum == 2) {
-      graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
+      if (commandNum == i) {
+        graphics2D.drawString(CURSOR_SELECTOR, x - gamePanel.tileSize, y);
+      }
+
+      y += gamePanel.tileSize;
     }
   }
+
 
   private void drawDialogueScreen() {
     // WINDOW
@@ -675,14 +685,11 @@ public class UI {
   }
 
   private void drawPauseScreen() {
-    String text = PAUSED;
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, 80F));
-    int x = getXForCenteredText(text);
-    int length = (int) graphics2D.getFontMetrics().getStringBounds(text, graphics2D).getWidth();
-    x = gamePanel.screenWidth / 2 - length / 2;
+    int x = getXForCenteredText(PAUSED);
     int y = gamePanel.screenHeight / 2;
 
-    graphics2D.drawString(text, x, y);
+    graphics2D.drawString(PAUSED, x, y);
   }
 
   private int getXForCenteredText(String text) {

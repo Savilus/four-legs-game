@@ -1,6 +1,7 @@
 package org.example;
 
 import static org.example.Main.window;
+import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
 import static org.example.enums.GameStateType.TITLE_STATE;
@@ -93,43 +94,43 @@ public class GamePanel extends JPanel implements Runnable {
           gameEntity.update();
         }
       }
-    } else if (gameState == PAUSE_STATE) {
-      // nothing
-    }
 
-    for (int monsterIndex = 0; monsterIndex < monsters.length; monsterIndex++) {
-      if (monsters[monsterIndex] != null) {
-        if (monsters[monsterIndex].alive && !monsters[monsterIndex].dying)
-          monsters[monsterIndex].update();
-        if (!monsters[monsterIndex].alive) {
-          monsters[monsterIndex].checkDrop();
-          monsters[monsterIndex] = null;
+      for (int monsterIndex = 0; monsterIndex < monsters.length; monsterIndex++) {
+        if (monsters[monsterIndex] != null) {
+          if (monsters[monsterIndex].alive && !monsters[monsterIndex].dying)
+            monsters[monsterIndex].update();
+          if (!monsters[monsterIndex].alive) {
+            monsters[monsterIndex].checkDrop();
+            monsters[monsterIndex] = null;
+          }
         }
       }
-    }
 
-    for (int projectileIndex = 0; projectileIndex < projectiles.size(); projectileIndex++) {
-      if (projectiles.get(projectileIndex) != null) {
-        if (projectiles.get(projectileIndex).alive)
-          projectiles.get(projectileIndex).update();
-        else
-          projectiles.remove(projectileIndex);
+      for (int projectileIndex = 0; projectileIndex < projectiles.size(); projectileIndex++) {
+        if (projectiles.get(projectileIndex) != null) {
+          if (projectiles.get(projectileIndex).alive)
+            projectiles.get(projectileIndex).update();
+          else
+            projectiles.remove(projectileIndex);
+        }
       }
-    }
 
-    for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
-      if (interactiveTiles[objIndex] != null) {
-        interactiveTiles[objIndex].update();
+      for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
+        if (interactiveTiles[objIndex] != null) {
+          interactiveTiles[objIndex].update();
+        }
       }
-    }
 
-    for (int particleIndex = 0; particleIndex < particleList.size(); particleIndex++) {
-      if (particleList.get(particleIndex) != null) {
-        if (particleList.get(particleIndex).alive)
-          particleList.get(particleIndex).update();
-        else
-          particleList.remove(particleIndex);
+      for (int particleIndex = 0; particleIndex < particleList.size(); particleIndex++) {
+        if (particleList.get(particleIndex) != null) {
+          if (particleList.get(particleIndex).alive)
+            particleList.get(particleIndex).update();
+          else
+            particleList.remove(particleIndex);
+        }
       }
+    } else if (gameState == PAUSE_STATE) {
+      // nothing
     }
   }
 
@@ -155,6 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
   public void retryAfterGameOver() {
     player.setDefaultPositions();
     player.restoreLifeAndMana();
+    playMusic(BACKGROUND_SONG);
     assetSetter.setMonster();
     assetSetter.setMonster();
   }
