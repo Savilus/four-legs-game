@@ -118,9 +118,9 @@ public abstract class GameEntity {
     collisionOn = false;
     gamePanel.collisionDetector.checkTile(this);
     gamePanel.collisionDetector.checkObject(this, false);
-    gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
-    gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
-    gamePanel.collisionDetector.checkEntity(this, gamePanel.interactiveTiles);
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap));
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
     boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
 
     if (this.type == WorldGameTypes.MONSTER && contactPlayer && !gamePanel.player.invincible) {
@@ -237,11 +237,11 @@ public abstract class GameEntity {
   }
 
   public void dropItem(GameEntity droppedItem) {
-    for (int i = 0; i < gamePanel.obj.length; i++) {
-      if (gamePanel.obj[i] == null) {
-        gamePanel.obj[i] = droppedItem;
-        gamePanel.obj[i].worldX = worldX;
-        gamePanel.obj[i].worldY = worldY;
+    for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
+      if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] == null) {
+        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] = droppedItem;
+        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldX = worldX;
+        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldY = worldY;
         break;
       }
     }

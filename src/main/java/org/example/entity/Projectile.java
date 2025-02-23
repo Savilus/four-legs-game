@@ -29,10 +29,10 @@ public abstract class Projectile extends GameEntity {
   public void update() {
 
     if (owner == gamePanel.player) {
-      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
+      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
       if (monsterIndex != INIT_INDEX) {
         gamePanel.player.damageMonster(monsterIndex, attack);
-        generateParticle(owner.projectile, gamePanel.monsters[monsterIndex]);
+        generateParticle(owner.projectile, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex]);
         alive = false;
       }
     } else {

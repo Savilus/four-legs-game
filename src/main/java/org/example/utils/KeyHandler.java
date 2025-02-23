@@ -2,7 +2,6 @@ package org.example.utils;
 
 import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.config.GameEntityNameFactory.CURSOR;
-import static org.example.config.GameEntityNameFactory.MAP_PATH;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
 import static org.example.enums.GameStateType.OPTIONS_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
@@ -78,7 +77,7 @@ public class KeyHandler implements KeyListener {
       //DEBUG
       case KeyEvent.VK_T -> showDebugText = !showDebugText;
       //REFRESH MAP
-      case KeyEvent.VK_R -> gamePanel.tileManager.loadMap(MAP_PATH);
+      case KeyEvent.VK_R -> gamePanel.tileManager.loadMap(gamePanel.tileManager.currentMap);
     }
   }
 

@@ -1,9 +1,12 @@
 package org.example.tile;
 
 import static org.example.config.GameEntityNameFactory.EARTH;
+import static org.example.config.GameEntityNameFactory.FLOOR;
 import static org.example.config.GameEntityNameFactory.GRASS0;
 import static org.example.config.GameEntityNameFactory.GRASS1;
-import static org.example.config.GameEntityNameFactory.MAP_PATH;
+import static org.example.config.GameEntityNameFactory.HUT;
+import static org.example.config.GameEntityNameFactory.INTERIOR_MAP;
+import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
 import static org.example.config.GameEntityNameFactory.ROAD0;
 import static org.example.config.GameEntityNameFactory.ROAD1;
 import static org.example.config.GameEntityNameFactory.ROAD10;
@@ -17,6 +20,7 @@ import static org.example.config.GameEntityNameFactory.ROAD6;
 import static org.example.config.GameEntityNameFactory.ROAD7;
 import static org.example.config.GameEntityNameFactory.ROAD8;
 import static org.example.config.GameEntityNameFactory.ROAD9;
+import static org.example.config.GameEntityNameFactory.TABLE;
 import static org.example.config.GameEntityNameFactory.TREE;
 import static org.example.config.GameEntityNameFactory.WALL;
 import static org.example.config.GameEntityNameFactory.WATER0;
@@ -36,9 +40,9 @@ import static org.example.config.GameEntityNameFactory.WATER9;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -46,19 +50,24 @@ import javax.imageio.ImageIO;
 import org.example.GamePanel;
 import org.example.utils.UtilityTool;
 
+import io.vavr.control.Try;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TileManager {
 
   GamePanel gamePanel;
+  public String currentMap = MAIN_MAP_PATH;
   public Tile[] tile;
-  public int[][] mapTileNum;
+  public Map<String, int[][]> gameMaps = new HashMap<>();
 
   public TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
     tile = new Tile[50];
-    mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 
     getTileImage();
-    loadMap(MAP_PATH);
+    loadMap(INTERIOR_MAP);
+    loadMap(MAIN_MAP_PATH);
   }
 
   public void getTileImage() {
@@ -95,37 +104,38 @@ public class TileManager {
     setUp(39, EARTH, false);
     setUp(40, WALL, true);
     setUp(41, TREE, true);
+    setUp(42, HUT, false);
+    setUp(43, FLOOR, false);
+    setUp(44, TABLE, true);
 
   }
 
   public void loadMap(String mapPath) {
-    try {
-      InputStream is = getClass().getResourceAsStream(mapPath);
-      BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    if (!gameMaps.containsKey(mapPath)) {
+      gameMaps.put(mapPath, new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow]);
+      Try.withResources(() -> getClass().getResourceAsStream(mapPath))
+          .of(is -> {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            int col = 0, row = 0;
 
-      int col = 0;
-      int row = 0;
+            while (row < gamePanel.maxWorldRow) {
+              String line = br.readLine();
+              if (line == null) break;
 
-      while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-        String line = br.readLine();
+              String[] numbers = line.split(" ");
 
-        while (col < gamePanel.maxWorldCol) {
+              while (col < gamePanel.maxWorldCol) {
+                int number = Integer.parseInt(numbers[col]);
+                gameMaps.get(mapPath)[col][row] = number;
+                col++;
+              }
 
-          String[] numbers = line.split(" ");
-
-          int number = Integer.parseInt(numbers[col]);
-          mapTileNum[col][row] = number;
-          col++;
-        }
-
-        if (col == gamePanel.maxWorldCol) {
-          col = 0;
-          row++;
-        }
-      }
-      br.close();
-    } catch (Exception e) {
-      e.printStackTrace();
+              col = 0;
+              row++;
+            }
+            return mapPath;
+          })
+          .onFailure(error -> log.error("Error while loading tile map: {}", error.getMessage()));
     }
   }
 
@@ -135,7 +145,7 @@ public class TileManager {
 
     while (worldCol < gamePanel.maxWorldCol && worldRow < gamePanel.maxWorldRow) {
 
-      int tileNum = mapTileNum[worldCol][worldRow];
+      int tileNum = gameMaps.get(currentMap)[worldCol][worldRow];
 
       int worldX = worldCol * gamePanel.tileSize;
       int worldY = worldRow * gamePanel.tileSize;
@@ -162,13 +172,11 @@ public class TileManager {
       return;
     }
     UtilityTool utilityTool = new UtilityTool();
-    try {
+    Try.run(() -> {
       tile[index] = new Tile();
       tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
       tile[index].image = utilityTool.scaleImage(tile[index].image, gamePanel.tileSize, gamePanel.tileSize);
       tile[index].collision = collision;
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
+    }).onFailure(error -> log.error("Error while setting up tile: {}", error.getMessage()));
   }
 }

@@ -41,8 +41,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import org.example.GamePanel;
+import org.example.entity.object.AxeObject;
 import org.example.entity.object.FireballObject;
-import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
@@ -51,9 +51,9 @@ import org.example.utils.KeyHandler;
 public class Player extends GameEntity {
 
   private static final String PICKED_UP = "Picked up %s !";
-  private static final String DAMAGE_UI_MESSAGE =  "%s damage";
-  private static final String KILLED_UI_MESSAGE =  "Killed the %s !";
-  private static final String EXP_UI_MESSAGE =   "%s + Exp!";
+  private static final String DAMAGE_UI_MESSAGE = "%s damage";
+  private static final String KILLED_UI_MESSAGE = "Killed the %s !";
+  private static final String EXP_UI_MESSAGE = "%s + Exp!";
   private static final String INVENTORY_FULL = "Inventory is full!";
 
   KeyHandler keyHandler;
@@ -61,7 +61,7 @@ public class Player extends GameEntity {
   public final int screenX;
   public final int screenY;
   public int standCounter = 0;
-  public boolean attackCancled = false;
+  public boolean attackCanceled = false;
   public final int maxInventorySize = 20;
   public ArrayList<GameEntity> inventory = new ArrayList<>();
 
@@ -133,15 +133,15 @@ public class Player extends GameEntity {
       pickUpObject(objectIndex);
 
       //CHECK NPC COLLISION
-      int npcIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.npc);
+      int npcIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap));
       interactNPC(npcIndex);
 
       // CHECK MONSTER COLLISION
-      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
+      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
       detectMonsterContact(monsterIndex);
 
       // CHECK INTERACTIVE TILE COLLISION
-      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.interactiveTiles);
+      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
 
       // CHECK EVENT
       gamePanel.eventHandler.checkEvent();
@@ -156,13 +156,13 @@ public class Player extends GameEntity {
         }
       }
 
-      if (keyHandler.enterPressed && !attackCancled) {
+      if (keyHandler.enterPressed && !attackCanceled) {
         gamePanel.playSoundEffect(SWING_WEAPON);
         attacking = true;
         spriteCounter = 0;
       }
 
-      attackCancled = false;
+      attackCanceled = false;
       gamePanel.keyHandler.enterPressed = false;
 
       spriteCounter++;
@@ -242,10 +242,10 @@ public class Player extends GameEntity {
       solidArea.width = attackArea.width;
       solidArea.height = attackArea.height;
       // check monster collision with updated worldX, worldY and solidArea
-      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.monsters);
+      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
       damageMonster(monsterIndex, attack);
 
-      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.interactiveTiles);
+      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
       damageInteractiveTile(interactiveTileIndex);
 
       worldX = currentWorldX;
@@ -261,34 +261,34 @@ public class Player extends GameEntity {
 
   private void damageInteractiveTile(int interactiveTileIndex) {
 
-    if (interactiveTileIndex != INIT_INDEX && gamePanel.interactiveTiles[interactiveTileIndex].destructible
-        && gamePanel.interactiveTiles[interactiveTileIndex].isCorrectItem(this) && !gamePanel.interactiveTiles[interactiveTileIndex].invincible) {
-      gamePanel.interactiveTiles[interactiveTileIndex].playSoundEffect();
-      gamePanel.interactiveTiles[interactiveTileIndex].currentLife--;
-      gamePanel.interactiveTiles[interactiveTileIndex].invincible = true;
+    if (interactiveTileIndex != INIT_INDEX && gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].destructible
+        && gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].isCorrectItem(this) && !gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].invincible) {
+      gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].playSoundEffect();
+      gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].currentLife--;
+      gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].invincible = true;
 
-      generateParticle(gamePanel.interactiveTiles[interactiveTileIndex], gamePanel.interactiveTiles[interactiveTileIndex]);
+      generateParticle(gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex], gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex]);
 
-      if (gamePanel.interactiveTiles[interactiveTileIndex].currentLife <= 0)
-        gamePanel.interactiveTiles[interactiveTileIndex] = gamePanel.interactiveTiles[interactiveTileIndex].getDestroyedForm();
+      if (gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].currentLife <= 0)
+        gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex] = gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].getDestroyedForm();
     }
   }
 
   public void damageMonster(int monsterIndex, int attack) {
-    if (monsterIndex != INIT_INDEX && !gamePanel.monsters[monsterIndex].invincible) {
+    if (monsterIndex != INIT_INDEX && !gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].invincible) {
       gamePanel.playSoundEffect(HIT_MONSTER);
 
-      int damage = Math.max(0, attack - gamePanel.monsters[monsterIndex].defense);
-      gamePanel.monsters[monsterIndex].currentLife -= damage;
+      int damage = Math.max(0, attack - gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].defense);
+      gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].currentLife -= damage;
       gamePanel.ui.addMessage(String.format(DAMAGE_UI_MESSAGE, damage));
-      gamePanel.monsters[monsterIndex].invincible = true;
-      gamePanel.monsters[monsterIndex].damageReaction();
+      gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].invincible = true;
+      gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].damageReaction();
 
-      if (gamePanel.monsters[monsterIndex].currentLife <= 0) {
-        gamePanel.monsters[monsterIndex].dying = true;
-        gamePanel.ui.addMessage(String.format(KILLED_UI_MESSAGE, gamePanel.monsters[monsterIndex].name));
-        gamePanel.ui.addMessage(String.format(EXP_UI_MESSAGE, gamePanel.monsters[monsterIndex].exp));
-        exp += gamePanel.monsters[monsterIndex].exp;
+      if (gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].currentLife <= 0) {
+        gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].dying = true;
+        gamePanel.ui.addMessage(String.format(KILLED_UI_MESSAGE, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].name));
+        gamePanel.ui.addMessage(String.format(EXP_UI_MESSAGE, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].exp));
+        exp += gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].exp;
         checkLevelUp();
       }
     }
@@ -349,9 +349,9 @@ public class Player extends GameEntity {
 
     if (gamePanel.keyHandler.enterPressed) {
       if (npcIndex != INIT_INDEX) {
-        attackCancled = true;
+        attackCanceled = true;
         gamePanel.gameState = DIALOG_STATE;
-        gamePanel.npc[npcIndex].speak();
+        gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap)[npcIndex].speak();
       }
     }
   }
@@ -359,6 +359,8 @@ public class Player extends GameEntity {
   public void setDefaultValues() {
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
+//    worldX = gamePanel.tileSize * 12;
+//    worldY = gamePanel.tileSize * 13;
     speed = 4;
     direction = DirectionType.DOWN;
 
@@ -374,7 +376,7 @@ public class Player extends GameEntity {
     exp = 0;
     nextLevelExp = 5;
     money = 0;
-    currentWeapon = new NormalSwordObject(gamePanel);
+    currentWeapon = new AxeObject(gamePanel);
     currentShield = new WoodShieldObject(gamePanel);
     projectile = new FireballObject(gamePanel);
     attack = getAttack();
@@ -400,9 +402,9 @@ public class Player extends GameEntity {
   }
 
   private void detectMonsterContact(int monsterIndex) {
-    if (monsterIndex != INIT_INDEX && !invincible && !gamePanel.monsters[monsterIndex].dying) {
+    if (monsterIndex != INIT_INDEX && !invincible && !gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].dying) {
 
-      int damage = gamePanel.monsters[monsterIndex].attack - defense;
+      int damage = gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].attack - defense;
       currentLife -= damage;
       gamePanel.playSoundEffect(RECEIVE_DAMAGE);
       invincible = true;
@@ -505,21 +507,21 @@ public class Player extends GameEntity {
     if (objectIndex != INIT_INDEX) {
 
       // PICKUP ONLY ITEMS
-      if (gamePanel.obj[objectIndex].type == WorldGameTypes.PICK_UP) {
-        gamePanel.obj[objectIndex].use(this);
-        gamePanel.obj[objectIndex] = null;
+      if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].type == WorldGameTypes.PICK_UP) {
+        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].use(this);
+        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex] = null;
       } else {
         // INVENTORY ITEMS
         String text;
         if (inventory.size() != maxInventorySize) {
-          inventory.add(gamePanel.obj[objectIndex]);
+          inventory.add(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex]);
           gamePanel.playSoundEffect(COIN);
-          text = String.format(PICKED_UP, gamePanel.obj[objectIndex].name);
+          text = String.format(PICKED_UP, gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].name);
         } else {
           text = INVENTORY_FULL;
         }
         gamePanel.ui.addMessage(text);
-        gamePanel.obj[objectIndex] = null;
+        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex] = null;
       }
     }
   }

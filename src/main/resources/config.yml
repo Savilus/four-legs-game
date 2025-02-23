@@ -74,7 +74,8 @@ ui:
     manaCrystalBlank: /objects/manacrystal_blank.png
 
 world:
-  mapPath: /maps/worldV2.txt
+  mainMapPath: /maps/worldV3.txt
+  interiorMap: /maps/interior01.txt
   interactiveTiles:
     images:
       dryTree: /interactiveTiles/drytree.png
@@ -136,6 +137,7 @@ sound:
     fireballShoot: /sound/burning.wav
     cutTree: /sound/cuttree.wav
     gameOver: /sound/gameover.wav
+    stairs: /sound/stairs.wav
 
 projectile:
   fireball:
