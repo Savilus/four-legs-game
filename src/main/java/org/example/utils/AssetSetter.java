@@ -1,8 +1,12 @@
 package org.example.utils;
 
+import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
+
 import org.example.GamePanel;
+import org.example.entity.GameEntity;
 import org.example.entity.NPC;
 import org.example.entity.interactiveTile.DryTreeInteractive;
+import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.entity.monster.GreenSlime;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.BlueShieldObject;
@@ -21,84 +25,93 @@ public class AssetSetter {
   }
 
   public void setObject() {
+    gamePanel.mapsObjects.put(MAIN_MAP_PATH, new GameEntity[20]);
     int i = 0;
-    gamePanel.obj[i] = new BronzeCoinObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 25;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 23;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new BronzeCoinObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 25;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 23;
     i++;
-    gamePanel.obj[i] = new BronzeCoinObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 21;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 19;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new BronzeCoinObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 21;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 19;
     i++;
-    gamePanel.obj[i] = new KeyObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 26;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 21;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new KeyObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 26;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 21;
     i++;
-    gamePanel.obj[i] = new AxeObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 33;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 21;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new AxeObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 33;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 21;
     i++;
-    gamePanel.obj[i] = new BlueShieldObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 35;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 21;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new BlueShieldObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 35;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 21;
     i++;
-    gamePanel.obj[i] = new RedPotionObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 22;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 27;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new RedPotionObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 22;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 27;
     i++;
-    gamePanel.obj[i] = new HeartObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 22;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 29;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new HeartObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 22;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 29;
     i++;
-    gamePanel.obj[i] = new ManaCrystalObject(gamePanel);
-    gamePanel.obj[i].worldX = gamePanel.tileSize * 22;
-    gamePanel.obj[i].worldY = gamePanel.tileSize * 31;
-
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new ManaCrystalObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 22;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 31;
   }
 
   public void setNPC() {
-    gamePanel.npc[0] = new NPC(gamePanel);
-    gamePanel.npc[0].worldX = gamePanel.tileSize * 21;
-    gamePanel.npc[0].worldY = gamePanel.tileSize * 21;
+    gamePanel.mapsNpc.put(MAIN_MAP_PATH, new GameEntity[10]);
+    gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0] = new NPC(gamePanel);
+    gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldX = gamePanel.tileSize * 21;
+    gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldY = gamePanel.tileSize * 21;
   }
 
   public void setMonster() {
+    gamePanel.mapsMonsters.put(MAIN_MAP_PATH, new GameEntity[20]);
     int i = 0;
-    gamePanel.monsters[i] = new GreenSlime(gamePanel);
-    gamePanel.monsters[i].worldX = gamePanel.tileSize * 21;
-    gamePanel.monsters[i].worldY = gamePanel.tileSize * 38;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 21;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 38;
     i++;
-    gamePanel.monsters[i] = new GreenSlime(gamePanel);
-    gamePanel.monsters[i].worldX = gamePanel.tileSize * 23;
-    gamePanel.monsters[i].worldY = gamePanel.tileSize * 42;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 23;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 42;
     i++;
-    gamePanel.monsters[i] = new GreenSlime(gamePanel);
-    gamePanel.monsters[i].worldX = gamePanel.tileSize * 24;
-    gamePanel.monsters[i].worldY = gamePanel.tileSize * 37;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 24;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 37;
     i++;
-    gamePanel.monsters[i] = new GreenSlime(gamePanel);
-    gamePanel.monsters[i].worldX = gamePanel.tileSize * 34;
-    gamePanel.monsters[i].worldY = gamePanel.tileSize * 42;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 34;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 42;
     i++;
-    gamePanel.monsters[i] = new GreenSlime(gamePanel);
-    gamePanel.monsters[i].worldX = gamePanel.tileSize * 38;
-    gamePanel.monsters[i].worldY = gamePanel.tileSize * 42;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 38;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 42;
   }
 
   public void setInteractiveTiles() {
+    gamePanel.mapsInteractiveTiles.put(MAIN_MAP_PATH, new InteractiveTile[50]);
     int i = 0;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 27, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 27, 12);
     i++;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 28, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 28, 12);
     i++;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 29, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 29, 12);
     i++;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 30, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 30, 12);
     i++;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 31, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 31, 12);
     i++;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 32, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 32, 12);
     i++;
-    gamePanel.interactiveTiles[i] = new DryTreeInteractive(gamePanel, 33, 12);
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 33, 12);
+    i++;
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 18, 40);
+    i++;
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 17, 40);
+    i++;
+    gamePanel.mapsInteractiveTiles.get(MAIN_MAP_PATH)[i] = new DryTreeInteractive(gamePanel, 16, 40);
   }
 }

@@ -77,6 +77,7 @@ public class UI {
   public int subState = 0;
   public int slotCol = 0;
   public int slotRow = 0;
+  private int transitionCounter = 0;
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -128,6 +129,7 @@ public class UI {
       }
       case OPTIONS_STATE -> drawOptionsScreen();
       case GAME_OVER_STATE -> drawGameOverScreen();
+      case TRANSITION_STATE -> drawTransition();
     }
   }
 
@@ -682,6 +684,23 @@ public class UI {
     graphics2D.setColor(new Color(255, 255, 255));
     graphics2D.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
 
+  }
+
+
+  private void drawTransition() {
+    transitionCounter++;
+    graphics2D.setColor(new Color(0, 0, 0, transitionCounter * 5));
+    graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+
+    if (transitionCounter == 50) {
+      transitionCounter = 0;
+      gamePanel.gameState = PLAY_STATE;
+      gamePanel.tileManager.currentMap = gamePanel.eventHandler.tempMap;
+      gamePanel.player.worldX = gamePanel.tileSize * gamePanel.eventHandler.tempCol;
+      gamePanel.player.worldY = gamePanel.tileSize * gamePanel.eventHandler.tempRow;
+      gamePanel.eventHandler.previousEventX = gamePanel.player.worldX;
+      gamePanel.eventHandler.previousEventY = gamePanel.player.worldY;
+    }
   }
 
   private void drawPauseScreen() {

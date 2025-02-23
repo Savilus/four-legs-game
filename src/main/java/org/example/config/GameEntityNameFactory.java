@@ -233,8 +233,10 @@ public class GameEntityNameFactory {
   public static String TABLE;
 
   // WORLD
-  @YamlValue("world.mapPath")
-  public static String MAP_PATH;
+  @YamlValue("world.mainMapPath")
+  public static String MAIN_MAP_PATH;
+  @YamlValue("world.interiorMap")
+  public static String INTERIOR_MAP;
 
   // SOUND
   @YamlValue("sound.path.backgroundSong")
@@ -263,6 +265,8 @@ public class GameEntityNameFactory {
   public static String CUT_TREE;
   @YamlValue("sound.path.gameOver")
   public static String GAME_OVER;
+  @YamlValue("sound.path.stairs")
+  public static String STAIRS;
 
   // FONT
   @YamlValue("font.maruMonica")

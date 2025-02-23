@@ -1,6 +1,5 @@
 package org.example;
 
-import static org.example.Main.window;
 import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
@@ -10,6 +9,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.*;
 
@@ -61,10 +63,10 @@ public class GamePanel extends JPanel implements Runnable {
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
-  public GameEntity[] obj = new GameEntity[20];
-  public GameEntity[] npc = new GameEntity[10];
-  public GameEntity[] monsters = new GameEntity[20];
-  public InteractiveTile[] interactiveTiles = new InteractiveTile[50];
+  public Map<String, GameEntity[]> mapsObjects = new HashMap<>();
+  public Map<String, GameEntity[]> mapsNpc = new HashMap<>();
+  public Map<String, GameEntity[]> mapsMonsters = new HashMap<>();
+  public Map<String, InteractiveTile[]> mapsInteractiveTiles = new HashMap<>();
   public ArrayList<GameEntity> particleList = new ArrayList<>();
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
   public ArrayList<GameEntity> projectiles = new ArrayList<>();
@@ -89,19 +91,23 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if (gameState == PLAY_STATE) {
       player.update();
-      for (GameEntity gameEntity : npc) {
-        if (gameEntity != null) {
-          gameEntity.update();
+      if (Objects.nonNull(mapsNpc.get(tileManager.currentMap))) {
+        for (GameEntity gameEntity : mapsNpc.get(tileManager.currentMap)) {
+          if (gameEntity != null) {
+            gameEntity.update();
+          }
         }
       }
 
-      for (int monsterIndex = 0; monsterIndex < monsters.length; monsterIndex++) {
-        if (monsters[monsterIndex] != null) {
-          if (monsters[monsterIndex].alive && !monsters[monsterIndex].dying)
-            monsters[monsterIndex].update();
-          if (!monsters[monsterIndex].alive) {
-            monsters[monsterIndex].checkDrop();
-            monsters[monsterIndex] = null;
+      if (Objects.nonNull(mapsMonsters.get(tileManager.currentMap))) {
+        for (int monsterIndex = 0; monsterIndex < mapsMonsters.get(tileManager.currentMap).length; monsterIndex++) {
+          if (mapsMonsters.get(tileManager.currentMap)[monsterIndex] != null) {
+            if (mapsMonsters.get(tileManager.currentMap)[monsterIndex].alive && !mapsMonsters.get(tileManager.currentMap)[monsterIndex].dying)
+              mapsMonsters.get(tileManager.currentMap)[monsterIndex].update();
+            if (!mapsMonsters.get(tileManager.currentMap)[monsterIndex].alive) {
+              mapsMonsters.get(tileManager.currentMap)[monsterIndex].checkDrop();
+              mapsMonsters.get(tileManager.currentMap)[monsterIndex] = null;
+            }
           }
         }
       }
@@ -115,9 +121,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
-        if (interactiveTiles[objIndex] != null) {
-          interactiveTiles[objIndex].update();
+      if (Objects.nonNull(mapsInteractiveTiles.get(tileManager.currentMap))) {
+        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(tileManager.currentMap).length; objIndex++) {
+          if (mapsInteractiveTiles.get(tileManager.currentMap)[objIndex] != null) {
+            mapsInteractiveTiles.get(tileManager.currentMap)[objIndex].update();
+          }
         }
       }
 
@@ -135,6 +143,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
+    mapsObjects.put(tileManager.currentMap, new GameEntity[20]);
     assetSetter.setNPC();
     assetSetter.setObject();
     assetSetter.setInteractiveTiles();
@@ -180,14 +189,12 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setFullScreen() {
-    // GET LOCAL SCREEN DEVICE
-    var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    var graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-    graphicsDevice.setFullScreenWindow(window);
-
-    // GET FULL SCREEN WIDTH AND HEIGHT
-    screenWidthFull = window.getWidth();
-    screenHeightFull = window.getHeight();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    double width = screenSize.getWidth();
+    double height = screenSize.getHeight();
+    Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    screenWidthFull = (int) width;
+    screenHeightFull = (int) height;
   }
 
   public void drawToScreen() {
@@ -202,29 +209,35 @@ public class GamePanel extends JPanel implements Runnable {
     } else {
       tileManager.draw(tempGraphic2d);
       // INTERACTIVE TILE
-      for (int objIndex = 0; objIndex < interactiveTiles.length; objIndex++) {
-        if (interactiveTiles[objIndex] != null) {
-          interactiveTiles[objIndex].draw(tempGraphic2d);
+      if (Objects.nonNull(mapsInteractiveTiles.get(tileManager.currentMap))) {
+        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(tileManager.currentMap).length; objIndex++) {
+          if (mapsInteractiveTiles.get(tileManager.currentMap)[objIndex] != null) {
+            mapsInteractiveTiles.get(tileManager.currentMap)[objIndex].draw(tempGraphic2d);
+          }
         }
       }
 
       gameObjects.add(player);
       // ADD ENTITY TO THE LIST
-      for (GameEntity npc : npc) {
-        if (npc != null) {
-          gameObjects.add(npc);
+      if (Objects.nonNull(mapsNpc.get(tileManager.currentMap))) {
+        for (GameEntity npc : mapsNpc.get(tileManager.currentMap)) {
+          if (npc != null) {
+            gameObjects.add(npc);
+          }
         }
       }
-
-      for (GameEntity object : obj) {
-        if (object != null) {
-          gameObjects.add(object);
+      if (Objects.nonNull(mapsObjects.get(tileManager.currentMap))) {
+        for (GameEntity object : mapsObjects.get(tileManager.currentMap)) {
+          if (object != null) {
+            gameObjects.add(object);
+          }
         }
       }
-
-      for (GameEntity monster : monsters) {
-        if (monster != null) {
-          gameObjects.add(monster);
+      if (Objects.nonNull(mapsMonsters.get(tileManager.currentMap))) {
+        for (GameEntity monster : mapsMonsters.get(tileManager.currentMap)) {
+          if (monster != null) {
+            gameObjects.add(monster);
+          }
         }
       }
 
