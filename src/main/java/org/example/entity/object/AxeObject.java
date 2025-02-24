@@ -16,6 +16,7 @@ public class AxeObject extends GameEntity {
     attackValue = 2;
     attackArea.width = 30;
     attackArea.height = 30;
+    price = 25;
     description = "[" + name + "] \n A bit rusty axe but still \n cut some trees";
     type = WorldGameTypes.AXE;
   }

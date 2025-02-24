@@ -15,6 +15,7 @@ public class WoodShieldObject extends GameEntity {
     defenseValue = 1;
     description = "[" + name + "]\nMade by wood.";
     type = WorldGameTypes.SHIELD;
+    price = 10;
 
   }
 }
