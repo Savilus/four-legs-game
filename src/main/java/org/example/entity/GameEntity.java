@@ -5,6 +5,7 @@ import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -81,6 +82,9 @@ public abstract class GameEntity {
   public int defenseValue;
   public String description;
   public int value;
+  public final int maxInventorySize = 20;
+  public ArrayList<GameEntity> inventory = new ArrayList<>();
+  public int price;
 
   //Type
   public WorldGameTypes type;
@@ -137,7 +141,7 @@ public abstract class GameEntity {
     }
 
     spriteCounter++;
-    if (spriteCounter > 12) {
+    if (spriteCounter > 24) {
       spriteNum = spriteNum == 1 ? 2 : 1;
       spriteCounter = 0;
     }

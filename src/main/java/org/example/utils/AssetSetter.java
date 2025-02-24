@@ -1,9 +1,11 @@
 package org.example.utils;
 
+import static org.example.config.GameEntityNameFactory.INTERIOR_MAP;
 import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.entity.MerchantNPC;
 import org.example.entity.NPC;
 import org.example.entity.interactiveTile.DryTreeInteractive;
 import org.example.entity.interactiveTile.InteractiveTile;
@@ -65,6 +67,11 @@ public class AssetSetter {
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0] = new NPC(gamePanel);
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldX = gamePanel.tileSize * 21;
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldY = gamePanel.tileSize * 21;
+
+    gamePanel.mapsNpc.put(INTERIOR_MAP, new GameEntity[10]);
+    gamePanel.mapsNpc.get(INTERIOR_MAP)[0] = new MerchantNPC(gamePanel);
+    gamePanel.mapsNpc.get(INTERIOR_MAP)[0].worldX = gamePanel.tileSize * 12;
+    gamePanel.mapsNpc.get(INTERIOR_MAP)[0].worldY = gamePanel.tileSize * 7;
   }
 
   public void setMonster() {

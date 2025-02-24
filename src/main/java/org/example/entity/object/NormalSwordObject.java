@@ -17,6 +17,7 @@ public class NormalSwordObject extends GameEntity {
     attackArea.height = 36;
     description = "[" + name + "]\nAn old sword";
     type = WorldGameTypes.SWORD;
+    price = 10;
 
   }
 }

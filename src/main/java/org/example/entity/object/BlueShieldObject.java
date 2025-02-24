@@ -1,7 +1,6 @@
 package org.example.entity.object;
 
 import static org.example.config.GameEntityNameFactory.BLUE_SHIELD;
-import static org.example.config.GameEntityNameFactory.WOODEN_SHIELD;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
@@ -17,6 +16,6 @@ public class BlueShieldObject extends GameEntity {
     defenseValue = 2;
     description = "[" + name + "]\nA shiny blue shield.";
     type = WorldGameTypes.SHIELD;
-
+    price = 25;
   }
 }

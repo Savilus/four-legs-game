@@ -19,6 +19,7 @@ public class RedPotionObject extends GameEntity {
     image = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
     description = "[" + name + "]\nHeals your life by " + healingValue + ".";
+    price = 3;
   }
 
   @Override

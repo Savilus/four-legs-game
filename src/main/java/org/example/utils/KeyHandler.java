@@ -90,31 +90,66 @@ public class KeyHandler implements KeyListener {
   public void characterState(int code) {
     switch (code) {
       case KeyEvent.VK_C -> gamePanel.gameState = PLAY_STATE;
+      case KeyEvent.VK_ENTER -> gamePanel.player.selectItem();
+    }
+    playerInventory(code);
+  }
+
+  public void playerInventory(int code) {
+    switch (code) {
       case KeyEvent.VK_W, KeyEvent.VK_UP -> {
-        if (gamePanel.ui.slotRow != 0) {
-          gamePanel.ui.slotRow--;
+        if (gamePanel.ui.playerSlotRow != 0) {
+          gamePanel.ui.playerSlotRow--;
           gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
-        if (gamePanel.ui.slotCol != 0) {
-          gamePanel.ui.slotCol--;
+        if (gamePanel.ui.playerSlotCol != 0) {
+          gamePanel.ui.playerSlotCol--;
           gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
-        if (gamePanel.ui.slotRow != 3) {
-          gamePanel.ui.slotRow++;
+        if (gamePanel.ui.playerSlotRow != 3) {
+          gamePanel.ui.playerSlotRow++;
           gamePanel.playSoundEffect(CURSOR);
         }
       }
       case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
-        if (gamePanel.ui.slotCol != 4) {
-          gamePanel.ui.slotCol++;
+        if (gamePanel.ui.playerSlotCol != 4) {
+          gamePanel.ui.playerSlotCol++;
           gamePanel.playSoundEffect(CURSOR);
         }
       }
-      case KeyEvent.VK_ENTER -> gamePanel.player.selectItem();
+    }
+  }
+
+  public void npcInventory(int code) {
+    switch (code) {
+      case KeyEvent.VK_W, KeyEvent.VK_UP -> {
+        if (gamePanel.ui.npcSlotRow != 0) {
+          gamePanel.ui.npcSlotRow--;
+          gamePanel.playSoundEffect(CURSOR);
+        }
+      }
+      case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
+        if (gamePanel.ui.npcSlotCol != 0) {
+          gamePanel.ui.npcSlotCol--;
+          gamePanel.playSoundEffect(CURSOR);
+        }
+      }
+      case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
+        if (gamePanel.ui.npcSlotRow != 3) {
+          gamePanel.ui.npcSlotRow++;
+          gamePanel.playSoundEffect(CURSOR);
+        }
+      }
+      case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
+        if (gamePanel.ui.npcSlotCol != 4) {
+          gamePanel.ui.npcSlotCol++;
+          gamePanel.playSoundEffect(CURSOR);
+        }
+      }
     }
   }
 
@@ -135,6 +170,43 @@ public class KeyHandler implements KeyListener {
       case CHARACTER_STATE -> characterState(code);
       case OPTIONS_STATE -> optionState(code);
       case GAME_OVER_STATE -> gameOverState(code);
+      case TRADE_STATE -> tradeState(code);
+    }
+  }
+
+  private void tradeState(int code) {
+    if (code == KeyEvent.VK_ENTER) {
+      enterPressed = true;
+    }
+
+    if (gamePanel.ui.subState == 0) {
+      switch (code) {
+        case KeyEvent.VK_W -> {
+          gamePanel.ui.commandNum--;
+          if (gamePanel.ui.commandNum < 0) {
+            gamePanel.ui.commandNum = 2;
+          }
+          gamePanel.playSoundEffect(CURSOR);
+        }
+        case KeyEvent.VK_S -> {
+          gamePanel.ui.commandNum++;
+          if (gamePanel.ui.commandNum > 2) {
+            gamePanel.ui.commandNum = 0;
+          }
+          gamePanel.playSoundEffect(CURSOR);
+        }
+      }
+    } else if (gamePanel.ui.subState == 1) {
+      npcInventory(code);
+      if (code == KeyEvent.VK_ESCAPE) {
+        gamePanel.ui.subState = 0;
+      }
+    } else if (gamePanel.ui.subState == 2) {
+      playerInventory(code);
+      if (code == KeyEvent.VK_ESCAPE) {
+        gamePanel.ui.subState = 0;
+
+      }
     }
   }
 
