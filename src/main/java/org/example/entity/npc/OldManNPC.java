@@ -1,4 +1,4 @@
-package org.example.entity;
+package org.example.entity.npc;
 
 import static org.example.config.GameEntityNameFactory.OLD_MAN_DOWN1;
 import static org.example.config.GameEntityNameFactory.OLD_MAN_DOWN2;
@@ -12,12 +12,13 @@ import static org.example.config.GameEntityNameFactory.OLD_MAN_UP2;
 import java.util.Random;
 
 import org.example.GamePanel;
+import org.example.entity.GameEntity;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 
-public class NPC extends GameEntity {
+public class OldManNPC extends GameEntity {
 
-  public NPC(GamePanel gamePanel) {
+  public OldManNPC(GamePanel gamePanel) {
     super(gamePanel);
 
     direction = DirectionType.DOWN;
@@ -48,24 +49,30 @@ public class NPC extends GameEntity {
   @Override
   public void speak() {
     super.speak();
+    onPath = true;
   }
 
   @Override
   public void setAction() {
-    actionLockCounter++;
+    if (onPath) {
+      int goalCol = 12;
+      int goalRow = 9;
+      searchPath(goalCol, goalRow);
+    } else {
+      actionLockCounter++;
 
-    if (actionLockCounter == 120) {
-      Random random = new Random();
-      int randomNumber = random.nextInt(100) + 1;
+      if (actionLockCounter == 120) {
+        Random random = new Random();
+        int randomNumber = random.nextInt(100) + 1;
 
-      if (randomNumber <= 25) direction = DirectionType.UP;
-      else if (randomNumber <= 50) direction = DirectionType.DOWN;
-      else if (randomNumber <= 75) direction = DirectionType.LEFT;
-      else if (randomNumber <= 100) direction = DirectionType.RIGHT;
+        if (randomNumber <= 25) direction = DirectionType.UP;
+        else if (randomNumber <= 50) direction = DirectionType.DOWN;
+        else if (randomNumber <= 75) direction = DirectionType.LEFT;
+        else if (randomNumber <= 100) direction = DirectionType.RIGHT;
 
-      actionLockCounter = 0;
+        actionLockCounter = 0;
+      }
     }
-
   }
 
 

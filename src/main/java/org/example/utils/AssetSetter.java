@@ -5,8 +5,8 @@ import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.MerchantNPC;
-import org.example.entity.NPC;
+import org.example.entity.npc.MerchantNPC;
+import org.example.entity.npc.OldManNPC;
 import org.example.entity.interactiveTile.DryTreeInteractive;
 import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.entity.monster.GreenSlime;
@@ -64,7 +64,7 @@ public class AssetSetter {
 
   public void setNPC() {
     gamePanel.mapsNpc.put(MAIN_MAP_PATH, new GameEntity[10]);
-    gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0] = new NPC(gamePanel);
+    gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0] = new OldManNPC(gamePanel);
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldX = gamePanel.tileSize * 21;
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldY = gamePanel.tileSize * 21;
 

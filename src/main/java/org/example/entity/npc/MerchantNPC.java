@@ -1,10 +1,11 @@
-package org.example.entity;
+package org.example.entity.npc;
 
 import static org.example.config.GameEntityNameFactory.MERCHANT_DOWN1;
 import static org.example.config.GameEntityNameFactory.MERCHANT_DOWN2;
 import static org.example.enums.GameStateType.TRADE_STATE;
 
 import org.example.GamePanel;
+import org.example.entity.GameEntity;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.BlueShieldObject;
 import org.example.entity.object.KeyObject;
@@ -12,7 +13,6 @@ import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.RedPotionObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
-import org.example.enums.GameStateType;
 import org.example.enums.WorldGameTypes;
 
 public class MerchantNPC extends GameEntity {
@@ -54,7 +54,7 @@ public class MerchantNPC extends GameEntity {
   }
 
   @Override
-  public void speak(){
+  public void speak() {
     super.speak();
     gamePanel.gameState = TRADE_STATE;
     gamePanel.ui.merchantNPC = this;

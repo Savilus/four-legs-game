@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import javax.swing.*;
 
+import org.example.ai.PathFinder;
 import org.example.entity.GameEntity;
 import org.example.entity.Player;
 import org.example.entity.interactiveTile.InteractiveTile;
@@ -48,12 +49,13 @@ public class GamePanel extends JPanel implements Runnable {
   Graphics2D tempGraphic2d;
   public boolean fullScreenOn = false;
 
-  static final int FPS = 60;
   // SYSTEM
+  static final int FPS = 60;
   public TileManager tileManager = new TileManager(this);
   public KeyHandler keyHandler = new KeyHandler(this);
   public Sound music = new Sound();
   public Sound soundEffect = new Sound();
+  public PathFinder pathFinder = new PathFinder(this);
   public CollisionDetector collisionDetector = new CollisionDetector(this);
   public AssetSetter assetSetter = new AssetSetter(this);
   Thread gameThread;
