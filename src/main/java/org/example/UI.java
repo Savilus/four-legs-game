@@ -150,7 +150,6 @@ public class UI {
     }
   }
 
-
   private void drawGameOverScreen() {
 
     graphics2D.setColor(new Color(0, 0, 0, 150));

@@ -1,6 +1,10 @@
 package org.example.entity;
 
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
+import static org.example.enums.DirectionType.DOWN;
+import static org.example.enums.DirectionType.LEFT;
+import static org.example.enums.DirectionType.RIGHT;
+import static org.example.enums.DirectionType.UP;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,10 +34,10 @@ public abstract class GameEntity {
   public BufferedImage image, image2, image3;
   public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
   public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
-  public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+  public Rectangle solidArea = new Rectangle(0, 0, 45, 45);
   public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
   public int solidAreaDefaultX, solidAreaDefaultY;
-  String[] dialogues = new String[20];
+  public String[] dialogues = new String[20];
   public boolean collision = false;
 
   // STATE
@@ -48,6 +52,7 @@ public abstract class GameEntity {
   public boolean alive = true;
   public boolean dying = false;
   public boolean hpBarOn = false;
+  public boolean onPath = false;
 
   // CHARACTER ATTRIBUTES
   public int speed;
@@ -110,15 +115,14 @@ public abstract class GameEntity {
     dialogueIndex++;
 
     switch (gamePanel.player.getDirection()) {
-      case UP -> direction = DirectionType.DOWN;
-      case DOWN -> direction = DirectionType.UP;
+      case UP -> direction = DOWN;
+      case DOWN -> direction = UP;
       case LEFT -> direction = DirectionType.RIGHT;
       case RIGHT -> direction = DirectionType.LEFT;
     }
   }
 
-  public void update() {
-    setAction();
+  public void checkCollision() {
     collisionOn = false;
     gamePanel.collisionDetector.checkTile(this);
     gamePanel.collisionDetector.checkObject(this, false);
@@ -130,6 +134,12 @@ public abstract class GameEntity {
     if (this.type == WorldGameTypes.MONSTER && contactPlayer && !gamePanel.player.invincible) {
       damagePlayer(attack);
     }
+  }
+
+  public void update() {
+    setAction();
+    checkCollision();
+
     // IF COLLISION IS FALSE, PLAYER CAN MOVE
     if (!collisionOn) {
       switch (getDirection()) {
@@ -156,6 +166,55 @@ public abstract class GameEntity {
 
     if (shootAvailableCounter < 50) {
       shootAvailableCounter++;
+    }
+  }
+
+  public void searchPath(int goalCol, int goalRow) {
+    int startCol = (worldX + solidArea.x) / gamePanel.tileSize;
+    int startRow = (worldY + solidArea.y) / gamePanel.tileSize;
+
+    gamePanel.pathFinder.setNodes(startCol, startRow, goalCol, goalRow);
+
+    if (gamePanel.pathFinder.search()) {
+      // Next wordX & worldY
+      int nextX = gamePanel.pathFinder.pathList.getFirst().col * gamePanel.tileSize;
+      int nextY = gamePanel.pathFinder.pathList.getFirst().row * gamePanel.tileSize;
+
+      // Entity's solid area position
+      int entityLeftX = worldX + solidArea.x;
+      int entityRightX = worldX + solidArea.x + solidArea.width;
+      int entityTopY = worldY + solidArea.y;
+      int entityBottomY = worldY + solidArea.y + solidArea.height;
+
+
+      if (entityLeftX >= nextX && entityRightX < nextX + gamePanel.tileSize) {
+        if (entityTopY > nextY) {
+          direction = UP;
+        } else if (entityTopY < nextY) {
+          direction = DOWN;
+        }
+      } else if (entityTopY >= nextY && entityBottomY < nextY + gamePanel.tileSize) {
+        if (entityLeftX > nextX) {
+          direction = LEFT;
+        } else if (entityLeftX < nextX) {
+          direction = RIGHT;
+        }
+      } else {
+        DirectionType primaryDir = (entityTopY > nextY) ? UP : DOWN;
+        DirectionType secondaryDir = (entityLeftX > nextX) ? LEFT : RIGHT;
+        direction = primaryDir;
+        checkCollision();
+        if (collisionOn) {
+          direction = secondaryDir;
+        }
+      }
+
+      int nextCol = gamePanel.pathFinder.pathList.getFirst().col;
+      int nextRow = gamePanel.pathFinder.pathList.getFirst().row;
+
+      if (nextCol == goalCol && nextRow == goalRow) {
+        onPath = false;
+      }
     }
   }
 
@@ -267,7 +326,7 @@ public abstract class GameEntity {
     return 0;
   }
 
-  public void generateParticle(GameEntity generator, GameEntity target){
+  public void generateParticle(GameEntity generator, GameEntity target) {
     Color color = generator.getParticleColor();
     int size = generator.getParticleSize();
     int speed = generator.getParticleSpeed();
