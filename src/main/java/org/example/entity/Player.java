@@ -38,11 +38,11 @@ import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import org.example.GamePanel;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.FireballObject;
+import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
@@ -375,7 +375,7 @@ public class Player extends GameEntity {
     exp = 0;
     nextLevelExp = 5;
     money = 100;
-    currentWeapon = new AxeObject(gamePanel);
+    currentWeapon = new NormalSwordObject(gamePanel);
     currentShield = new WoodShieldObject(gamePanel);
     projectile = new FireballObject(gamePanel);
     attack = getAttack();
@@ -387,6 +387,7 @@ public class Player extends GameEntity {
     inventory.clear();
     inventory.add(currentWeapon);
     inventory.add(currentShield);
+    inventory.add(new AxeObject(gamePanel));
   }
 
   private int getDefense() {
