@@ -209,9 +209,9 @@ public abstract class GameEntity {
         }
       }
 
+      // If reach the goal, stop the search. Disable for user
       int nextCol = gamePanel.pathFinder.pathList.getFirst().col;
       int nextRow = gamePanel.pathFinder.pathList.getFirst().row;
-
       if (nextCol == goalCol && nextRow == goalRow) {
         onPath = false;
       }
