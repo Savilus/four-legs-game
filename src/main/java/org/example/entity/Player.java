@@ -330,7 +330,11 @@ public class Player extends GameEntity {
         }
         case CONSUMABLE -> {
           if (selectedItem.use(this))
-            inventory.remove(itemIndex);
+            if (selectedItem.amount > 1) {
+              selectedItem.amount--;
+            } else {
+              inventory.remove(itemIndex);
+            }
         }
       }
     }
@@ -531,9 +535,34 @@ public class Player extends GameEntity {
     graphic2d.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
   }
 
+  // Use also to check if player has special event item
+  // TODO: implement in different places
+  public int searchItemInInventory(String itemName) {
+    return IntStream.range(0, inventory.size())
+        .filter(itemIndex -> inventory.get(itemIndex).name.equals(itemName))
+        .findFirst()
+        .orElse(INIT_INDEX);
+  }
+
+  public boolean canObtainItem(GameEntity item) {
+    if (item.stackable) {
+      int itemIndex = searchItemInInventory(item.name);
+
+      if (itemIndex != INIT_INDEX) {
+        inventory.get(itemIndex).amount++;
+        return true;
+      }
+
+    }
+    if (doesInventoryHaveSpace()) {
+      inventory.add(item);
+      return true;
+    }
+
+    return false;
+  }
+
   public void pickUpObject(int objectIndex) {
-
-
     if (objectIndex != INIT_INDEX) {
       var interactedObject = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex];
 
@@ -551,8 +580,7 @@ public class Player extends GameEntity {
         default -> {
           // INVENTORY ITEMS
           String text;
-          if (inventory.size() != maxInventorySize) {
-            inventory.add(interactedObject);
+          if (canObtainItem(interactedObject)) {
             gamePanel.playSoundEffect(COIN);
             text = String.format(PICKED_UP, interactedObject.name);
           } else {
@@ -563,5 +591,9 @@ public class Player extends GameEntity {
         }
       }
     }
+  }
+
+  private boolean doesInventoryHaveSpace() {
+    return inventory.size() < maxInventorySize;
   }
 }
