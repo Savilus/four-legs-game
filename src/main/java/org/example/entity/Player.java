@@ -44,6 +44,7 @@ import java.util.stream.IntStream;
 import org.example.GamePanel;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.FireballObject;
+import org.example.entity.object.KeyObject;
 import org.example.entity.object.NormalSwordObject;
 import org.example.entity.object.WoodShieldObject;
 import org.example.enums.DirectionType;
@@ -328,8 +329,8 @@ public class Player extends GameEntity {
           defense = getDefense();
         }
         case CONSUMABLE -> {
-          selectedItem.use(this);
-          inventory.remove(itemIndex);
+          if (selectedItem.use(this))
+            inventory.remove(itemIndex);
         }
       }
     }
@@ -407,6 +408,7 @@ public class Player extends GameEntity {
     inventory.add(currentWeapon);
     inventory.add(currentShield);
     inventory.add(new AxeObject(gamePanel));
+    inventory.add(new KeyObject(gamePanel));
   }
 
   private int getDefense() {
@@ -531,24 +533,34 @@ public class Player extends GameEntity {
 
   public void pickUpObject(int objectIndex) {
 
-    if (objectIndex != INIT_INDEX) {
 
-      // PICKUP ONLY ITEMS
-      if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].type == WorldGameTypes.PICK_UP) {
-        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].use(this);
-        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex] = null;
-      } else {
-        // INVENTORY ITEMS
-        String text;
-        if (inventory.size() != maxInventorySize) {
-          inventory.add(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex]);
-          gamePanel.playSoundEffect(COIN);
-          text = String.format(PICKED_UP, gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].name);
-        } else {
-          text = INVENTORY_FULL;
+    if (objectIndex != INIT_INDEX) {
+      var interactedObject = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex];
+
+      switch (interactedObject.type) {
+        case PICK_UP -> {
+          interactedObject.use(this);
+          gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex] = null;
         }
-        gamePanel.ui.addMessage(text);
-        gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex] = null;
+        case OBSTACLE -> {
+          if (keyHandler.enterPressed) {
+            attackCanceled = true;
+            gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex].interact();
+          }
+        }
+        default -> {
+          // INVENTORY ITEMS
+          String text;
+          if (inventory.size() != maxInventorySize) {
+            inventory.add(interactedObject);
+            gamePanel.playSoundEffect(COIN);
+            text = String.format(PICKED_UP, interactedObject.name);
+          } else {
+            text = INVENTORY_FULL;
+          }
+          gamePanel.ui.addMessage(text);
+          gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objectIndex] = null;
+        }
       }
     }
   }

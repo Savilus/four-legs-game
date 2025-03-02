@@ -21,9 +21,10 @@ public class ManaCrystalObject extends GameEntity {
   }
 
   @Override
-  public void use(GameEntity entity) {
+  public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(POWER_UP);
     gamePanel.ui.addMessage("Mana +" + value);
     entity.mana += value;
+    return true;
   }
 }

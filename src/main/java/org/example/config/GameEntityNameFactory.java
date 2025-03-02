@@ -128,6 +128,8 @@ public class GameEntityNameFactory {
   public static String BOOTS;
   @YamlValue("items.images.chest")
   public static String CHEST;
+  @YamlValue("items.images.chestOpened")
+  public static String CHEST_OPENED;
   @YamlValue("items.images.door")
   public static String DOOR;
   @YamlValue("items.images.key")

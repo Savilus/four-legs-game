@@ -5,11 +5,13 @@ import static org.example.enums.DirectionType.DOWN;
 import static org.example.enums.DirectionType.LEFT;
 import static org.example.enums.DirectionType.RIGHT;
 import static org.example.enums.DirectionType.UP;
+import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -108,7 +110,11 @@ public abstract class GameEntity {
   public void damageReaction() {
   }
 
-  public void use(GameEntity gameEntity) {
+  public boolean use(GameEntity gameEntity) {
+    return true;
+  }
+
+  public void interact() {
   }
 
   public void speak() {
@@ -370,6 +376,35 @@ public abstract class GameEntity {
     gamePanel.player.invincible = true;
   }
 
+  public int getDetected(GameEntity user, Map<String, GameEntity[]> target, String targetName) {
+    int index = INIT_INDEX;
+    var gameObjects = target.get(gamePanel.tileManager.currentMap);
+    // Check the surround object
+    int nextWorldX = user.getLeftX();
+    int nextWorldY = user.getTopY();
+
+    switch (user.direction) {
+      case UP -> nextWorldY = user.getTopY() - 1;
+      case DOWN -> nextWorldY = user.getBottomY() + 1;
+      case LEFT -> nextWorldX = user.getLeftX() - 1;
+      case RIGHT -> nextWorldX = user.getRightX() + 1;
+    }
+
+    int col = nextWorldX / gamePanel.tileSize;
+    int row = nextWorldY / gamePanel.tileSize;
+
+    for (int objectIndex = 0; objectIndex < gameObjects.length; objectIndex++) {
+      if (gameObjects[objectIndex] != null) {
+        if (gameObjects[objectIndex].getCol() == col
+            && gameObjects[objectIndex].getRow() == row && gameObjects[objectIndex].name.equals(targetName)) {
+          index = objectIndex;
+        }
+
+      }
+    }
+    return index;
+  }
+
   protected BufferedImage setup(String imagePath, int width, int height) {
     UtilityTool utilityTool = new UtilityTool();
     BufferedImage scaledImage = null;
@@ -411,5 +446,29 @@ public abstract class GameEntity {
 
   private void changeAlpha(Graphics2D graphics2D, float alphaValue) {
     graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+  }
+
+  public int getLeftX() {
+    return worldX + solidArea.x;
+  }
+
+  public int getRightX() {
+    return worldX + solidArea.x + solidArea.width;
+  }
+
+  public int getTopY() {
+    return worldY + solidArea.y;
+  }
+
+  public int getBottomY() {
+    return worldY + solidArea.y + solidArea.height;
+  }
+
+  public int getCol() {
+    return (worldX + solidArea.x) / gamePanel.tileSize;
+  }
+
+  public int getRow() {
+    return (worldY + solidArea.y) / gamePanel.tileSize;
   }
 }

@@ -20,9 +20,10 @@ public class BronzeCoinObject extends GameEntity {
   }
 
   @Override
-  public void use(GameEntity entity) {
+  public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(COIN);
     gamePanel.ui.addMessage("Coin +" + value);
     gamePanel.player.money += value;
+    return true;
   }
 }

@@ -13,6 +13,8 @@ import org.example.entity.npc.OldManNPC;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.BlueShieldObject;
 import org.example.entity.object.BronzeCoinObject;
+import org.example.entity.object.ChestObject;
+import org.example.entity.object.DoorObject;
 import org.example.entity.object.HeartObject;
 import org.example.entity.object.KeyObject;
 import org.example.entity.object.ManaCrystalObject;
@@ -64,6 +66,18 @@ public class AssetSetter {
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new ManaCrystalObject(gamePanel);
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 22;
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 31;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new DoorObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 14;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 28;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new DoorObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 12;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 12;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new ChestObject(gamePanel, new KeyObject(gamePanel));
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 33;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 7;
   }
 
   public void setProjectile() {
