@@ -96,6 +96,8 @@ public abstract class GameEntity {
   public ArrayList<GameEntity> inventory = new ArrayList<>();
   public int price;
   public int knockBackPower = 0;
+  public boolean stackable = false;
+  public int amount = 1;
 
   //Type
   public WorldGameTypes type;

@@ -46,11 +46,10 @@ public class ChestObject extends GameEntity {
       StringBuilder sb = new StringBuilder();
       sb.append(OPEN_CHEST_TEXT);
 
-      if (gamePanel.player.inventory.size() == gamePanel.player.maxInventorySize) {
+      if (!gamePanel.player.canObtainItem(loot)) {
         sb.append(FULL_INVENTORY_TEXT);
       } else {
         sb.append(COLLECT_ITEM_TEXT);
-        gamePanel.player.inventory.add(loot);
         image = image2;
         opened = true;
       }

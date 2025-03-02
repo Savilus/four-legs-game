@@ -16,6 +16,7 @@ public class RedPotionObject extends GameEntity {
     super(gamePanel);
     type = WorldGameTypes.CONSUMABLE;
     name = "Red Potion";
+    stackable = true;
     image = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
     description = "[" + name + "]\nHeals your life by " + healingValue + ".";

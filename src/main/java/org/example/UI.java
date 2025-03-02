@@ -284,21 +284,20 @@ public class UI {
       x = getXForAlignTextToRight(String.valueOf(price), gamePanel.tileSize * 8 - 20);
       graphics2D.drawString(String.valueOf(price), x, y + 34);
 
-      // BUT ITEM
+      // BUY ITEM
       if (gamePanel.keyHandler.enterPressed) {
         if (merchantNPC.inventory.get(itemIndex).price > gamePanel.player.money) {
           subState = 0;
           gamePanel.gameState = DIALOG_STATE;
           currentDialogue = NOT_ENOUGH_MONEY;
           drawDialogueScreen();
-        } else if (gamePanel.player.inventory.size() == gamePanel.player.maxInventorySize) {
+        } else if (!gamePanel.player.canObtainItem(merchantNPC.inventory.get(itemIndex))) {
           subState = 0;
           gamePanel.gameState = DIALOG_STATE;
           currentDialogue = TOO_MUCH_ITEMS;
           drawDialogueScreen();
         } else {
           gamePanel.player.money -= merchantNPC.inventory.get(itemIndex).price;
-          gamePanel.player.inventory.add(merchantNPC.inventory.get(itemIndex));
         }
       }
     }
@@ -343,7 +342,10 @@ public class UI {
           gamePanel.gameState = DIALOG_STATE;
           currentDialogue = CANNOT_SELL_ITEM;
         } else {
-          gamePanel.player.inventory.remove(itemIndex);
+          if (gamePanel.player.inventory.get(itemIndex).amount > 1)
+            gamePanel.player.inventory.get(itemIndex).amount--;
+          else
+            gamePanel.player.inventory.remove(itemIndex);
           gamePanel.player.money += price;
         }
       }
@@ -567,8 +569,23 @@ public class UI {
         graphics2D.setColor(new Color(240, 190, 90));
         graphics2D.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
       }
-
       graphics2D.drawImage(gameEntity.inventory.get(inventoryItem).down1, slotX, slotY, null);
+
+      // DISPLAY AMOUNT
+      if (gameEntity == gamePanel.player && gameEntity.inventory.get(inventoryItem).amount > 1) {
+        graphics2D.setFont(graphics2D.getFont().deriveFont(32f));
+        int amountX;
+        int amountY;
+        amountX = getXForAlignTextToRight(String.valueOf(gameEntity.inventory.get(inventoryItem).amount), slotX + 44);
+        amountY = slotY + gamePanel.tileSize;
+
+        //SHADOW
+        graphics2D.setColor(new Color(60, 60, 60));
+        graphics2D.drawString(String.valueOf(gameEntity.inventory.get(inventoryItem).amount), amountX, amountY);
+        // NUMBER
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.drawString(String.valueOf(gameEntity.inventory.get(inventoryItem).amount), amountX - 3, amountY - 3);
+      }
       slotX += slotSize;
 
       if (inventoryItem == 4 || inventoryItem == 9 || inventoryItem == 14) {

@@ -78,6 +78,18 @@ public class AssetSetter {
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new ChestObject(gamePanel, new KeyObject(gamePanel));
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 33;
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 7;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new RedPotionObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 21;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 20;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new RedPotionObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 20;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 20;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new RedPotionObject(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 17;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 21;
   }
 
   public void setProjectile() {
