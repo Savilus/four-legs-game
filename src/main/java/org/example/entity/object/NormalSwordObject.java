@@ -18,6 +18,7 @@ public class NormalSwordObject extends GameEntity {
     description = "[" + name + "]\nAn old sword";
     type = WorldGameTypes.SWORD;
     price = 10;
+    knockBackPower = 2;
 
   }
 }

@@ -53,8 +53,10 @@ public abstract class GameEntity {
   public boolean dying = false;
   public boolean hpBarOn = false;
   public boolean onPath = false;
+  public boolean knockBack = false;
 
   // CHARACTER ATTRIBUTES
+  public int defaultSpeed;
   public int speed;
   public String name;
   public int maxLife;
@@ -81,6 +83,7 @@ public abstract class GameEntity {
   public int dyingCounter = 0;
   public int hpBarCounter = 0;
   public int shootAvailableCounter = 0;
+  public int knockBackCounter = 0;
 
   // ITEM ATTRIBUTES
   public int attackValue;
@@ -90,6 +93,7 @@ public abstract class GameEntity {
   public final int maxInventorySize = 20;
   public ArrayList<GameEntity> inventory = new ArrayList<>();
   public int price;
+  public int knockBackPower = 0;
 
   //Type
   public WorldGameTypes type;
@@ -137,16 +141,34 @@ public abstract class GameEntity {
   }
 
   public void update() {
-    setAction();
     checkCollision();
 
-    // IF COLLISION IS FALSE, PLAYER CAN MOVE
-    if (!collisionOn) {
-      switch (getDirection()) {
-        case UP -> worldY -= speed;
-        case DOWN -> worldY += speed;
-        case LEFT -> worldX -= speed;
-        case RIGHT -> worldX += speed;
+    if (knockBack) {
+      if (!collisionOn) {
+        switch (gamePanel.player.direction) {
+          case UP -> worldY -= speed;
+          case DOWN -> worldY += speed;
+          case LEFT -> worldX -= speed;
+          case RIGHT -> worldX += speed;
+        }
+      }
+      knockBackCounter++;
+      if (knockBackCounter == 5 || collisionOn) {
+        knockBackCounter = 0;
+        knockBack = false;
+        speed = defaultSpeed;
+      }
+    } else {
+      setAction();
+
+      // IF COLLISION IS FALSE, PLAYER CAN MOVE
+      if (!collisionOn) {
+        switch (getDirection()) {
+          case UP -> worldY -= speed;
+          case DOWN -> worldY += speed;
+          case LEFT -> worldX -= speed;
+          case RIGHT -> worldX += speed;
+        }
       }
     }
 

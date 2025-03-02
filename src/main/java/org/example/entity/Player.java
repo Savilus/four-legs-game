@@ -38,6 +38,8 @@ import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 import org.example.GamePanel;
 import org.example.entity.object.AxeObject;
@@ -184,7 +186,11 @@ public class Player extends GameEntity {
 
       projectile.substractResource(this);
 
-      gamePanel.projectiles.add(projectile);
+      IntStream.range(0, gamePanel.projectiles.get(gamePanel.tileManager.currentMap).length)
+          .filter(emptyPlace -> Objects.isNull(gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[emptyPlace]))
+          .findFirst()
+          .ifPresent(emptyPlace -> gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[emptyPlace] = projectile);
+
       shootAvailableCounter = 0;
       gamePanel.playSoundEffect(FIREBALL_SOUND);
     }
@@ -242,10 +248,13 @@ public class Player extends GameEntity {
       solidArea.height = attackArea.height;
       // check monster collision with updated worldX, worldY and solidArea
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
-      damageMonster(monsterIndex, attack);
+      damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
 
       int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
       damageInteractiveTile(interactiveTileIndex);
+
+      int projectileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.projectiles.get(gamePanel.tileManager.currentMap));
+      damageProjectile(projectileIndex);
 
       worldX = currentWorldX;
       worldY = currentWorldY;
@@ -255,6 +264,14 @@ public class Player extends GameEntity {
       spriteNum = 1;
       spriteCounter = 0;
       attacking = false;
+    }
+  }
+
+  private void damageProjectile(int projectileIndex) {
+    if (projectileIndex != INIT_INDEX) {
+      var projectile = gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[projectileIndex];
+      projectile.alive = false;
+      generateParticle(projectile, projectile);
     }
   }
 
@@ -273,9 +290,10 @@ public class Player extends GameEntity {
     }
   }
 
-  public void damageMonster(int monsterIndex, int attack) {
+  public void damageMonster(int monsterIndex, int attack, int knockBackPower) {
     if (monsterIndex != INIT_INDEX && !gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].invincible) {
       gamePanel.playSoundEffect(HIT_MONSTER);
+      knockBack(gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex], knockBackPower);
 
       int damage = Math.max(0, attack - gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].defense);
       gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].currentLife -= damage;
@@ -360,7 +378,8 @@ public class Player extends GameEntity {
     worldY = gamePanel.tileSize * 21;
 //    worldX = gamePanel.tileSize * 12;
 //    worldY = gamePanel.tileSize * 13;
-    speed = 4;
+    defaultSpeed = 4;
+    speed = defaultSpeed;
     direction = DirectionType.DOWN;
 
     // PLAYER STATUS
@@ -423,6 +442,14 @@ public class Player extends GameEntity {
     currentLife = maxLife;
     mana = maxMana;
     invincible = false;
+  }
+
+  public void knockBack(GameEntity entity, int knockBackPower) {
+    if (knockBackPower == 0) return;
+
+    entity.direction = direction;
+    entity.speed += knockBackPower;
+    entity.knockBack = true;
   }
 
   @Override

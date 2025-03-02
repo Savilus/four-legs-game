@@ -27,12 +27,12 @@ public class YamlConfigLoader {
     for (Field field : clazz.getDeclaredFields()) {
       YamlValue annotation = field.getAnnotation(YamlValue.class);
       if (annotation != null) {
-        setFieldValue(clazz, field, data, annotation.value());
+        setFieldValue(field, data, annotation.value());
       }
     }
   }
 
-  private static void setFieldValue(Class<?> clazz, Field field, Map<String, Object> data, String path) {
+  private static void setFieldValue(Field field, Map<String, Object> data, String path) {
     Try.run(() -> {
           String[] keys = path.split("\\.");
           Object value = data;

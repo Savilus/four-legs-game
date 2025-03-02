@@ -5,11 +5,11 @@ import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.npc.MerchantNPC;
-import org.example.entity.npc.OldManNPC;
 import org.example.entity.interactiveTile.DryTreeInteractive;
 import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.entity.monster.GreenSlime;
+import org.example.entity.npc.MerchantNPC;
+import org.example.entity.npc.OldManNPC;
 import org.example.entity.object.AxeObject;
 import org.example.entity.object.BlueShieldObject;
 import org.example.entity.object.BronzeCoinObject;
@@ -19,6 +19,10 @@ import org.example.entity.object.ManaCrystalObject;
 import org.example.entity.object.RedPotionObject;
 
 public class AssetSetter {
+
+  private static int MAIN_MAP_NPC_NUMBER = 10;
+  private static int MAIN_MAP_MONSTER_NUMBER = 20;
+  private static int INTERIOR_MAP_NPC_NUMBER = 5;
 
   GamePanel gamePanel;
 
@@ -62,20 +66,25 @@ public class AssetSetter {
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 31;
   }
 
+  public void setProjectile() {
+    gamePanel.projectiles.put(MAIN_MAP_PATH, new GameEntity[MAIN_MAP_MONSTER_NUMBER + 1]);
+    gamePanel.projectiles.put(INTERIOR_MAP, new GameEntity[1]);
+  }
+
   public void setNPC() {
-    gamePanel.mapsNpc.put(MAIN_MAP_PATH, new GameEntity[10]);
+    gamePanel.mapsNpc.put(MAIN_MAP_PATH, new GameEntity[MAIN_MAP_NPC_NUMBER]);
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0] = new OldManNPC(gamePanel);
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldX = gamePanel.tileSize * 21;
     gamePanel.mapsNpc.get(MAIN_MAP_PATH)[0].worldY = gamePanel.tileSize * 21;
 
-    gamePanel.mapsNpc.put(INTERIOR_MAP, new GameEntity[10]);
+    gamePanel.mapsNpc.put(INTERIOR_MAP, new GameEntity[INTERIOR_MAP_NPC_NUMBER]);
     gamePanel.mapsNpc.get(INTERIOR_MAP)[0] = new MerchantNPC(gamePanel);
     gamePanel.mapsNpc.get(INTERIOR_MAP)[0].worldX = gamePanel.tileSize * 12;
     gamePanel.mapsNpc.get(INTERIOR_MAP)[0].worldY = gamePanel.tileSize * 7;
   }
 
   public void setMonster() {
-    gamePanel.mapsMonsters.put(MAIN_MAP_PATH, new GameEntity[20]);
+    gamePanel.mapsMonsters.put(MAIN_MAP_PATH, new GameEntity[MAIN_MAP_MONSTER_NUMBER]);
     int i = 0;
     gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
     gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 21;
