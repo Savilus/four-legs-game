@@ -23,11 +23,12 @@ public class RedPotionObject extends GameEntity {
   }
 
   @Override
-  public void use(GameEntity gameEntity) {
+  public boolean use(GameEntity gameEntity) {
     gamePanel.gameState = GameStateType.DIALOG_STATE;
     gamePanel.ui.currentDialogue = "You drink the " + name + "!\n" +
         "You feel much better!";
     gameEntity.currentLife += healingValue;
     gamePanel.playSoundEffect(POWER_UP);
+    return true;
   }
 }
