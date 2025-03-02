@@ -19,5 +19,6 @@ public class AxeObject extends GameEntity {
     price = 25;
     description = "[" + name + "] \n A bit rusty axe but still \n cut some trees";
     type = WorldGameTypes.AXE;
+    knockBackPower = 5;
   }
 }

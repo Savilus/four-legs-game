@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -69,9 +70,9 @@ public class GamePanel extends JPanel implements Runnable {
   public Map<String, GameEntity[]> mapsNpc = new HashMap<>();
   public Map<String, GameEntity[]> mapsMonsters = new HashMap<>();
   public Map<String, InteractiveTile[]> mapsInteractiveTiles = new HashMap<>();
+  public Map<String, GameEntity[]> projectiles = new HashMap<>();
   public ArrayList<GameEntity> particleList = new ArrayList<>();
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
-  public ArrayList<GameEntity> projectiles = new ArrayList<>();
 
   // GAME STATE
   public GameStateType gameState;
@@ -114,12 +115,13 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      for (int projectileIndex = 0; projectileIndex < projectiles.size(); projectileIndex++) {
-        if (projectiles.get(projectileIndex) != null) {
-          if (projectiles.get(projectileIndex).alive)
-            projectiles.get(projectileIndex).update();
-          else
-            projectiles.remove(projectileIndex);
+      for (int i = 0; i < projectiles.get(tileManager.currentMap).length; i++) {
+        GameEntity projectile = projectiles.get(tileManager.currentMap)[i];
+
+        if (Objects.nonNull(projectile) && projectile.alive) {
+          projectile.update();
+        } else {
+          projectiles.get(tileManager.currentMap)[i] = null;
         }
       }
 
@@ -131,14 +133,16 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      for (int particleIndex = 0; particleIndex < particleList.size(); particleIndex++) {
-        if (particleList.get(particleIndex) != null) {
-          if (particleList.get(particleIndex).alive)
-            particleList.get(particleIndex).update();
-          else
-            particleList.remove(particleIndex);
+      Iterator<GameEntity> particleIterator = particleList.iterator();
+      while (particleIterator.hasNext()) {
+        GameEntity particle = particleIterator.next();
+        if (Objects.nonNull(particle) && particle.alive) {
+          particle.update();
+        } else {
+          particleIterator.remove();
         }
       }
+
     } else if (gameState == PAUSE_STATE) {
       // nothing
     }
@@ -150,6 +154,7 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setObject();
     assetSetter.setInteractiveTiles();
     assetSetter.setMonster();
+    assetSetter.setProjectile();
 
     tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
     tempGraphic2d = (Graphics2D) tempScreen.getGraphics();
@@ -243,7 +248,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      for (GameEntity projectile : projectiles) {
+      for (GameEntity projectile : projectiles.get(tileManager.currentMap)) {
         if (projectile != null) {
           gameObjects.add(projectile);
         }

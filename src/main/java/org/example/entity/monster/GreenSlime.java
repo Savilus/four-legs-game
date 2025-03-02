@@ -3,7 +3,9 @@ package org.example.entity.monster;
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN1;
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN2;
 
+import java.util.Objects;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
@@ -20,7 +22,8 @@ public class GreenSlime extends GameEntity {
   public GreenSlime(GamePanel gamePanel) {
     super(gamePanel);
     name = MonsterObjectType.GREEN_SLIME.getName();
-    speed = 1;
+    defaultSpeed = 1;
+    speed = defaultSpeed;
     maxLife = 4;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
@@ -93,7 +96,10 @@ public class GreenSlime extends GameEntity {
       int randomNumber = random.nextInt(200) + 1;
       if (randomNumber > 197 && !projectile.alive && shootAvailableCounter == 50) {
         projectile.set(worldX, worldY, direction, true, this);
-        gamePanel.projectiles.add(projectile);
+        IntStream.range(0, gamePanel.projectiles.get(gamePanel.tileManager.currentMap).length)
+            .filter(emptyPlace -> Objects.isNull(gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[emptyPlace]))
+            .findFirst()
+            .ifPresent(emptyPlace -> gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[emptyPlace] = projectile);
         shootAvailableCounter = 0;
       }
 

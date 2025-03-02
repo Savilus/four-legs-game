@@ -15,6 +15,7 @@ public abstract class Projectile extends GameEntity {
   }
 
   public abstract void substractResource(GameEntity user);
+
   public abstract boolean haveResource(GameEntity user);
 
   public void set(int worldX, int worldY, DirectionType direction, boolean alive, GameEntity owner) {
@@ -31,7 +32,7 @@ public abstract class Projectile extends GameEntity {
     if (owner == gamePanel.player) {
       int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
       if (monsterIndex != INIT_INDEX) {
-        gamePanel.player.damageMonster(monsterIndex, attack);
+        gamePanel.player.damageMonster(monsterIndex, attack, knockBackPower);
         generateParticle(owner.projectile, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex]);
         alive = false;
       }
