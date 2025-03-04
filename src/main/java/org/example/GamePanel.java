@@ -21,6 +21,7 @@ import org.example.entity.GameEntity;
 import org.example.entity.Player;
 import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.enums.GameStateType;
+import org.example.environment.EnvironmentManager;
 import org.example.tile.TileManager;
 import org.example.utils.AssetSetter;
 import org.example.utils.CollisionDetector;
@@ -63,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
   Config config = new Config(this);
   public UI ui = new UI(this);
   public EventHandler eventHandler = new EventHandler(this);
+  EnvironmentManager environmentManager = new EnvironmentManager(this);
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
@@ -155,6 +157,7 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setInteractiveTiles();
     assetSetter.setMonster();
     assetSetter.setProjectile();
+    environmentManager.setup();
 
     tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
     tempGraphic2d = (Graphics2D) tempScreen.getGraphics();
@@ -270,7 +273,7 @@ public class GamePanel extends JPanel implements Runnable {
 
       // EMPLTY ENTITY LIST
       gameObjects.clear();
-
+      environmentManager.draw(tempGraphic2d);
       ui.draw(tempGraphic2d);
     }
 

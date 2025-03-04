@@ -1,5 +1,5 @@
 1) Find a better solution for drawing strings and window
-2) command num not just int
+2) command num not just int -> maybe a class with possible commands
 3) switch subState for something else, not just numbers
 4) map of NPC, String (npc dialogues) -> DONE
 5) replace if statements with stream
