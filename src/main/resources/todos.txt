@@ -3,3 +3,5 @@
 3) switch subState for something else, not just numbers
 4) map of NPC, String (npc dialogues) -> DONE
 5) replace if statements with stream
+6) Strings.Empty - strings handling
+7) WorldGameTypes with more details like description, stackable etc.

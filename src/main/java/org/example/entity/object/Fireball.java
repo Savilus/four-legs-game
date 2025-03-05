@@ -15,9 +15,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.entity.Projectile;
 
-public class FireballObject extends Projectile {
+public class Fireball extends Projectile {
 
-  public FireballObject(GamePanel gamePanel) {
+  public Fireball(GamePanel gamePanel) {
     super(gamePanel);
 
     name = "Fireball";

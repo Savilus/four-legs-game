@@ -10,12 +10,12 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 
-public class KeyObject extends GameEntity {
+public class Key extends GameEntity {
 
   private static final String OPEN_DOOR = "You use the %s and open the door.";
   private static final String WRONG_USE = "What are you doing?";
 
-  public KeyObject(GamePanel gamePanel) {
+  public Key(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.KEY.getName();
     type = CONSUMABLE;

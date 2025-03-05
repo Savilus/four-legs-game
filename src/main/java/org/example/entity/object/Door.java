@@ -8,11 +8,11 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 
-public class DoorObject extends GameEntity {
+public class Door extends GameEntity {
 
   private static final String OPEN_INFORMATION = "You need a key to open this door.";
 
-  public DoorObject(GamePanel gamePanel) {
+  public Door(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.DOOR.name();
     image = setup(DOOR, gamePanel.tileSize, gamePanel.tileSize);

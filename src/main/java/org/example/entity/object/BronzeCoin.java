@@ -7,9 +7,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class BronzeCoinObject extends GameEntity {
+public class BronzeCoin extends GameEntity {
 
-  public BronzeCoinObject(GamePanel gamePanel) {
+  public BronzeCoin(GamePanel gamePanel) {
     super(gamePanel);
 
     type = WorldGameTypes.PICK_UP;

@@ -11,7 +11,9 @@ public enum GameObjectType {
   DOOR("Door"),
   BOOTS("Boots"),
   HEART("Heart"),
-  CHEST("Chest");
+  CHEST("Chest"),
+  LANTERN("Lantern"),
+  TENT("Tent");
 
   private final String name;
 

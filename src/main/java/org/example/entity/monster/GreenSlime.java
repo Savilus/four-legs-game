@@ -9,10 +9,10 @@ import java.util.stream.IntStream;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.object.BronzeCoinObject;
-import org.example.entity.object.HeartObject;
-import org.example.entity.object.ManaCrystalObject;
-import org.example.entity.object.RockObject;
+import org.example.entity.object.BronzeCoin;
+import org.example.entity.object.Heart;
+import org.example.entity.object.ManaCrystal;
+import org.example.entity.object.Rock;
 import org.example.enums.DirectionType;
 import org.example.enums.MonsterObjectType;
 import org.example.enums.WorldGameTypes;
@@ -30,7 +30,7 @@ public class GreenSlime extends GameEntity {
     attack = 5;
     defense = 0;
     exp = 2;
-    projectile = new RockObject(gamePanel);
+    projectile = new Rock(gamePanel);
 
     solidArea.x = 3;
     solidArea.y = 18;
@@ -75,10 +75,10 @@ public class GreenSlime extends GameEntity {
     int percentForDrop = new Random().nextInt(100) + 1;
 
     if (percentForDrop < 50)
-      dropItem(new BronzeCoinObject(gamePanel));
+      dropItem(new BronzeCoin(gamePanel));
     else if (percentForDrop < 75)
-      dropItem(new HeartObject(gamePanel));
-    else dropItem(new ManaCrystalObject(gamePanel));
+      dropItem(new Heart(gamePanel));
+    else dropItem(new ManaCrystal(gamePanel));
   }
 
   @Override

@@ -6,9 +6,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class AxeObject extends GameEntity {
+public class Axe extends GameEntity {
 
-  public AxeObject(GamePanel gamePanel) {
+  public Axe(GamePanel gamePanel) {
     super(gamePanel);
     name = "Woodcutter's Axe";
     image = setup(AXE, gamePanel.tileSize, gamePanel.tileSize );

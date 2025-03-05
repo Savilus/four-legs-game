@@ -10,10 +10,14 @@ import lombok.RequiredArgsConstructor;
 public class EnvironmentManager {
 
   private final GamePanel gamePanel;
-  private Lighting lighting;
+  public Lighting lighting;
 
   public void setup() {
-    lighting = new Lighting(gamePanel, 450);
+    lighting = new Lighting(gamePanel);
+  }
+
+  public void update() {
+    lighting.update();
   }
 
   public void draw(Graphics2D graphics2D) {

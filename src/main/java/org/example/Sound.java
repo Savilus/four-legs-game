@@ -11,6 +11,7 @@ import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
+import static org.example.config.GameEntityNameFactory.SLEEP;
 import static org.example.config.GameEntityNameFactory.STAIRS;
 import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
 import static org.example.config.GameEntityNameFactory.UNLOCK;
@@ -50,6 +51,7 @@ public class Sound {
     soundMap.put(CUT_TREE, Objects.requireNonNull(getClass().getResource(CUT_TREE)));
     soundMap.put(GAME_OVER, Objects.requireNonNull(getClass().getResource(GAME_OVER)));
     soundMap.put(STAIRS, Objects.requireNonNull(getClass().getResource(STAIRS)));
+    soundMap.put(SLEEP, Objects.requireNonNull(getClass().getResource(SLEEP)));
   }
 
   public void setFile(String sound) {

@@ -8,9 +8,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class ManaCrystalObject extends GameEntity {
+public class ManaCrystal extends GameEntity {
 
-  public ManaCrystalObject(GamePanel gamePanel) {
+  public ManaCrystal(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.PICK_UP;
     name = "Mana Crystal";

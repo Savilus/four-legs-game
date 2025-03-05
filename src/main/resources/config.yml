@@ -65,6 +65,8 @@ items:
     blueShield: /objects/shield_blue.png
     redPotion: /objects/potion_red.png
     bronzeCoin: /objects/coin_bronze.png
+    lantern: /objects/lantern.png
+    tent: /objects/tent.png
 
 ui:
   images:
@@ -139,6 +141,7 @@ sound:
     cutTree: /sound/cuttree.wav
     gameOver: /sound/gameover.wav
     stairs: /sound/stairs.wav
+    sleep: /sound/sleep.wav
 
 projectile:
   fireball:

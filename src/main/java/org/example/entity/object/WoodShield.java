@@ -6,9 +6,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class WoodShieldObject extends GameEntity {
+public class WoodShield extends GameEntity {
 
-  public WoodShieldObject(GamePanel gamePanel) {
+  public WoodShield(GamePanel gamePanel) {
     super(gamePanel);
     name = "Wood Shield";
     down1 = setup(WOODEN_SHIELD, gamePanel.tileSize, gamePanel.tileSize);

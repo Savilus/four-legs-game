@@ -74,6 +74,7 @@ public abstract class GameEntity {
   public int defense;
   public int maxMana;
   public int mana;
+  public GameEntity currentLightItem;
   public GameEntity currentWeapon;
   public GameEntity currentShield;
   public Projectile projectile;
@@ -98,6 +99,7 @@ public abstract class GameEntity {
   public int knockBackPower = 0;
   public boolean stackable = false;
   public int amount = 1;
+  public int lightRadius;
 
   //Type
   public WorldGameTypes type;

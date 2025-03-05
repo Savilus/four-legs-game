@@ -8,11 +8,11 @@ import org.example.entity.GameEntity;
 import org.example.enums.GameStateType;
 import org.example.enums.WorldGameTypes;
 
-public class RedPotionObject extends GameEntity {
+public class RedPotion extends GameEntity {
 
   private final int healingValue = 5;
 
-  public RedPotionObject(GamePanel gamePanel) {
+  public RedPotion(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.CONSUMABLE;
     name = "Red Potion";
