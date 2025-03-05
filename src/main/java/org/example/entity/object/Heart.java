@@ -10,9 +10,9 @@ import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
 
-public class HeartObject extends GameEntity {
+public class Heart extends GameEntity {
 
-  public HeartObject(GamePanel gamePanel) {
+  public Heart(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.PICK_UP;
     name = "Heart";

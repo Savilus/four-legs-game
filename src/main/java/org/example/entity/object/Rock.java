@@ -8,9 +8,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.entity.Projectile;
 
-public class RockObject extends Projectile {
+public class Rock extends Projectile {
 
-  public RockObject(GamePanel gamePanel) {
+  public Rock(GamePanel gamePanel) {
     super(gamePanel);
 
     name = "Rock";

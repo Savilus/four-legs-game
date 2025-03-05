@@ -6,12 +6,12 @@ import static org.example.enums.GameStateType.TRADE_STATE;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.object.AxeObject;
-import org.example.entity.object.BlueShieldObject;
-import org.example.entity.object.KeyObject;
-import org.example.entity.object.NormalSwordObject;
-import org.example.entity.object.RedPotionObject;
-import org.example.entity.object.WoodShieldObject;
+import org.example.entity.object.Axe;
+import org.example.entity.object.BlueShield;
+import org.example.entity.object.Key;
+import org.example.entity.object.NormalSword;
+import org.example.entity.object.RedPotion;
+import org.example.entity.object.WoodShield;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 
@@ -45,12 +45,12 @@ public class MerchantNPC extends GameEntity {
   }
 
   public void setItems() {
-    inventory.add(new RedPotionObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
-    inventory.add(new NormalSwordObject(gamePanel));
-    inventory.add(new AxeObject(gamePanel));
-    inventory.add(new WoodShieldObject(gamePanel));
-    inventory.add(new BlueShieldObject(gamePanel));
+    inventory.add(new RedPotion(gamePanel));
+    inventory.add(new Key(gamePanel));
+    inventory.add(new NormalSword(gamePanel));
+    inventory.add(new Axe(gamePanel));
+    inventory.add(new WoodShield(gamePanel));
+    inventory.add(new BlueShield(gamePanel));
   }
 
   @Override

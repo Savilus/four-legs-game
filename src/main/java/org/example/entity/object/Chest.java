@@ -10,7 +10,7 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 
-public class ChestObject extends GameEntity {
+public class Chest extends GameEntity {
 
   private static final String OPEN_CHEST_TEXT = "You opened the chest and find a %s !";
   private static final String EMPTY_CHEST_TEXT = "It's empty.";
@@ -20,7 +20,7 @@ public class ChestObject extends GameEntity {
   GameEntity loot;
   boolean opened = false;
 
-  public ChestObject(GamePanel gamePanel, GameEntity loot) {
+  public Chest(GamePanel gamePanel, GameEntity loot) {
     super(gamePanel);
     this.loot = loot;
     type = OBSTACLE;

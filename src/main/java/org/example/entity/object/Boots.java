@@ -6,9 +6,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 
-public class BootsObject extends GameEntity {
+public class Boots extends GameEntity {
 
-  public BootsObject(GamePanel gamePanel) {
+  public Boots(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.BOOTS.getName();
     down1 = setup(BOOTS, gamePanel.tileSize, gamePanel.tileSize);

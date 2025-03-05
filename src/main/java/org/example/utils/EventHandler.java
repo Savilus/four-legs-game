@@ -64,7 +64,6 @@ public class EventHandler {
 
     if (canTouchEvent && gamePanel.tileManager.currentMap.equals(MAIN_MAP_PATH)) {
       if (hit(27, 16, DirectionType.RIGHT)) damagePit(DIALOG_STATE);
-      else if (hit(23, 19, DirectionType.ANY)) damagePit(DIALOG_STATE);
       else if (hit(23, 12, DirectionType.UP)) healingPool(DIALOG_STATE);
       else if (hit(10,39, DirectionType.ANY)) teleport(INTERIOR_MAP, 12, 13);
     }

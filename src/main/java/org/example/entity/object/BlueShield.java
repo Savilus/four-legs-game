@@ -6,9 +6,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class BlueShieldObject extends GameEntity {
+public class BlueShield extends GameEntity {
 
-  public BlueShieldObject(GamePanel gamePanel) {
+  public BlueShield(GamePanel gamePanel) {
     super(gamePanel);
     name = "Blue Shield";
     down1 = setup(BLUE_SHIELD, gamePanel.tileSize, gamePanel.tileSize);

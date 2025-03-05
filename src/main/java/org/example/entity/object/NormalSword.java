@@ -6,9 +6,9 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class NormalSwordObject extends GameEntity {
+public class NormalSword extends GameEntity {
 
-  public NormalSwordObject(GamePanel gamePanel) {
+  public NormalSword(GamePanel gamePanel) {
     super(gamePanel);
     name = "Normal Sword";
     down1 = setup(NORMAL_SWORD, gamePanel.tileSize, gamePanel.tileSize);

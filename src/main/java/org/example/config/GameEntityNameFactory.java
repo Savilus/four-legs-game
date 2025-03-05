@@ -146,6 +146,10 @@ public class GameEntityNameFactory {
   public static String RED_POTION;
   @YamlValue("items.images.bronzeCoin")
   public static String BRONZE_COIN;
+  @YamlValue("items.images.lantern")
+  public static String LANTERN;
+  @YamlValue("items.images.tent")
+  public static String TENT;
 
   // INTERACTIVE TILES
   @YamlValue("world.interactiveTiles.images.dryTree")
@@ -269,6 +273,8 @@ public class GameEntityNameFactory {
   public static String GAME_OVER;
   @YamlValue("sound.path.stairs")
   public static String STAIRS;
+  @YamlValue("sound.path.sleep")
+  public static String SLEEP;
 
   // FONT
   @YamlValue("font.maruMonica")

@@ -42,11 +42,11 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 import org.example.GamePanel;
-import org.example.entity.object.AxeObject;
-import org.example.entity.object.FireballObject;
-import org.example.entity.object.KeyObject;
-import org.example.entity.object.NormalSwordObject;
-import org.example.entity.object.WoodShieldObject;
+import org.example.entity.object.Axe;
+import org.example.entity.object.Fireball;
+import org.example.entity.object.Key;
+import org.example.entity.object.NormalSword;
+import org.example.entity.object.WoodShield;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.KeyHandler;
@@ -65,6 +65,7 @@ public class Player extends GameEntity {
   public final int screenY;
   public int standCounter = 0;
   public boolean attackCanceled = false;
+  public boolean lightUpdated = true;
 
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
@@ -86,6 +87,17 @@ public class Player extends GameEntity {
     getPlayerImage();
     getPlayerAttackImage();
     setItems();
+  }
+
+  public void getSleepingImage(BufferedImage image) {
+    up1 = image;
+    up2 = image;
+    down1 = image;
+    down2 = image;
+    left1 = image;
+    left2 = image;
+    right1 = image;
+    right2 = image;
   }
 
   public void getPlayerAttackImage() {
@@ -336,6 +348,14 @@ public class Player extends GameEntity {
               inventory.remove(itemIndex);
             }
         }
+        case LIGHTING -> {
+          if (currentLightItem == selectedItem) {
+            currentLightItem = null;
+          } else {
+            currentLightItem = selectedItem;
+          }
+          lightUpdated = true;
+        }
       }
     }
   }
@@ -399,9 +419,9 @@ public class Player extends GameEntity {
     exp = 0;
     nextLevelExp = 5;
     money = 100;
-    currentWeapon = new NormalSwordObject(gamePanel);
-    currentShield = new WoodShieldObject(gamePanel);
-    projectile = new FireballObject(gamePanel);
+    currentWeapon = new NormalSword(gamePanel);
+    currentShield = new WoodShield(gamePanel);
+    projectile = new Fireball(gamePanel);
     attack = getAttack();
     defense = getDefense();
 
@@ -411,8 +431,8 @@ public class Player extends GameEntity {
     inventory.clear();
     inventory.add(currentWeapon);
     inventory.add(currentShield);
-    inventory.add(new AxeObject(gamePanel));
-    inventory.add(new KeyObject(gamePanel));
+    inventory.add(new Axe(gamePanel));
+    inventory.add(new Key(gamePanel));
   }
 
   private int getDefense() {

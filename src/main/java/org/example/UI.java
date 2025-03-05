@@ -2,6 +2,7 @@ package org.example;
 
 import static org.example.config.GameEntityNameFactory.MARU_MONICA_FONT;
 import static org.example.config.GameEntityNameFactory.PURISA_BOLD_FONT;
+import static org.example.enums.DayState.DAY;
 import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
 import static org.example.enums.GameStateType.TITLE_STATE;
@@ -13,9 +14,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import org.example.entity.GameEntity;
-import org.example.entity.object.BronzeCoinObject;
-import org.example.entity.object.HeartObject;
-import org.example.entity.object.ManaCrystalObject;
+import org.example.entity.object.BronzeCoin;
+import org.example.entity.object.Heart;
+import org.example.entity.object.ManaCrystal;
+import org.example.environment.Lighting;
 
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
@@ -104,14 +106,14 @@ public class UI {
         .get();
 
     // CREATE HUD OBJECT
-    GameEntity heart = new HeartObject(gamePanel);
+    GameEntity heart = new Heart(gamePanel);
     heartFull = heart.image;
     heartHalf = heart.image2;
     heartBlank = heart.image3;
-    GameEntity manaCrysta = new ManaCrystalObject(gamePanel);
+    GameEntity manaCrysta = new ManaCrystal(gamePanel);
     manaCrystalFull = manaCrysta.image;
     manaCrystalBlank = manaCrysta.image2;
-    GameEntity bronzeCoin = new BronzeCoinObject(gamePanel);
+    GameEntity bronzeCoin = new BronzeCoin(gamePanel);
     coin = bronzeCoin.image;
   }
 
@@ -147,7 +149,31 @@ public class UI {
       case GAME_OVER_STATE -> drawGameOverScreen();
       case TRANSITION_STATE -> drawTransition();
       case TRADE_STATE -> drawTradeScreen();
+      case SLEEP_STATE -> drawSleepScreen();
     }
+  }
+
+  private void drawSleepScreen() {
+    transitionCounter++;
+
+    if (transitionCounter < 120) {
+      adjustLightingFilterAlpha(0.01F, 1.0F);
+    } else {
+      adjustLightingFilterAlpha(-0.01F, 0F);
+
+      if (gamePanel.environmentManager.lighting.filterAlpha <= 0F) {
+        transitionCounter = 0;
+        gamePanel.environmentManager.lighting.dayState = DAY;
+        gamePanel.environmentManager.lighting.dayCounter = 0;
+        gamePanel.gameState = PLAY_STATE;
+        gamePanel.player.getPlayerImage();
+      }
+    }
+  }
+
+  private void adjustLightingFilterAlpha(float delta, float limit) {
+    Lighting lighting = gamePanel.environmentManager.lighting;
+    lighting.filterAlpha = Math.max(0F, Math.min(1.0F, lighting.filterAlpha + delta));
   }
 
   private void drawGameOverScreen() {
@@ -565,7 +591,8 @@ public class UI {
 
       // EQUIP CURSOR
       if (gameEntity.inventory.get(inventoryItem) == gameEntity.currentWeapon ||
-          gameEntity.inventory.get(inventoryItem) == gameEntity.currentShield) {
+          gameEntity.inventory.get(inventoryItem) == gameEntity.currentShield ||
+          gameEntity.inventory.get(inventoryItem) == gameEntity.currentLightItem) {
         graphics2D.setColor(new Color(240, 190, 90));
         graphics2D.fillRoundRect(slotX, slotY, gamePanel.tileSize, gamePanel.tileSize, 10, 10);
       }
