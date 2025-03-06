@@ -55,20 +55,28 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TileManager {
-
+  private static TileManager instance;
   GamePanel gamePanel;
-  public String currentMap = MAIN_MAP_PATH;
+  public String currentMap;
   public Tile[] tile;
   public Map<String, int[][]> gameMaps = new HashMap<>();
   boolean drawPath = true;
 
-  public TileManager(GamePanel gamePanel) {
+  private TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
+    this.currentMap = MAIN_MAP_PATH;
     tile = new Tile[50];
 
     getTileImage();
     loadMap(INTERIOR_MAP);
     loadMap(MAIN_MAP_PATH);
+  }
+
+  public static TileManager getInstance(GamePanel gamePanel) {
+    if (instance == null) {
+      instance = new TileManager(gamePanel);
+    }
+    return instance;
   }
 
   public void getTileImage() {
@@ -157,7 +165,7 @@ public class TileManager {
           worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
           worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
           worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
-        graphics2D.drawImage(tile[tileNum].image, screenX, screenY, null);
+        graphics2D.drawImage(tile[tileNum].image(), screenX, screenY, null);
       }
       worldCol++;
 
@@ -186,10 +194,10 @@ public class TileManager {
     }
     UtilityTool utilityTool = new UtilityTool();
     Try.run(() -> {
-      tile[index] = new Tile();
-      tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
-      tile[index].image = utilityTool.scaleImage(tile[index].image, gamePanel.tileSize, gamePanel.tileSize);
-      tile[index].collision = collision;
+      tile[index] = new Tile(
+          utilityTool.scaleImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName))),
+              gamePanel.tileSize, gamePanel.tileSize), collision
+      );
     }).onFailure(error -> log.error("Error while setting up tile: {}", error.getMessage()));
   }
 }

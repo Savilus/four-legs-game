@@ -1,6 +1,7 @@
 package org.example;
 
 import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
+import static org.example.enums.GameStateType.MAP_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
 import static org.example.enums.GameStateType.TITLE_STATE;
@@ -22,6 +23,7 @@ import org.example.entity.Player;
 import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.enums.GameStateType;
 import org.example.environment.EnvironmentManager;
+import org.example.tile.GameMap;
 import org.example.tile.TileManager;
 import org.example.utils.AssetSetter;
 import org.example.utils.CollisionDetector;
@@ -53,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   // SYSTEM
   static final int FPS = 60;
-  public TileManager tileManager = new TileManager(this);
+  public TileManager tileManager = TileManager.getInstance(this);
   public KeyHandler keyHandler = new KeyHandler(this);
   public Sound music = new Sound();
   public Sound soundEffect = new Sound();
@@ -65,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
   public UI ui = new UI(this);
   public EventHandler eventHandler = new EventHandler(this);
   EnvironmentManager environmentManager = new EnvironmentManager(this);
+  public GameMap gameMap = new GameMap(this);
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
@@ -217,6 +220,8 @@ public class GamePanel extends JPanel implements Runnable {
   public void drawToTempScreen() {
     if (gameState == TITLE_STATE) {
       ui.draw(tempGraphic2d);
+    } else if (gameState == MAP_STATE) {
+      gameMap.drawFullMapScreen(tempGraphic2d);
     } else {
       tileManager.draw(tempGraphic2d);
       // INTERACTIVE TILE
@@ -275,6 +280,9 @@ public class GamePanel extends JPanel implements Runnable {
       // EMPLTY ENTITY LIST
       gameObjects.clear();
       environmentManager.draw(tempGraphic2d);
+      // Mini map
+      gameMap.drawMiniMap(tempGraphic2d);
+
       ui.draw(tempGraphic2d);
     }
 

@@ -81,7 +81,7 @@ public class UI {
   BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank, coin;
   GamePanel gamePanel;
   Graphics2D graphics2D;
-  Font maruMonica, purisaBoldFont;
+  public Font maruMonica, purisaBoldFont;
   ArrayList<String> messages = new ArrayList<>();
   ArrayList<Integer> messageCounter = new ArrayList<>();
   public GameEntity merchantNPC;
@@ -917,6 +917,8 @@ public class UI {
       transitionCounter = 0;
       gamePanel.gameState = PLAY_STATE;
       gamePanel.tileManager.currentMap = gamePanel.eventHandler.tempMap;
+      gamePanel.gameMap.createWorldMap();
+      System.out.println("TM" + gamePanel.tileManager.currentMap);
       gamePanel.player.worldX = gamePanel.tileSize * gamePanel.eventHandler.tempCol;
       gamePanel.player.worldY = gamePanel.tileSize * gamePanel.eventHandler.tempRow;
       gamePanel.eventHandler.previousEventX = gamePanel.player.worldX;

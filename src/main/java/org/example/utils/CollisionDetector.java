@@ -32,7 +32,7 @@ public class CollisionDetector {
         entityTopRow = (entityTopWorldY - gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityRightCol][entityTopRow];
-        if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
+        if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -40,7 +40,7 @@ public class CollisionDetector {
         entityBottomRow = (entityBottomWorldY + gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityBottomRow];
         tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityRightCol][entityBottomRow];
-        if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
+        if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -48,7 +48,7 @@ public class CollisionDetector {
         entityLeftCol = (entityLeftWorldX - gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityBottomRow];
-        if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
+        if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -56,7 +56,7 @@ public class CollisionDetector {
         entityRightCol = (entityRightWorldX + gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
         tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityRightCol][entityBottomRow];
-        if (gamePanel.tileManager.tile[tileNum1].collision || gamePanel.tileManager.tile[tileNum2].collision) {
+        if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
