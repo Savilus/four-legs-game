@@ -65,17 +65,17 @@ public class EventHandler {
     if (canTouchEvent && gamePanel.tileManager.currentMap.equals(MAIN_MAP_PATH)) {
       if (hit(27, 16, DirectionType.RIGHT)) damagePit(DIALOG_STATE);
       else if (hit(23, 12, DirectionType.UP)) healingPool(DIALOG_STATE);
-      else if (hit(10,39, DirectionType.ANY)) teleport(INTERIOR_MAP, 12, 13);
+      else if (hit(10, 39, DirectionType.ANY)) mapTeleport(INTERIOR_MAP, 12, 13);
     }
 
     if (canTouchEvent && gamePanel.tileManager.currentMap.equals(INTERIOR_MAP)) {
-      if (hit(12,13, DirectionType.ANY)) teleport(MAIN_MAP_PATH, 10, 39);
-      else if (hit(12,9,DirectionType.UP)) speak(gamePanel.mapsNpc.get(INTERIOR_MAP)[0]);
+      if (hit(12, 13, DirectionType.ANY)) mapTeleport(MAIN_MAP_PATH, 10, 39);
+      else if (hit(12, 9, DirectionType.UP)) speak(gamePanel.mapsNpc.get(INTERIOR_MAP)[0]);
     }
   }
 
   private void speak(GameEntity gameEntity) {
-    if(gamePanel.keyHandler.enterPressed){
+    if (gamePanel.keyHandler.enterPressed) {
       gamePanel.gameState = DIALOG_STATE;
       gamePanel.player.attackCanceled = true;
       gameEntity.speak();
@@ -104,7 +104,7 @@ public class EventHandler {
     return hit;
   }
 
-  private void teleport(String teleportToMap, int col, int row) {
+  private void mapTeleport(String teleportToMap, int col, int row) {
     gamePanel.gameState = TRANSITION_STATE;
     tempMap = teleportToMap;
     tempCol = col;

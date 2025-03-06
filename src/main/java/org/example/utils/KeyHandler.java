@@ -3,6 +3,7 @@ package org.example.utils;
 import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.config.GameEntityNameFactory.CURSOR;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
+import static org.example.enums.GameStateType.MAP_STATE;
 import static org.example.enums.GameStateType.OPTIONS_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
@@ -74,6 +75,9 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_C -> gamePanel.gameState = CHARACTER_STATE;
       case KeyEvent.VK_F -> shotKeyPressed = true;
       case KeyEvent.VK_ESCAPE -> gamePanel.gameState = OPTIONS_STATE;
+      case KeyEvent.VK_M -> gamePanel.gameState = MAP_STATE;
+      case KeyEvent.VK_X -> gamePanel.gameMap.miniMapOn = !gamePanel.gameMap.miniMapOn;
+
       //DEBUG
       case KeyEvent.VK_T -> showDebugText = !showDebugText;
       //REFRESH MAP
@@ -150,27 +154,6 @@ public class KeyHandler implements KeyListener {
           gamePanel.playSoundEffect(CURSOR);
         }
       }
-    }
-  }
-
-  @Override
-  public void keyTyped(KeyEvent keyEvent) {
-
-  }
-
-  @Override
-  public void keyPressed(KeyEvent keyEvent) {
-    int code = keyEvent.getKeyCode();
-
-    switch (gamePanel.gameState) {
-      case PLAY_STATE -> playState(code);
-      case PAUSE_STATE -> pauseState(code);
-      case DIALOG_STATE -> dialogState(code);
-      case TITLE_STATE -> titleState(code);
-      case CHARACTER_STATE -> characterState(code);
-      case OPTIONS_STATE -> optionState(code);
-      case GAME_OVER_STATE -> gameOverState(code);
-      case TRADE_STATE -> tradeState(code);
     }
   }
 
@@ -291,6 +274,34 @@ public class KeyHandler implements KeyListener {
           }
         }
       }
+    }
+  }
+
+  private void mapState(int code) {
+    if (code == KeyEvent.VK_M) {
+      gamePanel.gameState = PLAY_STATE;
+    }
+  }
+
+  @Override
+  public void keyTyped(KeyEvent keyEvent) {
+
+  }
+
+  @Override
+  public void keyPressed(KeyEvent keyEvent) {
+    int code = keyEvent.getKeyCode();
+
+    switch (gamePanel.gameState) {
+      case PLAY_STATE -> playState(code);
+      case PAUSE_STATE -> pauseState(code);
+      case DIALOG_STATE -> dialogState(code);
+      case TITLE_STATE -> titleState(code);
+      case CHARACTER_STATE -> characterState(code);
+      case OPTIONS_STATE -> optionState(code);
+      case GAME_OVER_STATE -> gameOverState(code);
+      case TRADE_STATE -> tradeState(code);
+      case MAP_STATE -> mapState(code);
     }
   }
 
