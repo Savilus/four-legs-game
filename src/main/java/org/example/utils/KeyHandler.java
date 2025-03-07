@@ -17,7 +17,7 @@ import org.example.GamePanel;
 public class KeyHandler implements KeyListener {
 
   GamePanel gamePanel;
-  public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
+  public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, shotKeyPressed;
   //DEBUG
   public boolean showDebugText;
 
@@ -70,6 +70,7 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_S -> downPressed = true;
       case KeyEvent.VK_A -> leftPressed = true;
       case KeyEvent.VK_D -> rightPressed = true;
+      case KeyEvent.VK_SPACE -> spacePressed = true;
       case KeyEvent.VK_P -> gamePanel.gameState = PAUSE_STATE;
       case KeyEvent.VK_ENTER -> enterPressed = true;
       case KeyEvent.VK_C -> gamePanel.gameState = CHARACTER_STATE;
@@ -315,6 +316,8 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_A -> leftPressed = false;
       case KeyEvent.VK_D -> rightPressed = false;
       case KeyEvent.VK_F -> shotKeyPressed = false;
+      case KeyEvent.VK_SPACE -> spacePressed = false;
+      case KeyEvent.VK_ENTER -> enterPressed = false;
     }
   }
 }

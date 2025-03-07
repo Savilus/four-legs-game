@@ -1,6 +1,7 @@
 package org.example;
 
 import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
+import static org.example.config.GameEntityNameFactory.BLOCKED;
 import static org.example.config.GameEntityNameFactory.COIN;
 import static org.example.config.GameEntityNameFactory.CURSOR;
 import static org.example.config.GameEntityNameFactory.CUT_TREE;
@@ -9,6 +10,7 @@ import static org.example.config.GameEntityNameFactory.FIREBALL_SOUND;
 import static org.example.config.GameEntityNameFactory.GAME_OVER;
 import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
+import static org.example.config.GameEntityNameFactory.PARRY;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.config.GameEntityNameFactory.SLEEP;
@@ -52,6 +54,8 @@ public class Sound {
     soundMap.put(GAME_OVER, Objects.requireNonNull(getClass().getResource(GAME_OVER)));
     soundMap.put(STAIRS, Objects.requireNonNull(getClass().getResource(STAIRS)));
     soundMap.put(SLEEP, Objects.requireNonNull(getClass().getResource(SLEEP)));
+    soundMap.put(BLOCKED, Objects.requireNonNull(getClass().getResource(BLOCKED)));
+    soundMap.put(PARRY, Objects.requireNonNull(getClass().getResource(PARRY)));
   }
 
   public void setFile(String sound) {

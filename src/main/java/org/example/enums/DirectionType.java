@@ -22,4 +22,14 @@ public enum DirectionType {
     }
     throw new IllegalArgumentException("Unknown direction: " + text);
   }
+
+  public DirectionType getOpposite() {
+    return switch (this) {
+      case UP -> DOWN;
+      case DOWN -> UP;
+      case LEFT -> RIGHT;
+      case RIGHT -> LEFT;
+      case ANY -> ANY;
+    };
+  }
 }

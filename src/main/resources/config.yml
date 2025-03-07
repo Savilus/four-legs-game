@@ -12,6 +12,11 @@ player:
     boyLeft2: /player/boy_left_2.png
     boyRight1: /player/boy_right_1.png
     boyRight2: /player/boy_right_2.png
+  guardImages:
+    guardDown: /player/boy_guard_down.png
+    guardUp: /player/boy_guard_up.png
+    guardLeft: /player/boy_guard_left.png
+    guardRight: /player/boy_guard_right.png
   swordAttackImages:
     attackUp1: /player/boy_attack_up_1.png
     attackUp2: /player/boy_attack_up_2.png
@@ -161,6 +166,8 @@ sound:
     gameOver: /sound/gameover.wav
     stairs: /sound/stairs.wav
     sleep: /sound/sleep.wav
+    blocked: /sound/blocked.wav
+    parry: /sound/parry.wav
 
 projectile:
   fireball:

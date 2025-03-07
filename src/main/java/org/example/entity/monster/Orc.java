@@ -35,12 +35,14 @@ public class Orc extends GameEntity {
     name = MonsterObjectType.ORC.getName();
     defaultSpeed = 1;
     speed = defaultSpeed;
-    maxLife = 1;
+    maxLife = 7;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
-    attack = 8;
+    attack = 5;
+    attackValue = 8;
     defense = 2;
     exp = 6;
+    knockBackPower = 5;
 
     solidArea.x = 4;
     solidArea.y = 4;
@@ -50,7 +52,7 @@ public class Orc extends GameEntity {
     solidAreaDefaultY = solidArea.y;
     attackArea.width = 48;
     attackArea.height = 48;
-    firstAttackMotionDuration =40;
+    firstAttackMotionDuration = 40;
     secondAttackMotionDuration = 85;
     getImage();
     getAttackImage();

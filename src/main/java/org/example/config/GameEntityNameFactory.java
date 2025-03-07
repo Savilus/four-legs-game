@@ -25,27 +25,7 @@ public class GameEntityNameFactory {
   @YamlValue("player.images.boyRight2")
   public static String BOY_RIGHT2;
 
-  // PROJECTILE IMAGES
-  @YamlValue("projectile.fireball.attackImages.attackUp1")
-  public static String FIREBALL_UP1;
-  @YamlValue("projectile.fireball.attackImages.attackUp2")
-  public static String FIREBALL_UP2;
-  @YamlValue("projectile.fireball.attackImages.attackDown1")
-  public static String FIREBALL_DOWN1;
-  @YamlValue("projectile.fireball.attackImages.attackDown2")
-  public static String FIREBALL_DOWN2;
-  @YamlValue("projectile.fireball.attackImages.attackRight1")
-  public static String FIREBALL_RIGHT1;
-  @YamlValue("projectile.fireball.attackImages.attackRight2")
-  public static String FIREBALL_RIGHT2;
-  @YamlValue("projectile.fireball.attackImages.attackLeft1")
-  public static String FIREBALL_LEFT1;
-  @YamlValue("projectile.fireball.attackImages.attackLeft2")
-  public static String FIREBALL_LEFT2;
-  @YamlValue("projectile.rock.attackImage")
-  public static String ROCK_ATTACK;
-
-  // PLAYER ATTACK IMAGES
+  // PLAYER ATTACK AND GUARD IMAGES
   @YamlValue("player.swordAttackImages.attackUp1")
   public static String BOY_ATTACK_UP1;
   @YamlValue("player.swordAttackImages.attackUp2")
@@ -78,7 +58,14 @@ public class GameEntityNameFactory {
   public static String BOY_AXE_ATTACK_LEFT1;
   @YamlValue("player.axeAttackImages.leftAttack2")
   public static String BOY_AXE_ATTACK_LEFT2;
-
+  @YamlValue("player.guardImages.guardDown")
+  public static String BOY_GUARD_DOWN;
+  @YamlValue("player.guardImages.guardUp")
+  public static String BOY_GUARD_UP;
+  @YamlValue("player.guardImages.guardLeft")
+  public static String BOY_GUARD_LEFT;
+  @YamlValue("player.guardImages.guardRight")
+  public static String BOY_GUARD_RIGHT;
 
   // MONSTER IMAGES
   @YamlValue("monster.images.greenSlime.down1")
@@ -101,6 +88,8 @@ public class GameEntityNameFactory {
   public static String ORC_RIGHT1;
   @YamlValue("monster.images.orc.image.right2")
   public static String ORC_RIGHT2;
+
+  // MONSTER ATTACK IMAGES
   @YamlValue("monster.images.orc.attack.down1")
   public static String ATTACK_ORC_DOWN1;
   @YamlValue("monster.images.orc.attack.down2")
@@ -117,6 +106,26 @@ public class GameEntityNameFactory {
   public static String ATTACK_ORC_LEFT1;
   @YamlValue("monster.images.orc.attack.left2")
   public static String ATTACK_ORC_LEFT2;
+
+  // PROJECTILE IMAGES
+  @YamlValue("projectile.fireball.attackImages.attackUp1")
+  public static String FIREBALL_UP1;
+  @YamlValue("projectile.fireball.attackImages.attackUp2")
+  public static String FIREBALL_UP2;
+  @YamlValue("projectile.fireball.attackImages.attackDown1")
+  public static String FIREBALL_DOWN1;
+  @YamlValue("projectile.fireball.attackImages.attackDown2")
+  public static String FIREBALL_DOWN2;
+  @YamlValue("projectile.fireball.attackImages.attackRight1")
+  public static String FIREBALL_RIGHT1;
+  @YamlValue("projectile.fireball.attackImages.attackRight2")
+  public static String FIREBALL_RIGHT2;
+  @YamlValue("projectile.fireball.attackImages.attackLeft1")
+  public static String FIREBALL_LEFT1;
+  @YamlValue("projectile.fireball.attackImages.attackLeft2")
+  public static String FIREBALL_LEFT2;
+  @YamlValue("projectile.rock.attackImage")
+  public static String ROCK_ATTACK;
 
   // UI IMAGES
   @YamlValue("ui.images.heartFull")
@@ -307,6 +316,10 @@ public class GameEntityNameFactory {
   public static String STAIRS;
   @YamlValue("sound.path.sleep")
   public static String SLEEP;
+  @YamlValue("sound.path.blocked")
+  public static String BLOCKED;
+  @YamlValue("sound.path.parry")
+  public static String PARRY;
 
   // FONT
   @YamlValue("font.maruMonica")
