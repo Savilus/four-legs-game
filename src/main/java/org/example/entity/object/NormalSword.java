@@ -19,6 +19,8 @@ public class NormalSword extends GameEntity {
     type = WorldGameTypes.SWORD;
     price = 10;
     knockBackPower = 2;
+    firstAttackMotionDuration = 5;
+    secondAttackMotionDuration = 25;
 
   }
 }

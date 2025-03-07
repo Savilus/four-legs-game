@@ -126,7 +126,7 @@ public class Player extends GameEntity {
   public void update() {
 
     if (attacking) {
-      playerAttacking();
+      attacking();
     } else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
       if (keyHandler.upPressed) {
         direction = DirectionType.UP;
@@ -236,51 +236,7 @@ public class Player extends GameEntity {
     }
   }
 
-  private void playerAttacking() {
-    spriteCounter++;
-    if (spriteCounter <= 5) {
-      spriteNum = 1;
-    } else if (spriteCounter < 25) {
-      spriteNum = 2;
-
-      // SAVE THE CURRENT worldX, worldY and solid area
-      int currentWorldX = worldX;
-      int currentWorldY = worldY;
-      int currentSolidAreaWidth = solidArea.width;
-      int currentSolidAreaHeight = solidArea.height;
-
-      // adjust player's worldX/Y for the attack area
-      switch (getDirection()) {
-        case UP -> worldY -= attackArea.height;
-        case DOWN -> worldY += attackArea.height;
-        case LEFT -> worldX -= attackArea.width;
-        case RIGHT -> worldX += attackArea.height;
-      }
-      // attackArea becomes solid area
-      solidArea.width = attackArea.width;
-      solidArea.height = attackArea.height;
-      // check monster collision with updated worldX, worldY and solidArea
-      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
-      damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
-
-      int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
-      damageInteractiveTile(interactiveTileIndex);
-
-      int projectileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.projectiles.get(gamePanel.tileManager.currentMap));
-      damageProjectile(projectileIndex);
-
-      worldX = currentWorldX;
-      worldY = currentWorldY;
-      solidArea.width = currentSolidAreaWidth;
-      solidArea.height = currentSolidAreaHeight;
-    } else if (spriteCounter > 25) {
-      spriteNum = 1;
-      spriteCounter = 0;
-      attacking = false;
-    }
-  }
-
-  private void damageProjectile(int projectileIndex) {
+  void damageProjectile(int projectileIndex) {
     if (projectileIndex != INIT_INDEX) {
       var projectile = gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[projectileIndex];
       projectile.alive = false;
@@ -288,7 +244,7 @@ public class Player extends GameEntity {
     }
   }
 
-  private void damageInteractiveTile(int interactiveTileIndex) {
+  void damageInteractiveTile(int interactiveTileIndex) {
 
     if (interactiveTileIndex != INIT_INDEX && gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].destructible
         && gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].isCorrectItem(this) && !gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[interactiveTileIndex].invincible) {
@@ -303,10 +259,10 @@ public class Player extends GameEntity {
     }
   }
 
-  public void damageMonster(int monsterIndex, int attack, int knockBackPower) {
+  public void damageMonster(GameEntity attacker, int monsterIndex, int attack, int knockBackPower) {
     if (monsterIndex != INIT_INDEX && !gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].invincible) {
       gamePanel.playSoundEffect(HIT_MONSTER);
-      knockBack(gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex], knockBackPower);
+      setKnockBack(gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex], attacker, knockBackPower);
 
       int damage = Math.max(0, attack - gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].defense);
       gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex].currentLife -= damage;
@@ -442,6 +398,8 @@ public class Player extends GameEntity {
 
   private int getAttack() {
     attackArea = currentWeapon.attackArea;
+    firstAttackMotionDuration = currentWeapon.firstAttackMotionDuration;
+    secondAttackMotionDuration = currentWeapon.secondAttackMotionDuration;
     attack = strength * currentWeapon.attackValue;
     return attack;
   }
@@ -468,14 +426,6 @@ public class Player extends GameEntity {
     currentLife = maxLife;
     mana = maxMana;
     invincible = false;
-  }
-
-  public void knockBack(GameEntity entity, int knockBackPower) {
-    if (knockBackPower == 0) return;
-
-    entity.direction = direction;
-    entity.speed += knockBackPower;
-    entity.knockBack = true;
   }
 
   @Override

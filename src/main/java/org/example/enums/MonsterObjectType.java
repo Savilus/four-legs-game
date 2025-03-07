@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MonsterObjectType {
-  GREEN_SLIME("Green Slime");
+  GREEN_SLIME("Green Slime"),
+  ORC("Orc");
 
   private final String name;
 

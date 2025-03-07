@@ -8,6 +8,7 @@ import org.example.entity.GameEntity;
 import org.example.entity.interactiveTile.DryTreeInteractive;
 import org.example.entity.interactiveTile.InteractiveTile;
 import org.example.entity.monster.GreenSlime;
+import org.example.entity.monster.Orc;
 import org.example.entity.npc.MerchantNPC;
 import org.example.entity.npc.OldManNPC;
 import org.example.entity.object.Axe;
@@ -141,6 +142,10 @@ public class AssetSetter {
     gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new GreenSlime(gamePanel);
     gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 38;
     gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 42;
+    i++;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i] = new Orc(gamePanel);
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 12;
+    gamePanel.mapsMonsters.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 33;
   }
 
   public void setInteractiveTiles() {

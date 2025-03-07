@@ -88,7 +88,7 @@ public class Lighting {
     switch (dayState) {
       case DAY -> {
         dayCounter++;
-        if (dayCounter > 600) {
+        if (dayCounter > 6000) {
           dayState = DUSK;
           dayCounter = 0;
         }
@@ -102,7 +102,7 @@ public class Lighting {
       }
       case NIGHT -> {
         dayCounter++;
-        if (dayCounter >= 600) {
+        if (dayCounter >= 6000) {
           dayState = DAWN;
           dayCounter = 0;
         }

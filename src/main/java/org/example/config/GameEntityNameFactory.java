@@ -85,6 +85,38 @@ public class GameEntityNameFactory {
   public static String GREEN_SLIME_DOWN1;
   @YamlValue("monster.images.greenSlime.down2")
   public static String GREEN_SLIME_DOWN2;
+  @YamlValue("monster.images.orc.image.up1")
+  public static String ORC_UP1;
+  @YamlValue("monster.images.orc.image.up2")
+  public static String ORC_UP2;
+  @YamlValue("monster.images.orc.image.down1")
+  public static String ORC_DOWN1;
+  @YamlValue("monster.images.orc.image.down2")
+  public static String ORC_DOWN2;
+  @YamlValue("monster.images.orc.image.left1")
+  public static String ORC_LEFT1;
+  @YamlValue("monster.images.orc.image.left2")
+  public static String ORC_LEFT2;
+  @YamlValue("monster.images.orc.image.right1")
+  public static String ORC_RIGHT1;
+  @YamlValue("monster.images.orc.image.right2")
+  public static String ORC_RIGHT2;
+  @YamlValue("monster.images.orc.attack.down1")
+  public static String ATTACK_ORC_DOWN1;
+  @YamlValue("monster.images.orc.attack.down2")
+  public static String ATTACK_ORC_DOWN2;
+  @YamlValue("monster.images.orc.attack.up1")
+  public static String ATTACK_ORC_UP1;
+  @YamlValue("monster.images.orc.attack.up2")
+  public static String ATTACK_ORC_UP2;
+  @YamlValue("monster.images.orc.attack.right1")
+  public static String ATTACK_ORC_RIGHT1;
+  @YamlValue("monster.images.orc.attack.right2")
+  public static String ATTACK_ORC_RIGHT2;
+  @YamlValue("monster.images.orc.attack.left1")
+  public static String ATTACK_ORC_LEFT1;
+  @YamlValue("monster.images.orc.attack.left2")
+  public static String ATTACK_ORC_LEFT2;
 
   // UI IMAGES
   @YamlValue("ui.images.heartFull")
