@@ -11,7 +11,7 @@ public class Axe extends GameEntity {
   public Axe(GamePanel gamePanel) {
     super(gamePanel);
     name = "Woodcutter's Axe";
-    image = setup(AXE, gamePanel.tileSize, gamePanel.tileSize );
+    image = setup(AXE, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(AXE, gamePanel.tileSize, gamePanel.tileSize);
     attackValue = 2;
     attackArea.width = 30;
@@ -20,5 +20,7 @@ public class Axe extends GameEntity {
     description = "[" + name + "] \n A bit rusty axe but still \n cut some trees";
     type = WorldGameTypes.AXE;
     knockBackPower = 5;
+    firstAttackMotionDuration = 20;
+    secondAttackMotionDuration = 40;
   }
 }

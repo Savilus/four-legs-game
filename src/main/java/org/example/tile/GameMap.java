@@ -47,6 +47,7 @@ public class GameMap {
         row++;
       }
     }
+    graphics2D.dispose();
   }
 
   public void drawFullMapScreen(Graphics2D graphics2D) {
@@ -87,7 +88,6 @@ public class GameMap {
 
       graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8F));
       graphics2D.drawImage(worldGameMap.get(tileManager.currentMap), x, y, diameter, diameter, null);
-      System.out.println(tileManager.currentMap);
 
       // Draw player
       double scale = (double) (gamePanel.tileSize * gamePanel.maxWorldCol) / diameter;

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.DirectionType;
 
 public class CollisionDetector {
   public final static int INIT_INDEX = 999;
@@ -27,7 +28,13 @@ public class CollisionDetector {
 
     int tileNum1, tileNum2;
 
-    switch (gameEntity.getDirection()) {
+    // Use a temporal direction when it's being knock backed
+    DirectionType direction = gameEntity.direction;
+    if (gameEntity.knockBack) {
+      direction = gameEntity.knockBackDirection;
+    }
+
+    switch (direction) {
       case UP -> {
         entityTopRow = (entityTopWorldY - gameEntity.speed) / gamePanel.tileSize;
         tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
@@ -77,7 +84,7 @@ public class CollisionDetector {
         // get object's solid area position
         gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.x = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldX + gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.x;
         gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.y = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldY + gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.y;
-        checkGameEntityCollision(gameEntity);
+        checkGameEntityCollision(gameEntity, gameEntity.direction);
         if (gameEntity.solidArea.intersects(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea)) {
           if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].collision) {
             gameEntity.collisionOn = true;
@@ -100,27 +107,32 @@ public class CollisionDetector {
   public int checkEntity(GameEntity gameEntity, GameEntity[] target) {
     if (Objects.isNull(target))
       return INIT_INDEX;
-
     int index = INIT_INDEX;
 
-    for (int i = 0; i < target.length; i++) {
-      if (target[i] != null) {
+    // Use a temporal direction when it's being knock backed
+    DirectionType direction = gameEntity.direction;
+    if (gameEntity.knockBack) {
+      direction = gameEntity.knockBackDirection;
+    }
+
+    for (int targetIndex = 0; targetIndex < target.length; targetIndex++) {
+      if (target[targetIndex] != null) {
         //get entity's solid area position
         gameEntity.solidArea.x = gameEntity.worldX + gameEntity.solidArea.x;
         gameEntity.solidArea.y = gameEntity.worldY + gameEntity.solidArea.y;
         // get target solid area position
-        target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
-        target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
-        checkGameEntityCollision(gameEntity);
-        if (gameEntity.solidArea.intersects(target[i].solidArea) && target[i] != gameEntity) {
+        target[targetIndex].solidArea.x = target[targetIndex].worldX + target[targetIndex].solidArea.x;
+        target[targetIndex].solidArea.y = target[targetIndex].worldY + target[targetIndex].solidArea.y;
+        checkGameEntityCollision(gameEntity, direction);
+        if (gameEntity.solidArea.intersects(target[targetIndex].solidArea) && target[targetIndex] != gameEntity) {
           gameEntity.collisionOn = true;
-          index = i;
+          index = targetIndex;
         }
 
         gameEntity.solidArea.x = gameEntity.solidAreaDefaultX;
         gameEntity.solidArea.y = gameEntity.solidAreaDefaultY;
-        target[i].solidArea.x = target[i].solidAreaDefaultX;
-        target[i].solidArea.y = target[i].solidAreaDefaultY;
+        target[targetIndex].solidArea.x = target[targetIndex].solidAreaDefaultX;
+        target[targetIndex].solidArea.y = target[targetIndex].solidAreaDefaultY;
       }
     }
     return index;
@@ -135,7 +147,7 @@ public class CollisionDetector {
     gamePanel.player.solidArea.x = gamePanel.player.worldX + gamePanel.player.solidArea.x;
     gamePanel.player.solidArea.y = gamePanel.player.worldY + gamePanel.player.solidArea.y;
 
-    checkGameEntityCollision(gameEntity);
+    checkGameEntityCollision(gameEntity, gameEntity.direction);
     if (gameEntity.solidArea.intersects(gamePanel.player.solidArea)) {
       gameEntity.collisionOn = true;
       contactPlayer = true;
@@ -148,8 +160,8 @@ public class CollisionDetector {
     return contactPlayer;
   }
 
-  private void checkGameEntityCollision(GameEntity gameEntity) {
-    switch (gameEntity.getDirection()) {
+  private void checkGameEntityCollision(GameEntity gameEntity, DirectionType direction) {
+    switch (direction) {
       case UP -> gameEntity.solidArea.y -= gameEntity.speed;
       case DOWN -> gameEntity.solidArea.y += gameEntity.speed;
       case LEFT -> gameEntity.solidArea.x -= gameEntity.speed;

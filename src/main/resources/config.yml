@@ -51,6 +51,25 @@ monster:
     greenSlime:
       down1: /monster/greenslime_down_1.png
       down2: /monster/greenslime_down_2.png
+    orc:
+      image:
+        down1: /monster/orc_down_1.png
+        down2: /monster/orc_down_2.png
+        up1: /monster/orc_up_1.png
+        up2: /monster/orc_up_2.png
+        left1: /monster/orc_left_1.png
+        left2: /monster/orc_left_2.png
+        right1: /monster/orc_right_1.png
+        right2: /monster/orc_right_2.png
+      attack:
+       down1: /monster/orc_attack_down_1.png
+       down2: /monster/orc_attack_down_2.png
+       up1: /monster/orc_attack_up_1.png
+       up2: /monster/orc_attack_up_2.png
+       right1: /monster/orc_attack_right_1.png
+       right2: /monster/orc_attack_right_2.png
+       left1: /monster/orc_attack_left_1.png
+       left2: /monster/orc_attack_left_2.png
 
 items:
   images:
