@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import static org.example.config.GameEntityNameFactory.BLOCKED;
+import static org.example.config.GameEntityNameFactory.PARRY;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.enums.DirectionType.DOWN;
 import static org.example.enums.DirectionType.LEFT;
@@ -10,7 +12,6 @@ import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +25,7 @@ import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.UtilityTool;
 
+import io.vavr.control.Try;
 import lombok.Getter;
 
 /*
@@ -39,6 +41,7 @@ public abstract class GameEntity {
   public BufferedImage image, image2, image3;
   public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
   public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+  public BufferedImage guardUp, guardDown, guardLeft, guardRight;
   public Rectangle solidArea = new Rectangle(0, 0, 45, 45);
   public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
   public int solidAreaDefaultX, solidAreaDefaultY;
@@ -61,6 +64,9 @@ public abstract class GameEntity {
   public boolean onPath = false;
   public boolean knockBack = false;
   public DirectionType knockBackDirection;
+  public boolean guarding = false;
+  public boolean transparent = false;
+  public boolean offBalance = false;
 
   // CHARACTER ATTRIBUTES
   public int defaultSpeed;
@@ -94,6 +100,8 @@ public abstract class GameEntity {
   public int hpBarCounter = 0;
   public int shootAvailableCounter = 0;
   public int knockBackCounter = 0;
+  public int guardCounter = 0;
+  public int offBalanceCounter;
 
   // ITEM ATTRIBUTES
   public int attackValue;
@@ -210,7 +218,6 @@ public abstract class GameEntity {
 
   public void update() {
     checkCollision();
-
     if (knockBack) {
       if (!collisionOn) {
         switch (knockBackDirection) {
@@ -258,6 +265,14 @@ public abstract class GameEntity {
 
     if (shootAvailableCounter < 50) {
       shootAvailableCounter++;
+    }
+
+    if (offBalance) {
+      offBalanceCounter++;
+      if (offBalanceCounter > 60) {
+        offBalance = false;
+        offBalanceCounter = 0;
+      }
     }
   }
 
@@ -459,9 +474,35 @@ public abstract class GameEntity {
   }
 
   public void damagePlayer(int attack) {
-    gamePanel.playSoundEffect(RECEIVE_DAMAGE);
-    gamePanel.player.currentLife -= attack - gamePanel.player.defense;
-    gamePanel.player.invincible = true;
+    if (!gamePanel.player.invincible) {
+      int damage = attack - gamePanel.player.defense;
+      // Get and oposite direction of this attacker
+      DirectionType canGuardDirection = direction.getOpposite();
+      if (gamePanel.player.guarding && gamePanel.player.direction == canGuardDirection) {
+        // Parry
+        if (gamePanel.player.guardCounter < 10) {
+          damage = 0;
+          gamePanel.playSoundEffect(PARRY);
+          setKnockBack(this, gamePanel.player, knockBackPower);
+          offBalance = true;
+          spriteCounter = -60;
+        } else {
+          // normal guard
+          damage /= 3;
+          gamePanel.playSoundEffect(BLOCKED);
+        }
+      } else {
+        gamePanel.playSoundEffect(RECEIVE_DAMAGE);
+        if (damage < 1)
+          damage = 1;
+      }
+      if (damage != 0) {
+        gamePanel.player.transparent = true;
+        setKnockBack(gamePanel.player, this, this.knockBackPower);
+      }
+      gamePanel.player.currentLife -= damage;
+      gamePanel.player.invincible = true;
+    }
   }
 
   public int getDetected(GameEntity user, Map<String, GameEntity[]> target, String targetName) {
@@ -495,16 +536,9 @@ public abstract class GameEntity {
 
   protected BufferedImage setup(String imagePath, int width, int height) {
     UtilityTool utilityTool = new UtilityTool();
-    BufferedImage scaledImage = null;
-
-    try {
-      scaledImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-      scaledImage = utilityTool.scaleImage(scaledImage, width, height);
-    } catch (IOException exception) {
-      exception.printStackTrace();
-    }
-    return scaledImage;
-
+    return Try.of(() -> ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath))))
+        .map(image -> utilityTool.scaleImage(image, width, height))
+        .getOrElseThrow(() -> new RuntimeException("Failed to load image: " + imagePath));
   }
 
   private void dyingAnimation(Graphics2D graphics2D) {
@@ -588,8 +622,8 @@ public abstract class GameEntity {
       }
     }
     if (targetInRange) {
-      int i = new Random().nextInt(rate);
-      if (i == 0) {
+      int attackNumber = new Random().nextInt(rate);
+      if (attackNumber == 0) {
         attacking = true;
         spriteNum = 1;
         spriteCounter = 0;

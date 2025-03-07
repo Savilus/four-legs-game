@@ -27,6 +27,7 @@ public abstract class Projectile extends GameEntity {
     this.currentLife = this.maxLife;
   }
 
+  @Override
   public void update() {
 
     if (owner == gamePanel.player) {
@@ -40,7 +41,7 @@ public abstract class Projectile extends GameEntity {
       boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
       if (!gamePanel.player.invincible && contactPlayer) {
         damagePlayer(attackValue);
-        generateParticle(owner.projectile, gamePanel.player);
+        generateParticle(owner.projectile, owner.projectile);
         alive = false;
       }
     }

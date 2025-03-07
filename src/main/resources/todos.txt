@@ -5,3 +5,4 @@
 5) replace if statements with stream
 6) Strings.Empty - strings handling
 7) WorldGameTypes with more details like description, stackable etc.
+8) Methods like Objects.requireNonNull(getClass().getResource(PARRY)) -> utility class
