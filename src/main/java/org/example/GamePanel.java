@@ -1,6 +1,5 @@
 package org.example;
 
-import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
 import static org.example.enums.GameStateType.MAP_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
@@ -176,21 +175,19 @@ public class GamePanel extends JPanel implements Runnable {
     music.loop();
   }
 
-  public void retryAfterGameOver() {
+  public void resetGame(boolean restart) {
     player.setDefaultPositions();
-    player.restoreLifeAndMana();
-    playMusic(BACKGROUND_SONG);
+    player.restorePlayerStatus();
     assetSetter.setMonster();
-    assetSetter.setMonster();
-  }
-
-  public void restartAfterGameOver() {
-    player.setDefaultValues();
-    player.setItems();
     assetSetter.setNPC();
-    assetSetter.setObject();
-    assetSetter.setInteractiveTiles();
-    assetSetter.setMonster();
+
+    if (restart) {
+      player.setDefaultValues();
+      player.setItems();
+      assetSetter.setObject();
+      assetSetter.setInteractiveTiles();
+      environmentManager.lighting.resetDay();
+    }
   }
 
   public void stopMusic() {

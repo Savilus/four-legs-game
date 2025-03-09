@@ -399,6 +399,7 @@ public class UI {
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
         gamePanel.gameState = TITLE_STATE;
+        gamePanel.resetGame(true);
       }
     }
 

@@ -78,6 +78,11 @@ public class Lighting {
     graphics2D.dispose();
   }
 
+  public void resetDay() {
+    dayState = DAY;
+    filterAlpha = 0f;
+  }
+
   public void update() {
     if (gamePanel.player.lightUpdated) {
       setLightSource();

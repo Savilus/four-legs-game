@@ -88,10 +88,6 @@ public class Player extends GameEntity {
     solidArea.height = 32;
 
     setDefaultValues();
-    getImage();
-    getAttackImage();
-    getGuardImage();
-    setItems();
   }
 
   public void getSleepingImage(BufferedImage image) {
@@ -416,15 +412,20 @@ public class Player extends GameEntity {
     exp = 0;
     nextLevelExp = 5;
     money = 100;
-    currentWeapon = new NormalSword(gamePanel);
-    currentShield = new WoodShield(gamePanel);
-    projectile = new Fireball(gamePanel);
+    setItems();
     attack = getAttack();
     defense = getDefense();
 
+    getImage();
+    getAttackImage();
+    getGuardImage();
   }
 
   public void setItems() {
+    currentWeapon = new NormalSword(gamePanel);
+    currentShield = new WoodShield(gamePanel);
+    projectile = new Fireball(gamePanel);
+    currentLightItem = null;
     inventory.clear();
     inventory.add(currentWeapon);
     inventory.add(currentShield);
@@ -473,11 +474,15 @@ public class Player extends GameEntity {
     direction = DirectionType.DOWN;
   }
 
-  public void restoreLifeAndMana() {
+  public void restorePlayerStatus() {
     currentLife = maxLife;
     mana = maxMana;
     invincible = false;
     transparent = false;
+    attacking = false;
+    lightUpdated = true;
+    knockBack = false;
+    speed = defaultSpeed;
   }
 
   @Override
