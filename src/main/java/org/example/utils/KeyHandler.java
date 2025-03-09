@@ -213,10 +213,10 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_ENTER -> {
         if (gamePanel.ui.commandNum == 0) {
           gamePanel.gameState = PLAY_STATE;
-          gamePanel.retryAfterGameOver();
+          gamePanel.resetGame(false);
         } else if (gamePanel.ui.commandNum == 1) {
           gamePanel.gameState = TITLE_STATE;
-          gamePanel.restartAfterGameOver();
+          gamePanel.resetGame(true);
         }
       }
     }

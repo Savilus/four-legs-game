@@ -513,10 +513,10 @@ public abstract class GameEntity {
     int nextWorldY = user.getTopY();
 
     switch (user.direction) {
-      case UP -> nextWorldY = user.getTopY() - 1;
-      case DOWN -> nextWorldY = user.getBottomY() + 1;
-      case LEFT -> nextWorldX = user.getLeftX() - 1;
-      case RIGHT -> nextWorldX = user.getRightX() + 1;
+      case UP -> nextWorldY = user.getTopY() - gamePanel.player.speed;
+      case DOWN -> nextWorldY = user.getBottomY() + gamePanel.player.speed;
+      case LEFT -> nextWorldX = user.getLeftX() - gamePanel.player.speed;
+      case RIGHT -> nextWorldX = user.getRightX() + gamePanel.player.speed;
     }
 
     int col = nextWorldX / gamePanel.tileSize;
