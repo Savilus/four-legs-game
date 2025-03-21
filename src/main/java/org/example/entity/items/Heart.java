@@ -1,4 +1,4 @@
-package org.example.entity.object;
+package org.example.entity.items;
 
 import static org.example.config.GameEntityNameFactory.HEART_BLANK;
 import static org.example.config.GameEntityNameFactory.HEART_FULL;
@@ -15,7 +15,7 @@ public class Heart extends GameEntity {
   public Heart(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.PICK_UP;
-    name = "Heart";
+    name = GameObjectType.HEART.getName();
     value = 2;
     down1 = setup(HEART_FULL, gamePanel.tileSize, gamePanel.tileSize);
 

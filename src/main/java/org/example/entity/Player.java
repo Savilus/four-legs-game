@@ -35,7 +35,10 @@ import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
+import static org.example.enums.DirectionType.DOWN;
+import static org.example.enums.DirectionType.LEFT;
 import static org.example.enums.DirectionType.RIGHT;
+import static org.example.enums.DirectionType.UP;
 import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.GAME_OVER_STATE;
 import static org.example.utils.CollisionDetector.INIT_INDEX;
@@ -46,12 +49,11 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 import org.example.GamePanel;
-import org.example.entity.object.Axe;
-import org.example.entity.object.Fireball;
-import org.example.entity.object.Key;
-import org.example.entity.object.NormalSword;
-import org.example.entity.object.WoodShield;
-import org.example.enums.DirectionType;
+import org.example.entity.weapon.Axe;
+import org.example.entity.projectile.Fireball;
+import org.example.entity.items.Key;
+import org.example.entity.weapon.NormalSword;
+import org.example.entity.shield.WoodShield;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.KeyHandler;
 
@@ -155,11 +157,11 @@ public class Player extends GameEntity {
       guardCounter++;
     } else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
       if (keyHandler.upPressed) {
-        direction = DirectionType.UP;
+        direction = UP;
       } else if (keyHandler.downPressed) {
-        direction = DirectionType.DOWN;
+        direction = DOWN;
       } else if (keyHandler.leftPressed) {
-        direction = DirectionType.LEFT;
+        direction = LEFT;
       } else if (keyHandler.rightPressed) {
         direction = RIGHT;
       }
@@ -317,6 +319,26 @@ public class Player extends GameEntity {
     }
   }
 
+  public int getCurrentWeaponSlot() {
+    int currentWeaponSlot = 0;
+    for (int inventoryIndex = 0; inventory.size() > inventoryIndex; inventoryIndex++) {
+      if(inventory.get(inventoryIndex) == currentWeapon){
+        currentWeaponSlot = inventoryIndex;
+      }
+    }
+    return currentWeaponSlot;
+  }
+
+  public int getCurrentShieldSlot() {
+    int currentShieldSlot = 0;
+    for (int inventoryIndex = 0; inventory.size() > inventoryIndex; inventoryIndex++) {
+      if(inventory.get(inventoryIndex) == currentShield){
+        currentShieldSlot = inventoryIndex;
+      }
+    }
+    return currentShieldSlot;
+  }
+
   public void selectItem() {
     int itemIndex = gamePanel.ui.getItemIndexFromInventory(gamePanel.ui.playerSlotCol, gamePanel.ui.playerSlotRow);
 
@@ -398,7 +420,7 @@ public class Player extends GameEntity {
 //    worldY = gamePanel.tileSize * 13;
     defaultSpeed = 4;
     speed = defaultSpeed;
-    direction = DirectionType.DOWN;
+    direction = DOWN;
 
     // PLAYER STATUS
     maxLife = 6;
@@ -433,12 +455,12 @@ public class Player extends GameEntity {
     inventory.add(new Key(gamePanel));
   }
 
-  private int getDefense() {
+  public int getDefense() {
     defense = dexterity * currentShield.defenseValue;
     return defense;
   }
 
-  private int getAttack() {
+  public int getAttack() {
     attackArea = currentWeapon.attackArea;
     firstAttackMotionDuration = currentWeapon.firstAttackMotionDuration;
     secondAttackMotionDuration = currentWeapon.secondAttackMotionDuration;
@@ -471,7 +493,7 @@ public class Player extends GameEntity {
 
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
-    direction = DirectionType.DOWN;
+    direction = DOWN;
   }
 
   public void restorePlayerStatus() {

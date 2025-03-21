@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import org.example.entity.GameEntity;
-import org.example.entity.object.BronzeCoin;
-import org.example.entity.object.Heart;
-import org.example.entity.object.ManaCrystal;
+import org.example.entity.items.BronzeCoin;
+import org.example.entity.items.Heart;
+import org.example.entity.items.ManaCrystal;
 import org.example.environment.Lighting;
 
 import io.vavr.control.Try;
@@ -919,7 +919,6 @@ public class UI {
       gamePanel.gameState = PLAY_STATE;
       gamePanel.tileManager.currentMap = gamePanel.eventHandler.tempMap;
       gamePanel.gameMap.createWorldMap();
-      System.out.println("TM" + gamePanel.tileManager.currentMap);
       gamePanel.player.worldX = gamePanel.tileSize * gamePanel.eventHandler.tempCol;
       gamePanel.player.worldY = gamePanel.tileSize * gamePanel.eventHandler.tempRow;
       gamePanel.eventHandler.previousEventX = gamePanel.player.worldX;

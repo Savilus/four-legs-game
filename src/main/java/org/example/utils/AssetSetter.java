@@ -11,17 +11,17 @@ import org.example.entity.monster.GreenSlime;
 import org.example.entity.monster.Orc;
 import org.example.entity.npc.MerchantNPC;
 import org.example.entity.npc.OldManNPC;
-import org.example.entity.object.Axe;
-import org.example.entity.object.BlueShield;
-import org.example.entity.object.BronzeCoin;
-import org.example.entity.object.Chest;
-import org.example.entity.object.Door;
-import org.example.entity.object.Heart;
-import org.example.entity.object.Key;
-import org.example.entity.object.Lantern;
-import org.example.entity.object.ManaCrystal;
-import org.example.entity.object.RedPotion;
-import org.example.entity.object.Tent;
+import org.example.entity.items.BronzeCoin;
+import org.example.entity.items.Chest;
+import org.example.entity.items.Door;
+import org.example.entity.items.Heart;
+import org.example.entity.items.Key;
+import org.example.entity.items.Lantern;
+import org.example.entity.items.ManaCrystal;
+import org.example.entity.items.RedPotion;
+import org.example.entity.items.Tent;
+import org.example.entity.shield.BlueShield;
+import org.example.entity.weapon.Axe;
 
 public class AssetSetter {
 
@@ -78,7 +78,8 @@ public class AssetSetter {
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 12;
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 12;
     i++;
-    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new Chest(gamePanel, new Key(gamePanel));
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new Chest(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].setLoot(new Key(gamePanel));
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 33;
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 7;
     i++;
@@ -100,6 +101,11 @@ public class AssetSetter {
     i++;
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new Tent(gamePanel);
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 19;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 20;
+    i++;
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i] = new Chest(gamePanel);
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].setLoot(new Tent(gamePanel));
+    gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldX = gamePanel.tileSize * 17;
     gamePanel.mapsObjects.get(MAIN_MAP_PATH)[i].worldY = gamePanel.tileSize * 20;
   }
 

@@ -1,16 +1,17 @@
-package org.example.entity.object;
+package org.example.entity.weapon;
 
 import static org.example.config.GameEntityNameFactory.AXE;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
 
 public class Axe extends GameEntity {
 
   public Axe(GamePanel gamePanel) {
     super(gamePanel);
-    name = "Woodcutter's Axe";
+    name = GameObjectType.AXE.getName();
     image = setup(AXE, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(AXE, gamePanel.tileSize, gamePanel.tileSize);
     attackValue = 2;

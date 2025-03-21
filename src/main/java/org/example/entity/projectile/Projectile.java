@@ -1,8 +1,9 @@
-package org.example.entity;
+package org.example.entity.projectile;
 
 import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import org.example.GamePanel;
+import org.example.entity.GameEntity;
 import org.example.enums.DirectionType;
 
 public abstract class Projectile extends GameEntity {

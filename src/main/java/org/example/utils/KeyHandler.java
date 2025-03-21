@@ -49,7 +49,9 @@ public class KeyHandler implements KeyListener {
           gamePanel.playMusic(BACKGROUND_SONG);
         }
         if (gamePanel.ui.commandNum == 1) {
-          // LATER
+          gamePanel.saveLoad.load();
+          gamePanel.gameState = PLAY_STATE;
+          gamePanel.playMusic(BACKGROUND_SONG);
         }
         if (gamePanel.ui.commandNum == 2) {
           System.exit(0);

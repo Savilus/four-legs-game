@@ -21,6 +21,7 @@ import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 
 import org.example.GamePanel;
+import org.example.entity.projectile.Projectile;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.UtilityTool;
@@ -67,6 +68,8 @@ public abstract class GameEntity {
   public boolean guarding = false;
   public boolean transparent = false;
   public boolean offBalance = false;
+  public GameEntity loot;
+  public boolean opened = false;
 
   // CHARACTER ATTRIBUTES
   public int defaultSpeed;
@@ -101,7 +104,7 @@ public abstract class GameEntity {
   public int shootAvailableCounter = 0;
   public int knockBackCounter = 0;
   public int guardCounter = 0;
-  public int offBalanceCounter;
+  public int offBalanceCounter = 0;
 
   // ITEM ATTRIBUTES
   public int attackValue;
@@ -134,6 +137,9 @@ public abstract class GameEntity {
   }
 
   public void interact() {
+  }
+
+  public void setLoot(GameEntity loot) {
   }
 
   public void speak() {

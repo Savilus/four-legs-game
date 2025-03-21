@@ -1,4 +1,4 @@
-package org.example.entity.object;
+package org.example.entity.items;
 
 import static org.example.config.GameEntityNameFactory.LANTERN;
 import static org.example.enums.WorldGameTypes.LIGHTING;

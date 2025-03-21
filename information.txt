@@ -2,3 +2,45 @@ tile and sprite size 16 x 16
 for tile background is transparent
 saved as png
 PIKSEL program for creating tiles
+
+//      dataStorage.mapObjectNames = new String[1][gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length];
+//      dataStorage.mapObjectWorldX = new int[1][gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length];
+//      dataStorage.mapObjectWorldY = new int[1][gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length];
+//      dataStorage.mapObjectLootNames = new String[1][gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length];
+//      dataStorage.mapObjectOpened = new boolean[1][gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length];
+//
+//      for (int mapNum = 0; mapNum < 1; mapNum++) {
+//        for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
+//          if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] == null) {
+//            dataStorage.mapObjectNames[mapNum][i] = "NA";
+//          } else {
+//            dataStorage.mapObjectNames[mapNum][i] = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].name;
+//            dataStorage.mapObjectWorldX[mapNum][i] = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldX;
+//            dataStorage.mapObjectWorldY[mapNum][i] = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldY;
+//            if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].loot != null) {
+//              dataStorage.mapObjectLootNames[mapNum][i] = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].loot.name;
+//            }
+//            dataStorage.mapObjectOpened[mapNum][i] = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].opened;
+//          }
+//        }
+//      }
+
+//      for (int mapNum = 0; mapNum < 1; mapNum++) {
+//        for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
+//
+//          if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] == null || dataStorage.mapObjectNames[mapNum][i].equals("NA")) {
+//            gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] = null;
+//          } else {
+//            gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] = getItem(dataStorage.mapObjectNames[mapNum][i]);
+//            gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldX = dataStorage.mapObjectWorldX[mapNum][i];
+//            gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldY = dataStorage.mapObjectWorldY[mapNum][i];
+//            if (dataStorage.mapObjectLootNames[mapNum][i] != null) {
+//              gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].loot = getItem(dataStorage.mapObjectLootNames[mapNum][i]);
+//            }
+//            gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].opened = dataStorage.mapObjectOpened[mapNum][i];
+//            if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].opened) {
+//              gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].image = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].image2;
+//            }
+//          }
+//        }
+//      }

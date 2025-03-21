@@ -1,4 +1,4 @@
-package org.example.entity.object;
+package org.example.entity.projectile;
 
 import static org.example.config.GameEntityNameFactory.ROCK_ATTACK;
 
@@ -6,7 +6,6 @@ import java.awt.*;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.Projectile;
 
 public class Rock extends Projectile {
 
