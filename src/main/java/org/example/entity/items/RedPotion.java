@@ -1,10 +1,11 @@
-package org.example.entity.object;
+package org.example.entity.items;
 
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RED_POTION;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.GameObjectType;
 import org.example.enums.GameStateType;
 import org.example.enums.WorldGameTypes;
 
@@ -15,7 +16,7 @@ public class RedPotion extends GameEntity {
   public RedPotion(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.CONSUMABLE;
-    name = "Red Potion";
+    name = GameObjectType.RED_POTION.getName();
     stackable = true;
     image = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);

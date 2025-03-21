@@ -1,4 +1,4 @@
-package org.example.entity.object;
+package org.example.entity.projectile;
 
 import static org.example.config.GameEntityNameFactory.FIREBALL_DOWN1;
 import static org.example.config.GameEntityNameFactory.FIREBALL_DOWN2;
@@ -13,7 +13,6 @@ import java.awt.*;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.Projectile;
 
 public class Fireball extends Projectile {
 

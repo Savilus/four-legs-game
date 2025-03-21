@@ -1,4 +1,4 @@
-package org.example.entity.object;
+package org.example.entity.items;
 
 import static org.example.config.GameEntityNameFactory.MANA_CRYSTAL_BLANK;
 import static org.example.config.GameEntityNameFactory.MANA_CRYSTAL_FULL;
@@ -6,6 +6,7 @@ import static org.example.config.GameEntityNameFactory.POWER_UP;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
 
 public class ManaCrystal extends GameEntity {
@@ -13,7 +14,7 @@ public class ManaCrystal extends GameEntity {
   public ManaCrystal(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.PICK_UP;
-    name = "Mana Crystal";
+    name = GameObjectType.MANA_CRYSTAL.getName();
     value = 1;
     down1 = setup(MANA_CRYSTAL_FULL, gamePanel.tileSize, gamePanel.tileSize);
     image = setup(MANA_CRYSTAL_FULL, gamePanel.tileSize, gamePanel.tileSize);

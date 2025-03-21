@@ -18,7 +18,7 @@ import org.example.enums.GameStateType;
 
 public class EventHandler {
   private final static String TELEPORT_MESSAGE = "You got teleported!";
-  private final static String HEALING_POOL_MESSAGE = "You dink the water. \n Your life and mana has been recovered.";
+  private final static String HEALING_POOL_MESSAGE = "You dink the water. \n Your life and mana has been recovered. \n (The progress has been saved)";
   private final static String DAMAGE_PIT_MESSAGE = "You fall into a pit!";
 
   GamePanel gamePanel;
@@ -132,6 +132,7 @@ public class EventHandler {
       gamePanel.player.currentLife = gamePanel.player.maxLife;
       gamePanel.player.mana = gamePanel.player.maxMana;
       gamePanel.assetSetter.setMonster();
+      gamePanel.saveLoad.save();
     }
   }
 

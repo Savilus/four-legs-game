@@ -6,12 +6,12 @@ import static org.example.enums.GameStateType.TRADE_STATE;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.object.Axe;
-import org.example.entity.object.BlueShield;
-import org.example.entity.object.Key;
-import org.example.entity.object.NormalSword;
-import org.example.entity.object.RedPotion;
-import org.example.entity.object.WoodShield;
+import org.example.entity.weapon.Axe;
+import org.example.entity.shield.BlueShield;
+import org.example.entity.items.Key;
+import org.example.entity.weapon.NormalSword;
+import org.example.entity.items.RedPotion;
+import org.example.entity.shield.WoodShield;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 

@@ -7,7 +7,9 @@ import java.io.FileWriter;
 
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @AllArgsConstructor
 public class Config {
 
@@ -26,7 +28,7 @@ public class Config {
         writer.newLine();
         writer.write(String.valueOf(gamePanel.soundEffect.volumeScale));
       }
-    }).onFailure(e -> System.err.println("Could not save config: " + e.getMessage()));
+    }).onFailure(e -> log.info("Could not save config: {}", e.getMessage()));
   }
 
   public void loadConfig() {
@@ -39,6 +41,6 @@ public class Config {
         configLine = reader.readLine();
         gamePanel.soundEffect.volumeScale = Integer.parseInt(configLine);
       }
-    }).onFailure(e -> System.err.println("Could not load config: " + e.getMessage()));
+    }).onFailure(e -> log.info("Could not save config: {}", e.getMessage()));
   }
 }

@@ -14,15 +14,6 @@ public enum DirectionType {
 
   private final String value;
 
-  public static DirectionType fromString(String text) {
-    for (DirectionType type : DirectionType.values()) {
-      if (type.value.equalsIgnoreCase(text)) {
-        return type;
-      }
-    }
-    throw new IllegalArgumentException("Unknown direction: " + text);
-  }
-
   public DirectionType getOpposite() {
     return switch (this) {
       case UP -> DOWN;

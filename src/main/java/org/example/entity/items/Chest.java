@@ -1,4 +1,4 @@
-package org.example.entity.object;
+package org.example.entity.items;
 
 import static org.example.config.GameEntityNameFactory.CHEST;
 import static org.example.config.GameEntityNameFactory.CHEST_OPENED;
@@ -17,12 +17,8 @@ public class Chest extends GameEntity {
   private static final String FULL_INVENTORY_TEXT = "\n You cannot carry any more!";
   private static final String COLLECT_ITEM_TEXT = "\n You obtain the %s !";
 
-  GameEntity loot;
-  boolean opened = false;
-
-  public Chest(GamePanel gamePanel, GameEntity loot) {
+  public Chest(GamePanel gamePanel) {
     super(gamePanel);
-    this.loot = loot;
     type = OBSTACLE;
     name = GameObjectType.CHEST.getName();
     image = setup(CHEST, gamePanel.tileSize, gamePanel.tileSize);
@@ -35,6 +31,10 @@ public class Chest extends GameEntity {
     solidArea.height = 32;
     solidAreaDefaultX = solidArea.x;
     solidAreaDefaultY = solidArea.y;
+  }
+
+  public void setLoot(GameEntity loot) {
+    this.loot = loot;
   }
 
   @Override

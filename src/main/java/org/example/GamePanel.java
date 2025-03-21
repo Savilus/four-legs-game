@@ -18,6 +18,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 import org.example.ai.PathFinder;
+import org.example.data.SaveLoad;
 import org.example.entity.GameEntity;
 import org.example.entity.Player;
 import org.example.entity.interactiveTile.InteractiveTile;
@@ -63,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
   public CollisionDetector collisionDetector = new CollisionDetector(this);
   public AssetSetter assetSetter = new AssetSetter(this);
   Thread gameThread;
+  public SaveLoad saveLoad = new SaveLoad(this);
   Config config = new Config(this);
   public UI ui = new UI(this);
   public EventHandler eventHandler = new EventHandler(this);

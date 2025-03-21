@@ -21,9 +21,9 @@ import java.util.Random;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.object.BronzeCoin;
-import org.example.entity.object.Heart;
-import org.example.entity.object.ManaCrystal;
+import org.example.entity.items.BronzeCoin;
+import org.example.entity.items.Heart;
+import org.example.entity.items.ManaCrystal;
 import org.example.enums.MonsterObjectType;
 import org.example.enums.WorldGameTypes;
 
