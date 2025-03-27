@@ -7,12 +7,15 @@ import static org.example.enums.DirectionType.DOWN;
 import static org.example.enums.DirectionType.LEFT;
 import static org.example.enums.DirectionType.RIGHT;
 import static org.example.enums.DirectionType.UP;
+import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.WorldGameTypes.MONSTER;
 import static org.example.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -20,11 +23,13 @@ import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.lang3.StringUtils;
 import org.example.GamePanel;
 import org.example.entity.projectile.Projectile;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.UtilityTool;
+import org.example.utils.text.TextManager;
 
 import io.vavr.control.Try;
 import lombok.Getter;
@@ -37,6 +42,8 @@ import lombok.Getter;
  * */
 public abstract class GameEntity {
 
+  private static final String EVENT_MESSAGES = "eventMessages";
+
   protected GamePanel gamePanel;
 
   public BufferedImage image, image2, image3;
@@ -46,7 +53,7 @@ public abstract class GameEntity {
   public Rectangle solidArea = new Rectangle(0, 0, 45, 45);
   public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
   public int solidAreaDefaultX, solidAreaDefaultY;
-  public String[] dialogues = new String[20];
+  public Map<String, List<String>> dialogues = new HashMap<>();
   public boolean collision = false;
   public GameEntity attacker;
 
@@ -54,7 +61,8 @@ public abstract class GameEntity {
   @Getter
   public DirectionType direction = DirectionType.ANY;
   public int spriteNum = 1;
-  int dialogueIndex = 0;
+  public int dialogueIndex = 0;
+  public String dialogueSet = StringUtils.EMPTY;
   public boolean invincible = false;
   public boolean collisionOn = false;
   public boolean attacking = false;
@@ -122,8 +130,9 @@ public abstract class GameEntity {
   //Type
   public WorldGameTypes type;
 
-  protected GameEntity(GamePanel gamePanel) {
+  public GameEntity(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
+    dialogues = TextManager.getAllDialoguesForTarget(EVENT_MESSAGES);
   }
 
   public void setAction() {
@@ -143,18 +152,21 @@ public abstract class GameEntity {
   }
 
   public void speak() {
-    if (dialogues[dialogueIndex] == null) {
-      dialogueIndex = 0;
-    }
-    gamePanel.ui.currentDialogue = dialogues[dialogueIndex];
-    dialogueIndex++;
+  }
 
+  public void facePlayer() {
     switch (gamePanel.player.getDirection()) {
       case UP -> direction = DOWN;
       case DOWN -> direction = UP;
       case LEFT -> direction = DirectionType.RIGHT;
       case RIGHT -> direction = DirectionType.LEFT;
     }
+  }
+
+  public void startDialogue(GameEntity entity, String selectedDialogue) {
+    gamePanel.gameState = DIALOG_STATE;
+    gamePanel.ui.npc = entity;
+    dialogueSet = selectedDialogue;
   }
 
   public void checkCollision() {
@@ -541,9 +553,8 @@ public abstract class GameEntity {
   }
 
   protected BufferedImage setup(String imagePath, int width, int height) {
-    UtilityTool utilityTool = new UtilityTool();
     return Try.of(() -> ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath))))
-        .map(image -> utilityTool.scaleImage(image, width, height))
+        .map(image -> UtilityTool.scaleImage(image, width, height))
         .getOrElseThrow(() -> new RuntimeException("Failed to load image: " + imagePath));
   }
 
@@ -708,5 +719,17 @@ public abstract class GameEntity {
 
   public int getGoalRow(GameEntity target) {
     return (target.worldY + target.solidArea.y) / gamePanel.tileSize;
+  }
+
+  public void resetCounter() {
+    invincibleCounter = 0;
+    actionLockCounter = 0;
+    spriteCounter = 0;
+    dyingCounter = 0;
+    hpBarCounter = 0;
+    shootAvailableCounter = 0;
+    knockBackCounter = 0;
+    guardCounter = 0;
+    offBalanceCounter = 0;
   }
 }

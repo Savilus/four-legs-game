@@ -9,14 +9,19 @@ import static org.example.config.GameEntityNameFactory.OLD_MAN_RIGHT2;
 import static org.example.config.GameEntityNameFactory.OLD_MAN_UP1;
 import static org.example.config.GameEntityNameFactory.OLD_MAN_UP2;
 
+import java.util.List;
 import java.util.Random;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
+import org.example.utils.text.TextManager;
 
 public class OldManNPC extends GameEntity {
+
+  private static final String OLD_MAN_DIALOGUES_KEY = "oldManNpc";
+  private int dialogueSelector = 0;
 
   public OldManNPC(GamePanel gamePanel) {
     super(gamePanel);
@@ -25,7 +30,7 @@ public class OldManNPC extends GameEntity {
     speed = 1;
     type = WorldGameTypes.NPC;
     getPlayerImage();
-    setDialogue();
+    dialogues = TextManager.getAllDialoguesForTarget(OLD_MAN_DIALOGUES_KEY);
   }
 
   public void getPlayerImage() {
@@ -39,17 +44,16 @@ public class OldManNPC extends GameEntity {
     right2 = setup(OLD_MAN_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
   }
 
-  private void setDialogue() {
-    dialogues[0] = "Hello, lad";
-    dialogues[1] = "So you've come to this island \n to find the treasure?";
-    dialogues[2] = "I used to be a great wizard but now... \n I'm a bit too old for taking and adventure";
-    dialogues[3] = "Well, good luck on you";
-  }
-
   @Override
   public void speak() {
-    super.speak();
-    onPath = true;
+    facePlayer();
+    List<String> dialogueKeys = TextManager.getDialoguesKeysForTarget(OLD_MAN_DIALOGUES_KEY);
+    if (dialogueKeys.isEmpty()) {
+      return;
+    }
+    String currentDialogueKey = dialogueKeys.get(dialogueSelector);
+    startDialogue(this, currentDialogueKey);
+    dialogueSelector = (dialogueSelector + 1) % dialogueKeys.size();
   }
 
   @Override
@@ -58,7 +62,7 @@ public class OldManNPC extends GameEntity {
       int goalCol = 12;
       int goalRow = 9;
 
-      // Follow Player
+// Follow Player
 //      int goalCol = (gamePanel.player.worldX + gamePanel.player.solidArea.x) / gamePanel.tileSize;
 //      int goalRow = (gamePanel.player.worldY + gamePanel.player.solidArea.y) / gamePanel.tileSize;
       searchPath(goalCol, goalRow);

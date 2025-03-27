@@ -1,0 +1,14 @@
+{
+  "eventMessages": {
+    "teleport": [
+      "You got teleported!"
+    ],
+    "healingPool": [
+      "You drink the water.\nYour life and mana has been recovered.\n(The progress has been saved)",
+      "Damn, this is good water!"
+    ],
+    "damagePit": [
+      "You fall into a pit!"
+    ]
+  }
+}

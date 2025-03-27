@@ -6,13 +6,14 @@ import java.awt.*;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.GameObjectType;
 
 public class Rock extends Projectile {
 
   public Rock(GamePanel gamePanel) {
     super(gamePanel);
 
-    name = "Rock";
+    name = GameObjectType.ROCK.getName();
     speed = 8;
     maxLife = 50;
     currentLife = maxLife;
@@ -37,14 +38,17 @@ public class Rock extends Projectile {
   public Color getParticleColor() {
     return new Color(40, 50, 0);
   }
+
   @Override
   public int getParticleSize() {
     return 10;  // 6 pixels
   }
+
   @Override
   public int getParticleSpeed() {
     return 1;
   }
+
   @Override
   public int getParticleMaxLife() {
     return 20;

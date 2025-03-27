@@ -14,6 +14,7 @@ import static org.example.config.GameEntityNameFactory.PARRY;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.config.GameEntityNameFactory.SLEEP;
+import static org.example.config.GameEntityNameFactory.SPEAK;
 import static org.example.config.GameEntityNameFactory.STAIRS;
 import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
 import static org.example.config.GameEntityNameFactory.UNLOCK;
@@ -56,6 +57,7 @@ public class Sound {
     soundMap.put(SLEEP, Objects.requireNonNull(getClass().getResource(SLEEP)));
     soundMap.put(BLOCKED, Objects.requireNonNull(getClass().getResource(BLOCKED)));
     soundMap.put(PARRY, Objects.requireNonNull(getClass().getResource(PARRY)));
+    soundMap.put(SPEAK, Objects.requireNonNull(getClass().getResource(SPEAK)));
   }
 
   public void setFile(String sound) {

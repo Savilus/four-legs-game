@@ -139,7 +139,6 @@ public class GameEntityNameFactory {
   @YamlValue("ui.images.manaCrystalBlank")
   public static String MANA_CRYSTAL_BLANK;
 
-
   // NPC IMAGES
   @YamlValue("npc.images.merchantDown1")
   public static String MERCHANT_DOWN1;
@@ -232,7 +231,6 @@ public class GameEntityNameFactory {
   @YamlValue("world.tile.images.road.12")
   public static String ROAD12;
 
-
   @YamlValue("world.tile.images.water.0")
   public static String WATER0;
   @YamlValue("world.tile.images.water.1")
@@ -320,6 +318,8 @@ public class GameEntityNameFactory {
   public static String BLOCKED;
   @YamlValue("sound.path.parry")
   public static String PARRY;
+  @YamlValue("sound.path.speak")
+  public static String SPEAK;
 
   // FONT
   @YamlValue("font.maruMonica")

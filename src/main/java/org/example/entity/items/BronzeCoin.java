@@ -9,6 +9,7 @@ import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
 
 public class BronzeCoin extends GameEntity {
+  private static final String COIN_TEXT = "Coin ";
 
   public BronzeCoin(GamePanel gamePanel) {
     super(gamePanel);
@@ -23,7 +24,7 @@ public class BronzeCoin extends GameEntity {
   @Override
   public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(COIN);
-    gamePanel.ui.addMessage("Coin +" + value);
+    gamePanel.ui.addMessage(COIN_TEXT + value);
     gamePanel.player.money += value;
     return true;
   }

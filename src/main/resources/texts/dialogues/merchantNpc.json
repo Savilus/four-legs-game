@@ -1,0 +1,19 @@
+{
+  "merchantNpc": {
+    "merchantNpcComeAgain": [
+      "Come again, hehe"
+    ],
+    "merchantNpcTradeQuestion": [
+      "He, he, he, so you found me.\nI have some good stuff.\nDo you want to trade?"
+    ],
+    "merchantNpcNotEnoughMoney": [
+      "You need more coins to buy that!"
+    ],
+    "merchantNpcTooMuchItems": [
+      "You cannot carry more items!"
+    ],
+    "merchantNpcCannotSellItem": [
+      "You cannot sell an equipped item!"
+    ]
+  }
+}

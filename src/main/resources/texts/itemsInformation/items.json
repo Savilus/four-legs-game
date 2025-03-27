@@ -1,0 +1,37 @@
+{
+  "door": {
+    "openInformation": "You need a key to open this door."
+  },
+  "redPotion": {
+    "description": "[%s]\nHeals your life by %s.",
+    "use": "You drink the %s !\nYou feel much better!"
+  },
+  "chest": {
+    "fullInventory": "You cannot carry any more!",
+    "empty": "It's empty.",
+    "collectItem": "You obtain the %s !"
+  },
+  "key": {
+    "description": "[%s]\nIt opens a door",
+    "wrongUse": "What are you doing?",
+    "openDoor": "You use the %s and open the door."
+  },
+  "lantern": {
+    "description": "[%s]\nIlluminates your \nsurroundings."
+  },
+  "normalSword": {
+    "description": "[%s]\nAn old sword"
+  },
+  "axe": {
+    "description": "[%s]\nA bit rusty axe but still \ncut some trees"
+  },
+  "woodShield": {
+    "description": "[%s]\nMade by wood."
+  },
+  "blueShield": {
+    "description": "[%s]\nA shiny blue shield."
+  },
+  "tent": {
+    "description": "[%s]\nYou can sleep until \nnext morning."
+  }
+}

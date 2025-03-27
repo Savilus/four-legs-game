@@ -6,6 +6,7 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
+import org.example.utils.text.TextManager;
 
 public class BlueShield extends GameEntity {
 
@@ -15,7 +16,7 @@ public class BlueShield extends GameEntity {
     down1 = setup(BLUE_SHIELD, gamePanel.tileSize, gamePanel.tileSize);
     image = setup(BLUE_SHIELD, gamePanel.tileSize, gamePanel.tileSize);
     defenseValue = 2;
-    description = "[" + name + "]\nA shiny blue shield.";
+    description = String.format(TextManager.getItemDescription(GameObjectType.BLUE_SHIELD.getTextKey()), name);
     type = WorldGameTypes.SHIELD;
     price = 25;
   }

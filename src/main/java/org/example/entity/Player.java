@@ -49,21 +49,24 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 import org.example.GamePanel;
-import org.example.entity.weapon.Axe;
-import org.example.entity.projectile.Fireball;
 import org.example.entity.items.Key;
-import org.example.entity.weapon.NormalSword;
+import org.example.entity.projectile.Fireball;
 import org.example.entity.shield.WoodShield;
+import org.example.entity.weapon.Axe;
+import org.example.entity.weapon.NormalSword;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.KeyHandler;
+import org.example.utils.text.TextManager;
 
 public class Player extends GameEntity {
 
-  private static final String PICKED_UP = "Picked up %s !";
-  private static final String DAMAGE_UI_MESSAGE = "%s damage";
-  private static final String KILLED_UI_MESSAGE = "Killed the %s !";
-  private static final String EXP_UI_MESSAGE = "%s + Exp!";
-  private static final String INVENTORY_FULL = "Inventory is full!";
+  private static final String PICKED_UP = "pickedUp";
+  private static final String DAMAGE_UI_MESSAGE = "damageUiMessage";
+  private static final String KILLED_UI_MESSAGE = "killedUiMessage";
+  private static final String UI_MESSAGE = "uiMessages";
+  private static final String EXP_UI_MESSAGE = "expUiMessage";
+  private static final String INVENTORY_FULL = "inventoryFull";
+  private static final String EVENT_MESSAGES_KEY = "eventMessages";
 
   KeyHandler keyHandler;
 
@@ -305,14 +308,14 @@ public class Player extends GameEntity {
 
       int damage = Math.max(0, attack - gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].defense);
       gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].currentLife -= damage;
-      gamePanel.ui.addMessage(String.format(DAMAGE_UI_MESSAGE, damage));
+      gamePanel.ui.addMessage(String.format(TextManager.getUiText(UI_MESSAGE, DAMAGE_UI_MESSAGE), damage));
       gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].invincible = true;
       gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].damageReaction();
 
       if (gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].currentLife <= 0) {
         gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].dying = true;
-        gamePanel.ui.addMessage(String.format(KILLED_UI_MESSAGE, gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].name));
-        gamePanel.ui.addMessage(String.format(EXP_UI_MESSAGE, gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].exp));
+        gamePanel.ui.addMessage(String.format(TextManager.getUiText(UI_MESSAGE, KILLED_UI_MESSAGE), gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].name));
+        gamePanel.ui.addMessage(String.format(TextManager.getUiText(UI_MESSAGE, EXP_UI_MESSAGE), gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].exp));
         exp += gamePanel.mapsMonsters.get(getCurrentMap())[monsterIndex].exp;
         checkLevelUp();
       }
@@ -322,7 +325,7 @@ public class Player extends GameEntity {
   public int getCurrentWeaponSlot() {
     int currentWeaponSlot = 0;
     for (int inventoryIndex = 0; inventory.size() > inventoryIndex; inventoryIndex++) {
-      if(inventory.get(inventoryIndex) == currentWeapon){
+      if (inventory.get(inventoryIndex) == currentWeapon) {
         currentWeaponSlot = inventoryIndex;
       }
     }
@@ -332,7 +335,7 @@ public class Player extends GameEntity {
   public int getCurrentShieldSlot() {
     int currentShieldSlot = 0;
     for (int inventoryIndex = 0; inventory.size() > inventoryIndex; inventoryIndex++) {
-      if(inventory.get(inventoryIndex) == currentShield){
+      if (inventory.get(inventoryIndex) == currentShield) {
         currentShieldSlot = inventoryIndex;
       }
     }
@@ -386,7 +389,8 @@ public class Player extends GameEntity {
       defense = getDefense();
       gamePanel.playSoundEffect(LEVEL_UP);
       gamePanel.gameState = DIALOG_STATE;
-      gamePanel.ui.currentDialogue = "You are level " + level + " now!";
+
+      startDialogue(this, "player");
     }
   }
 
@@ -407,7 +411,6 @@ public class Player extends GameEntity {
     if (gamePanel.keyHandler.enterPressed) {
       if (npcIndex != INIT_INDEX) {
         attackCanceled = true;
-        gamePanel.gameState = DIALOG_STATE;
         gamePanel.mapsNpc.get(getCurrentMap())[npcIndex].speak();
       }
     }
@@ -437,7 +440,7 @@ public class Player extends GameEntity {
     setItems();
     attack = getAttack();
     defense = getDefense();
-
+    dialogues = TextManager.getAllDialoguesForTarget(EVENT_MESSAGES_KEY);
     getImage();
     getAttackImage();
     getGuardImage();
@@ -622,9 +625,9 @@ public class Player extends GameEntity {
           String text;
           if (canObtainItem(interactedObject)) {
             gamePanel.playSoundEffect(COIN);
-            text = String.format(PICKED_UP, interactedObject.name);
+            text = String.format(TextManager.getUiText(UI_MESSAGE, PICKED_UP), interactedObject.name);
           } else {
-            text = INVENTORY_FULL;
+            text = TextManager.getUiText(UI_MESSAGE, INVENTORY_FULL);
           }
           gamePanel.ui.addMessage(text);
           gamePanel.mapsObjects.get(getCurrentMap())[objectIndex] = null;

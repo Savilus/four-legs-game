@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.example.GamePanel;
+import org.example.utils.text.TextManager;
 
 public class GameMap {
-  private final static String CLOSE_MAP_TEXT = "Press M to close.";
+  private final static String CLOSE_MAP_KEY = "closeMapText";
+  private final static String UI_MESSAGES = "uiMessages";
 
   private final GamePanel gamePanel;
   private final TileManager tileManager;
@@ -71,7 +73,7 @@ public class GameMap {
     // Hint
     graphics2D.setFont(gamePanel.ui.maruMonica.deriveFont(32F));
     graphics2D.setColor(WHITE);
-    graphics2D.drawString(CLOSE_MAP_TEXT, 750, 550);
+    graphics2D.drawString(TextManager.getUiText(UI_MESSAGES, CLOSE_MAP_KEY), 750, 550);
 
   }
 

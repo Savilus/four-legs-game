@@ -192,10 +192,9 @@ public class TileManager {
     if (index <= 9) {
       return;
     }
-    UtilityTool utilityTool = new UtilityTool();
     Try.run(() -> {
       tile[index] = new Tile(
-          utilityTool.scaleImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName))),
+          UtilityTool.scaleImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imageName))),
               gamePanel.tileSize, gamePanel.tileSize), collision
       );
     }).onFailure(error -> log.error("Error while setting up tile: {}", error.getMessage()));

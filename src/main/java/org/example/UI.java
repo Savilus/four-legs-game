@@ -2,6 +2,7 @@ package org.example;
 
 import static org.example.config.GameEntityNameFactory.MARU_MONICA_FONT;
 import static org.example.config.GameEntityNameFactory.PURISA_BOLD_FONT;
+import static org.example.config.GameEntityNameFactory.SPEAK;
 import static org.example.enums.DayState.DAY;
 import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
@@ -11,72 +12,83 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.example.entity.GameEntity;
 import org.example.entity.items.BronzeCoin;
 import org.example.entity.items.Heart;
 import org.example.entity.items.ManaCrystal;
 import org.example.environment.Lighting;
+import org.example.utils.text.TextManager;
 
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UI {
-  private static final String END_GAME_QUESTION = "Are you sure you want to \nend the game?";
-  private static final String FULL_SCREEN_NOTIFICATION = "The change will take \neffect after restarting \nthe game.";
+  private static final String MERCHANT_COME_AGAIN_DIALOGUE_KEY = "merchantNpcComeAgain";
+  private static final String MERCHANT_NO_MONEY_DIALOGUE_KEY = "merchantNpcNotEnoughMoney";
+  private static final String MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY = "merchantNpcTooMuchItems";
+  private static final String MERCHANT_TRADE_DIALOGUE_KEY = "merchantNpcTradeQuestion";
   private static final String CURSOR_SELECTOR = ">";
   private static final String PLAYER_LIFE_FORMAT = "%s / %s";
-  private static final String PAUSED = "PAUSED";
-  private static final String DEFAULT_FONT = "SansSerif";
-  private static final String COIN = "Coin";
-  private static final String TITLE = "Four Legs";
-  private static final String NEW_GAME = "New Game";
-  private static final String LOAD_GAME = "Load game";
-  private static final String END_GAME = "End Game";
-  private static final String WEAPON = "Weapon";
-  private static final String LEVEL = "Level";
-  private static final String GAME_OVER = "Game Over";
-  private static final String SHIELD = "Shield";
-  private static final String EXP = "Exp";
-  private static final String RETRY = "Retry";
-  private static final String OPTIONS = "Options";
-  private static final String ATTACK = "Attack";
-  private static final String NEXT_LEVEL = "Next Level";
-  private static final String DEFENSE = "Defense";
-  private static final String FULL_SCREEN = "Full screen";
-  private static final String QUIT = "Quit";
-  private static final String STRENGTH = "Strength";
-  private static final String YES = "Yes";
-  private static final String LIFE = "Life";
-  private static final String DEXTERITY = "Dexterity";
-  private static final String BACK = "Back";
-  private static final String MUSIC = "Music";
-  private static final String SOUND_EFFECT = "Sound Effect";
-  private static final String NO = "No";
-  private static final String MOVE = "Move";
-  private static final String SHOOT_CAST = "Shoot/Cast";
-  private static final String CONFIRM_ATTACK = "Confirm/Attack";
-  private static final String CHARACTER_SCREEN = "Character Screen";
-  private static final String CONTROL = "Control";
-  private static final String PAUSE = "Pause";
   private static final String CHARACTER_CONTROL = "WASD";
   private static final String CONFIRM = "Enter";
   private static final String PROJECTILE_KEY = "F";
   private static final String CHARACTER_KEY = "C";
   private static final String PAUSE_KEY = "P";
   private static final String CLOSE_KEY = "ESC";
-  private static final String BUY = "Buy";
-  private static final String SELL = "Sell";
-  private static final String LEAVE = "Leave";
-  private static final String COME_AGAIN = "Come again, hehe";
-  private static final String ESCAPE_BACK = "[ESC] Back";
-  private static final String YOUR_COIN = "Your Coin: %s";
-  private static final String NOT_ENOUGH_MONEY = "You need more coins to buy that!";
-  private static final String TOO_MUCH_ITEMS = "You cannot carry more items!";
-  private static final String CANNOT_SELL_ITEM = "You cannot sell an equipped item!";
-
+  private static final String SPACE_KEY = "SPACE";
+  private static final String DEFAULT_FONT = "SansSerif";
+  private static final String MENU_OPTIONS = "menuOptions";
+  private static final String DIALOGUES = "dialogues";
+  private static final String SETTINGS = "settings";
+  private static final String UI_MESSAGES = "uiMessages";
+  private static final String GAME_STATS = "gameStats";
+  private static final String NEW_GAME = "newGame";
+  private static final String LOAD_GAME = "loadGame";
+  private static final String QUIT = "quit";
+  private static final String END_GAME_QUESTION = "endGameQuestion";
+  private static final String FULL_SCREEN_NOTIFICATION = "fullScreenNotification";
+  private static final String PAUSED = "paused";
+  private static final String COIN = "coin";
+  private static final String TITLE = "title";
+  private static final String END_GAME = "endGame";
+  private static final String LIFE = "life";
+  private static final String DEXTERITY = "dexterity";
+  private static final String WEAPON = "weapon";
+  private static final String LEVEL = "level";
+  private static final String SHIELD = "shield";
+  private static final String EXP = "exp";
+  private static final String STRENGTH = "strength";
+  private static final String GAME_OVER = "gameOver";
+  private static final String RETRY = "retry";
+  private static final String OPTIONS = "options";
+  private static final String ATTACK = "attack";
+  private static final String NEXT_LEVEL = "nextLevel";
+  private static final String DEFENSE = "defense";
+  private static final String FULL_SCREEN = "fullScreen";
+  private static final String YES = "yes";
+  private static final String BACK = "back";
+  private static final String MUSIC = "music";
+  private static final String SOUND_EFFECT = "soundEffect";
+  private static final String NO = "no";
+  private static final String MOVE = "move";
+  private static final String SHOOT_CAST = "shootCast";
+  private static final String PARRY = "parry";
+  private static final String CONFIRM_ATTACK = "confirmAttack";
+  private static final String CHARACTER_SCREEN = "characterScreen";
+  private static final String CONTROL = "control";
+  private static final String CONTROLS = "controls";
+  private static final String PAUSE = "pause";
+  private static final String BUY = "buy";
+  private static final String SHOP = "shop";
+  private static final String SELL = "sell";
+  private static final String LEAVE = "leave";
+  private static final String ESCAPE_BACK = "escapeBack";
+  private static final String YOUR_COIN = "yourCoin";
 
   BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank, coin;
   GamePanel gamePanel;
@@ -84,10 +96,8 @@ public class UI {
   public Font maruMonica, purisaBoldFont;
   ArrayList<String> messages = new ArrayList<>();
   ArrayList<Integer> messageCounter = new ArrayList<>();
-  public GameEntity merchantNPC;
-  public boolean messageOn = false;
-  public boolean gameFinished = false;
-  public String currentDialogue = "";
+  public GameEntity npc;
+
   public int commandNum = 0;
   public int subState = 0;
   public int playerSlotCol = 0;
@@ -95,6 +105,9 @@ public class UI {
   public int playerSlotRow = 0;
   public int npcSlotRow = 0;
   private int transitionCounter = 0;
+  int characterIndex = 0;
+  public String currentDialogue = StringUtils.EMPTY;
+  StringBuilder combinedText = new StringBuilder();
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -184,26 +197,26 @@ public class UI {
     // SHADOW
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 110F));
     graphics2D.setColor(Color.BLACK);
-    int x = getXForCenteredText(GAME_OVER);
+    int x = getXForCenteredText(TextManager.getUiText(UI_MESSAGES, GAME_OVER));
     int y = gamePanel.tileSize * 4;
-    graphics2D.drawString(GAME_OVER, x, y);
+    graphics2D.drawString(TextManager.getUiText(UI_MESSAGES, GAME_OVER), x, y);
 
     // MAIN
     graphics2D.setColor(Color.WHITE);
-    graphics2D.drawString(GAME_OVER, x - 4, y - 4);
+    graphics2D.drawString(TextManager.getUiText(UI_MESSAGES, GAME_OVER), x - 4, y - 4);
 
     // RETRY
     graphics2D.setFont(graphics2D.getFont().deriveFont(50F));
-    x = getXForCenteredText(RETRY);
+    x = getXForCenteredText(TextManager.getSettingText(MENU_OPTIONS, RETRY));
     y += gamePanel.tileSize * 4;
-    graphics2D.drawString(RETRY, x, y);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, RETRY), x, y);
     if (commandNum == 0)
       graphics2D.drawString(CURSOR_SELECTOR, x - 40, y);
 
     // BACK TO TITLE SCREEN
-    x = getXForCenteredText(QUIT);
+    x = getXForCenteredText(TextManager.getSettingText(MENU_OPTIONS, QUIT));
     y += 55;
-    graphics2D.drawString(QUIT, x, y);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, QUIT), x, y);
     if (commandNum == 1)
       graphics2D.drawString(CURSOR_SELECTOR, x - 40, y);
   }
@@ -240,8 +253,8 @@ public class UI {
   }
 
   private void tradeSelect() {
+    npc.dialogueSet = MERCHANT_TRADE_DIALOGUE_KEY;
     drawDialogueScreen();
-
     // DRAW WINDOW
 
     int x = gamePanel.tileSize * 15;
@@ -254,34 +267,33 @@ public class UI {
     // DRAW TEXTS
     x += gamePanel.tileSize;
     y += gamePanel.tileSize;
-    graphics2D.drawString(BUY, x, y);
+    graphics2D.drawString(TextManager.getUiText(SHOP, BUY), x, y);
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, x - 24, y);
       if (gamePanel.keyHandler.enterPressed)
         subState = 1;
     }
     y += gamePanel.tileSize;
-    graphics2D.drawString(SELL, x, y);
+    graphics2D.drawString(TextManager.getUiText(SHOP, SELL), x, y);
     if (commandNum == 1) {
       graphics2D.drawString(CURSOR_SELECTOR, x - 24, y);
       if (gamePanel.keyHandler.enterPressed)
         subState = 2;
     }
     y += gamePanel.tileSize;
-    graphics2D.drawString(LEAVE, x, y);
+    graphics2D.drawString(TextManager.getUiText(SHOP, LEAVE), x, y);
     if (commandNum == 2) {
       graphics2D.drawString(CURSOR_SELECTOR, x - 24, y);
       if (gamePanel.keyHandler.enterPressed) {
         commandNum = 0;
-        gamePanel.gameState = DIALOG_STATE;
-        currentDialogue = COME_AGAIN;
+        npc.startDialogue(npc, MERCHANT_COME_AGAIN_DIALOGUE_KEY);
       }
     }
   }
 
   private void tradeBuy() {
     drawInventory(gamePanel.player, false);
-    drawInventory(merchantNPC, true);
+    drawInventory(npc, true);
 
     // DRAW HINT WINDOW
     int x = gamePanel.tileSize * 2;
@@ -289,16 +301,16 @@ public class UI {
     int width = gamePanel.tileSize * 6;
     int height = gamePanel.tileSize * 2;
     drawSubWindow(x, y, width, height);
-    graphics2D.drawString(ESCAPE_BACK, x + 24, y + 60);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, ESCAPE_BACK), x + 24, y + 60);
 
     // DRAW PLAYER COIN WINDOW
     x = gamePanel.tileSize * 12;
     drawSubWindow(x, y, width, height);
-    graphics2D.drawString(String.format(YOUR_COIN, gamePanel.player.money), x + 24, y + 60);
+    graphics2D.drawString(String.format(TextManager.getUiText(UI_MESSAGES, YOUR_COIN), gamePanel.player.money), x + 24, y + 60);
 
     // DRAW PRICE WINDOW
     int itemIndex = getItemIndexFromInventory(npcSlotCol, npcSlotRow);
-    if (itemIndex < merchantNPC.inventory.size()) {
+    if (itemIndex < npc.inventory.size()) {
       x = (int) (gamePanel.tileSize * 5.5);
       y = (int) (gamePanel.tileSize * 5.5);
       width = (int) (gamePanel.tileSize * 2.5);
@@ -306,24 +318,21 @@ public class UI {
       drawSubWindow(x, y, width, height);
       graphics2D.drawImage(coin, x + 10, y + 8, 32, 32, null);
 
-      int price = merchantNPC.inventory.get(itemIndex).price;
+      int price = npc.inventory.get(itemIndex).price;
       x = getXForAlignTextToRight(String.valueOf(price), gamePanel.tileSize * 8 - 20);
       graphics2D.drawString(String.valueOf(price), x, y + 34);
 
       // BUY ITEM
       if (gamePanel.keyHandler.enterPressed) {
-        if (merchantNPC.inventory.get(itemIndex).price > gamePanel.player.money) {
+        if (npc.inventory.get(itemIndex).price > gamePanel.player.money) {
           subState = 0;
           gamePanel.gameState = DIALOG_STATE;
-          currentDialogue = NOT_ENOUGH_MONEY;
-          drawDialogueScreen();
-        } else if (!gamePanel.player.canObtainItem(merchantNPC.inventory.get(itemIndex))) {
+          npc.startDialogue(npc, MERCHANT_NO_MONEY_DIALOGUE_KEY);
+        } else if (!gamePanel.player.canObtainItem(npc.inventory.get(itemIndex))) {
           subState = 0;
-          gamePanel.gameState = DIALOG_STATE;
-          currentDialogue = TOO_MUCH_ITEMS;
-          drawDialogueScreen();
+          npc.startDialogue(npc, MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY);
         } else {
-          gamePanel.player.money -= merchantNPC.inventory.get(itemIndex).price;
+          gamePanel.player.money -= npc.inventory.get(itemIndex).price;
         }
       }
     }
@@ -338,12 +347,12 @@ public class UI {
     int width = gamePanel.tileSize * 6;
     int height = gamePanel.tileSize * 2;
     drawSubWindow(x, y, width, height);
-    graphics2D.drawString(ESCAPE_BACK, x + 24, y + 60);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, ESCAPE_BACK), x + 24, y + 60);
 
     // DRAW PLAYER COIN WINDOW
     x = gamePanel.tileSize * 12;
     drawSubWindow(x, y, width, height);
-    graphics2D.drawString(String.format(YOUR_COIN, gamePanel.player.money), x + 24, y + 60);
+    graphics2D.drawString(String.format(TextManager.getUiText(UI_MESSAGES, YOUR_COIN), gamePanel.player.money), x + 24, y + 60);
 
     // DRAW PRICE WINDOW
     int itemIndex = getItemIndexFromInventory(playerSlotCol, playerSlotRow);
@@ -365,8 +374,7 @@ public class UI {
             || gamePanel.player.inventory.get(itemIndex) == gamePanel.player.currentShield) {
           commandNum = 0;
           subState = 0;
-          gamePanel.gameState = DIALOG_STATE;
-          currentDialogue = CANNOT_SELL_ITEM;
+          npc.startDialogue(npc, "merchantNpcCannotSellItem");
         } else {
           if (gamePanel.player.inventory.get(itemIndex).amount > 1)
             gamePanel.player.inventory.get(itemIndex).amount--;
@@ -382,15 +390,15 @@ public class UI {
     int textX = frameX + gamePanel.tileSize;
     int textY = frameY + gamePanel.tileSize * 3;
 
-    for (String line : END_GAME_QUESTION.split("\n")) {
+    for (String line : TextManager.getUiText(UI_MESSAGES, END_GAME_QUESTION).split("\n")) {
       graphics2D.drawString(line, textX, textY);
       textY += 40;
     }
 
     // YES OPTION
-    textX = getXForCenteredText(YES);
+    textX = getXForCenteredText(TextManager.getUiText(DIALOGUES, YES));
     textY += gamePanel.tileSize * 3;
-    graphics2D.drawString(YES, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(DIALOGUES, YES), textX, textY);
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -404,9 +412,9 @@ public class UI {
     }
 
     // NO OPTION
-    textX = getXForCenteredText(NO);
+    textX = getXForCenteredText(TextManager.getUiText(DIALOGUES, NO));
     textY += gamePanel.tileSize;
-    graphics2D.drawString(NO, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(DIALOGUES, NO), textX, textY);
     if (commandNum == 1) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -421,14 +429,14 @@ public class UI {
     int textY;
 
     // TITLE
-    textX = getXForCenteredText(OPTIONS);
+    textX = getXForCenteredText(TextManager.getSettingText(MENU_OPTIONS, OPTIONS));
     textY = frameY + gamePanel.tileSize;
-    graphics2D.drawString(OPTIONS, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, OPTIONS), textX, textY);
 
     // FULL SCREEN ON/OFF
     textX = frameX + gamePanel.tileSize;
     textY += gamePanel.tileSize * 2;
-    graphics2D.drawString(FULL_SCREEN, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(SETTINGS, FULL_SCREEN), textX, textY);
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -439,18 +447,18 @@ public class UI {
 
     // MUSIC
     textY += gamePanel.tileSize;
-    graphics2D.drawString(MUSIC, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(SETTINGS, MUSIC), textX, textY);
     if (commandNum == 1)
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
 
     // SE
     textY += gamePanel.tileSize;
-    graphics2D.drawString(SOUND_EFFECT, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(SETTINGS, SOUND_EFFECT), textX, textY);
     if (commandNum == 2)
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
     // CONTROL
     textY += gamePanel.tileSize;
-    graphics2D.drawString(CONTROL, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, CONTROL), textX, textY);
     if (commandNum == 3) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -461,7 +469,7 @@ public class UI {
 
     // END GAME
     textY += gamePanel.tileSize;
-    graphics2D.drawString(END_GAME, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, END_GAME), textX, textY);
     if (commandNum == 4) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -472,7 +480,7 @@ public class UI {
     }
     // BACK
     textY += gamePanel.tileSize * 2;
-    graphics2D.drawString(BACK, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, BACK), textX, textY);
     if (commandNum == 5) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -509,24 +517,26 @@ public class UI {
     int textX;
     int textY;
 
-    textX = getXForCenteredText(CONTROL);
+    textX = getXForCenteredText(TextManager.getSettingText(CONTROLS, CONTROL));
     textY = frameY + gamePanel.tileSize;
-    graphics2D.drawString(CONTROL, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, CONTROL), textX, textY);
 
     textX = frameX + gamePanel.tileSize;
     textY += gamePanel.tileSize;
 
-    graphics2D.drawString(MOVE, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, MOVE), textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString(CONFIRM_ATTACK, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, CONFIRM_ATTACK), textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString(SHOOT_CAST, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, SHOOT_CAST), textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString(CHARACTER_SCREEN, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, PARRY), textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString(PAUSE, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, CHARACTER_SCREEN), textX, textY);
     textY += gamePanel.tileSize;
-    graphics2D.drawString(OPTIONS, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(CONTROLS, PAUSE), textX, textY);
+    textY += gamePanel.tileSize;
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, OPTIONS), textX, textY);
 
     textX = frameX + gamePanel.tileSize * 6;
     textY = frameY + gamePanel.tileSize * 2;
@@ -536,6 +546,8 @@ public class UI {
     graphics2D.drawString(CONFIRM, textX, textY);
     textY += gamePanel.tileSize;
     graphics2D.drawString(PROJECTILE_KEY, textX, textY);
+    textY += gamePanel.tileSize;
+    graphics2D.drawString(SPACE_KEY, textX, textY);
     textY += gamePanel.tileSize;
     graphics2D.drawString(CHARACTER_KEY, textX, textY);
     textY += gamePanel.tileSize;
@@ -547,7 +559,7 @@ public class UI {
     // BACK
     textX = frameX + gamePanel.tileSize;
     textY = frameY + gamePanel.tileSize * 9;
-    graphics2D.drawString(BACK, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, BACK), textX, textY);
 
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
@@ -664,14 +676,14 @@ public class UI {
     int textX = frameX + gamePanel.tileSize;
     int textY = frameY + gamePanel.tileSize * 3;
 
-    for (String line : FULL_SCREEN_NOTIFICATION.split("\n")) {
+    for (String line : TextManager.getUiText(UI_MESSAGES, FULL_SCREEN_NOTIFICATION).split("\n")) {
       graphics2D.drawString(line, textX, textY);
       textY += 40;
     }
 
     // BACK
     textY = frameY + gamePanel.tileSize * 9;
-    graphics2D.drawString(BACK, textX, textY);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, BACK), textX, textY);
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.keyHandler.enterPressed) {
@@ -722,27 +734,27 @@ public class UI {
     final int lineHeight = 35;
 
     // NAMES
-    graphics2D.drawString(LEVEL, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, LEVEL), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(LIFE, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, LIFE), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(STRENGTH, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, STRENGTH), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(DEXTERITY, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, DEXTERITY), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(ATTACK, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, ATTACK), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(DEFENSE, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, DEFENSE), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(EXP, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, EXP), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(NEXT_LEVEL, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, NEXT_LEVEL), textX, textY);
     textY += lineHeight;
-    graphics2D.drawString(COIN, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, COIN), textX, textY);
     textY += lineHeight + 20;
-    graphics2D.drawString(WEAPON, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, WEAPON), textX, textY);
     textY += lineHeight + 15;
-    graphics2D.drawString(SHIELD, textX, textY);
+    graphics2D.drawString(TextManager.getUiText(GAME_STATS, SHIELD), textX, textY);
 
     // VALUES
     int tailX = (frameX + frameWidth) - 30;
@@ -846,15 +858,15 @@ public class UI {
     graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
     // TITLE NAME
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 96F));
-    int x = getXForCenteredText(TITLE);
+    int x = getXForCenteredText(TextManager.getSettingText(MENU_OPTIONS, TITLE));
     int y = gamePanel.tileSize * 3;
 
     // SHADOW
     graphics2D.setColor(Color.GRAY);
-    graphics2D.drawString(TITLE, x + 5, y + 5);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, TITLE), x + 5, y + 5);
     // MAIN COLOR
     graphics2D.setColor(Color.WHITE);
-    graphics2D.drawString(TITLE, x, y);
+    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, TITLE), x, y);
 
     // BLUE BOY IMAGE
     x = gamePanel.screenWidth / 2 - (gamePanel.tileSize * 2) / 2;
@@ -864,7 +876,12 @@ public class UI {
     // MENU
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 48F));
 
-    String[] menuOptions = {NEW_GAME, LOAD_GAME, QUIT};
+    String[] menuOptions = {
+        TextManager.getSettingText(MENU_OPTIONS, NEW_GAME),
+        TextManager.getSettingText(MENU_OPTIONS, LOAD_GAME),
+        TextManager.getSettingText(MENU_OPTIONS, QUIT)
+    };
+
     y += gamePanel.tileSize * 3;
 
     for (int i = 0; i < menuOptions.length; i++) {
@@ -891,6 +908,41 @@ public class UI {
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, 25F));
     x += gamePanel.tileSize;
     y += gamePanel.tileSize;
+
+    List<String> dialoguesForSet = npc.dialogues.get(npc.dialogueSet);
+
+    if (dialoguesForSet != null && !dialoguesForSet.isEmpty()) {
+      if (npc.dialogueIndex >= dialoguesForSet.size()) {
+        npc.dialogueIndex = 0;
+      }
+
+      String fullDialogue = dialoguesForSet.get(npc.dialogueIndex);
+      currentDialogue = fullDialogue;
+
+      if (characterIndex < fullDialogue.length()) {
+        combinedText.append(fullDialogue.charAt(characterIndex));
+        currentDialogue = combinedText.toString();
+        characterIndex++;
+        gamePanel.playSoundEffect(SPEAK);
+      }
+
+      if (gamePanel.keyHandler.enterPressed && gamePanel.gameState == DIALOG_STATE) {
+        characterIndex = 0;
+        combinedText.setLength(0);
+        npc.dialogueIndex++;
+        gamePanel.keyHandler.enterPressed = false;
+
+        if (npc.dialogueIndex >= dialoguesForSet.size()) {
+          npc.dialogueIndex = 0;
+          gamePanel.gameState = PLAY_STATE;
+        }
+      }
+    } else {
+      npc.dialogueIndex = 0;
+      if (gamePanel.gameState == DIALOG_STATE) {
+        gamePanel.gameState = PLAY_STATE;
+      }
+    }
 
     for (String line : currentDialogue.split("\n")) {
       graphics2D.drawString(line, x, y);
@@ -928,10 +980,10 @@ public class UI {
 
   private void drawPauseScreen() {
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.PLAIN, 80F));
-    int x = getXForCenteredText(PAUSED);
+    int x = getXForCenteredText(TextManager.getUiText(UI_MESSAGES, PAUSED));
     int y = gamePanel.screenHeight / 2;
 
-    graphics2D.drawString(PAUSED, x, y);
+    graphics2D.drawString(TextManager.getUiText(UI_MESSAGES, PAUSED), x, y);
   }
 
   private int getXForCenteredText(String text) {

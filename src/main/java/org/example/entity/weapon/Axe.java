@@ -6,6 +6,7 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
+import org.example.utils.text.TextManager;
 
 public class Axe extends GameEntity {
 
@@ -18,7 +19,7 @@ public class Axe extends GameEntity {
     attackArea.width = 30;
     attackArea.height = 30;
     price = 25;
-    description = "[" + name + "] \n A bit rusty axe but still \n cut some trees";
+    description = String.format(TextManager.getItemDescription(GameObjectType.AXE.getTextKey()), name);
     type = WorldGameTypes.AXE;
     knockBackPower = 5;
     firstAttackMotionDuration = 20;

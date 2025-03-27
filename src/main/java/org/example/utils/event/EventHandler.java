@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.example.utils.event;
 
 import static org.example.config.GameEntityNameFactory.INTERIOR_MAP;
 import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
@@ -17,9 +17,9 @@ import org.example.enums.DirectionType;
 import org.example.enums.GameStateType;
 
 public class EventHandler {
-  private final static String TELEPORT_MESSAGE = "You got teleported!";
-  private final static String HEALING_POOL_MESSAGE = "You dink the water. \n Your life and mana has been recovered. \n (The progress has been saved)";
-  private final static String DAMAGE_PIT_MESSAGE = "You fall into a pit!";
+
+  private static final String DAMAGE_PIT = "damagePit";
+  private static final String HEALING_POOL = "healingPool";
 
   GamePanel gamePanel;
   Map<String, EventRect[][]> eventRect = new HashMap<>();
@@ -32,7 +32,6 @@ public class EventHandler {
   public EventHandler(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
     eventRect.put(MAIN_MAP_PATH, new EventRect[gamePanel.maxWorldCol][gamePanel.maxWorldRow]);
-
     int col = 0;
     int row = 0;
     while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
@@ -115,7 +114,7 @@ public class EventHandler {
 
   private void damagePit(GameStateType gameState) {
     gamePanel.gameState = gameState;
-    gamePanel.ui.currentDialogue = DAMAGE_PIT_MESSAGE;
+    gamePanel.player.startDialogue(gamePanel.player, DAMAGE_PIT);
     gamePanel.player.currentLife -= 1;
     gamePanel.playSoundEffect(RECEIVE_DAMAGE);
 //    eventRect[col][row].eventDone = true;
@@ -128,7 +127,7 @@ public class EventHandler {
       gamePanel.gameState = gameState;
       gamePanel.player.attackCanceled = true;
       gamePanel.playSoundEffect(POWER_UP);
-      gamePanel.ui.currentDialogue = HEALING_POOL_MESSAGE;
+      gamePanel.player.startDialogue(gamePanel.player, HEALING_POOL);
       gamePanel.player.currentLife = gamePanel.player.maxLife;
       gamePanel.player.mana = gamePanel.player.maxMana;
       gamePanel.assetSetter.setMonster();

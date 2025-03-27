@@ -10,10 +10,18 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.example.GamePanel;
 import org.example.enums.DayState;
+import org.example.utils.text.TextManager;
 
 public class Lighting {
+
+  private static final String DAY_STATUS_KEY = "dayStatus";
+  private static final String DAY_KEY = "day";
+  private static final String DUSK_KEY = "dusk";
+  private static final String NIGHT_KEY = "night";
+  private static final String DAWN_KEY = "dawn";
 
   GamePanel gamePanel;
   BufferedImage darknessFilter;
@@ -128,12 +136,12 @@ public class Lighting {
     graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
 
     // DEBUG
-    String dayStateDebug = "";
+    String dayStateDebug = StringUtils.EMPTY;
     switch (dayState) {
-      case DAY -> dayStateDebug = "Day";
-      case DUSK -> dayStateDebug = "Dusk";
-      case NIGHT -> dayStateDebug = "Night";
-      case DAWN -> dayStateDebug = "Dawn";
+      case DAY -> dayStateDebug = TextManager.getUiText(DAY_STATUS_KEY, DAY_KEY);
+      case DUSK -> dayStateDebug = TextManager.getUiText(DAY_STATUS_KEY, DUSK_KEY);
+      case NIGHT -> dayStateDebug = TextManager.getUiText(DAY_STATUS_KEY, NIGHT_KEY);
+      case DAWN -> dayStateDebug = TextManager.getUiText(DAY_STATUS_KEY, DAWN_KEY);
     }
 
     graphics2D.setColor(WHITE);

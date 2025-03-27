@@ -1,0 +1,28 @@
+{
+  "menuOptions": {
+    "newGame": "New Game",
+    "loadGame": "Load game",
+    "endGame": "End Game",
+    "options": "Options",
+    "quit": "Quit",
+    "nextLevel": "Next Level",
+    "retry": "Retry",
+    "back": "Back",
+    "title": "Four Legs"
+  },
+  "controls": {
+    "move": "Move",
+    "shootCast": "Shoot/Cast",
+    "confirmAttack": "Confirm/Attack",
+    "characterScreen": "Character Screen",
+    "pause": "Pause",
+    "parry": "Parry",
+    "control": "Control",
+    "escapeBack": "[ESC] Back"
+  },
+  "settings": {
+    "fullScreen": "Full screen",
+    "music": "Music",
+    "soundEffect": "Sound Effect"
+  }
+}

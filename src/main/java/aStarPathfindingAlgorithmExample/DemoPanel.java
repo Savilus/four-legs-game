@@ -158,7 +158,8 @@ public class DemoPanel extends JPanel {
     }
   }
 
-  public void search() {
+  // Manual search to see how algorithm works step by step (press enter)
+  public void manualSearch() {
 
     if (!goealReached) {
       int col = currentNode.col;

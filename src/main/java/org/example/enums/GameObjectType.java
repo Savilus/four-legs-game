@@ -8,27 +8,33 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GameObjectType {
   // TODO: some classes does not use GameObjectType and some does, fix it or think of something else. You can also add some parameters to this class
-  KEY("Key"),
-  DOOR("Door"),
-  BOOTS("Boots"),
-  HEART("Heart"),
-  CHEST("Chest"),
-  LANTERN("Lantern"),
-  TENT("Tent"),
-  RED_POTION("Red Potion"),
-  BRONZE_COIN("Bronze Coin"),
-  MANA_CRYSTAL("Mana Crystal"),
+  // GAME ITEMS
+  KEY("Key", "key"),
+  DOOR("Door", "door"),
+  BOOTS("Boots", "boots"),
+  HEART("Heart", "heart"),
+  CHEST("Chest", "chest"),
+  LANTERN("Lantern", "lantern"),
+  TENT("Tent", "tent"),
+  RED_POTION("Red Potion", "redPotion"),
+  BRONZE_COIN("Bronze Coin", "bronzeCoin"),
+  MANA_CRYSTAL("Mana Crystal", "manaCrystal"),
 
   // WEAPONS
-  NORMAL_SWORD("Normal Sword"),
-  AXE("Woodcutter's Axe"),
+  NORMAL_SWORD("Normal Sword", "normalSword"),
+  AXE("Woodcutter's Axe", "axe"),
 
   // SHIELDS
-  BLUE_SHIELD("Blue Shield"),
-  WOOD_SHIELD("Wood Shield");
+  BLUE_SHIELD("Blue Shield", "blueShield"),
+  WOOD_SHIELD("Wood Shield", "woodShield"),
+
+  // Projectiles
+  FIREBALL("Fireball", "fireball"),
+  ROCK("Rock", "rock");
 
 
   private final String name;
+  private final String textKey;
 
   public static GameObjectType getObjectFromName(String name) {
     for (GameObjectType type : GameObjectType.values()) {

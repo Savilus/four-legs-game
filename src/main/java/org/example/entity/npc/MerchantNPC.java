@@ -6,16 +6,18 @@ import static org.example.enums.GameStateType.TRADE_STATE;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.weapon.Axe;
-import org.example.entity.shield.BlueShield;
 import org.example.entity.items.Key;
-import org.example.entity.weapon.NormalSword;
 import org.example.entity.items.RedPotion;
+import org.example.entity.shield.BlueShield;
 import org.example.entity.shield.WoodShield;
+import org.example.entity.weapon.Axe;
+import org.example.entity.weapon.NormalSword;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
+import org.example.utils.text.TextManager;
 
 public class MerchantNPC extends GameEntity {
+  private static final String MERCHANT_DIALOGUES_KEY = "merchantNpc";
 
   public MerchantNPC(GamePanel gamePanel) {
     super(gamePanel);
@@ -25,7 +27,7 @@ public class MerchantNPC extends GameEntity {
     type = WorldGameTypes.NPC;
 
     getPlayerImage();
-    setDialogue();
+    dialogues = TextManager.getAllDialoguesForTarget(MERCHANT_DIALOGUES_KEY);
     setItems();
   }
 
@@ -40,10 +42,6 @@ public class MerchantNPC extends GameEntity {
     right2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
   }
 
-  private void setDialogue() {
-    dialogues[0] = "He, he, he, so you found me. \n I have some good stuff. \n Do you want to trade?";
-  }
-
   public void setItems() {
     inventory.add(new RedPotion(gamePanel));
     inventory.add(new Key(gamePanel));
@@ -55,8 +53,8 @@ public class MerchantNPC extends GameEntity {
 
   @Override
   public void speak() {
-    super.speak();
+    facePlayer();
     gamePanel.gameState = TRADE_STATE;
-    gamePanel.ui.merchantNPC = this;
+    gamePanel.ui.npc = this;
   }
 }

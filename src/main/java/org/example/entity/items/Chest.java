@@ -3,19 +3,18 @@ package org.example.entity.items;
 import static org.example.config.GameEntityNameFactory.CHEST;
 import static org.example.config.GameEntityNameFactory.CHEST_OPENED;
 import static org.example.config.GameEntityNameFactory.UNLOCK;
-import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.WorldGameTypes.OBSTACLE;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
+import org.example.utils.text.TextManager;
 
 public class Chest extends GameEntity {
 
-  private static final String OPEN_CHEST_TEXT = "You opened the chest and find a %s !";
-  private static final String EMPTY_CHEST_TEXT = "It's empty.";
-  private static final String FULL_INVENTORY_TEXT = "\n You cannot carry any more!";
-  private static final String COLLECT_ITEM_TEXT = "\n You obtain the %s !";
+  private static final String FULL_INVENTORY_TEXT_KEY = "fullInventory";
+  private static final String COLLECT_ITEM_TEXT_KEY = "collectItem";
+  private static final String EMPTY_TEXT_KEY = "empty";
 
   public Chest(GamePanel gamePanel) {
     super(gamePanel);
@@ -35,27 +34,23 @@ public class Chest extends GameEntity {
 
   public void setLoot(GameEntity loot) {
     this.loot = loot;
+    dialogues = TextManager.getItemTexts(GameObjectType.CHEST.getTextKey(), loot.name);
   }
 
   @Override
   public void interact() {
-    gamePanel.gameState = DIALOG_STATE;
 
     if (!opened) {
       gamePanel.playSoundEffect(UNLOCK);
-      StringBuilder sb = new StringBuilder();
-      sb.append(OPEN_CHEST_TEXT);
-
       if (!gamePanel.player.canObtainItem(loot)) {
-        sb.append(FULL_INVENTORY_TEXT);
+        startDialogue(this, FULL_INVENTORY_TEXT_KEY);
       } else {
-        sb.append(COLLECT_ITEM_TEXT);
+        startDialogue(this, COLLECT_ITEM_TEXT_KEY);
         image = image2;
         opened = true;
       }
-      gamePanel.ui.currentDialogue = String.format(sb.toString(), loot.name, loot.name);
     } else {
-      gamePanel.ui.currentDialogue = EMPTY_CHEST_TEXT;
+      startDialogue(this, EMPTY_TEXT_KEY);
     }
   }
 }
