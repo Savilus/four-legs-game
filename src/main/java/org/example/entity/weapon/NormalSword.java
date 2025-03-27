@@ -6,6 +6,7 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
+import org.example.utils.text.TextManager;
 
 public class NormalSword extends GameEntity {
 
@@ -16,7 +17,7 @@ public class NormalSword extends GameEntity {
     attackValue = 1;
     attackArea.width = 36;
     attackArea.height = 36;
-    description = "[" + name + "]\nAn old sword";
+    description = String.format(TextManager.getItemDescription(GameObjectType.NORMAL_SWORD.getTextKey()), name);
     type = WorldGameTypes.SWORD;
     price = 10;
     knockBackPower = 2;

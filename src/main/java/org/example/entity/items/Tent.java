@@ -8,10 +8,9 @@ import static org.example.enums.WorldGameTypes.CONSUMABLE;
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
+import org.example.utils.text.TextManager;
 
 public class Tent extends GameEntity {
-
-  private static final String TENT_DESCRIPTION = "[Tent] \\n You can sleep until \\nnext morning.";
 
   public Tent(GamePanel gamePanel) {
     super(gamePanel);
@@ -19,7 +18,7 @@ public class Tent extends GameEntity {
     name = GameObjectType.TENT.getName();
     image = setup(TENT, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(TENT, gamePanel.tileSize, gamePanel.tileSize);
-    description = TENT_DESCRIPTION;
+    description = String.format(TextManager.getItemDescription(GameObjectType.TENT.getTextKey()), name);
     price = 200;
     stackable = true;
   }

@@ -90,7 +90,7 @@ public class KeyHandler implements KeyListener {
 
   private void dialogState(int code) {
     if (code == KeyEvent.VK_ENTER) {
-      gamePanel.gameState = PLAY_STATE;
+      enterPressed = true;
     }
   }
 

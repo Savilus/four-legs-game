@@ -168,6 +168,7 @@ sound:
     sleep: /sound/sleep.wav
     blocked: /sound/blocked.wav
     parry: /sound/parry.wav
+    speak: /sound/speak.wav
 
 projectile:
   fireball:

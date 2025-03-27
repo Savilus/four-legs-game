@@ -6,10 +6,9 @@ import static org.example.enums.WorldGameTypes.LIGHTING;
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
+import org.example.utils.text.TextManager;
 
 public class Lantern extends GameEntity {
-
-  private static final String LANTERN_DESCRIPTION = "[Lantern] \n Illuminates your \n surrondings.";
 
   public Lantern(GamePanel gamePanel) {
     super(gamePanel);
@@ -18,7 +17,7 @@ public class Lantern extends GameEntity {
     name = GameObjectType.LANTERN.getName();
     image = setup(LANTERN, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(LANTERN, gamePanel.tileSize, gamePanel.tileSize);
-    description = LANTERN_DESCRIPTION;
+    description = String.format(TextManager.getItemDescription(GameObjectType.LANTERN.getTextKey()), name);
     price = 200;
     lightRadius = 450;
   }

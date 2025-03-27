@@ -13,8 +13,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class YamlConfigLoader {
 
-  public static final String ERROR_MESSAGE = "Error during loading value for path: %s. Failed field: %s";
-
   public static void loadConfig(Class<?> clazz, String configPath) {
     InputStream yamlFile = Main.class.getResourceAsStream(configPath);
     if (yamlFile == null) {
@@ -47,6 +45,6 @@ public class YamlConfigLoader {
           field.setAccessible(true);
           field.set(null, value);
         })
-        .getOrElseThrow(e -> new RuntimeException(String.format(ERROR_MESSAGE, path, field.getName()), e));
+        .getOrElseThrow(e -> new RuntimeException(String.format("Error during loading value for path: %s. Failed field: %s", path, field.getName()), e));
   }
 }

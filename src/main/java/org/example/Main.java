@@ -1,6 +1,11 @@
 package org.example;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.*;
+
+import org.example.utils.text.TextManager;
 
 public class Main {
 
@@ -9,7 +14,8 @@ public class Main {
   public static JFrame window;
 
   public static void main(String[] args) {
-
+    Map<String, Map<String, List<String>>> dialogues = TextManager.getDialogues();
+    System.out.println(dialogues);
     window = new JFrame();
     window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     window.setResizable(false);

@@ -1,0 +1,48 @@
+{
+  "uiMessages": {
+    "closeMapText": "Press M to close.",
+    "pickedUp": "Picked up %s !",
+    "damageUiMessage": "%s damage",
+    "killedUiMessage": "Killed the %s !",
+    "expUiMessage": "%s + Exp!",
+    "inventoryFull": "Inventory is full!",
+    "emptyChestText": "It's empty.",
+    "fullInventoryText": "\nYou cannot carry any more!",
+    "collectItemText": "\nYou obtain the %s !",
+    "endGameQuestion": "Are you sure you want to \nend the game?",
+    "fullScreenNotification": "The change will take \neffect after restarting \nthe game.",
+    "paused": "PAUSED",
+    "gameOver": "Game Over",
+    "yourCoin": "Your Coin: %s",
+    "life": "Life ",
+    "mana": "Mana "
+  },
+  "gameStats": {
+    "level": "Level",
+    "nextLevel": "Next Level",
+    "exp": "Exp",
+    "strength": "Strength",
+    "dexterity": "Dexterity",
+    "life": "Life",
+    "coin": "Coin",
+    "weapon": "Weapon",
+    "shield": "Shield",
+    "attack": "Attack",
+    "defense": "Defense"
+  },
+  "shop": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "leave": "Leave"
+  },
+  "dialogues": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "dayStatus": {
+    "day": "Day",
+    "dusk": "Dusk",
+    "night": "Night",
+    "dawn": "Dawn"
+  }
+}

@@ -1,16 +1,16 @@
 package org.example.entity.items;
 
 import static org.example.config.GameEntityNameFactory.DOOR;
-import static org.example.enums.GameStateType.DIALOG_STATE;
 import static org.example.enums.WorldGameTypes.OBSTACLE;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
+import org.example.utils.text.TextManager;
 
 public class Door extends GameEntity {
 
-  private static final String OPEN_INFORMATION = "You need a key to open this door.";
+  private static final String DOOR_DIALOGUE_KEY = "door";
 
   public Door(GamePanel gamePanel) {
     super(gamePanel);
@@ -25,11 +25,11 @@ public class Door extends GameEntity {
     solidArea.height = 32;
     solidAreaDefaultX = solidArea.x;
     solidAreaDefaultY = solidArea.y;
+    dialogues = TextManager.getItemTexts(DOOR_DIALOGUE_KEY);
   }
 
   @Override
   public void interact() {
-    gamePanel.gameState = DIALOG_STATE;
-    gamePanel.ui.currentDialogue = OPEN_INFORMATION;
+    startDialogue(this, "openInformation");
   }
 }

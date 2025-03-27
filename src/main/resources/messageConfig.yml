@@ -1,7 +1,0 @@
-ui:
-  gotKey: You got a key!
-  needKey: You need a key!
-  openDoor: You opened the door!
-  boost: Speed boost!
-  treasure: You found the treasure!
-  congrats: Congratulations!

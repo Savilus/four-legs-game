@@ -27,8 +27,8 @@ import org.example.tile.GameMap;
 import org.example.tile.TileManager;
 import org.example.utils.AssetSetter;
 import org.example.utils.CollisionDetector;
-import org.example.utils.EventHandler;
 import org.example.utils.KeyHandler;
+import org.example.utils.event.EventHandler;
 
 // Game screen
 public class GamePanel extends JPanel implements Runnable {
@@ -180,6 +180,7 @@ public class GamePanel extends JPanel implements Runnable {
   public void resetGame(boolean restart) {
     player.setDefaultPositions();
     player.restorePlayerStatus();
+    player.resetCounter();
     assetSetter.setMonster();
     assetSetter.setNPC();
 

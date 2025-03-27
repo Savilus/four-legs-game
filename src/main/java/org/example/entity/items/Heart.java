@@ -9,8 +9,12 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.GameObjectType;
 import org.example.enums.WorldGameTypes;
+import org.example.utils.text.TextManager;
 
 public class Heart extends GameEntity {
+
+  private static final String LIFE = "life";
+  private static final String UI_MESSAGES = "uiMessages";
 
   public Heart(GamePanel gamePanel) {
     super(gamePanel);
@@ -29,7 +33,7 @@ public class Heart extends GameEntity {
   @Override
   public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(POWER_UP);
-    gamePanel.ui.addMessage("Life +" + value);
+    gamePanel.ui.addMessage(TextManager.getUiText(UI_MESSAGES, LIFE) + value);
     entity.currentLife += value;
     return true;
   }

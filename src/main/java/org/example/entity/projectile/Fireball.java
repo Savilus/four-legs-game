@@ -13,13 +13,14 @@ import java.awt.*;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.GameObjectType;
 
 public class Fireball extends Projectile {
 
   public Fireball(GamePanel gamePanel) {
     super(gamePanel);
 
-    name = "Fireball";
+    name = GameObjectType.FIREBALL.getName();
     speed = 5;
     maxLife = 80;
     currentLife = maxLife;
@@ -31,28 +32,31 @@ public class Fireball extends Projectile {
   }
 
   private void getImage() {
-      up1 = setup(FIREBALL_UP1, gamePanel.tileSize, gamePanel.tileSize);
-      up2 = setup(FIREBALL_UP2, gamePanel.tileSize, gamePanel.tileSize);
-      down1 = setup(FIREBALL_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-      down2 = setup(FIREBALL_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-      left1 = setup(FIREBALL_LEFT1, gamePanel.tileSize, gamePanel.tileSize);
-      left2 = setup(FIREBALL_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
-      right1 = setup(FIREBALL_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
-      right2 = setup(FIREBALL_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(FIREBALL_UP1, gamePanel.tileSize, gamePanel.tileSize);
+    up2 = setup(FIREBALL_UP2, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(FIREBALL_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    down2 = setup(FIREBALL_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    left1 = setup(FIREBALL_LEFT1, gamePanel.tileSize, gamePanel.tileSize);
+    left2 = setup(FIREBALL_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
+    right1 = setup(FIREBALL_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
+    right2 = setup(FIREBALL_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
   }
 
   @Override
   public Color getParticleColor() {
     return new Color(240, 50, 0);
   }
+
   @Override
   public int getParticleSize() {
     return 10;  // 6 pixels
   }
+
   @Override
   public int getParticleSpeed() {
     return 1;
   }
+
   @Override
   public int getParticleMaxLife() {
     return 20;
@@ -64,7 +68,7 @@ public class Fireball extends Projectile {
   }
 
   @Override
-  public boolean haveResource(GameEntity user){
+  public boolean haveResource(GameEntity user) {
     return user.mana >= useCost;
   }
 }

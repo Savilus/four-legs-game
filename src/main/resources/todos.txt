@@ -1,12 +1,11 @@
 1) Find a better solution for drawing strings and window
 2) command num not just int -> maybe a class with possible commands, and text so it's not like 1 but it's (for example LOADING)
 3) switch subState for something else, not just numbers
-4) map of NPC, String (npc dialogues) -> DONE
 5) replace if statements with stream
-6) Strings.Empty - strings handling
 7) WorldGameTypes with more details like description, stackable etc.
 8) Methods like Objects.requireNonNull(getClass().getResource(PARRY)) -> utility class
 9) direction handler
+10) add M map to controls
 
 Hello @RyiSnow. The code you provided is using a switch statement to create a new object based on the input itemName. This approach works, but it could be improved by using a more object-oriented approach, like using a factory pattern.
 

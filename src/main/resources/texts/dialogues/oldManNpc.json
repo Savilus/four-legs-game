@@ -1,0 +1,19 @@
+{
+  "oldManNpc": {
+    "welcomeDialogue": [
+      "Hello, lad",
+      "So you've come to this island \n to find the treasure?",
+      "I used to be a great wizard but now... \n I'm a bit too old for taking an adventure",
+      "Well, good luck on you"
+    ],
+    "waterTip": [
+      "If you become tired, rest at the water.",
+      "However, the monsters reappear if you rest. \n I don't know why but that's how it works",
+      "In any case, don't push yourself too hard"
+    ],
+    "keyTip": [
+      "I wonder how to open that door",
+      "I have never been able to find the key to them,\n maybe you will succeed"
+    ]
+  }
+}
