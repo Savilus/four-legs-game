@@ -32,6 +32,7 @@ public class UI {
   private static final String MERCHANT_NO_MONEY_DIALOGUE_KEY = "merchantNpcNotEnoughMoney";
   private static final String MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY = "merchantNpcTooMuchItems";
   private static final String MERCHANT_TRADE_DIALOGUE_KEY = "merchantNpcTradeQuestion";
+  private static final String MERCHANT_CANNOT_SELL_KEY = "merchantNpcCannotSellItem";
   private static final String CURSOR_SELECTOR = ">";
   private static final String PLAYER_LIFE_FORMAT = "%s / %s";
   private static final String CHARACTER_CONTROL = "WASD";
@@ -374,7 +375,7 @@ public class UI {
             || gamePanel.player.inventory.get(itemIndex) == gamePanel.player.currentShield) {
           commandNum = 0;
           subState = 0;
-          npc.startDialogue(npc, "merchantNpcCannotSellItem");
+          npc.startDialogue(npc, MERCHANT_CANNOT_SELL_KEY);
         } else {
           if (gamePanel.player.inventory.get(itemIndex).amount > 1)
             gamePanel.player.inventory.get(itemIndex).amount--;

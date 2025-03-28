@@ -64,6 +64,7 @@ public class Player extends GameEntity {
   private static final String DAMAGE_UI_MESSAGE = "damageUiMessage";
   private static final String KILLED_UI_MESSAGE = "killedUiMessage";
   private static final String UI_MESSAGE = "uiMessages";
+  private static final String LVL_UP = "lvlUp";
   private static final String EXP_UI_MESSAGE = "expUiMessage";
   private static final String INVENTORY_FULL = "inventoryFull";
   private static final String EVENT_MESSAGES_KEY = "eventMessages";
@@ -390,7 +391,7 @@ public class Player extends GameEntity {
       gamePanel.playSoundEffect(LEVEL_UP);
       gamePanel.gameState = DIALOG_STATE;
 
-      startDialogue(this, "player");
+      startDialogue(this, LVL_UP);
     }
   }
 
@@ -589,7 +590,8 @@ public class Player extends GameEntity {
   }
 
   public boolean canObtainItem(GameEntity item) {
-    if (item.stackable) {
+    GameEntity newItem = gamePanel.entityGenerator.getGameEntity(item.name);
+    if (newItem.stackable) {
       int itemIndex = searchItemInInventory(item.name);
 
       if (itemIndex != INIT_INDEX) {
@@ -599,7 +601,7 @@ public class Player extends GameEntity {
 
     }
     if (doesInventoryHaveSpace()) {
-      inventory.add(item);
+      inventory.add(newItem);
       return true;
     }
     return false;

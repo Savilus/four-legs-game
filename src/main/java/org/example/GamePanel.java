@@ -18,6 +18,7 @@ import javax.swing.*;
 
 import org.example.ai.PathFinder;
 import org.example.data.SaveLoad;
+import org.example.entity.EntityGenerator;
 import org.example.entity.GameEntity;
 import org.example.entity.Player;
 import org.example.entity.interactiveTile.InteractiveTile;
@@ -69,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
   public EventHandler eventHandler = new EventHandler(this);
   EnvironmentManager environmentManager = new EnvironmentManager(this);
   public GameMap gameMap = new GameMap(this);
+  public EntityGenerator entityGenerator = new EntityGenerator(this);
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
