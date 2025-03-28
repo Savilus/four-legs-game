@@ -11,6 +11,7 @@ import org.example.utils.text.TextManager;
 public class Door extends GameEntity {
 
   private static final String DOOR_DIALOGUE_KEY = "door";
+  private static final String OPEN_INFORMATION = "openInformation";
 
   public Door(GamePanel gamePanel) {
     super(gamePanel);
@@ -30,6 +31,6 @@ public class Door extends GameEntity {
 
   @Override
   public void interact() {
-    startDialogue(this, "openInformation");
+    startDialogue(this, OPEN_INFORMATION);
   }
 }

@@ -9,21 +9,6 @@ import java.util.List;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.items.Boots;
-import org.example.entity.items.BronzeCoin;
-import org.example.entity.items.Chest;
-import org.example.entity.items.Door;
-import org.example.entity.items.Heart;
-import org.example.entity.items.Key;
-import org.example.entity.items.Lantern;
-import org.example.entity.items.ManaCrystal;
-import org.example.entity.items.RedPotion;
-import org.example.entity.items.Tent;
-import org.example.entity.shield.BlueShield;
-import org.example.entity.shield.WoodShield;
-import org.example.entity.weapon.Axe;
-import org.example.entity.weapon.NormalSword;
-import org.example.enums.GameObjectType;
 
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
@@ -34,30 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 public class SaveLoad {
 
   private static final String SAVE_LOAD_PATH_FILE = "save.dat";
+  private static final String NA = "NA";
 
   private GamePanel gamePanel;
-
-  public GameEntity getItem(String itemName) {
-    GameEntity gameObject = null;
-    // TODO: change for more flexible solution
-    switch (GameObjectType.getObjectFromName(itemName)) {
-      case AXE -> gameObject = new Axe(gamePanel);
-      case NORMAL_SWORD -> gameObject = new NormalSword(gamePanel);
-      case BLUE_SHIELD -> gameObject = new BlueShield(gamePanel);
-      case WOOD_SHIELD -> gameObject = new WoodShield(gamePanel);
-      case BOOTS -> gameObject = new Boots(gamePanel);
-      case KEY -> gameObject = new Key(gamePanel);
-      case LANTERN -> gameObject = new Lantern(gamePanel);
-      case TENT -> gameObject = new Tent(gamePanel);
-      case RED_POTION -> gameObject = new RedPotion(gamePanel);
-      case CHEST -> gameObject = new Chest(gamePanel);
-      case MANA_CRYSTAL -> gameObject = new ManaCrystal(gamePanel);
-      case BRONZE_COIN -> gameObject = new BronzeCoin(gamePanel);
-      case HEART -> gameObject = new Heart(gamePanel);
-      case DOOR -> gameObject = new Door(gamePanel);
-    }
-    return gameObject;
-  }
 
   public void save() {
     Try.run(() -> {
@@ -191,7 +155,7 @@ public class SaveLoad {
       // Player equipment
       gamePanel.player.inventory.clear();
       for (int i = 0; i < dataStorage.itemNames.size(); i++) {
-        GameEntity item = getItem(dataStorage.itemNames.get(i));
+        GameEntity item = gamePanel.entityGenerator.getGameEntity(dataStorage.itemNames.get(i));
         item.amount = dataStorage.itemAmounts.get(i);
         gamePanel.player.inventory.add(item);
       }
@@ -215,15 +179,15 @@ public class SaveLoad {
         GameEntity[] objectsOnMap = gamePanel.mapsObjects.get(mapName);
 
         for (int i = 0; i < objectNames.size(); i++) {
-          if (objectNames.get(i).equals("NA")) {
+          if (objectNames.get(i).equals(NA)) {
             objectsOnMap[i] = null;
           } else {
-            objectsOnMap[i] = getItem(objectNames.get(i));
+            objectsOnMap[i] = gamePanel.entityGenerator.getGameEntity(objectNames.get(i));
             objectsOnMap[i].worldX = worldXList.get(i);
             objectsOnMap[i].worldY = worldYList.get(i);
 
             if (lootNames.get(i) != null) {
-              objectsOnMap[i].loot = getItem(lootNames.get(i));
+              objectsOnMap[i].loot = gamePanel.entityGenerator.getGameEntity(lootNames.get(i));
             }
 
             objectsOnMap[i].opened = openedList.get(i);

@@ -22,6 +22,7 @@ public class TextManager {
   private static final String USE = "use";
   private static final String OPEN_DOOR = "openDoor";
   private static final String COLLECT_ITEM = "collectItem";
+  private static final String EVENT_MESSAGES_KEY = "eventMessages";
 
   @Getter
   private final Map<String, Map<String, List<String>>> dialogues = TextLoader.loadAllDialogues(DIALOGUES_PATH);
@@ -36,6 +37,7 @@ public class TextManager {
     formatKeys.put(GameObjectType.CHEST.getTextKey(), COLLECT_ITEM);
     formatKeys.put(GameObjectType.RED_POTION.getTextKey(), USE);
     formatKeys.put(GameObjectType.KEY.getTextKey(), OPEN_DOOR);
+    formatKeys.put(EVENT_MESSAGES_KEY, "lvlUp");
   }
 
   public String getSettingText(String settingField, String settingName) {

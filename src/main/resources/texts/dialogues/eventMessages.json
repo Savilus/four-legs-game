@@ -9,6 +9,9 @@
     ],
     "damagePit": [
       "You fall into a pit!"
+    ],
+    "lvlUp": [
+      "You leveled up! \nYou feel stronger!"
     ]
   }
 }
