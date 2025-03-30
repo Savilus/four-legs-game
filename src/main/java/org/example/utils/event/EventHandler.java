@@ -1,7 +1,9 @@
 package org.example.utils.event;
 
+import static org.example.config.GameEntityNameFactory.DUNGEON_FIRST_FLOR;
+import static org.example.config.GameEntityNameFactory.DUNGEON_SECOND_FLOR;
 import static org.example.config.GameEntityNameFactory.INTERIOR_MAP;
-import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
+import static org.example.config.GameEntityNameFactory.MAIN_MAP;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.config.GameEntityNameFactory.STAIRS;
@@ -13,6 +15,7 @@ import java.util.Map;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.enums.AreaType;
 import org.example.enums.DirectionType;
 import org.example.enums.GameStateType;
 
@@ -31,17 +34,17 @@ public class EventHandler {
 
   public EventHandler(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    eventRect.put(MAIN_MAP_PATH, new EventRect[gamePanel.maxWorldCol][gamePanel.maxWorldRow]);
+    eventRect.put(MAIN_MAP, new EventRect[gamePanel.maxWorldCol][gamePanel.maxWorldRow]);
     int col = 0;
     int row = 0;
     while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      eventRect.get(MAIN_MAP_PATH)[col][row] = new EventRect();
-      eventRect.get(MAIN_MAP_PATH)[col][row].x = 23;
-      eventRect.get(MAIN_MAP_PATH)[col][row].y = 23;
-      eventRect.get(MAIN_MAP_PATH)[col][row].width = 2;
-      eventRect.get(MAIN_MAP_PATH)[col][row].height = 2;
-      eventRect.get(MAIN_MAP_PATH)[col][row].eventRectDefaultX = eventRect.get(MAIN_MAP_PATH)[col][row].x;
-      eventRect.get(MAIN_MAP_PATH)[col][row].eventRectDefaultY = eventRect.get(MAIN_MAP_PATH)[col][row].y;
+      eventRect.get(MAIN_MAP)[col][row] = new EventRect();
+      eventRect.get(MAIN_MAP)[col][row].x = 23;
+      eventRect.get(MAIN_MAP)[col][row].y = 23;
+      eventRect.get(MAIN_MAP)[col][row].width = 2;
+      eventRect.get(MAIN_MAP)[col][row].height = 2;
+      eventRect.get(MAIN_MAP)[col][row].eventRectDefaultX = eventRect.get(MAIN_MAP)[col][row].x;
+      eventRect.get(MAIN_MAP)[col][row].eventRectDefaultY = eventRect.get(MAIN_MAP)[col][row].y;
 
       col++;
       if (col == gamePanel.maxWorldCol) {
@@ -61,14 +64,24 @@ public class EventHandler {
       canTouchEvent = true;
     }
 
-    if (canTouchEvent && gamePanel.tileManager.currentMap.equals(MAIN_MAP_PATH)) {
+    if (canTouchEvent && gamePanel.tileManager.currentMap.equals(MAIN_MAP)) {
       if (hit(27, 16, DirectionType.RIGHT)) damagePit(DIALOG_STATE);
       else if (hit(23, 12, DirectionType.UP)) healingPool(DIALOG_STATE);
-      else if (hit(10, 39, DirectionType.ANY)) mapTeleport(INTERIOR_MAP, 12, 13);
+      else if (hit(10, 39, DirectionType.ANY)) mapTeleport(INTERIOR_MAP, 12, 13, AreaType.INDOOR);
+      else if (hit(12, 9, DirectionType.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 9, 41, AreaType.DUNGEON);
+    }
+
+    if (canTouchEvent && gamePanel.tileManager.currentMap.equals(DUNGEON_FIRST_FLOR)) {
+      if (hit(8, 7, DirectionType.ANY)) mapTeleport(DUNGEON_SECOND_FLOR, 26, 41, AreaType.DUNGEON);
+      else if (hit(9, 41, DirectionType.ANY)) mapTeleport(MAIN_MAP, 12, 10, AreaType.OUTSIDE);
+    }
+
+    if (canTouchEvent && gamePanel.tileManager.currentMap.equals(DUNGEON_SECOND_FLOR)) {
+      if (hit(26, 41, DirectionType.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 8, 7, AreaType.DUNGEON);
     }
 
     if (canTouchEvent && gamePanel.tileManager.currentMap.equals(INTERIOR_MAP)) {
-      if (hit(12, 13, DirectionType.ANY)) mapTeleport(MAIN_MAP_PATH, 10, 39);
+      if (hit(12, 13, DirectionType.ANY)) mapTeleport(MAIN_MAP, 10, 39, AreaType.OUTSIDE);
       else if (hit(12, 9, DirectionType.UP)) speak(gamePanel.mapsNpc.get(INTERIOR_MAP)[0]);
     }
   }
@@ -85,10 +98,10 @@ public class EventHandler {
     boolean hit = false;
     gamePanel.player.solidArea.x = gamePanel.player.worldX + gamePanel.player.solidArea.x;
     gamePanel.player.solidArea.y = gamePanel.player.worldY + gamePanel.player.solidArea.y;
-    eventRect.get(MAIN_MAP_PATH)[col][row].x = col * gamePanel.tileSize + eventRect.get(MAIN_MAP_PATH)[col][row].x;
-    eventRect.get(MAIN_MAP_PATH)[col][row].y = row * gamePanel.tileSize + eventRect.get(MAIN_MAP_PATH)[col][row].y;
+    eventRect.get(MAIN_MAP)[col][row].x = col * gamePanel.tileSize + eventRect.get(MAIN_MAP)[col][row].x;
+    eventRect.get(MAIN_MAP)[col][row].y = row * gamePanel.tileSize + eventRect.get(MAIN_MAP)[col][row].y;
 
-    if (gamePanel.player.solidArea.intersects(eventRect.get(MAIN_MAP_PATH)[col][row]) && !eventRect.get(MAIN_MAP_PATH)[col][row].oneTimeEventDone) {
+    if (gamePanel.player.solidArea.intersects(eventRect.get(MAIN_MAP)[col][row]) && !eventRect.get(MAIN_MAP)[col][row].oneTimeEventDone) {
       if (gamePanel.player.direction.equals(requiredDirection) || requiredDirection.equals(DirectionType.ANY))
         hit = true;
 
@@ -98,13 +111,14 @@ public class EventHandler {
 
     gamePanel.player.solidArea.x = gamePanel.player.solidAreaDefaultX;
     gamePanel.player.solidArea.y = gamePanel.player.solidAreaDefaultY;
-    eventRect.get(MAIN_MAP_PATH)[col][row].x = eventRect.get(MAIN_MAP_PATH)[col][row].eventRectDefaultX;
-    eventRect.get(MAIN_MAP_PATH)[col][row].y = eventRect.get(MAIN_MAP_PATH)[col][row].eventRectDefaultY;
+    eventRect.get(MAIN_MAP)[col][row].x = eventRect.get(MAIN_MAP)[col][row].eventRectDefaultX;
+    eventRect.get(MAIN_MAP)[col][row].y = eventRect.get(MAIN_MAP)[col][row].eventRectDefaultY;
     return hit;
   }
 
-  private void mapTeleport(String teleportToMap, int col, int row) {
+  private void mapTeleport(String teleportToMap, int col, int row, AreaType areaType) {
     gamePanel.gameState = TRANSITION_STATE;
+    gamePanel.nextArea = areaType;
     tempMap = teleportToMap;
     tempCol = col;
     tempRow = row;

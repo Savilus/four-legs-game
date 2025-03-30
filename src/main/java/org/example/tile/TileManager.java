@@ -1,12 +1,15 @@
 package org.example.tile;
 
+import static org.example.config.GameEntityNameFactory.BLACK_TAIL;
+import static org.example.config.GameEntityNameFactory.DUNGEON_FIRST_FLOR;
+import static org.example.config.GameEntityNameFactory.DUNGEON_SECOND_FLOR;
 import static org.example.config.GameEntityNameFactory.EARTH;
 import static org.example.config.GameEntityNameFactory.FLOOR;
 import static org.example.config.GameEntityNameFactory.GRASS0;
 import static org.example.config.GameEntityNameFactory.GRASS1;
 import static org.example.config.GameEntityNameFactory.HUT;
 import static org.example.config.GameEntityNameFactory.INTERIOR_MAP;
-import static org.example.config.GameEntityNameFactory.MAIN_MAP_PATH;
+import static org.example.config.GameEntityNameFactory.MAIN_MAP;
 import static org.example.config.GameEntityNameFactory.ROAD0;
 import static org.example.config.GameEntityNameFactory.ROAD1;
 import static org.example.config.GameEntityNameFactory.ROAD10;
@@ -20,6 +23,8 @@ import static org.example.config.GameEntityNameFactory.ROAD6;
 import static org.example.config.GameEntityNameFactory.ROAD7;
 import static org.example.config.GameEntityNameFactory.ROAD8;
 import static org.example.config.GameEntityNameFactory.ROAD9;
+import static org.example.config.GameEntityNameFactory.STAIRS_DOWN;
+import static org.example.config.GameEntityNameFactory.STAIRS_UP;
 import static org.example.config.GameEntityNameFactory.TABLE;
 import static org.example.config.GameEntityNameFactory.TREE;
 import static org.example.config.GameEntityNameFactory.WALL;
@@ -64,12 +69,14 @@ public class TileManager {
 
   private TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    this.currentMap = MAIN_MAP_PATH;
+    this.currentMap = MAIN_MAP;
     tile = new Tile[50];
 
     getTileImage();
     loadMap(INTERIOR_MAP);
-    loadMap(MAIN_MAP_PATH);
+    loadMap(MAIN_MAP);
+    loadMap(DUNGEON_FIRST_FLOR);
+    loadMap(DUNGEON_SECOND_FLOR);
   }
 
   public static TileManager getInstance(GamePanel gamePanel) {
@@ -81,6 +88,7 @@ public class TileManager {
 
   public void getTileImage() {
 
+    setUp(49, BLACK_TAIL, true);
     setUp(10, GRASS0, false);
     setUp(11, GRASS1, false);
     setUp(12, WATER0, true);
@@ -116,7 +124,8 @@ public class TileManager {
     setUp(42, HUT, false);
     setUp(43, FLOOR, false);
     setUp(44, TABLE, true);
-
+    setUp(45, STAIRS_DOWN, false);
+    setUp(46, STAIRS_UP, false);
   }
 
   public void loadMap(String mapPath) {
@@ -165,7 +174,9 @@ public class TileManager {
           worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
           worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
           worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
-        graphics2D.drawImage(tile[tileNum].image(), screenX, screenY, null);
+        if(Objects.nonNull(tile[tileNum])){
+          graphics2D.drawImage(tile[tileNum].image(), screenX, screenY, null);
+        }
       }
       worldCol++;
 

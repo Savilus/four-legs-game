@@ -8,6 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.example.GamePanel;
 import org.example.utils.text.TextManager;
@@ -41,7 +42,9 @@ public class GameMap {
       int tileNum = tileManager.gameMaps.get(tileManager.currentMap)[col][row];
       int x = gamePanel.tileSize * col;
       int y = gamePanel.tileSize * row;
-      graphics2D.drawImage(tileManager.tile[tileNum].image(), x, y, null);
+      if(Objects.nonNull(tileManager.tile[tileNum])){
+        graphics2D.drawImage(tileManager.tile[tileNum].image(), x, y, null);
+      }
 
       col++;
       if (col == gamePanel.maxWorldCol) {
