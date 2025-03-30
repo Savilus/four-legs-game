@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.example.GamePanel;
+import org.example.enums.AreaType;
 import org.example.enums.DayState;
 import org.example.utils.text.TextManager;
 
@@ -39,7 +40,7 @@ public class Lighting {
     Graphics2D graphics2D = (Graphics2D) darknessFilter.getGraphics();
 
     if (Objects.isNull(gamePanel.player.currentLightItem)) {
-      graphics2D.setColor(new Color(0, 0, 0.1f, 0.95f));
+      graphics2D.setColor(new Color(0, 0, 0.1f, 0.98f));
     } else {
       // Get the center x and Y of the light circle
       int centerX = gamePanel.player.screenX + (gamePanel.tileSize / 2);
@@ -131,8 +132,13 @@ public class Lighting {
   }
 
   public void draw(Graphics2D graphics2D) {
-    graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-    graphics2D.drawImage(darknessFilter, 0, 0, null);
+    if (gamePanel.currentArea == AreaType.OUTSIDE) {
+      graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
+
+    }
+    if (gamePanel.currentArea == AreaType.OUTSIDE || gamePanel.currentArea == AreaType.DUNGEON) {
+      graphics2D.drawImage(darknessFilter, 0, 0, null);
+    }
     graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
 
     // DEBUG

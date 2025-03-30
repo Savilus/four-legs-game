@@ -72,6 +72,12 @@ public class GameEntityNameFactory {
   public static String GREEN_SLIME_DOWN1;
   @YamlValue("monster.images.greenSlime.down2")
   public static String GREEN_SLIME_DOWN2;
+
+  @YamlValue("monster.images.redSlime.down1")
+  public static String RED_SLIME_DOWN1;
+  @YamlValue("monster.images.redSlime.down2")
+  public static String RED_SLIME_DOWN2;
+
   @YamlValue("monster.images.orc.image.up1")
   public static String ORC_UP1;
   @YamlValue("monster.images.orc.image.up2")
@@ -276,16 +282,31 @@ public class GameEntityNameFactory {
   public static String FLOOR;
   @YamlValue("world.tile.images.table")
   public static String TABLE;
+  @YamlValue("world.tile.images.dungeon.stairsDown")
+  public static String STAIRS_DOWN;
+  @YamlValue("world.tile.images.dungeon.stairsUp")
+  public static String STAIRS_UP;
+  @YamlValue("world.tile.images.dungeon.blackTail")
+  public static String BLACK_TAIL;
 
   // WORLD
   @YamlValue("world.mainMapPath")
-  public static String MAIN_MAP_PATH;
+  public static String MAIN_MAP;
   @YamlValue("world.interiorMap")
   public static String INTERIOR_MAP;
+  @YamlValue("world.dungeonMap.firstFlor")
+  public static String DUNGEON_FIRST_FLOR;
+  @YamlValue("world.dungeonMap.secondFlor")
+  public static String DUNGEON_SECOND_FLOR;
 
   // SOUND
-  @YamlValue("sound.path.backgroundSong")
-  public static String BACKGROUND_SONG;
+  @YamlValue("sound.path.outsideMusic")
+  public static String OUTSIDE_MUSIC;
+  @YamlValue("sound.path.dungeonSong")
+  public static String DUNGEON_SONG;
+  @YamlValue("sound.path.merchantSong")
+  public static String MERCHANT_SONG;
+
   @YamlValue("sound.path.coin")
   public static String COIN;
   @YamlValue("sound.path.powerUp")

@@ -1,6 +1,6 @@
 package org.example.utils;
 
-import static org.example.config.GameEntityNameFactory.BACKGROUND_SONG;
+import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.config.GameEntityNameFactory.CURSOR;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
 import static org.example.enums.GameStateType.MAP_STATE;
@@ -46,12 +46,12 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_ENTER -> {
         if (gamePanel.ui.commandNum == 0) {
           gamePanel.gameState = PLAY_STATE;
-          gamePanel.playMusic(BACKGROUND_SONG);
+          gamePanel.playMusic(OUTSIDE_MUSIC);
         }
         if (gamePanel.ui.commandNum == 1) {
           gamePanel.saveLoad.load();
           gamePanel.gameState = PLAY_STATE;
-          gamePanel.playMusic(BACKGROUND_SONG);
+          gamePanel.playMusic(OUTSIDE_MUSIC);
         }
         if (gamePanel.ui.commandNum == 2) {
           System.exit(0);

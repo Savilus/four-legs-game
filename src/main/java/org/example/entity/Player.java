@@ -421,7 +421,7 @@ public class Player extends GameEntity {
     worldX = gamePanel.tileSize * 23;
     worldY = gamePanel.tileSize * 21;
 //    worldX = gamePanel.tileSize * 12;
-//    worldY = gamePanel.tileSize * 13;
+//    worldY = gamePanel.tileSize * 10;
     defaultSpeed = 4;
     speed = defaultSpeed;
     direction = DOWN;

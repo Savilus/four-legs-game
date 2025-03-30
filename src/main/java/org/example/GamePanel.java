@@ -1,5 +1,8 @@
 package org.example;
 
+import static org.example.config.GameEntityNameFactory.DUNGEON_SONG;
+import static org.example.config.GameEntityNameFactory.MERCHANT_SONG;
+import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.enums.GameStateType.MAP_STATE;
 import static org.example.enums.GameStateType.PAUSE_STATE;
 import static org.example.enums.GameStateType.PLAY_STATE;
@@ -22,6 +25,7 @@ import org.example.entity.EntityGenerator;
 import org.example.entity.GameEntity;
 import org.example.entity.Player;
 import org.example.entity.interactiveTile.InteractiveTile;
+import org.example.enums.AreaType;
 import org.example.enums.GameStateType;
 import org.example.environment.EnvironmentManager;
 import org.example.tile.GameMap;
@@ -81,6 +85,10 @@ public class GamePanel extends JPanel implements Runnable {
   public Map<String, GameEntity[]> projectiles = new HashMap<>();
   public ArrayList<GameEntity> particleList = new ArrayList<>();
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
+
+  // AREA
+  public AreaType currentArea;
+  public AreaType nextArea;
 
   // GAME STATE
   public GameStateType gameState;
@@ -164,6 +172,7 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setInteractiveTiles();
     assetSetter.setMonster();
     assetSetter.setProjectile();
+    currentArea = AreaType.OUTSIDE;
     environmentManager.setup();
 
     tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
@@ -217,6 +226,22 @@ public class GamePanel extends JPanel implements Runnable {
     var screenGraphics = getGraphics();
     screenGraphics.drawImage(tempScreen, 0, 0, screenWidthFull, screenHeightFull, null);
     screenGraphics.dispose();
+  }
+
+  public void changeArea() {
+    if (nextArea != currentArea) {
+      stopMusic();
+
+      if (nextArea == AreaType.OUTSIDE) {
+        playMusic(OUTSIDE_MUSIC);
+      } else if (nextArea == AreaType.INDOOR) {
+        playMusic(MERCHANT_SONG);
+      } else if (nextArea == AreaType.DUNGEON) {
+        playMusic(DUNGEON_SONG);
+      }
+    }
+    currentArea = nextArea;
+    assetSetter.setMonster();
   }
 
   public void drawToTempScreen() {

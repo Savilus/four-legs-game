@@ -2,6 +2,8 @@ package org.example.entity.monster;
 
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN1;
 import static org.example.config.GameEntityNameFactory.GREEN_SLIME_DOWN2;
+import static org.example.config.GameEntityNameFactory.RED_SLIME_DOWN1;
+import static org.example.config.GameEntityNameFactory.RED_SLIME_DOWN2;
 
 import java.util.Random;
 
@@ -14,19 +16,19 @@ import org.example.entity.projectile.Rock;
 import org.example.enums.MonsterObjectType;
 import org.example.enums.WorldGameTypes;
 
-public class GreenSlime extends GameEntity {
+public class RedSlime extends GameEntity {
 
-  public GreenSlime(GamePanel gamePanel) {
+  public RedSlime(GamePanel gamePanel) {
     super(gamePanel);
-    name = MonsterObjectType.GREEN_SLIME.getName();
-    defaultSpeed = 1;
+    name = MonsterObjectType.RED_SLIME.getName();
+    defaultSpeed = 2;
     speed = defaultSpeed;
-    maxLife = 4;
+    maxLife = 8;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
-    attack = 5;
+    attack = 7;
     defense = 0;
-    exp = 2;
+    exp = 5;
     projectile = new Rock(gamePanel);
 
     solidArea.x = 3;
@@ -39,14 +41,14 @@ public class GreenSlime extends GameEntity {
   }
 
   private void getImage() {
-    up1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(GREEN_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(GREEN_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    up2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    down2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    left1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    left2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    right1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
+    right2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
   }
 
   @Override
@@ -71,8 +73,7 @@ public class GreenSlime extends GameEntity {
     if (onPath) {
       checkIfShouldStopChasing(gamePanel.player, 15, 100);
       searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
-// Enable if you want green slime to shoot a rock
-//      checkIfShouldShoot(100, 50);
+      checkIfShouldShoot(100, 50);
     } else {
       getRandomDirection();
       checkIfShouldStartChasing(gamePanel.player, 5, 100);

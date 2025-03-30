@@ -56,6 +56,9 @@ monster:
     greenSlime:
       down1: /monster/greenslime_down_1.png
       down2: /monster/greenslime_down_2.png
+    redSlime:
+      down1: /monster/redslime_down_1.png
+      down2: /monster/redslime_down_2.png
     orc:
       image:
         down1: /monster/orc_down_1.png
@@ -103,6 +106,9 @@ ui:
 world:
   mainMapPath: /maps/worldV3.txt
   interiorMap: /maps/interior01.txt
+  dungeonMap:
+    firstFlor: /maps/dungeon01.txt
+    secondFlor: /maps/dungeon02.txt
   interactiveTiles:
     images:
       dryTree: /interactiveTiles/drytree.png
@@ -148,10 +154,16 @@ world:
       table: /tiles/table01.png
       floor: /tiles/floor01.png
       hut: /tiles/hut.png
+      dungeon:
+        stairsDown: /tiles/stairsDown.png
+        stairsUp: /tiles/stairsUp.png
+        blackTail: /tiles/blackTail.png
 
 sound:
   path:
-    backgroundSong: /sound/BlueBoyAdventure.wav
+    outsideMusic: /sound/BlueBoyAdventure.wav
+    dungeonSong: /sound/dungeon.wav
+    merchantSong: /sound/merchant.wav
     coin: /sound/coin.wav
     powerUp: /sound/powerup.wav
     unlock: /sound/unlock.wav
