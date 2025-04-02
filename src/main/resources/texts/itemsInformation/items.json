@@ -2,6 +2,9 @@
   "door": {
     "openInformation": "You need a key to open this door."
   },
+  "ironDoor": {
+    "openInformation": "It won't budge."
+  },
   "redPotion": {
     "description": "[%s]\nHeals your life by %s.",
     "use": "You drink the %s !\nYou feel much better!"
@@ -33,5 +36,11 @@
   },
   "tent": {
     "description": "[%s]\nYou can sleep until \nnext morning."
+  },
+  "pickAxe": {
+    "description": "[%s]\n You can dig with it!"
+  },
+  "bigRock": {
+    "use": "It's a giant rock."
   }
 }

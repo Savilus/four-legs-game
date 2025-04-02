@@ -6,6 +6,7 @@ import org.example.entity.items.BronzeCoin;
 import org.example.entity.items.Chest;
 import org.example.entity.items.Door;
 import org.example.entity.items.Heart;
+import org.example.entity.items.IronDoor;
 import org.example.entity.items.Key;
 import org.example.entity.items.Lantern;
 import org.example.entity.items.ManaCrystal;
@@ -17,6 +18,7 @@ import org.example.entity.shield.BlueShield;
 import org.example.entity.shield.WoodShield;
 import org.example.entity.weapon.Axe;
 import org.example.entity.weapon.NormalSword;
+import org.example.entity.weapon.PickAxe;
 import org.example.enums.GameObjectType;
 
 import lombok.AllArgsConstructor;
@@ -44,8 +46,10 @@ public class EntityGenerator {
       case BRONZE_COIN -> gameObject = new BronzeCoin(gamePanel);
       case HEART -> gameObject = new Heart(gamePanel);
       case DOOR -> gameObject = new Door(gamePanel);
+      case IRON_DOOR -> gameObject = new IronDoor(gamePanel);
       case FIREBALL -> gameObject = new Fireball(gamePanel);
       case ROCK -> gameObject = new Rock(gamePanel);
+      case PICKAXE -> gameObject = new PickAxe(gamePanel);
     }
     return gameObject;
   }

@@ -4,9 +4,9 @@ import static org.example.config.GameEntityNameFactory.TRUNK;
 
 import org.example.GamePanel;
 
-public class TrunkInteractive extends InteractiveTile {
+public class Trunk extends InteractiveTile {
 
-  public TrunkInteractive(GamePanel gamePanel, int col, int row) {
+  public Trunk(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
 
     this.worldX = gamePanel.tileSize * col;

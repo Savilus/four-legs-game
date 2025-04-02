@@ -42,6 +42,7 @@ public class GameEntityNameFactory {
   public static String BOY_ATTACK_LEFT1;
   @YamlValue("player.swordAttackImages.attackLeft2")
   public static String BOY_ATTACK_LEFT2;
+
   @YamlValue("player.axeAttackImages.attackUp1")
   public static String BOY_AXE_ATTACK_UP1;
   @YamlValue("player.axeAttackImages.attackUp2")
@@ -58,6 +59,7 @@ public class GameEntityNameFactory {
   public static String BOY_AXE_ATTACK_LEFT1;
   @YamlValue("player.axeAttackImages.leftAttack2")
   public static String BOY_AXE_ATTACK_LEFT2;
+
   @YamlValue("player.guardImages.guardDown")
   public static String BOY_GUARD_DOWN;
   @YamlValue("player.guardImages.guardUp")
@@ -66,6 +68,23 @@ public class GameEntityNameFactory {
   public static String BOY_GUARD_LEFT;
   @YamlValue("player.guardImages.guardRight")
   public static String BOY_GUARD_RIGHT;
+
+  @YamlValue("player.pickAxeAttackImages.attackUp1")
+  public static String PICK_AXE_UP_1;
+  @YamlValue("player.pickAxeAttackImages.attackUp2")
+  public static String PICK_AXE_UP_2;
+  @YamlValue("player.pickAxeAttackImages.attackDown1")
+  public static String PICK_AXE_DOWN_1;
+  @YamlValue("player.pickAxeAttackImages.attackDown2")
+  public static String PICK_AXE_DOWN_2;
+  @YamlValue("player.pickAxeAttackImages.rightAttack1")
+  public static String PICK_AXE_RIGHT_1;
+  @YamlValue("player.pickAxeAttackImages.rightAttack2")
+  public static String PICK_AXE_RIGHT_2;
+  @YamlValue("player.pickAxeAttackImages.leftAttack1")
+  public static String PICK_AXE_LEFT_1;
+  @YamlValue("player.pickAxeAttackImages.leftAttack2")
+  public static String PICK_AXE_LEFT_2;
 
   // MONSTER IMAGES
   @YamlValue("monster.images.greenSlime.down1")
@@ -94,6 +113,12 @@ public class GameEntityNameFactory {
   public static String ORC_RIGHT1;
   @YamlValue("monster.images.orc.image.right2")
   public static String ORC_RIGHT2;
+
+  @YamlValue("monster.images.bat.down1")
+  public static String BAR_DOWN1;
+  @YamlValue("monster.images.bat.down2")
+  public static String BAR_DOWN2;
+
 
   // MONSTER ATTACK IMAGES
   @YamlValue("monster.images.orc.attack.down1")
@@ -150,8 +175,6 @@ public class GameEntityNameFactory {
   public static String MERCHANT_DOWN1;
   @YamlValue("npc.images.merchantDown2")
   public static String MERCHANT_DOWN2;
-  @YamlValue("npc.images.bigrock")
-  public static String BIGROCK;
   @YamlValue("npc.images.oldMan.down1")
   public static String OLD_MAN_DOWN1;
   @YamlValue("npc.images.oldMan.down2")
@@ -196,12 +219,20 @@ public class GameEntityNameFactory {
   public static String LANTERN;
   @YamlValue("items.images.tent")
   public static String TENT;
+  @YamlValue("npc.images.bigrock")
+  public static String BIGROCK;
+  @YamlValue("items.images.pickAxe")
+  public static String PICK_AXE;
 
   // INTERACTIVE TILES
   @YamlValue("world.interactiveTiles.images.dryTree")
   public static String DRY_TREE;
   @YamlValue("world.interactiveTiles.images.trunk")
   public static String TRUNK;
+  @YamlValue("world.interactiveTiles.images.wall")
+  public static String DESTRUCTIBLE_WALL;
+  @YamlValue("world.interactiveTiles.images.metalPlate")
+  public static String METAL_PLATE;
 
 
   // TILES IMAGES
@@ -288,6 +319,8 @@ public class GameEntityNameFactory {
   public static String STAIRS_UP;
   @YamlValue("world.tile.images.dungeon.blackTail")
   public static String BLACK_TAIL;
+  @YamlValue("world.tile.images.ironDoor")
+  public static String IRON_DOOR;
 
   // WORLD
   @YamlValue("world.mainMapPath")
@@ -327,8 +360,8 @@ public class GameEntityNameFactory {
   public static String CURSOR;
   @YamlValue("sound.path.fireballShoot")
   public static String FIREBALL_SOUND;
-  @YamlValue("sound.path.cutTree")
-  public static String CUT_TREE;
+  @YamlValue("sound.path.destroy")
+  public static String DESTROY_TREE;
   @YamlValue("sound.path.gameOver")
   public static String GAME_OVER;
   @YamlValue("sound.path.stairs")
@@ -341,6 +374,10 @@ public class GameEntityNameFactory {
   public static String PARRY;
   @YamlValue("sound.path.speak")
   public static String SPEAK;
+  @YamlValue("sound.path.chipWall")
+  public static String CHIP_WALL;
+  @YamlValue("sound.path.doorOpen")
+  public static String DOOR_OPEN;
 
   // FONT
   @YamlValue("font.maruMonica")

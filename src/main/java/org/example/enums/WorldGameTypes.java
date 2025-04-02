@@ -8,10 +8,11 @@ import lombok.Getter;
 public enum WorldGameTypes {
 
   PLAYER,
-  NPC,
+  INTERACTIVE,
   MONSTER,
   SWORD,
   AXE,
+  PICKAXE,
   SHIELD,
   CONSUMABLE,
   PICK_UP,

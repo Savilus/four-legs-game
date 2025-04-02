@@ -1,10 +1,11 @@
 package org.example;
 
-import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.config.GameEntityNameFactory.BLOCKED;
+import static org.example.config.GameEntityNameFactory.CHIP_WALL;
 import static org.example.config.GameEntityNameFactory.COIN;
 import static org.example.config.GameEntityNameFactory.CURSOR;
-import static org.example.config.GameEntityNameFactory.CUT_TREE;
+import static org.example.config.GameEntityNameFactory.DESTROY_TREE;
+import static org.example.config.GameEntityNameFactory.DOOR_OPEN;
 import static org.example.config.GameEntityNameFactory.DUNGEON_SONG;
 import static org.example.config.GameEntityNameFactory.FANFARE;
 import static org.example.config.GameEntityNameFactory.FIREBALL_SOUND;
@@ -12,6 +13,7 @@ import static org.example.config.GameEntityNameFactory.GAME_OVER;
 import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
 import static org.example.config.GameEntityNameFactory.MERCHANT_SONG;
+import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.config.GameEntityNameFactory.PARRY;
 import static org.example.config.GameEntityNameFactory.POWER_UP;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
@@ -55,13 +57,15 @@ public class Sound {
     soundMap.put(LEVEL_UP, Objects.requireNonNull(getClass().getResource(LEVEL_UP)));
     soundMap.put(CURSOR, Objects.requireNonNull(getClass().getResource(CURSOR)));
     soundMap.put(FIREBALL_SOUND, Objects.requireNonNull(getClass().getResource(FIREBALL_SOUND)));
-    soundMap.put(CUT_TREE, Objects.requireNonNull(getClass().getResource(CUT_TREE)));
+    soundMap.put(DESTROY_TREE, Objects.requireNonNull(getClass().getResource(DESTROY_TREE)));
     soundMap.put(GAME_OVER, Objects.requireNonNull(getClass().getResource(GAME_OVER)));
     soundMap.put(STAIRS, Objects.requireNonNull(getClass().getResource(STAIRS)));
     soundMap.put(SLEEP, Objects.requireNonNull(getClass().getResource(SLEEP)));
     soundMap.put(BLOCKED, Objects.requireNonNull(getClass().getResource(BLOCKED)));
     soundMap.put(PARRY, Objects.requireNonNull(getClass().getResource(PARRY)));
     soundMap.put(SPEAK, Objects.requireNonNull(getClass().getResource(SPEAK)));
+    soundMap.put(CHIP_WALL, Objects.requireNonNull(getClass().getResource(CHIP_WALL)));
+    soundMap.put(DOOR_OPEN, Objects.requireNonNull(getClass().getResource(DOOR_OPEN)));
   }
 
   public void setFile(String sound) {
