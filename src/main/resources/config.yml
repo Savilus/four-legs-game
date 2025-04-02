@@ -35,6 +35,15 @@ player:
     rightAttack2: /player/boy_axe_right_2.png
     leftAttack1: /player/boy_axe_left_1.png
     leftAttack2: /player/boy_axe_left_2.png
+  pickAxeAttackImages:
+    attackUp1: /player/boy_pick_up_1.png
+    attackUp2: /player/boy_pick_up_2.png
+    attackDown1: /player/boy_pick_down_1.png
+    attackDown2: /player/boy_pick_down_2.png
+    rightAttack1: /player/boy_pick_right_1.png
+    rightAttack2: /player/boy_pick_right_2.png
+    leftAttack1: /player/boy_pick_left_1.png
+    leftAttack2: /player/boy_pick_left_2.png
 
 npc:
   images:
@@ -78,6 +87,9 @@ monster:
        right2: /monster/orc_attack_right_2.png
        left1: /monster/orc_attack_left_1.png
        left2: /monster/orc_attack_left_2.png
+    bat:
+      down1: /monster/bat_down_1.png
+      down2: /monster/bat_down_2.png
 
 items:
   images:
@@ -94,6 +106,7 @@ items:
     bronzeCoin: /objects/coin_bronze.png
     lantern: /objects/lantern.png
     tent: /objects/tent.png
+    pickAxe: /objects/pickaxe.png
 
 ui:
   images:
@@ -113,6 +126,8 @@ world:
     images:
       dryTree: /interactiveTiles/drytree.png
       trunk: /interactiveTiles/trunk.png
+      wall: /interactiveTiles/destructiblewall.png
+      metalPlate: /interactiveTiles/metalplate.png
   tile:
     images:
       water:
@@ -154,6 +169,7 @@ world:
       table: /tiles/table01.png
       floor: /tiles/floor01.png
       hut: /tiles/hut.png
+      ironDoor: /objects/door_iron.png
       dungeon:
         stairsDown: /tiles/stairsDown.png
         stairsUp: /tiles/stairsUp.png
@@ -174,13 +190,15 @@ sound:
     levelUp: /sound/levelup.wav
     cursor: /sound/cursor.wav
     fireballShoot: /sound/burning.wav
-    cutTree: /sound/cuttree.wav
+    destroy: /sound/cuttree.wav
     gameOver: /sound/gameover.wav
     stairs: /sound/stairs.wav
     sleep: /sound/sleep.wav
     blocked: /sound/blocked.wav
     parry: /sound/parry.wav
     speak: /sound/speak.wav
+    chipWall: /sound/chipwall.wav
+    doorOpen: /sound/dooropen.wav
 
 projectile:
   fireball:

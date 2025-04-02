@@ -28,7 +28,7 @@ public class OldManNPC extends GameEntity {
 
     direction = DirectionType.DOWN;
     speed = 1;
-    type = WorldGameTypes.NPC;
+    type = WorldGameTypes.INTERACTIVE;
     getPlayerImage();
     dialogues = TextManager.getAllDialoguesForTarget(OLD_MAN_DIALOGUES_KEY);
   }

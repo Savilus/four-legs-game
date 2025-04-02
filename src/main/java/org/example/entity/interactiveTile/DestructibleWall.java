@@ -1,7 +1,7 @@
 package org.example.entity.interactiveTile;
 
-import static org.example.config.GameEntityNameFactory.CUT_TREE;
-import static org.example.config.GameEntityNameFactory.DRY_TREE;
+import static org.example.config.GameEntityNameFactory.CHIP_WALL;
+import static org.example.config.GameEntityNameFactory.DESTRUCTIBLE_WALL;
 
 import java.awt.*;
 
@@ -9,22 +9,21 @@ import org.example.GamePanel;
 import org.example.entity.GameEntity;
 import org.example.enums.WorldGameTypes;
 
-public class DryTreeInteractive extends InteractiveTile {
+public class DestructibleWall extends InteractiveTile{
 
-
-  public DryTreeInteractive(GamePanel gamePanel, int col, int row) {
+  public DestructibleWall(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
     currentLife = 1;
     this.worldX = gamePanel.tileSize * col;
     this.worldY = gamePanel.tileSize * row;
 
-    image = setup(DRY_TREE, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(DESTRUCTIBLE_WALL, gamePanel.tileSize, gamePanel.tileSize);
     destructible = true;
   }
 
   @Override
   public Color getParticleColor() {
-    return new Color(65, 50, 30);
+    return new Color(65, 65, 65);
   }
 
   @Override
@@ -44,16 +43,12 @@ public class DryTreeInteractive extends InteractiveTile {
 
   @Override
   public void playSoundEffect() {
-    gamePanel.playSoundEffect(CUT_TREE);
-  }
-
-  @Override
-  public InteractiveTile getDestroyedForm() {
-    return new TrunkInteractive(gamePanel, worldX / gamePanel.tileSize, worldY / gamePanel.tileSize);
+    gamePanel.playSoundEffect(CHIP_WALL);
   }
 
   @Override
   public boolean isCorrectItem(GameEntity item) {
-    return item.currentWeapon.type == WorldGameTypes.AXE;
+    return item.currentWeapon.type == WorldGameTypes.PICKAXE;
   }
 }
+

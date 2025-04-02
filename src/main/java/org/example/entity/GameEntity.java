@@ -14,7 +14,6 @@ import static org.example.utils.CollisionDetector.INIT_INDEX;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,9 +52,10 @@ public abstract class GameEntity {
   public Rectangle solidArea = new Rectangle(0, 0, 45, 45);
   public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
   public int solidAreaDefaultX, solidAreaDefaultY;
-  public Map<String, List<String>> dialogues = new HashMap<>();
+  public Map<String, List<String>> dialogues;
   public boolean collision = false;
   public GameEntity attacker;
+  public GameEntity linkedEntity;
 
   // STATE
   @Getter
@@ -152,6 +152,9 @@ public abstract class GameEntity {
   }
 
   public void speak() {
+  }
+
+  public void move(DirectionType direction) {
   }
 
   public void facePlayer() {

@@ -1,6 +1,7 @@
 package org.example;
 
 import static org.example.config.GameEntityNameFactory.DUNGEON_SONG;
+import static org.example.config.GameEntityNameFactory.MAIN_MAP;
 import static org.example.config.GameEntityNameFactory.MERCHANT_SONG;
 import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.enums.GameStateType.MAP_STATE;
@@ -172,6 +173,7 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setInteractiveTiles();
     assetSetter.setMonster();
     assetSetter.setProjectile();
+    assetSetter.setInteractiveObjects();
     currentArea = AreaType.OUTSIDE;
     environmentManager.setup();
 
@@ -192,6 +194,7 @@ public class GamePanel extends JPanel implements Runnable {
     player.setDefaultPositions();
     player.restorePlayerStatus();
     player.resetCounter();
+    tileManager.currentMap = MAIN_MAP;
     assetSetter.setMonster();
     assetSetter.setNPC();
 
@@ -200,6 +203,7 @@ public class GamePanel extends JPanel implements Runnable {
       player.setItems();
       assetSetter.setObject();
       assetSetter.setInteractiveTiles();
+      assetSetter.setInteractiveObjects();
       environmentManager.lighting.resetDay();
     }
   }

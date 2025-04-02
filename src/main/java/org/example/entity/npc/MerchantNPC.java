@@ -24,7 +24,7 @@ public class MerchantNPC extends GameEntity {
 
     direction = DirectionType.DOWN;
     speed = 1;
-    type = WorldGameTypes.NPC;
+    type = WorldGameTypes.INTERACTIVE;
 
     getPlayerImage();
     dialogues = TextManager.getAllDialoguesForTarget(MERCHANT_DIALOGUES_KEY);

@@ -33,6 +33,14 @@ import static org.example.config.GameEntityNameFactory.FIREBALL_SOUND;
 import static org.example.config.GameEntityNameFactory.GAME_OVER;
 import static org.example.config.GameEntityNameFactory.HIT_MONSTER;
 import static org.example.config.GameEntityNameFactory.LEVEL_UP;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_DOWN_1;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_DOWN_2;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_LEFT_1;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_LEFT_2;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_RIGHT_1;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_RIGHT_2;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_UP_1;
+import static org.example.config.GameEntityNameFactory.PICK_AXE_UP_2;
 import static org.example.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.example.config.GameEntityNameFactory.SWING_WEAPON;
 import static org.example.enums.DirectionType.DOWN;
@@ -50,10 +58,12 @@ import java.util.stream.IntStream;
 
 import org.example.GamePanel;
 import org.example.entity.items.Key;
+import org.example.entity.items.Lantern;
 import org.example.entity.projectile.Fireball;
 import org.example.entity.shield.WoodShield;
 import org.example.entity.weapon.Axe;
 import org.example.entity.weapon.NormalSword;
+import org.example.entity.weapon.PickAxe;
 import org.example.enums.WorldGameTypes;
 import org.example.utils.KeyHandler;
 import org.example.utils.text.TextManager;
@@ -126,6 +136,15 @@ public class Player extends GameEntity {
       attackLeft2 = setup(BOY_AXE_ATTACK_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
       attackRight1 = setup(BOY_AXE_ATTACK_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
       attackRight2 = setup(BOY_AXE_ATTACK_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+    } else if (currentWeapon.type == WorldGameTypes.PICKAXE) {
+      attackUp1 = setup(PICK_AXE_UP_1, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackUp2 = setup(PICK_AXE_UP_2, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackDown1 = setup(PICK_AXE_DOWN_1, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackDown2 = setup(PICK_AXE_DOWN_2, gamePanel.tileSize, gamePanel.tileSize * 2);
+      attackLeft1 = setup(PICK_AXE_LEFT_1, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackLeft2 = setup(PICK_AXE_LEFT_2, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackRight1 = setup(PICK_AXE_RIGHT_1, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackRight2 = setup(PICK_AXE_RIGHT_2, gamePanel.tileSize * 2, gamePanel.tileSize);
     }
   }
 
@@ -350,7 +369,7 @@ public class Player extends GameEntity {
       GameEntity selectedItem = inventory.get(itemIndex);
 
       switch (selectedItem.type) {
-        case SWORD, AXE -> {
+        case SWORD, AXE, PICKAXE -> {
           currentWeapon = selectedItem;
           attack = getAttack();
           getAttackImage();
@@ -408,20 +427,21 @@ public class Player extends GameEntity {
   }
 
   private void interactNPC(int npcIndex) {
+    if (npcIndex != INIT_INDEX) {
 
-    if (gamePanel.keyHandler.enterPressed) {
-      if (npcIndex != INIT_INDEX) {
+      if (gamePanel.keyHandler.enterPressed) {
         attackCanceled = true;
         gamePanel.mapsNpc.get(getCurrentMap())[npcIndex].speak();
       }
+      gamePanel.mapsNpc.get(getCurrentMap())[npcIndex].move(direction);
     }
   }
 
   public void setDefaultValues() {
-    worldX = gamePanel.tileSize * 23;
-    worldY = gamePanel.tileSize * 21;
-//    worldX = gamePanel.tileSize * 12;
-//    worldY = gamePanel.tileSize * 10;
+//    worldX = gamePanel.tileSize * 23;
+//    worldY = gamePanel.tileSize * 21;
+    worldX = gamePanel.tileSize * 12;
+    worldY = gamePanel.tileSize * 10;
     defaultSpeed = 4;
     speed = defaultSpeed;
     direction = DOWN;
@@ -451,12 +471,13 @@ public class Player extends GameEntity {
     currentWeapon = new NormalSword(gamePanel);
     currentShield = new WoodShield(gamePanel);
     projectile = new Fireball(gamePanel);
-    currentLightItem = null;
+    currentLightItem = new Lantern(gamePanel);
     inventory.clear();
     inventory.add(currentWeapon);
     inventory.add(currentShield);
     inventory.add(new Axe(gamePanel));
     inventory.add(new Key(gamePanel));
+    inventory.add(new PickAxe(gamePanel));
   }
 
   public int getDefense() {
