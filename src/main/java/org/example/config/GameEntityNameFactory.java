@@ -115,9 +115,9 @@ public class GameEntityNameFactory {
   public static String ORC_RIGHT2;
 
   @YamlValue("monster.images.bat.down1")
-  public static String BAR_DOWN1;
+  public static String BAT_DOWN1;
   @YamlValue("monster.images.bat.down2")
-  public static String BAR_DOWN2;
+  public static String BAT_DOWN2;
 
 
   // MONSTER ATTACK IMAGES
@@ -137,6 +137,77 @@ public class GameEntityNameFactory {
   public static String ATTACK_ORC_LEFT1;
   @YamlValue("monster.images.orc.attack.left2")
   public static String ATTACK_ORC_LEFT2;
+
+
+  // BOSSES IMAGES
+  @YamlValue("monster.bosses.skeletonLord.images.down1")
+  public static String SKELETON_LORD_DOWN1;
+  @YamlValue("monster.bosses.skeletonLord.images.down2")
+  public static String SKELETON_LORD_DOWN2;
+  @YamlValue("monster.bosses.skeletonLord.images.up1")
+  public static String SKELETON_LORD_UP1;
+  @YamlValue("monster.bosses.skeletonLord.images.up2")
+  public static String SKELETON_LORD_UP2;
+  @YamlValue("monster.bosses.skeletonLord.images.left1")
+  public static String SKELETON_LORD_LEFT1;
+  @YamlValue("monster.bosses.skeletonLord.images.left2")
+  public static String SKELETON_LORD_LEFT2;
+  @YamlValue("monster.bosses.skeletonLord.images.right1")
+  public static String SKELETON_LORD_RIGHT1;
+  @YamlValue("monster.bosses.skeletonLord.images.right2")
+  public static String SKELETON_LORD_RIGHT2;
+
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.down1")
+  public static String SKELETON_LORD_PHASE2_DOWN1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.down2")
+  public static String SKELETON_LORD_PHASE2_DOWN2;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.up1")
+  public static String SKELETON_LORD_PHASE2_UP1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.up2")
+  public static String SKELETON_LORD_PHASE2_UP2;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.left1")
+  public static String SKELETON_LORD_PHASE2_LEFT1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.left2")
+  public static String SKELETON_LORD_PHASE2_LEFT2;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.right1")
+  public static String SKELETON_LORD_PHASE2_RIGHT1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseImages.right2")
+  public static String SKELETON_LORD_PHASE2_RIGHT2;
+
+  // BOSSES ATTACK IMAGES
+  @YamlValue("monster.bosses.skeletonLord.attackImages.down1")
+  public static String SKELETON_LORD_ATTACK_DOWN1;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.down2")
+  public static String SKELETON_LORD_ATTACK_DOWN2;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.up1")
+  public static String SKELETON_LORD_ATTACK_UP1;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.up2")
+  public static String SKELETON_LORD_ATTACK_UP2;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.left1")
+  public static String SKELETON_LORD_ATTACK_LEFT1;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.left2")
+  public static String SKELETON_LORD_ATTACK_LEFT2;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.right1")
+  public static String SKELETON_LORD_ATTACK_RIGHT1;
+  @YamlValue("monster.bosses.skeletonLord.attackImages.right2")
+  public static String SKELETON_LORD_ATTACK_RIGHT2;
+
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.down1")
+  public static String SKELETON_LORD_ATTACK_PHASE2_DOWN1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.down2")
+  public static String SKELETON_LORD_ATTACK_PHASE2_DOWN2;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.up1")
+  public static String SKELETON_LORD_ATTACK_PHASE2_UP1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.up2")
+  public static String SKELETON_LORD_ATTACK_PHASE2_UP2;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.left1")
+  public static String SKELETON_LORD_ATTACK_PHASE2_LEFT1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.left2")
+  public static String SKELETON_LORD_ATTACK_PHASE2_LEFT2;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.right1")
+  public static String SKELETON_LORD_ATTACK_PHASE2_RIGHT1;
+  @YamlValue("monster.bosses.skeletonLord.secondPhaseAttackImages.right2")
+  public static String SKELETON_LORD_ATTACK_PHASE2_RIGHT2;
 
   // PROJECTILE IMAGES
   @YamlValue("projectile.fireball.attackImages.attackUp1")

@@ -1,7 +1,7 @@
 package org.example.utils;
 
-import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.config.GameEntityNameFactory.CURSOR;
+import static org.example.config.GameEntityNameFactory.OUTSIDE_MUSIC;
 import static org.example.enums.GameStateType.CHARACTER_STATE;
 import static org.example.enums.GameStateType.MAP_STATE;
 import static org.example.enums.GameStateType.OPTIONS_STATE;
@@ -20,6 +20,7 @@ public class KeyHandler implements KeyListener {
   public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, shotKeyPressed;
   //DEBUG
   public boolean showDebugText;
+  public boolean godModeOn = false;
 
   public KeyHandler(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -80,6 +81,7 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_ESCAPE -> gamePanel.gameState = OPTIONS_STATE;
       case KeyEvent.VK_M -> gamePanel.gameState = MAP_STATE;
       case KeyEvent.VK_X -> gamePanel.gameMap.miniMapOn = !gamePanel.gameMap.miniMapOn;
+      case KeyEvent.VK_G -> godModeOn = !godModeOn;
 
       //DEBUG
       case KeyEvent.VK_T -> showDebugText = !showDebugText;

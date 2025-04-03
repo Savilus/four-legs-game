@@ -74,7 +74,7 @@ public class GreenSlime extends GameEntity {
 // Enable if you want green slime to shoot a rock
 //      checkIfShouldShoot(100, 50);
     } else {
-      getRandomDirection();
+      getRandomDirection(120);
       checkIfShouldStartChasing(gamePanel.player, 5, 100);
     }
   }

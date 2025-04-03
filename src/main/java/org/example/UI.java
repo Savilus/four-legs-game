@@ -146,6 +146,7 @@ public class UI {
       case TITLE_STATE -> drawTitleScreen();
       case PLAY_STATE -> {
         drawPlayerLife();
+        drawMonsterLife();
         drawMessage();
       }
       case PAUSE_STATE -> {
@@ -808,50 +809,83 @@ public class UI {
   }
 
   private void drawPlayerLife() {
-    int x = gamePanel.tileSize / 2;
+    int x = gamePanel.tileSize - 15;
     int y = gamePanel.tileSize / 2;
+    int iconSize = 32;
     int i = 0;
 
     // DRAW MAX LIFE
     while (i < gamePanel.player.maxLife / 2) {
-      graphics2D.drawImage(heartBlank, x, y, null);
+      graphics2D.drawImage(heartBlank, x, y, iconSize, iconSize, null);
       i++;
-      x += gamePanel.tileSize;
+      x += gamePanel.tileSize - 15;
     }
 
-    x = gamePanel.tileSize / 2;
+    x = gamePanel.tileSize - 15;
     i = 0;
 
     // DRAW CURRENT LIFE
     while (i < gamePanel.player.currentLife) {
-      graphics2D.drawImage(heartHalf, x, y, null);
+      graphics2D.drawImage(heartHalf, x, y, iconSize, iconSize, null);
       i++;
       if (i < gamePanel.player.currentLife) {
-        graphics2D.drawImage(heartFull, x, y, null);
+        graphics2D.drawImage(heartFull, x, y, iconSize, iconSize, null);
       }
       i++;
-      x += gamePanel.tileSize;
+      x += gamePanel.tileSize - 15;
     }
 
     // DRAW MAX MANA
-    x = gamePanel.tileSize / 2 - 5;
-    y = (int) (gamePanel.tileSize * 1.5);
+    x = gamePanel.tileSize -20;
+    y = gamePanel.tileSize + 10;
     i = 0;
     while (i < gamePanel.player.maxMana) {
-      graphics2D.drawImage(manaCrystalBlank, x, y, null);
+      graphics2D.drawImage(manaCrystalBlank, x, y, iconSize, iconSize, null);
       i++;
-      x += 35;
+      x += 15;
     }
 
     // DRAW MANA
-    x = gamePanel.tileSize / 2 - 5;
+    x = gamePanel.tileSize -20;
     i = 0;
     while (i < gamePanel.player.mana) {
-      graphics2D.drawImage(manaCrystalFull, x, y, null);
+      graphics2D.drawImage(manaCrystalFull, x, y, iconSize, iconSize, null);
       i++;
-      x += 35;
+      x += 15;
     }
   }
+
+  public void drawMonsterLife() {
+    for (GameEntity monster : gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)) {
+      if (Objects.nonNull(monster) && monster.inCamera()) {
+        boolean isBoss = monster.boss;
+        double oneScaleLifeBar = (double) (gamePanel.tileSize * (isBoss ? 8 : 1)) / monster.maxLife;
+        double hpBarValue = oneScaleLifeBar * monster.currentLife;
+        int barWidth = gamePanel.tileSize * (isBoss ? 8 : 1);
+        int barHeight = isBoss ? 20 : 10;
+        int x = isBoss ? (gamePanel.screenWidth / 2 - gamePanel.tileSize * 4) : monster.getScreenX();
+        int y = isBoss ? (gamePanel.tileSize * 10) : (monster.getScreenY() - 15);
+
+        graphics2D.setColor(new Color(35, 35, 35));
+        graphics2D.fillRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
+
+        graphics2D.setColor(new Color(255, 0, 30));
+        graphics2D.fillRect(x, y, (int) hpBarValue, barHeight);
+
+        if (isBoss) {
+          graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 24F));
+          graphics2D.setColor(Color.WHITE);
+          graphics2D.drawString(monster.name, x + 4, y - 10);
+        } else {
+          if (++monster.hpBarCounter > 600) {
+            monster.hpBarCounter = 0;
+            monster.hpBarOn = false;
+          }
+        }
+      }
+    }
+  }
+
 
   private void drawTitleScreen() {
     // CLEAR

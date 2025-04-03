@@ -32,9 +32,10 @@ public class Chest extends GameEntity {
     solidAreaDefaultY = solidArea.y;
   }
 
-  public void setLoot(GameEntity loot) {
+  public Chest setLoot(GameEntity loot) {
     this.loot = loot;
     dialogues = TextManager.getItemTexts(GameObjectType.CHEST.getTextKey(), loot.name);
+    return this;
   }
 
   @Override

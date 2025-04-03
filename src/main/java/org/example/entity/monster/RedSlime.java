@@ -75,7 +75,7 @@ public class RedSlime extends GameEntity {
       searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
       checkIfShouldShoot(100, 50);
     } else {
-      getRandomDirection();
+      getRandomDirection(80);
       checkIfShouldStartChasing(gamePanel.player, 5, 100);
     }
   }

@@ -284,7 +284,7 @@ public class Player extends GameEntity {
       mana = maxMana;
     }
 
-    if (currentLife <= 0) {
+    if (!keyHandler.godModeOn && currentLife <= 0) {
       gamePanel.gameState = GAME_OVER_STATE;
       gamePanel.ui.commandNum = -1;
       gamePanel.stopMusic();
@@ -440,7 +440,7 @@ public class Player extends GameEntity {
   public void setDefaultValues() {
 //    worldX = gamePanel.tileSize * 23;
 //    worldY = gamePanel.tileSize * 21;
-    worldX = gamePanel.tileSize * 12;
+    worldX = gamePanel.tileSize * 9;
     worldY = gamePanel.tileSize * 10;
     defaultSpeed = 4;
     speed = defaultSpeed;
@@ -453,7 +453,7 @@ public class Player extends GameEntity {
     mana = maxMana;
     ammo = 10;
     level = 1;
-    strength = 1;
+    strength = 5;
     dexterity = 1;
     exp = 0;
     nextLevelExp = 5;

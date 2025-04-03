@@ -69,7 +69,7 @@ public class TileManager {
 
   private TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    this.currentMap = MAIN_MAP;
+    this.currentMap = DUNGEON_FIRST_FLOR;
     tile = new Tile[50];
 
     getTileImage();
