@@ -195,6 +195,7 @@ public class GamePanel extends JPanel implements Runnable {
     player.restorePlayerStatus();
     player.resetCounter();
     tileManager.currentMap = MAIN_MAP;
+    currentArea = AreaType.OUTSIDE;
     assetSetter.setMonster();
     assetSetter.setNPC();
 
@@ -333,6 +334,8 @@ public class GamePanel extends JPanel implements Runnable {
       tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / tileSize, x, y);
       y += lineHeight;
       tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+      y += lineHeight;
+      tempGraphic2d.drawString("God Mode: -> " + keyHandler.godModeOn, x, y);
     }
   }
 

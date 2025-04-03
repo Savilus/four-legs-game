@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
 import org.example.GamePanel;
+import org.example.entity.items.Chest;
 import org.example.entity.projectile.Projectile;
 import org.example.enums.DirectionType;
 import org.example.enums.WorldGameTypes;
@@ -78,6 +79,7 @@ public abstract class GameEntity {
   public boolean offBalance = false;
   public GameEntity loot;
   public boolean opened = false;
+  public boolean inRage = false;
 
   // CHARACTER ATTRIBUTES
   public int defaultSpeed;
@@ -98,6 +100,7 @@ public abstract class GameEntity {
   public int mana;
   public int firstAttackMotionDuration;
   public int secondAttackMotionDuration;
+  public boolean boss;
   public GameEntity currentLightItem;
   public GameEntity currentWeapon;
   public GameEntity currentShield;
@@ -148,7 +151,8 @@ public abstract class GameEntity {
   public void interact() {
   }
 
-  public void setLoot(GameEntity loot) {
+  public Chest setLoot(GameEntity loot) {
+    return null;
   }
 
   public void speak() {
@@ -346,24 +350,57 @@ public abstract class GameEntity {
     }
   }
 
-  public void draw(Graphics2D graphics2D) {
-    int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
-    int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
+  public void moveTowardPlayer(int interval) {
+    actionLockCounter++;
 
-    if (worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
+    if (actionLockCounter > interval) {
+      if (getXDistance(gamePanel.player) > getYDistance(gamePanel.player)) {
+        if (gamePanel.player.getCenterX() < getCenterX()) {
+          direction = LEFT;
+        } else {
+          direction = RIGHT;
+        }
+      } else if (getXDistance(gamePanel.player) < getYDistance(gamePanel.player)) {
+        if (gamePanel.player.getCenterY() < getCenterY()) {
+          direction = UP;
+        } else {
+          direction = DOWN;
+        }
+      }
+      actionLockCounter = 0;
+    }
+  }
+
+  public boolean inCamera() {
+    boolean inCamera = false;
+    if (worldX + gamePanel.tileSize * 5 > gamePanel.player.worldX - gamePanel.player.screenX &&
         worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-        worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
+        worldY + gamePanel.tileSize * 5 > gamePanel.player.worldY - gamePanel.player.screenY &&
         worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
+      inCamera = true;
+    }
+    return inCamera;
+  }
 
-      int temporaryScreenX = screenX;
-      int temporaryScreenY = screenY;
+  public void draw(Graphics2D graphics2D) {
+    if (inCamera()) {
+      int temporaryScreenX = getScreenX();
+      int temporaryScreenY = getScreenY();
 
       BufferedImage image = switch (getDirection()) {
         case UP -> {
-          if (spriteNum == 1)
-            yield up1;
-          else if (spriteNum == 2)
-            yield up2;
+          if (!attacking) {
+            if (spriteNum == 1)
+              yield up1;
+            else if (spriteNum == 2)
+              yield up2;
+          } else {
+            temporaryScreenY = getScreenY() - up1.getHeight();
+            if (spriteNum == 1)
+              yield attackUp1;
+            else if (spriteNum == 2)
+              yield attackUp2;
+          }
           yield null;
         }
         case DOWN -> {
@@ -387,7 +424,7 @@ public abstract class GameEntity {
             else if (spriteNum == 2)
               yield left2;
           } else {
-            temporaryScreenX = screenX - gamePanel.tileSize;
+            temporaryScreenX = getScreenX() - left1.getWidth();
             if (spriteNum == 1)
               yield attackLeft1;
             else if (spriteNum == 2)
@@ -411,26 +448,6 @@ public abstract class GameEntity {
         }
         case ANY -> this.image;
       };
-
-      // MONSTER HP BAR
-      if (type == MONSTER && hpBarOn) {
-
-        double oneScaleLifeBar = (double) gamePanel.tileSize / maxLife;
-        double hpBarValue = oneScaleLifeBar * currentLife;
-
-        graphics2D.setColor(new Color(35, 35, 35));
-        graphics2D.fillRect(screenX - 1, screenY - 16, gamePanel.tileSize + 2, 12);
-
-        graphics2D.setColor(new Color(255, 0, 30));
-        graphics2D.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
-
-        hpBarCounter++;
-
-        if (hpBarCounter > 600) {
-          hpBarCounter = 0;
-          hpBarOn = false;
-        }
-      }
 
       if (invincible) {
         hpBarOn = true;
@@ -561,6 +578,14 @@ public abstract class GameEntity {
         .getOrElseThrow(() -> new RuntimeException("Failed to load image: " + imagePath));
   }
 
+  public int getCenterX() {
+    return worldX + up1.getHeight() / 2;
+  }
+
+  public int getCenterY() {
+    return worldY + up1.getWidth() / 2;
+  }
+
   private void dyingAnimation(Graphics2D graphics2D) {
     dyingCounter++;
     int dyingAnimationInterval = 5;
@@ -621,22 +646,22 @@ public abstract class GameEntity {
 
     switch (direction) {
       case UP -> {
-        if (gamePanel.player.worldY < worldY && yDistance < straight && xDistance < horizontal) {
+        if (gamePanel.player.getCenterY() < getCenterY() && yDistance < straight && xDistance < horizontal) {
           targetInRange = true;
         }
       }
       case DOWN -> {
-        if (gamePanel.player.worldY > worldY && yDistance < straight && xDistance < horizontal) {
+        if (gamePanel.player.getCenterY() > getCenterY() && yDistance < straight && xDistance < horizontal) {
           targetInRange = true;
         }
       }
       case LEFT -> {
-        if (gamePanel.player.worldX < worldX && xDistance < straight && yDistance < horizontal) {
+        if (gamePanel.player.getCenterX() < getCenterX() && xDistance < straight && yDistance < horizontal) {
           targetInRange = true;
         }
       }
       case RIGHT -> {
-        if (gamePanel.player.worldX > worldX && xDistance < straight && yDistance < horizontal) {
+        if (gamePanel.player.getCenterX() > getCenterX() && xDistance < straight && yDistance < horizontal) {
           targetInRange = true;
         }
       }
@@ -681,9 +706,9 @@ public abstract class GameEntity {
     target.knockBack = true;
   }
 
-  public void getRandomDirection() {
+  public void getRandomDirection(int interval) {
     actionLockCounter++;
-    if (actionLockCounter == 120) {
+    if (actionLockCounter > interval) {
       int randomNumber = new Random().nextInt(100) + 1;
 
       if (randomNumber <= 25) direction = DirectionType.UP;
@@ -704,12 +729,26 @@ public abstract class GameEntity {
     }
   }
 
+  public GameEntity setWorldPosition(int worldX, int worldY){
+    this.worldX = worldX;
+    this.worldY = worldY;
+    return this;
+  }
+
+  public int getScreenX(){
+    return worldX - gamePanel.player.worldX + gamePanel.player.screenX;
+  }
+
+  public int getScreenY(){
+    return worldY - gamePanel.player.worldY + gamePanel.player.screenY;
+  }
+
   public int getXDistance(GameEntity target) {
-    return Math.abs(worldX - target.worldX);
+    return Math.abs(getCenterX() - target.getCenterX());
   }
 
   public int getYDistance(GameEntity target) {
-    return Math.abs(worldY - target.worldY);
+    return Math.abs(getCenterY() - target.getCenterY());
   }
 
   public int getTileDistance(GameEntity target) {

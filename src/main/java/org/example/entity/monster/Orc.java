@@ -29,7 +29,6 @@ import org.example.enums.WorldGameTypes;
 
 public class Orc extends GameEntity {
 
-
   public Orc(GamePanel gamePanel) {
     super(gamePanel);
     name = MonsterObjectType.ORC.getName();
@@ -103,7 +102,7 @@ public class Orc extends GameEntity {
       checkIfShouldStopChasing(gamePanel.player, 15, 100);
       searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
     } else {
-      getRandomDirection();
+      getRandomDirection(120);
       checkIfShouldStartChasing(gamePanel.player, 5, 100);
     }
 

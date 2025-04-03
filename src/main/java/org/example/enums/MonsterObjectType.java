@@ -9,7 +9,9 @@ import lombok.Getter;
 public enum MonsterObjectType {
   GREEN_SLIME("Green Slime"),
   RED_SLIME("Red Slime"),
-  ORC("Orc");
+  ORC("Orc"),
+  BAT("Bat"),
+  SKELETON_LORD("Skeleton Lord");
 
   private final String name;
 

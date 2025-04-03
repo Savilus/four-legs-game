@@ -76,6 +76,11 @@ public class CollisionDetector {
 
     int index = INIT_INDEX;
 
+    DirectionType direction = gameEntity.direction;
+    if (gameEntity.knockBack) {
+      direction = gameEntity.knockBackDirection;
+    }
+
     for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
       if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] != null) {
         //get entity's solid area position
@@ -84,7 +89,7 @@ public class CollisionDetector {
         // get object's solid area position
         gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.x = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldX + gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.x;
         gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.y = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].worldY + gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea.y;
-        checkGameEntityCollision(gameEntity, gameEntity.direction);
+        checkGameEntityCollision(gameEntity, direction);
         if (gameEntity.solidArea.intersects(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].solidArea)) {
           if (gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].collision) {
             gameEntity.collisionOn = true;

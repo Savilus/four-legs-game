@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
+import org.example.entity.items.Chest;
 
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
@@ -187,7 +188,7 @@ public class SaveLoad {
             objectsOnMap[i].worldY = worldYList.get(i);
 
             if (lootNames.get(i) != null) {
-              objectsOnMap[i].loot = gamePanel.entityGenerator.getGameEntity(lootNames.get(i));
+              objectsOnMap[i].setLoot(gamePanel.entityGenerator.getGameEntity(lootNames.get(i)));
             }
 
             objectsOnMap[i].opened = openedList.get(i);

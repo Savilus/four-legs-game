@@ -90,6 +90,45 @@ monster:
     bat:
       down1: /monster/bat_down_1.png
       down2: /monster/bat_down_2.png
+  bosses:
+    skeletonLord:
+      images:
+        down1: /monster/skeletonlord_down_1.png
+        down2: /monster/skeletonlord_down_2.png
+        up1: /monster/skeletonlord_up_1.png
+        up2: /monster/skeletonlord_up_2.png
+        left1: /monster/skeletonlord_left_1.png
+        left2: /monster/skeletonlord_left_2.png
+        right1: /monster/skeletonlord_right_1.png
+        right2: /monster/skeletonlord_right_2.png
+      attackImages:
+        down1: /monster/skeletonlord_attack_down_1.png
+        down2: /monster/skeletonlord_attack_down_2.png
+        up1: /monster/skeletonlord_attack_up_1.png
+        up2: /monster/skeletonlord_attack_up_2.png
+        left1: /monster/skeletonlord_attack_left_1.png
+        left2: /monster/skeletonlord_attack_left_2.png
+        right1: /monster/skeletonlord_attack_right_1.png
+        right2: /monster/skeletonlord_attack_right_2.png
+      secondPhaseImages:
+        down1: /monster/skeletonlord_phase2_down_1.png
+        down2: /monster/skeletonlord_phase2_down_2.png
+        up1: /monster/skeletonlord_phase2_up_1.png
+        up2: /monster/skeletonlord_phase2_up_2.png
+        left1: /monster/skeletonlord_phase2_left_1.png
+        left2: /monster/skeletonlord_phase2_left_2.png
+        right1: /monster/skeletonlord_phase2_right_1.png
+        right2: /monster/skeletonlord_phase2_right_2.png
+      secondPhaseAttackImages:
+        down1: /monster/skeletonlord_phase2_attack_down_1.png
+        down2: /monster/skeletonlord_phase2_attack_down_2.png
+        up1: /monster/skeletonlord_phase2_attack_up_1.png
+        up2: /monster/skeletonlord_phase2_attack_up_2.png
+        left1: /monster/skeletonlord_phase2_attack_left_1.png
+        left2: /monster/skeletonlord_phase2_attack_left_2.png
+        right1: /monster/skeletonlord_phase2_attack_right_1.png
+        right2: /monster/skeletonlord_phase2_attack_right_2.png
+
 
 items:
   images:
