@@ -56,6 +56,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.example.GamePanel;
 import org.example.entity.items.Key;
 import org.example.entity.items.Lantern;
@@ -605,7 +606,7 @@ public class Player extends GameEntity {
   // TODO: implement in different places
   public int searchItemInInventory(String itemName) {
     return IntStream.range(0, inventory.size())
-        .filter(itemIndex -> inventory.get(itemIndex).name.equals(itemName))
+        .filter(itemIndex -> StringUtils.equals(inventory.get(itemIndex).name, itemName))
         .findFirst()
         .orElse(INIT_INDEX);
   }

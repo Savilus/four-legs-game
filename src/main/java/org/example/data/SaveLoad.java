@@ -7,9 +7,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.example.GamePanel;
 import org.example.entity.GameEntity;
-import org.example.entity.items.Chest;
 
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
@@ -180,7 +180,7 @@ public class SaveLoad {
         GameEntity[] objectsOnMap = gamePanel.mapsObjects.get(mapName);
 
         for (int i = 0; i < objectNames.size(); i++) {
-          if (objectNames.get(i).equals(NA)) {
+          if (StringUtils.equals(objectNames.get(i), NA)) {
             objectsOnMap[i] = null;
           } else {
             objectsOnMap[i] = gamePanel.entityGenerator.getGameEntity(objectNames.get(i));

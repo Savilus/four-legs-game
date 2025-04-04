@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ public class Config {
     Try.run(() -> {
       BufferedReader reader = new BufferedReader(new FileReader(GAME_CONFIG_FILE_NAME));
       String configLine = reader.readLine();
-      gamePanel.fullScreenOn = configLine.equals(FULL_SCREEN_ON);
+      gamePanel.fullScreenOn = StringUtils.equalsIgnoreCase(configLine, FULL_SCREEN_ON);
       configLine = reader.readLine();
       gamePanel.music.volumeScale = Integer.parseInt(configLine);
       configLine = reader.readLine();

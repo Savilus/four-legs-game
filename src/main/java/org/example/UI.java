@@ -836,7 +836,7 @@ public class UI {
     }
 
     // DRAW MAX MANA
-    x = gamePanel.tileSize -20;
+    x = gamePanel.tileSize - 20;
     y = gamePanel.tileSize + 10;
     i = 0;
     while (i < gamePanel.player.maxMana) {
@@ -846,7 +846,7 @@ public class UI {
     }
 
     // DRAW MANA
-    x = gamePanel.tileSize -20;
+    x = gamePanel.tileSize - 20;
     i = 0;
     while (i < gamePanel.player.mana) {
       graphics2D.drawImage(manaCrystalFull, x, y, iconSize, iconSize, null);
@@ -1004,12 +1004,12 @@ public class UI {
     if (transitionCounter == 50) {
       transitionCounter = 0;
       gamePanel.gameState = PLAY_STATE;
-      gamePanel.tileManager.currentMap = gamePanel.eventHandler.tempMap;
+      gamePanel.tileManager.currentMap = gamePanel.eventHandler.getTempMap();
       gamePanel.gameMap.createWorldMap();
-      gamePanel.player.worldX = gamePanel.tileSize * gamePanel.eventHandler.tempCol;
-      gamePanel.player.worldY = gamePanel.tileSize * gamePanel.eventHandler.tempRow;
-      gamePanel.eventHandler.previousEventX = gamePanel.player.worldX;
-      gamePanel.eventHandler.previousEventY = gamePanel.player.worldY;
+      gamePanel.player.worldX = gamePanel.tileSize * gamePanel.eventHandler.getTempCol();
+      gamePanel.player.worldY = gamePanel.tileSize * gamePanel.eventHandler.getTempRow();
+      gamePanel.eventHandler.setPreviousEventX(gamePanel.player.worldX);
+      gamePanel.eventHandler.setPreviousEventY(gamePanel.player.worldY);
       gamePanel.changeArea();
     }
   }

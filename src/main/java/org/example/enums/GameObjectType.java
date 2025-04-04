@@ -1,6 +1,8 @@
 package org.example.enums;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -45,7 +47,7 @@ public enum GameObjectType {
 
   public static GameObjectType getObjectFromName(String name) {
     for (GameObjectType type : GameObjectType.values()) {
-      if (type.name.equalsIgnoreCase(name)) {
+      if (StringUtils.equalsIgnoreCase(type.name, name)) {
         return type;
       }
     }
