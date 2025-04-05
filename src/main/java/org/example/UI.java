@@ -503,13 +503,13 @@ public class UI {
     // MUSIC VOLUME
     textY += gamePanel.tileSize;
     graphics2D.drawRect(textX, textY, 120, gamePanel.tileSize / 2); // 120/5 = 24 px
-    int volumeWidth = 24 * gamePanel.music.volumeScale;
+    int volumeWidth = 24 * gamePanel.music.getVolumeScale();
     graphics2D.fillRect(textX, textY, volumeWidth, 24);
 
     // SE VOLUME
     textY += gamePanel.tileSize;
     graphics2D.drawRect(textX, textY, 120, gamePanel.tileSize / 2);
-    volumeWidth = 24 * gamePanel.soundEffect.volumeScale;
+    volumeWidth = 24 * gamePanel.soundEffect.getVolumeScale();
     graphics2D.fillRect(textX, textY, volumeWidth, 24);
 
     gamePanel.config.saveConfig();

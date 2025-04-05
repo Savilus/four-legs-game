@@ -1,10 +1,13 @@
 package org.example.ai;
 
+import lombok.Getter;
+
+@Getter
 public class Node {
 
   Node parent;
-  public int col;
-  public int row;
+  int col;
+  int row;
   int gCost;
   int hCost;
   int fCost;

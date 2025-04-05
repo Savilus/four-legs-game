@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import org.example.GamePanel;
+import org.example.entity.interactiveTile.InteractiveTile;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PathFinder {
 
-  GamePanel gamePanel;
+  final static int MAX_PATH_LENGTH = 100;
+  final GamePanel gamePanel;
   Node[][] node;
-  ArrayList<Node> openList = new ArrayList<>();
-  public ArrayList<Node> pathList = new ArrayList<>();
+  final ArrayList<Node> openList = new ArrayList<>();
+  @Getter
+  ArrayList<Node> pathList = new ArrayList<>();
   Node startNode, goalNode, currentNode;
   boolean goalReached = false;
   int step = 0;
@@ -23,33 +31,20 @@ public class PathFinder {
   public void instantiateNodes() {
     node = new Node[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 
-    int col = 0;
-    int row = 0;
-
-    while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      node[col][row] = new Node(col, row);
-      col++;
-      if (col == gamePanel.maxWorldCol) {
-        col = 0;
-        row++;
+    for (int col = 0; col < gamePanel.maxWorldCol; col++) {
+      for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+        node[col][row] = new Node(col, row);
       }
     }
   }
 
   public void resetNodes() {
-    int col = 0;
-    int row = 0;
-
-    while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      // Reset open, checked and solid state
-      node[col][row].open = false;
-      node[col][row].checked = false;
-      node[col][row].solid = false;
-
-      col++;
-      if (col == gamePanel.maxWorldCol) {
-        col = 0;
-        row++;
+    for (int col = 0; col < gamePanel.maxWorldCol; col++) {
+      for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+        // Reset open, checked and solid state
+        node[col][row].open = false;
+        node[col][row].checked = false;
+        node[col][row].solid = false;
       }
     }
 
@@ -69,39 +64,36 @@ public class PathFinder {
     goalNode = node[goalCol][goalRow];
     openList.add(currentNode);
 
-    int col = 0;
-    int row = 0;
-
-    while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      //SET SOLID NODE
-      // CHECK TILES
-      int tileNum = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[col][row];
-      if (gamePanel.tileManager.tile[tileNum].collision()) {
-        node[col][row].solid = true;
-      }
-      // CHECK INTERACTIVE TILES
-      for (int i = 0; i < gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap).length; i++) {
-        if (Objects.nonNull(gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i]) &&
-            gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i].destructible) {
-          int itCol = gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i].worldX / gamePanel.tileSize;
-          int itRow = gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i].worldY / gamePanel.tileSize;
-          node[itCol][itRow].solid = true;
+    for (int col = 0; col < gamePanel.maxWorldCol; col++) {
+      for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+        // SET SOLID NODE
+        // CHECK TILES
+        int tileNum = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[col][row];
+        if (gamePanel.tileManager.tile[tileNum].collision()) {
+          node[col][row].solid = true;
         }
-      }
+        // CHECK INTERACTIVE TILES
+        var interactiveTiles = gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap);
+        if (Objects.nonNull(interactiveTiles)) {
+          for (InteractiveTile interactiveTile : interactiveTiles) {
+            if (Objects.nonNull(interactiveTile) && interactiveTile.destructible) {
+              int itCol = interactiveTile.worldX / gamePanel.tileSize;
+              int itRow = interactiveTile.worldY / gamePanel.tileSize;
+              if (itCol >= 0 && itCol < gamePanel.maxWorldCol && itRow >= 0 && itRow < gamePanel.maxWorldRow) {
+                node[itCol][itRow].solid = true;
+              }
+            }
+          }
+        }
 
-      // SET COST
-      getCost(node[col][row]);
-
-      col++;
-      if (col == gamePanel.maxWorldCol) {
-        col = 0;
-        row++;
+        // SET COST
+        getCost(node[col][row]);
       }
     }
   }
 
   public boolean search() {
-    while (!goalReached && step < 500) {
+    while (!goalReached && step < MAX_PATH_LENGTH) {
       int col = currentNode.col;
       int row = currentNode.row;
 

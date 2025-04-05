@@ -2,48 +2,49 @@ package org.example.enums;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.example.utils.text.TextManager;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public enum GameObjectType {
-  // TODO: some classes does not use GameObjectType and some does, fix it or think of something else. You can also add some parameters to this class
-  // TODO: names needs to be from json too...
   // GAME ITEMS
-  KEY("Key", "key"),
-  DOOR("Door", "door"),
-  IRON_DOOR("Iron Door", "door"),
-  BOOTS("Boots", "boots"),
-  HEART("Heart", "heart"),
-  CHEST("Chest", "chest"),
-  LANTERN("Lantern", "lantern"),
-  TENT("Tent", "tent"),
-  RED_POTION("Red Potion", "redPotion"),
-  BRONZE_COIN("Bronze Coin", "bronzeCoin"),
-  MANA_CRYSTAL("Mana Crystal", "manaCrystal"),
+  KEY("key"),
+  DOOR("door"),
+  IRON_DOOR("ironDoor"),
+  BOOTS("boots"),
+  HEART("heart"),
+  CHEST("chest"),
+  LANTERN("lantern"),
+  TENT("tent"),
+  RED_POTION("redPotion"),
+  BRONZE_COIN("bronzeCoin"),
+  MANA_CRYSTAL("manaCrystal"),
 
   // WEAPONS
-  NORMAL_SWORD("Normal Sword", "normalSword"),
-  AXE("Woodcutter's Axe", "axe"),
-  PICKAXE("Pickaxe", "pickAxe"),
+  NORMAL_SWORD("normalSword"),
+  AXE("axe"),
+  PICKAXE("pickAxe"),
 
   // SHIELDS
-  BLUE_SHIELD("Blue Shield", "blueShield"),
-  WOOD_SHIELD("Wood Shield", "woodShield"),
+  BLUE_SHIELD("blueShield"),
+  WOOD_SHIELD("woodShield"),
 
   // Projectiles
-  FIREBALL("Fireball", "fireball"),
-  ROCK("Rock", "rock"),
+  FIREBALL("fireball"),
+  ROCK("rock"),
 
   // INTERACTIVE
-  METAL_PLATE("Metal Plate", "metalPlate"),
-  BIG_ROCK("Big Rock", "bigRock");
-
+  METAL_PLATE("metalPlate"),
+  BIG_ROCK("bigRock");
 
   private final String name;
   private final String textKey;
+
+  GameObjectType(String textKey) {
+    this.textKey = textKey;
+    name = TextManager.getItemName(textKey);
+  }
 
   public static GameObjectType getObjectFromName(String name) {
     for (GameObjectType type : GameObjectType.values()) {
