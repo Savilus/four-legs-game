@@ -22,6 +22,8 @@ public class TextManager {
   private static final String USE = "use";
   private static final String OPEN_DOOR = "openDoor";
   private static final String COLLECT_ITEM = "collectItem";
+  private static final String LVL_UP = "lvlUp";
+  private static final String NAME = "name";
   private static final String EVENT_MESSAGES_KEY = "eventMessages";
 
   @Getter
@@ -37,7 +39,7 @@ public class TextManager {
     formatKeys.put(GameObjectType.CHEST.getTextKey(), COLLECT_ITEM);
     formatKeys.put(GameObjectType.RED_POTION.getTextKey(), USE);
     formatKeys.put(GameObjectType.KEY.getTextKey(), OPEN_DOOR);
-    formatKeys.put(EVENT_MESSAGES_KEY, "lvlUp");
+    formatKeys.put(EVENT_MESSAGES_KEY, LVL_UP);
   }
 
   public String getSettingText(String settingField, String settingName) {
@@ -46,6 +48,10 @@ public class TextManager {
 
   public String getUiText(String uiField, String uiTextKey) {
     return settingsAndUI.get(uiField).get(uiTextKey);
+  }
+
+  public String getItemName(String itemTextKey) {
+    return items.get(itemTextKey).get(NAME);
   }
 
   public Map<String, List<String>> getAllDialoguesForTarget(String target) {

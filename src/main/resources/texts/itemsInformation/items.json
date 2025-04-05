@@ -1,46 +1,81 @@
 {
   "door": {
+    "name": "Door",
     "openInformation": "You need a key to open this door."
   },
   "ironDoor": {
+    "name": "Iron Door",
     "openInformation": "It won't budge."
   },
   "redPotion": {
+    "name": "Red Potion",
     "description": "[%s]\nHeals your life by %s.",
     "use": "You drink the %s !\nYou feel much better!"
   },
   "chest": {
+    "name": "Chest",
     "fullInventory": "You cannot carry any more!",
     "empty": "It's empty.",
     "collectItem": "You obtain the %s !"
   },
   "key": {
+    "name": "Key",
     "description": "[%s]\nIt opens a door",
     "wrongUse": "What are you doing?",
     "openDoor": "You use the %s and open the door."
   },
   "lantern": {
+    "name": "Lantern",
     "description": "[%s]\nIlluminates your \nsurroundings."
   },
   "normalSword": {
+    "name": "Normal Sword",
     "description": "[%s]\nAn old sword"
   },
   "axe": {
+    "name": "Woodcutter's Axe",
     "description": "[%s]\nA bit rusty axe but still \ncut some trees"
   },
   "woodShield": {
+    "name": "Wood Shield",
     "description": "[%s]\nMade by wood."
   },
   "blueShield": {
+    "name": "Blue Shield",
     "description": "[%s]\nA shiny blue shield."
   },
   "tent": {
+    "name": "Tent",
     "description": "[%s]\nYou can sleep until \nnext morning."
   },
   "pickAxe": {
+    "name": "Pickaxe",
     "description": "[%s]\n You can dig with it!"
   },
   "bigRock": {
+    "name": "Big Rock",
     "use": "It's a giant rock."
+  },
+  "boots": {
+    "name": "Boots"
+  },
+  "heart": {
+    "name": "Heart"
+  },
+  "bronzeCoin": {
+    "name": "Bronze Coin"
+  },
+  "manaCrystal": {
+    "name": "Mana Crystal"
+  },
+  "fireball": {
+    "name": "Fireball"
+  },
+  "rock": {
+    "name": "Rock"
+  },
+  "metalPlate": {
+    "name": "Metal Plate"
   }
+
 }

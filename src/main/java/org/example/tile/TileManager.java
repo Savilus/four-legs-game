@@ -188,9 +188,9 @@ public class TileManager {
 
     if (drawPath) {
       graphics2D.setColor(new Color(255, 0, 0, 70));
-      for (int i = 0; i < gamePanel.pathFinder.pathList.size(); i++) {
-        int worldX = gamePanel.pathFinder.pathList.get(i).col * gamePanel.tileSize;
-        int worldY = gamePanel.pathFinder.pathList.get(i).row * gamePanel.tileSize;
+      for (int i = 0; i < gamePanel.pathFinder.getPathList().size(); i++) {
+        int worldX = gamePanel.pathFinder.getPathList().get(i).getCol() * gamePanel.tileSize;
+        int worldY = gamePanel.pathFinder.getPathList().get(i).getRow() * gamePanel.tileSize;
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 

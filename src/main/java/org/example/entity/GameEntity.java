@@ -309,8 +309,8 @@ public abstract class GameEntity {
 
     if (gamePanel.pathFinder.search()) {
       // Next wordX & worldY
-      int nextX = gamePanel.pathFinder.pathList.getFirst().col * gamePanel.tileSize;
-      int nextY = gamePanel.pathFinder.pathList.getFirst().row * gamePanel.tileSize;
+      int nextX = gamePanel.pathFinder.getPathList().getFirst().getCol() * gamePanel.tileSize;
+      int nextY = gamePanel.pathFinder.getPathList().getFirst().getRow() * gamePanel.tileSize;
 
       // Entity's solid area position
       int entityLeftX = worldX + solidArea.x;
@@ -342,8 +342,8 @@ public abstract class GameEntity {
       }
 
       // If reach the goal, stop the search. Disable for user
-      int nextCol = gamePanel.pathFinder.pathList.getFirst().col;
-      int nextRow = gamePanel.pathFinder.pathList.getFirst().row;
+      int nextCol = gamePanel.pathFinder.getPathList().getFirst().getCol();
+      int nextRow = gamePanel.pathFinder.getPathList().getFirst().getRow();
       if (nextCol == goalCol && nextRow == goalRow) {
         onPath = false;
       }

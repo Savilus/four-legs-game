@@ -34,14 +34,18 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 import io.vavr.control.Try;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Sound {
 
-  Clip clip;
-  Map<String, URL> soundMap = new HashMap<>(20);
-  FloatControl floatControl;
-  public int volumeScale = 3;
-  float volume;
+  private Clip clip;
+  private final Map<String, URL> soundMap = new HashMap<>(20);
+  private FloatControl floatControl;
+  @Getter
+  @Setter
+  private int volumeScale = 3;
+  private float volume;
 
   public Sound() {
     soundMap.put(OUTSIDE_MUSIC, Objects.requireNonNull(getClass().getResource(OUTSIDE_MUSIC)));
@@ -68,7 +72,7 @@ public class Sound {
     soundMap.put(DOOR_OPEN, Objects.requireNonNull(getClass().getResource(DOOR_OPEN)));
   }
 
-  public void setFile(String sound) {
+  protected void setFile(String sound) {
     Try.run(() -> {
       AudioInputStream audio = AudioSystem.getAudioInputStream(soundMap.get(sound));
       clip = AudioSystem.getClip();
@@ -79,15 +83,15 @@ public class Sound {
 
   }
 
-  public void play() {
+  protected void play() {
     clip.start();
   }
 
-  public void loop() {
+  protected void loop() {
     clip.loop(Clip.LOOP_CONTINUOUSLY);
   }
 
-  public void stop() {
+  protected void stop() {
     clip.stop();
   }
 
