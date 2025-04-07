@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class DemoPanel extends JPanel {
+class DemoPanel extends JPanel {
 
   // Displaying "Nodes" that represent Tiles in game
 
@@ -26,7 +26,7 @@ public class DemoPanel extends JPanel {
   boolean goealReached = false;
   int step = 0;
 
-  public DemoPanel() {
+  DemoPanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
     this.setBackground(Color.BLACK);
     this.setLayout(new GridLayout(maxRow, maxCol));
@@ -73,40 +73,7 @@ public class DemoPanel extends JPanel {
 
   }
 
-  private void setCostOnNodes() {
-    int col = 0;
-    int row = 0;
-
-    while (col < maxCol && row < maxRow) {
-      getCost(node[col][row]);
-      col++;
-      if (col == maxCol) {
-        col = 0;
-        row++;
-      }
-    }
-  }
-
-  private void getCost(Node node) {
-    // GET G COST (The distance from the start node)
-    int xDistance = Math.abs(node.col - startNode.col);
-    int yDistance = Math.abs(node.row - startNode.row);
-    node.gCost = xDistance + yDistance;
-
-    // GET H COST (The distance from the goal node)
-    xDistance = Math.abs(node.col - goalNode.col);
-    yDistance = Math.abs(node.row - goalNode.row);
-    node.hCost = xDistance + yDistance;
-
-    // GET F COST (The total cost)
-    node.fCost = node.gCost + node.hCost;
-
-    if (node != startNode && node != goalNode) {
-      node.setText("<html>F:" + node.fCost + "<br>G:" + node.gCost + "</html>");
-    }
-  }
-
-  public void autoSearch() {
+  void autoSearch() {
 
     while (!goealReached && step < 300) {
       int col = currentNode.col;
@@ -159,7 +126,7 @@ public class DemoPanel extends JPanel {
   }
 
   // Manual search to see how algorithm works step by step (press enter)
-  public void manualSearch() {
+  void manualSearch() {
 
     if (!goealReached) {
       int col = currentNode.col;
@@ -207,6 +174,39 @@ public class DemoPanel extends JPanel {
         goealReached = true;
         trackThePath();
       }
+    }
+  }
+
+  private void setCostOnNodes() {
+    int col = 0;
+    int row = 0;
+
+    while (col < maxCol && row < maxRow) {
+      getCost(node[col][row]);
+      col++;
+      if (col == maxCol) {
+        col = 0;
+        row++;
+      }
+    }
+  }
+
+  private void getCost(Node node) {
+    // GET G COST (The distance from the start node)
+    int xDistance = Math.abs(node.col - startNode.col);
+    int yDistance = Math.abs(node.row - startNode.row);
+    node.gCost = xDistance + yDistance;
+
+    // GET H COST (The distance from the goal node)
+    xDistance = Math.abs(node.col - goalNode.col);
+    yDistance = Math.abs(node.row - goalNode.row);
+    node.hCost = xDistance + yDistance;
+
+    // GET F COST (The total cost)
+    node.fCost = node.gCost + node.hCost;
+
+    if (node != startNode && node != goalNode) {
+      node.setText("<html>F:" + node.fCost + "<br>G:" + node.gCost + "</html>");
     }
   }
 

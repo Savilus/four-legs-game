@@ -15,7 +15,7 @@ How A* algorithm calculates:
  If there is for example solid area without F or G value.
  Algorithm expands the search for all nodes that are touching evaluated nodes at this point.
  If there is a node with lower F or G it's selecting that node
- */
+*/
 
 public class Main {
 
