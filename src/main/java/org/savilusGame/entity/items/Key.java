@@ -3,6 +3,7 @@ package org.savilusGame.entity.items;
 import static org.savilusGame.config.GameEntityNameFactory.KEY;
 import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
 import static org.savilusGame.enums.WorldGameTypes.CONSUMABLE;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
 import org.savilusGame.GamePanel;
@@ -34,7 +35,7 @@ public class Key extends GameEntity {
     if (objIndex != INIT_INDEX) {
       startDialogue(this, OPEN_DOOR_TEXT_KEY);
       gamePanel.playSoundEffect(UNLOCK);
-      gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[objIndex] = null;
+      gamePanel.mapsObjects.get(CURRENT_MAP)[objIndex] = null;
       return true;
     } else {
       startDialogue(this, WRONG_USE_TEXT_KEY);

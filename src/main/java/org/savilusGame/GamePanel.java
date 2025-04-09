@@ -8,6 +8,7 @@ import static org.savilusGame.enums.GameStateType.MAP_STATE;
 import static org.savilusGame.enums.GameStateType.PAUSE_STATE;
 import static org.savilusGame.enums.GameStateType.PLAY_STATE;
 import static org.savilusGame.enums.GameStateType.TITLE_STATE;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,6 +35,7 @@ import org.savilusGame.tile.GameMap;
 import org.savilusGame.tile.TileManager;
 import org.savilusGame.utils.AssetSetter;
 import org.savilusGame.utils.CollisionDetector;
+import org.savilusGame.utils.CutsceneManager;
 import org.savilusGame.utils.KeyHandler;
 import org.savilusGame.utils.event.EventHandler;
 
@@ -76,6 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
   EnvironmentManager environmentManager = new EnvironmentManager(this);
   public GameMap gameMap = new GameMap(this);
   public EntityGenerator entityGenerator = new EntityGenerator(this);
+  public CutsceneManager cutsceneManager = new CutsceneManager(this);
 
   // ENTITY AND OBJECT
   public Player player = new Player(this, keyHandler);
@@ -93,6 +97,8 @@ public class GamePanel extends JPanel implements Runnable {
 
   // GAME STATE
   public GameStateType gameState;
+  public boolean bossBattleOn = false;
+
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -111,42 +117,42 @@ public class GamePanel extends JPanel implements Runnable {
   public void update() {
     if (gameState == PLAY_STATE) {
       player.update();
-      if (Objects.nonNull(mapsNpc.get(tileManager.currentMap))) {
-        for (GameEntity gameEntity : mapsNpc.get(tileManager.currentMap)) {
+      if (Objects.nonNull(mapsNpc.get(CURRENT_MAP))) {
+        for (GameEntity gameEntity : mapsNpc.get(CURRENT_MAP)) {
           if (Objects.nonNull(gameEntity)) {
             gameEntity.update();
           }
         }
       }
 
-      if (Objects.nonNull(mapsMonsters.get(tileManager.currentMap))) {
-        for (int monsterIndex = 0; monsterIndex < mapsMonsters.get(tileManager.currentMap).length; monsterIndex++) {
-          var monster = mapsMonsters.get(tileManager.currentMap)[monsterIndex];
+      if (Objects.nonNull(mapsMonsters.get(CURRENT_MAP))) {
+        for (int monsterIndex = 0; monsterIndex < mapsMonsters.get(CURRENT_MAP).length; monsterIndex++) {
+          var monster = mapsMonsters.get(CURRENT_MAP)[monsterIndex];
           if (Objects.nonNull(monster)) {
             if (monster.alive && !monster.dying)
               monster.update();
             if (!monster.alive) {
               monster.checkDrop();
-              mapsMonsters.get(tileManager.currentMap)[monsterIndex] = null;
+              mapsMonsters.get(CURRENT_MAP)[monsterIndex] = null;
             }
           }
         }
       }
 
-      for (int i = 0; i < projectiles.get(tileManager.currentMap).length; i++) {
-        GameEntity projectile = projectiles.get(tileManager.currentMap)[i];
+      for (int i = 0; i < projectiles.get(CURRENT_MAP).length; i++) {
+        GameEntity projectile = projectiles.get(CURRENT_MAP)[i];
 
         if (Objects.nonNull(projectile) && projectile.alive) {
           projectile.update();
         } else {
-          projectiles.get(tileManager.currentMap)[i] = null;
+          projectiles.get(CURRENT_MAP)[i] = null;
         }
       }
 
-      if (Objects.nonNull(mapsInteractiveTiles.get(tileManager.currentMap))) {
-        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(tileManager.currentMap).length; objIndex++) {
-          if (Objects.nonNull(mapsInteractiveTiles.get(tileManager.currentMap)[objIndex])) {
-            mapsInteractiveTiles.get(tileManager.currentMap)[objIndex].update();
+      if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP))) {
+        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(CURRENT_MAP).length; objIndex++) {
+          if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP)[objIndex])) {
+            mapsInteractiveTiles.get(CURRENT_MAP)[objIndex].update();
           }
         }
       }
@@ -168,7 +174,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
-    mapsObjects.put(tileManager.currentMap, new GameEntity[20]);
+    mapsObjects.put(CURRENT_MAP, new GameEntity[20]);
     assetSetter.setNPC();
     assetSetter.setObject();
     assetSetter.setInteractiveTiles();
@@ -195,7 +201,9 @@ public class GamePanel extends JPanel implements Runnable {
     player.setDefaultPositions();
     player.restorePlayerStatus();
     player.resetCounter();
-    tileManager.currentMap = MAIN_MAP;
+    removeTemporaryGameEntity();
+    bossBattleOn = false;
+    CURRENT_MAP = MAIN_MAP;
     currentArea = AreaType.OUTSIDE;
     assetSetter.setMonster();
     assetSetter.setNPC();
@@ -250,6 +258,16 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setMonster();
   }
 
+  public void removeTemporaryGameEntity() {
+    for (String mapName : tileManager.gameMaps.keySet()) {
+      List<GameEntity> allMapObjects = new ArrayList<>(List.of(mapsObjects.get(mapName)));
+      if (allMapObjects.isEmpty()) continue;
+
+      allMapObjects.removeIf(object -> Objects.nonNull(object) && object.temporaryObject);
+    }
+  }
+
+
   public void drawToTempScreen() {
     if (gameState == TITLE_STATE) {
       ui.draw(tempGraphic2d);
@@ -258,39 +276,39 @@ public class GamePanel extends JPanel implements Runnable {
     } else {
       tileManager.draw(tempGraphic2d);
       // INTERACTIVE TILE
-      if (Objects.nonNull(mapsInteractiveTiles.get(tileManager.currentMap))) {
-        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(tileManager.currentMap).length; objIndex++) {
-          if (Objects.nonNull(mapsInteractiveTiles.get(tileManager.currentMap)[objIndex])) {
-            mapsInteractiveTiles.get(tileManager.currentMap)[objIndex].draw(tempGraphic2d);
+      if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP))) {
+        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(CURRENT_MAP).length; objIndex++) {
+          if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP)[objIndex])) {
+            mapsInteractiveTiles.get(CURRENT_MAP)[objIndex].draw(tempGraphic2d);
           }
         }
       }
 
       gameObjects.add(player);
       // ADD ENTITY TO THE LIST
-      if (Objects.nonNull(mapsNpc.get(tileManager.currentMap))) {
-        for (GameEntity npc : mapsNpc.get(tileManager.currentMap)) {
+      if (Objects.nonNull(mapsNpc.get(CURRENT_MAP))) {
+        for (GameEntity npc : mapsNpc.get(CURRENT_MAP)) {
           if (Objects.nonNull(npc)) {
             gameObjects.add(npc);
           }
         }
       }
-      if (Objects.nonNull(mapsObjects.get(tileManager.currentMap))) {
-        for (GameEntity object : mapsObjects.get(tileManager.currentMap)) {
+      if (Objects.nonNull(mapsObjects.get(CURRENT_MAP))) {
+        for (GameEntity object : mapsObjects.get(CURRENT_MAP)) {
           if (Objects.nonNull(object)) {
             gameObjects.add(object);
           }
         }
       }
-      if (Objects.nonNull(mapsMonsters.get(tileManager.currentMap))) {
-        for (GameEntity monster : mapsMonsters.get(tileManager.currentMap)) {
+      if (Objects.nonNull(mapsMonsters.get(CURRENT_MAP))) {
+        for (GameEntity monster : mapsMonsters.get(CURRENT_MAP)) {
           if (Objects.nonNull(monster)) {
             gameObjects.add(monster);
           }
         }
       }
 
-      for (GameEntity projectile : projectiles.get(tileManager.currentMap)) {
+      for (GameEntity projectile : projectiles.get(CURRENT_MAP)) {
         if (Objects.nonNull(projectile)) {
           gameObjects.add(projectile);
         }
@@ -315,6 +333,8 @@ public class GamePanel extends JPanel implements Runnable {
       environmentManager.draw(tempGraphic2d);
       // Mini map
       gameMap.drawMiniMap(tempGraphic2d);
+
+      cutsceneManager.draw(tempGraphic2d);
 
       ui.draw(tempGraphic2d);
     }

@@ -1,5 +1,9 @@
 package org.savilusGame.entity.monster;
 
+import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
+import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SECOND_FLOR;
+import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SONG;
+import static org.savilusGame.config.GameEntityNameFactory.IRON_DOOR;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_DOWN2;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_LEFT1;
@@ -32,16 +36,19 @@ import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_RIGHT1;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_RIGHT2;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_UP1;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_UP2;
+import static org.savilusGame.enums.MonsterObjectType.SKELETON_LORD;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
-import java.util.Random;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 import org.savilusGame.GamePanel;
+import org.savilusGame.data.Progress;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.entity.items.BronzeCoin;
-import org.savilusGame.entity.items.Heart;
-import org.savilusGame.entity.items.ManaCrystal;
-import org.savilusGame.enums.MonsterObjectType;
+import org.savilusGame.entity.items.IronDoor;
+import org.savilusGame.enums.DirectionType;
 import org.savilusGame.enums.WorldGameTypes;
+import org.savilusGame.utils.text.TextManager;
 
 public class SkeletonLord extends GameEntity {
 
@@ -49,7 +56,8 @@ public class SkeletonLord extends GameEntity {
 
   public SkeletonLord(GamePanel gamePanel) {
     super(gamePanel);
-    name = MonsterObjectType.SKELETON_LORD.getName();
+    name = SKELETON_LORD.getName();
+    direction = DirectionType.DOWN;
     boss = true;
     defaultSpeed = 1;
     speed = defaultSpeed;
@@ -60,6 +68,7 @@ public class SkeletonLord extends GameEntity {
     defense = 2;
     exp = 50;
     knockBackPower = 5;
+    sleep = true;
 
     int size = gamePanel.tileSize * 5;
     solidArea.x = 48;
@@ -74,10 +83,10 @@ public class SkeletonLord extends GameEntity {
     secondAttackMotionDuration = 50;
     getImage();
     getAttackImage();
+    dialogues = TextManager.getAllDialoguesForTarget(SKELETON_LORD.getDialogueKey());
   }
 
   private void getImage() {
-
     if (!inRage) {
       up1 = setup(SKELETON_LORD_UP1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
       up2 = setup(SKELETON_LORD_UP2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
@@ -124,13 +133,19 @@ public class SkeletonLord extends GameEntity {
 
   @Override
   public void checkDrop() {
-    int percentForDrop = new Random().nextInt(100) + 1;
+    gamePanel.bossBattleOn = false;
+    Progress.skeletonLordDefeated = true;
 
-    if (percentForDrop < 50)
-      dropItem(new BronzeCoin(gamePanel));
-    else if (percentForDrop < 75)
-      dropItem(new Heart(gamePanel));
-    else dropItem(new ManaCrystal(gamePanel));
+    gamePanel.stopMusic();
+    gamePanel.playMusic(DUNGEON_SONG);
+
+    var objects = gamePanel.mapsObjects.get(CURRENT_MAP);
+    if (objects == null) return;
+
+    IntStream.range(0, objects.length)
+        .filter(i -> objects[i] instanceof IronDoor)
+        .forEach(i -> objects[i] = null);
+    gamePanel.playSoundEffect(DOOR_OPEN);
   }
 
   @Override

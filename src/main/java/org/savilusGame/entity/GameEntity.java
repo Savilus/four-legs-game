@@ -7,8 +7,10 @@ import static org.savilusGame.enums.DirectionType.DOWN;
 import static org.savilusGame.enums.DirectionType.LEFT;
 import static org.savilusGame.enums.DirectionType.RIGHT;
 import static org.savilusGame.enums.DirectionType.UP;
+import static org.savilusGame.enums.GameStateType.CUTSCENE_STATE;
 import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
 import static org.savilusGame.enums.WorldGameTypes.MONSTER;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
@@ -80,6 +82,9 @@ public abstract class GameEntity {
   public GameEntity loot;
   public boolean opened = false;
   public boolean inRage = false;
+  public boolean sleep = false;
+  public boolean temporaryObject = false;
+
 
   // CHARACTER ATTRIBUTES
   public int defaultSpeed;
@@ -171,7 +176,9 @@ public abstract class GameEntity {
   }
 
   public void startDialogue(GameEntity entity, String selectedDialogue) {
-    gamePanel.gameState = DIALOG_STATE;
+    if (gamePanel.gameState != CUTSCENE_STATE) {
+      gamePanel.gameState = DIALOG_STATE;
+    }
     gamePanel.ui.npc = entity;
     dialogueSet = selectedDialogue;
   }
@@ -180,9 +187,9 @@ public abstract class GameEntity {
     collisionOn = false;
     gamePanel.collisionDetector.checkTile(this);
     gamePanel.collisionDetector.checkObject(this, false);
-    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap));
-    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
-    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsNpc.get(CURRENT_MAP));
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(CURRENT_MAP));
+    gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(CURRENT_MAP));
     boolean contactPlayer = gamePanel.collisionDetector.checkPlayer(this);
 
     if (this.type == MONSTER && contactPlayer && !gamePanel.player.invincible) {
@@ -220,13 +227,13 @@ public abstract class GameEntity {
         }
       } else {
         // check monster collision with updated worldX, worldY and solidArea
-        int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
+        int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(CURRENT_MAP));
         gamePanel.player.damageMonster(this, monsterIndex, attack, currentWeapon.knockBackPower);
 
-        int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap));
+        int interactiveTileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsInteractiveTiles.get(CURRENT_MAP));
         gamePanel.player.damageInteractiveTile(interactiveTileIndex);
 
-        int projectileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.projectiles.get(gamePanel.tileManager.currentMap));
+        int projectileIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.projectiles.get(CURRENT_MAP));
         gamePanel.player.damageProjectile(projectileIndex);
       }
 
@@ -242,61 +249,63 @@ public abstract class GameEntity {
   }
 
   public void update() {
-    checkCollision();
-    if (knockBack) {
-      if (!collisionOn) {
-        switch (knockBackDirection) {
-          case UP -> worldY -= speed;
-          case DOWN -> worldY += speed;
-          case LEFT -> worldX -= speed;
-          case RIGHT -> worldX += speed;
+    if (!sleep) {
+      if (knockBack) {
+        checkCollision();
+        if (!collisionOn) {
+          switch (knockBackDirection) {
+            case UP -> worldY -= speed;
+            case DOWN -> worldY += speed;
+            case LEFT -> worldX -= speed;
+            case RIGHT -> worldX += speed;
+          }
+        }
+        knockBackCounter++;
+        if (knockBackCounter == 5 || collisionOn) {
+          knockBackCounter = 0;
+          knockBack = false;
+          speed = defaultSpeed;
+        }
+      } else if (attacking) {
+        attacking();
+      } else {
+        setAction();
+
+        // IF COLLISION IS FALSE, PLAYER CAN MOVE
+        if (!collisionOn) {
+          switch (getDirection()) {
+            case UP -> worldY -= speed;
+            case DOWN -> worldY += speed;
+            case LEFT -> worldX -= speed;
+            case RIGHT -> worldX += speed;
+          }
+        }
+
+        spriteCounter++;
+        if (spriteCounter > 24) {
+          spriteNum = spriteNum == 1 ? 2 : 1;
+          spriteCounter = 0;
         }
       }
-      knockBackCounter++;
-      if (knockBackCounter == 5 || collisionOn) {
-        knockBackCounter = 0;
-        knockBack = false;
-        speed = defaultSpeed;
-      }
-    } else if (attacking) {
-      attacking();
-    } else {
-      setAction();
 
-      // IF COLLISION IS FALSE, PLAYER CAN MOVE
-      if (!collisionOn) {
-        switch (getDirection()) {
-          case UP -> worldY -= speed;
-          case DOWN -> worldY += speed;
-          case LEFT -> worldX -= speed;
-          case RIGHT -> worldX += speed;
+      if (invincible) {
+        invincibleCounter++;
+        if (invincibleCounter > 40) {
+          invincible = false;
+          invincibleCounter = 0;
         }
       }
 
-      spriteCounter++;
-      if (spriteCounter > 24) {
-        spriteNum = spriteNum == 1 ? 2 : 1;
-        spriteCounter = 0;
+      if (shootAvailableCounter < 50) {
+        shootAvailableCounter++;
       }
-    }
 
-    if (invincible) {
-      invincibleCounter++;
-      if (invincibleCounter > 40) {
-        invincible = false;
-        invincibleCounter = 0;
-      }
-    }
-
-    if (shootAvailableCounter < 50) {
-      shootAvailableCounter++;
-    }
-
-    if (offBalance) {
-      offBalanceCounter++;
-      if (offBalanceCounter > 60) {
-        offBalance = false;
-        offBalanceCounter = 0;
+      if (offBalance) {
+        offBalanceCounter++;
+        if (offBalanceCounter > 60) {
+          offBalance = false;
+          offBalanceCounter = 0;
+        }
       }
     }
   }
@@ -469,8 +478,8 @@ public abstract class GameEntity {
   }
 
   public void dropItem(GameEntity droppedItem) {
-    for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
-      var item = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i];
+    for (int i = 0; i < gamePanel.mapsObjects.get(CURRENT_MAP).length; i++) {
+      var item = gamePanel.mapsObjects.get(CURRENT_MAP)[i];
       if (Objects.isNull(item)) {
         item = droppedItem;
         item.worldX = worldX;
@@ -546,7 +555,7 @@ public abstract class GameEntity {
 
   public int getDetected(GameEntity user, Map<String, GameEntity[]> target, String targetName) {
     int index = INIT_INDEX;
-    var gameObjects = target.get(gamePanel.tileManager.currentMap);
+    var gameObjects = target.get(CURRENT_MAP);
     // Check the surround object
     int nextWorldX = user.getLeftX();
     int nextWorldY = user.getTopY();
@@ -682,10 +691,10 @@ public abstract class GameEntity {
     int randomNumber = new Random().nextInt(rate);
     if (randomNumber == 0 && !projectile.alive && shootAvailableCounter == shotInterval) {
       projectile.set(worldX, worldY, direction, true, this);
-      IntStream.range(0, gamePanel.projectiles.get(gamePanel.tileManager.currentMap).length)
-          .filter(emptyPlace -> Objects.isNull(gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[emptyPlace]))
+      IntStream.range(0, gamePanel.projectiles.get(CURRENT_MAP).length)
+          .filter(emptyPlace -> Objects.isNull(gamePanel.projectiles.get(CURRENT_MAP)[emptyPlace]))
           .findFirst()
-          .ifPresent(emptyPlace -> gamePanel.projectiles.get(gamePanel.tileManager.currentMap)[emptyPlace] = projectile);
+          .ifPresent(emptyPlace -> gamePanel.projectiles.get(CURRENT_MAP)[emptyPlace] = projectile);
       shootAvailableCounter = 0;
     }
   }
@@ -730,17 +739,17 @@ public abstract class GameEntity {
     }
   }
 
-  public GameEntity setWorldPosition(int worldX, int worldY){
+  public GameEntity setWorldPosition(int worldX, int worldY) {
     this.worldX = worldX;
     this.worldY = worldY;
     return this;
   }
 
-  public int getScreenX(){
+  public int getScreenX() {
     return worldX - gamePanel.player.worldX + gamePanel.player.screenX;
   }
 
-  public int getScreenY(){
+  public int getScreenY() {
     return worldY - gamePanel.player.worldY + gamePanel.player.screenY;
   }
 

@@ -449,6 +449,8 @@ public class GameEntityNameFactory {
   public static String CHIP_WALL;
   @YamlValue("sound.path.doorOpen")
   public static String DOOR_OPEN;
+  @YamlValue("sound.path.finalBattle")
+  public static String FINAL_BATTLE;
 
   // FONT
   @YamlValue("font.maruMonica")

@@ -2,6 +2,7 @@ package org.savilusGame.tile;
 
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -32,14 +33,14 @@ public class GameMap {
     int worldMapWidth = gamePanel.tileSize * gamePanel.maxWorldCol;
     int worldMapHeight = gamePanel.tileSize * gamePanel.maxWorldRow;
 
-    worldGameMap.put(tileManager.currentMap, new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB));
-    var graphics2D = worldGameMap.get(tileManager.currentMap).createGraphics();
+    worldGameMap.put(CURRENT_MAP, new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB));
+    var graphics2D = worldGameMap.get(CURRENT_MAP).createGraphics();
 
     int col = 0;
     int row = 0;
 
     while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      int tileNum = tileManager.gameMaps.get(tileManager.currentMap)[col][row];
+      int tileNum = tileManager.gameMaps.get(CURRENT_MAP)[col][row];
       int x = gamePanel.tileSize * col;
       int y = gamePanel.tileSize * row;
       if(Objects.nonNull(tileManager.tile[tileNum])){
@@ -64,8 +65,8 @@ public class GameMap {
     int height = 500;
     int x = gamePanel.screenWidth / 2 - width / 2;
     int y = gamePanel.screenHeight / 2 - height / 2;
-    graphics2D.drawImage(worldGameMap.get(tileManager.currentMap), x, y, width, height, null);
-    System.out.println(tileManager.currentMap);
+    graphics2D.drawImage(worldGameMap.get(CURRENT_MAP), x, y, width, height, null);
+    System.out.println(CURRENT_MAP);
     // Draw Player
     double scale = (double) (gamePanel.tileSize * gamePanel.maxWorldCol) / width;
     int playerX = (int) (x + gamePanel.player.worldX / scale);
@@ -92,7 +93,7 @@ public class GameMap {
       graphics2D.setClip(circleClip);
 
       graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8F));
-      graphics2D.drawImage(worldGameMap.get(tileManager.currentMap), x, y, diameter, diameter, null);
+      graphics2D.drawImage(worldGameMap.get(CURRENT_MAP), x, y, diameter, diameter, null);
 
       // Draw player
       double scale = (double) (gamePanel.tileSize * gamePanel.maxWorldCol) / diameter;

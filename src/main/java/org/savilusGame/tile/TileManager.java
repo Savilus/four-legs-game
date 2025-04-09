@@ -62,14 +62,14 @@ import lombok.extern.slf4j.Slf4j;
 public class TileManager {
   private static TileManager instance;
   GamePanel gamePanel;
-  public String currentMap;
+  public static String CURRENT_MAP;
   public Tile[] tile;
   public Map<String, int[][]> gameMaps = new HashMap<>();
   boolean drawPath = true;
 
   private TileManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
-    this.currentMap = DUNGEON_FIRST_FLOR;
+    CURRENT_MAP = DUNGEON_FIRST_FLOR;
     tile = new Tile[50];
 
     getTileImage();
@@ -163,7 +163,7 @@ public class TileManager {
 
     while (worldCol < gamePanel.maxWorldCol && worldRow < gamePanel.maxWorldRow) {
 
-      int tileNum = gameMaps.get(currentMap)[worldCol][worldRow];
+      int tileNum = gameMaps.get(CURRENT_MAP)[worldCol][worldRow];
 
       int worldX = worldCol * gamePanel.tileSize;
       int worldY = worldRow * gamePanel.tileSize;
