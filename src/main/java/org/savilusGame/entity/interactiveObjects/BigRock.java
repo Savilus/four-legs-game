@@ -3,6 +3,7 @@ package org.savilusGame.entity.interactiveObjects;
 import static org.savilusGame.config.GameEntityNameFactory.BIGROCK;
 import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
 import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -56,19 +57,19 @@ public class BigRock extends GameEntity {
     ArrayList<InteractiveTile> plateList = new ArrayList<>();
     ArrayList<GameEntity> rockList = new ArrayList<>();
 
-    for (int i = 0; i < gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap).length; i++) {
+    for (int i = 0; i < gamePanel.mapsInteractiveTiles.get(CURRENT_MAP).length; i++) {
 
-      if (Objects.nonNull(gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i]) &&
-          StringUtils.equals(gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i].name, GameObjectType.METAL_PLATE.getName())) {
-        plateList.add(gamePanel.mapsInteractiveTiles.get(gamePanel.tileManager.currentMap)[i]);
+      if (Objects.nonNull(gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[i]) &&
+          StringUtils.equals(gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[i].name, GameObjectType.METAL_PLATE.getName())) {
+        plateList.add(gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[i]);
       }
 
     }
 
-    for (int i = 0; i < gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap).length; i++) {
-      if (Objects.nonNull(gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap)[i]) &&
-          StringUtils.equals(gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap)[i].name, GameObjectType.BIG_ROCK.getName())) {
-        rockList.add(gamePanel.mapsNpc.get(gamePanel.tileManager.currentMap)[i]);
+    for (int i = 0; i < gamePanel.mapsNpc.get(CURRENT_MAP).length; i++) {
+      if (Objects.nonNull(gamePanel.mapsNpc.get(CURRENT_MAP)[i]) &&
+          StringUtils.equals(gamePanel.mapsNpc.get(CURRENT_MAP)[i].name, GameObjectType.BIG_ROCK.getName())) {
+        rockList.add(gamePanel.mapsNpc.get(CURRENT_MAP)[i]);
       }
     }
 
@@ -98,12 +99,12 @@ public class BigRock extends GameEntity {
     }
 
     if (countRock == rockList.size()) {
-      for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
+      for (int i = 0; i < gamePanel.mapsObjects.get(CURRENT_MAP).length; i++) {
 
-        if (Objects.nonNull(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i]) &&
-            StringUtils.equals(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i].name, GameObjectType.IRON_DOOR.getName())) {
+        if (Objects.nonNull(gamePanel.mapsObjects.get(CURRENT_MAP)[i]) &&
+            StringUtils.equals(gamePanel.mapsObjects.get(CURRENT_MAP)[i].name, GameObjectType.IRON_DOOR.getName())) {
 
-          gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i] = null;
+          gamePanel.mapsObjects.get(CURRENT_MAP)[i] = null;
           gamePanel.playSoundEffect(DOOR_OPEN);
 
         }

@@ -17,6 +17,7 @@ public enum GameStateType {
   TRANSITION_STATE,
   TRADE_STATE,
   SLEEP_STATE,
-  MAP_STATE
+  MAP_STATE,
+  CUTSCENE_STATE,
 
 }

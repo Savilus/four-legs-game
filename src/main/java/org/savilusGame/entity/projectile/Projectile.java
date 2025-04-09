@@ -1,5 +1,6 @@
 package org.savilusGame.entity.projectile;
 
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
 import org.savilusGame.GamePanel;
@@ -32,10 +33,10 @@ public abstract class Projectile extends GameEntity {
   public void update() {
 
     if (owner == gamePanel.player) {
-      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap));
+      int monsterIndex = gamePanel.collisionDetector.checkEntity(this, gamePanel.mapsMonsters.get(CURRENT_MAP));
       if (monsterIndex != INIT_INDEX) {
         gamePanel.player.damageMonster(this, monsterIndex, attack * (gamePanel.player.level / 2), knockBackPower);
-        generateParticle(owner.projectile, gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)[monsterIndex]);
+        generateParticle(owner.projectile, gamePanel.mapsMonsters.get(CURRENT_MAP)[monsterIndex]);
         alive = false;
       }
     } else {

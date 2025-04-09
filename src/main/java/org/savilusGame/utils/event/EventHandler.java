@@ -7,8 +7,10 @@ import static org.savilusGame.config.GameEntityNameFactory.MAIN_MAP;
 import static org.savilusGame.config.GameEntityNameFactory.POWER_UP;
 import static org.savilusGame.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.savilusGame.config.GameEntityNameFactory.STAIRS;
+import static org.savilusGame.enums.GameStateType.CUTSCENE_STATE;
 import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
 import static org.savilusGame.enums.GameStateType.TRANSITION_STATE;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.savilusGame.GamePanel;
+import org.savilusGame.data.Progress;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.enums.AreaType;
 import org.savilusGame.enums.DirectionType;
@@ -74,7 +77,7 @@ public class EventHandler {
     }
 
     if (canTouchEvent) {
-      handleMapEvents(gamePanel.tileManager.currentMap);
+      handleMapEvents(CURRENT_MAP);
     }
   }
 
@@ -105,6 +108,7 @@ public class EventHandler {
 
   private void handleDungeonSecondFloorEvents() {
     if (hit(26, 41, DirectionType.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 8, 7, AreaType.DUNGEON);
+    if (hit(25, 27, DirectionType.ANY)) skeletonLord();
   }
 
   private void handleInteriorMapEvents() {
@@ -167,6 +171,13 @@ public class EventHandler {
     tempRow = row;
     canTouchEvent = false;
     gamePanel.playSoundEffect(STAIRS);
+  }
+
+  private void skeletonLord() {
+    if (!gamePanel.bossBattleOn && !Progress.skeletonLordDefeated) {
+      gamePanel.gameState = CUTSCENE_STATE;
+      gamePanel.cutsceneManager.sceneNum = gamePanel.cutsceneManager.skeletonLord;
+    }
   }
 
   private void damagePit() {

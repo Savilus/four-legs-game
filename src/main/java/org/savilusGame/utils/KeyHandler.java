@@ -8,6 +8,7 @@ import static org.savilusGame.enums.GameStateType.OPTIONS_STATE;
 import static org.savilusGame.enums.GameStateType.PAUSE_STATE;
 import static org.savilusGame.enums.GameStateType.PLAY_STATE;
 import static org.savilusGame.enums.GameStateType.TITLE_STATE;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -86,7 +87,7 @@ public class KeyHandler implements KeyListener {
       //DEBUG
       case KeyEvent.VK_T -> showDebugText = !showDebugText;
       //REFRESH MAP
-      case KeyEvent.VK_R -> gamePanel.tileManager.loadMap(gamePanel.tileManager.currentMap);
+      case KeyEvent.VK_R -> gamePanel.tileManager.loadMap(CURRENT_MAP);
     }
   }
 
@@ -300,7 +301,8 @@ public class KeyHandler implements KeyListener {
     switch (gamePanel.gameState) {
       case PLAY_STATE -> playState(code);
       case PAUSE_STATE -> pauseState(code);
-      case DIALOG_STATE -> dialogState(code);
+      case DIALOG_STATE,
+           CUTSCENE_STATE -> dialogState(code);
       case TITLE_STATE -> titleState(code);
       case CHARACTER_STATE -> characterState(code);
       case OPTIONS_STATE -> optionState(code);

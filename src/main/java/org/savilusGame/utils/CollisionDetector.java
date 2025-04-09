@@ -1,5 +1,7 @@
 package org.savilusGame.utils;
 
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
+
 import java.util.Objects;
 
 import org.savilusGame.GamePanel;
@@ -33,36 +35,36 @@ public class CollisionDetector {
     if (gameEntity.knockBack) {
       direction = gameEntity.knockBackDirection;
     }
-
+    var currentMapTiles = gamePanel.tileManager.gameMaps.get(CURRENT_MAP);
     switch (direction) {
       case UP -> {
         entityTopRow = (entityTopWorldY - gameEntity.speed) / gamePanel.tileSize;
-        tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
-        tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityRightCol][entityTopRow];
+        tileNum1 = currentMapTiles[entityLeftCol][entityTopRow];
+        tileNum2 = currentMapTiles[entityRightCol][entityTopRow];
         if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
       case DOWN -> {
         entityBottomRow = (entityBottomWorldY + gameEntity.speed) / gamePanel.tileSize;
-        tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityBottomRow];
-        tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityRightCol][entityBottomRow];
+        tileNum1 = currentMapTiles[entityLeftCol][entityBottomRow];
+        tileNum2 = currentMapTiles[entityRightCol][entityBottomRow];
         if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
       case LEFT -> {
         entityLeftCol = (entityLeftWorldX - gameEntity.speed) / gamePanel.tileSize;
-        tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
-        tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityBottomRow];
+        tileNum1 = currentMapTiles[entityLeftCol][entityTopRow];
+        tileNum2 = currentMapTiles[entityLeftCol][entityBottomRow];
         if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
       case RIGHT -> {
         entityRightCol = (entityRightWorldX + gameEntity.speed) / gamePanel.tileSize;
-        tileNum1 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityLeftCol][entityTopRow];
-        tileNum2 = gamePanel.tileManager.gameMaps.get(gamePanel.tileManager.currentMap)[entityRightCol][entityBottomRow];
+        tileNum1 = currentMapTiles[entityLeftCol][entityTopRow];
+        tileNum2 = currentMapTiles[entityRightCol][entityBottomRow];
         if (gamePanel.tileManager.tile[tileNum1].collision() || gamePanel.tileManager.tile[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
@@ -71,7 +73,7 @@ public class CollisionDetector {
   }
 
   public int checkObject(GameEntity gameEntity, boolean player) {
-    if (Objects.isNull(gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)))
+    if (Objects.isNull(gamePanel.mapsObjects.get(CURRENT_MAP)))
       return INIT_INDEX;
 
     int index = INIT_INDEX;
@@ -81,8 +83,8 @@ public class CollisionDetector {
       direction = gameEntity.knockBackDirection;
     }
 
-    for (int i = 0; i < gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap).length; i++) {
-      var mapObject = gamePanel.mapsObjects.get(gamePanel.tileManager.currentMap)[i];
+    for (int i = 0; i < gamePanel.mapsObjects.get(CURRENT_MAP).length; i++) {
+      var mapObject = gamePanel.mapsObjects.get(CURRENT_MAP)[i];
       if (Objects.nonNull(mapObject)) {
         //get entity's solid area position
         gameEntity.solidArea.x = gameEntity.worldX + gameEntity.solidArea.x;

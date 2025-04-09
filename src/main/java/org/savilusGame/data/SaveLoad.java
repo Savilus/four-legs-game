@@ -1,5 +1,7 @@
 package org.savilusGame.data;
 
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -12,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
+import org.savilusGame.tile.TileManager;
 
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
@@ -74,8 +77,6 @@ public class SaveLoad {
       dataStorage.currentWeaponSlot = gamePanel.player.getCurrentWeaponSlot();
       dataStorage.currentShieldSlot = gamePanel.player.getCurrentShieldSlot();
 
-      // OBJECTS ON MAP
-      String currentMapName = gamePanel.tileManager.currentMap;
 
       List<String> objectNamesList = new ArrayList<>();
       List<Integer> worldXList = new ArrayList<>();
@@ -83,8 +84,8 @@ public class SaveLoad {
       List<String> lootNamesList = new ArrayList<>();
       List<Boolean> openedList = new ArrayList<>();
 
-      for (int i = 0; i < gamePanel.mapsObjects.get(currentMapName).length; i++) {
-        var mapObject = gamePanel.mapsObjects.get(currentMapName)[i];
+      for (int i = 0; i < gamePanel.mapsObjects.get(CURRENT_MAP).length; i++) {
+        var mapObject = gamePanel.mapsObjects.get(CURRENT_MAP)[i];
         if (Objects.isNull(mapObject)) {
           objectNamesList.add("NA");
           worldXList.add(0);
@@ -104,11 +105,11 @@ public class SaveLoad {
         }
       }
 
-      dataStorage.mapObjectNames.put(currentMapName, objectNamesList);
-      dataStorage.mapObjectWorldX.put(currentMapName, worldXList);
-      dataStorage.mapObjectWorldY.put(currentMapName, worldYList);
-      dataStorage.mapObjectLootNames.put(currentMapName, lootNamesList);
-      dataStorage.mapObjectOpened.put(currentMapName, openedList);
+      dataStorage.mapObjectNames.put(CURRENT_MAP, objectNamesList);
+      dataStorage.mapObjectWorldX.put(CURRENT_MAP, worldXList);
+      dataStorage.mapObjectWorldY.put(CURRENT_MAP, worldYList);
+      dataStorage.mapObjectLootNames.put(CURRENT_MAP, lootNamesList);
+      dataStorage.mapObjectOpened.put(CURRENT_MAP, openedList);
 
       // Write the DataStorage object
       outputStream.writeObject(dataStorage);

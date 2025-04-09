@@ -4,9 +4,11 @@ import static org.savilusGame.config.GameEntityNameFactory.MARU_MONICA_FONT;
 import static org.savilusGame.config.GameEntityNameFactory.PURISA_BOLD_FONT;
 import static org.savilusGame.config.GameEntityNameFactory.SPEAK;
 import static org.savilusGame.enums.DayState.DAY;
+import static org.savilusGame.enums.GameStateType.CUTSCENE_STATE;
 import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
 import static org.savilusGame.enums.GameStateType.PLAY_STATE;
 import static org.savilusGame.enums.GameStateType.TITLE_STATE;
+import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -856,7 +858,7 @@ public class UI {
   }
 
   public void drawMonsterLife() {
-    for (GameEntity monster : gamePanel.mapsMonsters.get(gamePanel.tileManager.currentMap)) {
+    for (GameEntity monster : gamePanel.mapsMonsters.get(CURRENT_MAP)) {
       if (Objects.nonNull(monster) && monster.inCamera()) {
         boolean isBoss = monster.boss;
         double oneScaleLifeBar = (double) (gamePanel.tileSize * (isBoss ? 8 : 1)) / monster.maxLife;
@@ -930,7 +932,7 @@ public class UI {
     }
   }
 
-  private void drawDialogueScreen() {
+  public void drawDialogueScreen() {
     // WINDOW
     int x = gamePanel.tileSize * 3;
     int y = gamePanel.tileSize / 2;
@@ -959,15 +961,22 @@ public class UI {
         gamePanel.playSoundEffect(SPEAK);
       }
 
-      if (gamePanel.keyHandler.enterPressed && gamePanel.gameState == DIALOG_STATE) {
+      if (gamePanel.keyHandler.enterPressed && (gamePanel.gameState == DIALOG_STATE
+          || gamePanel.gameState == CUTSCENE_STATE)) {
+
         characterIndex = 0;
         combinedText.setLength(0);
         npc.dialogueIndex++;
         gamePanel.keyHandler.enterPressed = false;
 
+
         if (npc.dialogueIndex >= dialoguesForSet.size()) {
           npc.dialogueIndex = 0;
-          gamePanel.gameState = PLAY_STATE;
+          if (gamePanel.gameState == CUTSCENE_STATE) {
+            gamePanel.cutsceneManager.scenePhase++;
+          } else {
+            gamePanel.gameState = PLAY_STATE;
+          }
         }
       }
     } else {
@@ -1001,7 +1010,7 @@ public class UI {
     if (transitionCounter == 50) {
       transitionCounter = 0;
       gamePanel.gameState = PLAY_STATE;
-      gamePanel.tileManager.currentMap = gamePanel.eventHandler.getTempMap();
+      CURRENT_MAP = gamePanel.eventHandler.getTempMap();
       gamePanel.gameMap.createWorldMap();
       gamePanel.player.worldX = gamePanel.tileSize * gamePanel.eventHandler.getTempCol();
       gamePanel.player.worldY = gamePanel.tileSize * gamePanel.eventHandler.getTempRow();

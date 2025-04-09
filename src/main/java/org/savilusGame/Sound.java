@@ -8,6 +8,7 @@ import static org.savilusGame.config.GameEntityNameFactory.DESTROY_TREE;
 import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
 import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SONG;
 import static org.savilusGame.config.GameEntityNameFactory.FANFARE;
+import static org.savilusGame.config.GameEntityNameFactory.FINAL_BATTLE;
 import static org.savilusGame.config.GameEntityNameFactory.FIREBALL_SOUND;
 import static org.savilusGame.config.GameEntityNameFactory.GAME_OVER;
 import static org.savilusGame.config.GameEntityNameFactory.HIT_MONSTER;
@@ -70,6 +71,7 @@ public class Sound {
     soundMap.put(SPEAK, Objects.requireNonNull(getClass().getResource(SPEAK)));
     soundMap.put(CHIP_WALL, Objects.requireNonNull(getClass().getResource(CHIP_WALL)));
     soundMap.put(DOOR_OPEN, Objects.requireNonNull(getClass().getResource(DOOR_OPEN)));
+    soundMap.put(FINAL_BATTLE, Objects.requireNonNull(getClass().getResource(FINAL_BATTLE)));
   }
 
   protected void setFile(String sound) {
