@@ -7,6 +7,10 @@ public class GameEntityNameFactory {
 
   public static final String CONFIG_PATH = "/config.yml";
 
+  static {
+    YamlConfigLoader.loadConfig(GameEntityNameFactory.class, CONFIG_PATH);
+  }
+
   // PLAYER IMAGES
   @YamlValue("player.images.boyUp1")
   public static String BOY_UP1;
@@ -457,8 +461,4 @@ public class GameEntityNameFactory {
   public static String MARU_MONICA_FONT;
   @YamlValue("font.purisaBold")
   public static String PURISA_BOLD_FONT;
-
-  static {
-    YamlConfigLoader.loadConfig(GameEntityNameFactory.class, CONFIG_PATH);
-  }
 }

@@ -21,17 +21,15 @@ public class MerchantNPC extends GameEntity {
 
   public MerchantNPC(GamePanel gamePanel) {
     super(gamePanel);
-
     direction = DirectionType.DOWN;
     speed = 1;
     type = WorldGameTypes.INTERACTIVE;
-
     getPlayerImage();
     dialogues = TextManager.getAllDialoguesForTarget(MERCHANT_DIALOGUES_KEY);
     setItems();
   }
 
-  public void getPlayerImage() {
+  private void getPlayerImage() {
     up1 = setup(MERCHANT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
     up2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(MERCHANT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
@@ -42,7 +40,7 @@ public class MerchantNPC extends GameEntity {
     right2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
   }
 
-  public void setItems() {
+  private void setItems() {
     inventory.add(new RedPotion(gamePanel));
     inventory.add(new Key(gamePanel));
     inventory.add(new NormalSword(gamePanel));

@@ -33,7 +33,7 @@ public class OldManNPC extends GameEntity {
     dialogues = TextManager.getAllDialoguesForTarget(OLD_MAN_DIALOGUES_KEY);
   }
 
-  public void getPlayerImage() {
+  private void getPlayerImage() {
     up1 = setup(OLD_MAN_UP1, gamePanel.tileSize, gamePanel.tileSize);
     up2 = setup(OLD_MAN_UP2, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(OLD_MAN_DOWN1, gamePanel.tileSize, gamePanel.tileSize);

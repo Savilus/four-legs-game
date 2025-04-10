@@ -6,7 +6,8 @@ import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +43,50 @@ public class BigRock extends GameEntity {
     solidArea.height = 40;
   }
 
-  public void getImage() {
+  private void detectPlate() {
+    var currentMap = gamePanel.mapsInteractiveTiles.get(CURRENT_MAP);
+
+    List<InteractiveTile> plateList = Arrays.stream(currentMap)
+        .filter(Objects::nonNull)
+        .filter(tile -> StringUtils.equals(GameObjectType.METAL_PLATE.getName(), tile.name))
+        .toList();
+
+    List<GameEntity> rockList = Arrays.stream(gamePanel.mapsNpc.get(CURRENT_MAP))
+        .filter(Objects::nonNull)
+        .filter(npc -> StringUtils.equals(GameObjectType.BIG_ROCK.getName(), npc.name))
+        .toList();
+
+    for (InteractiveTile plate : plateList) {
+      int distance = Math.max(Math.abs(worldX - plate.worldX), Math.abs(worldY - plate.worldY));
+
+      if (distance < 12) {
+        if (Objects.isNull(linkedEntity)) {
+          linkedEntity = plate;
+          gamePanel.playSoundEffect(UNLOCK);
+        }
+      } else if (linkedEntity == plate) {
+        linkedEntity = null;
+      }
+    }
+
+    long linkedRocks = rockList.stream()
+        .filter(rock -> Objects.nonNull(rock.linkedEntity))
+        .count();
+
+    if (linkedRocks == rockList.size()) {
+      var objects = gamePanel.mapsObjects.get(CURRENT_MAP);
+      for (int i = 0; i < objects.length; i++) {
+        if (Objects.nonNull(objects[i]) &&
+            GameObjectType.IRON_DOOR.getName().equals(objects[i].name)) {
+
+          objects[i] = null;
+          gamePanel.playSoundEffect(DOOR_OPEN);
+        }
+      }
+    }
+  }
+
+  private void getImage() {
     up1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
     up2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
     down1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
@@ -51,65 +95,6 @@ public class BigRock extends GameEntity {
     left2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
     right1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
     right2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-  }
-
-  public void detectPlate() {
-    ArrayList<InteractiveTile> plateList = new ArrayList<>();
-    ArrayList<GameEntity> rockList = new ArrayList<>();
-
-    for (int i = 0; i < gamePanel.mapsInteractiveTiles.get(CURRENT_MAP).length; i++) {
-
-      if (Objects.nonNull(gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[i]) &&
-          StringUtils.equals(gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[i].name, GameObjectType.METAL_PLATE.getName())) {
-        plateList.add(gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[i]);
-      }
-
-    }
-
-    for (int i = 0; i < gamePanel.mapsNpc.get(CURRENT_MAP).length; i++) {
-      if (Objects.nonNull(gamePanel.mapsNpc.get(CURRENT_MAP)[i]) &&
-          StringUtils.equals(gamePanel.mapsNpc.get(CURRENT_MAP)[i].name, GameObjectType.BIG_ROCK.getName())) {
-        rockList.add(gamePanel.mapsNpc.get(CURRENT_MAP)[i]);
-      }
-    }
-
-    int countRock = 0;
-
-    for (InteractiveTile interactiveTile : plateList) {
-      int xDistance = Math.abs(worldX - interactiveTile.worldX);
-      int yDistance = Math.abs(worldY - interactiveTile.worldY);
-      int distance = Math.max(xDistance, yDistance);
-
-      if (distance < 12) {
-        if (Objects.isNull(linkedEntity)) {
-          linkedEntity = interactiveTile;
-          gamePanel.playSoundEffect(UNLOCK);
-        }
-      } else {
-        if (linkedEntity == interactiveTile) {
-          linkedEntity = null;
-        }
-      }
-    }
-
-    for (GameEntity gameEntity : rockList) {
-      if (Objects.nonNull(gameEntity.linkedEntity)) {
-        countRock++;
-      }
-    }
-
-    if (countRock == rockList.size()) {
-      for (int i = 0; i < gamePanel.mapsObjects.get(CURRENT_MAP).length; i++) {
-
-        if (Objects.nonNull(gamePanel.mapsObjects.get(CURRENT_MAP)[i]) &&
-            StringUtils.equals(gamePanel.mapsObjects.get(CURRENT_MAP)[i].name, GameObjectType.IRON_DOOR.getName())) {
-
-          gamePanel.mapsObjects.get(CURRENT_MAP)[i] = null;
-          gamePanel.playSoundEffect(DOOR_OPEN);
-
-        }
-      }
-    }
   }
 
   @Override

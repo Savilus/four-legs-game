@@ -305,7 +305,7 @@ public class Player extends GameEntity {
 
   void damageInteractiveTile(int interactiveTileIndex) {
 
-    if (interactiveTileIndex != INIT_INDEX && gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[interactiveTileIndex].destructible
+    if (interactiveTileIndex != INIT_INDEX && gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[interactiveTileIndex].isDestructible()
         && gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[interactiveTileIndex].isCorrectItem(this) && !gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[interactiveTileIndex].invincible) {
       gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[interactiveTileIndex].playSoundEffect();
       gamePanel.mapsInteractiveTiles.get(CURRENT_MAP)[interactiveTileIndex].currentLife--;
@@ -441,10 +441,15 @@ public class Player extends GameEntity {
   }
 
   public void setDefaultValues() {
+    // DUNGEON 1
+    worldX = gamePanel.tileSize * 20;
+    worldY = gamePanel.tileSize * 27;
+    // dungeon 1 góra
+//    worldX = gamePanel.tileSize * 9;
+//    worldY = gamePanel.tileSize * 10;
+    // main map
 //    worldX = gamePanel.tileSize * 23;
 //    worldY = gamePanel.tileSize * 21;
-    worldX = gamePanel.tileSize * 9;
-    worldY = gamePanel.tileSize * 10;
     defaultSpeed = 4;
     speed = defaultSpeed;
     direction = DOWN;

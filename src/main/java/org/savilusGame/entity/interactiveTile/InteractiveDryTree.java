@@ -2,12 +2,12 @@ package org.savilusGame.entity.interactiveTile;
 
 import static org.savilusGame.config.GameEntityNameFactory.DESTROY_TREE;
 import static org.savilusGame.config.GameEntityNameFactory.DRY_TREE;
+import static org.savilusGame.enums.WorldGameTypes.AXE;
 
 import java.awt.*;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.WorldGameTypes;
 
 public class InteractiveDryTree extends InteractiveTile {
 
@@ -18,7 +18,7 @@ public class InteractiveDryTree extends InteractiveTile {
     this.worldY = gamePanel.tileSize * row;
 
     image = setup(DRY_TREE, gamePanel.tileSize, gamePanel.tileSize);
-    destructible = true;
+    setDestructible(true);
   }
 
   @Override
@@ -53,6 +53,6 @@ public class InteractiveDryTree extends InteractiveTile {
 
   @Override
   public boolean isCorrectItem(GameEntity item) {
-    return item.currentWeapon.type == WorldGameTypes.AXE;
+    return item.currentWeapon.type == AXE;
   }
 }

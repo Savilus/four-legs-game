@@ -249,9 +249,9 @@ public abstract class GameEntity {
   }
 
   public void update() {
+    checkCollision();
     if (!sleep) {
       if (knockBack) {
-        checkCollision();
         if (!collisionOn) {
           switch (knockBackDirection) {
             case UP -> worldY -= speed;

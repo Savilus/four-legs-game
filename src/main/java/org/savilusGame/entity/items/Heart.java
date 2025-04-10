@@ -27,7 +27,6 @@ public class Heart extends GameEntity {
     image = setup(HEART_FULL, gamePanel.tileSize, gamePanel.tileSize);
     image2 = setup(HEART_HALF, gamePanel.tileSize, gamePanel.tileSize);
     image3 = setup(HEART_BLANK, gamePanel.tileSize, gamePanel.tileSize);
-
   }
 
   @Override
