@@ -78,7 +78,7 @@ public class PathFinder {
         var interactiveTiles = gamePanel.mapsInteractiveTiles.get(CURRENT_MAP);
         if (Objects.nonNull(interactiveTiles)) {
           for (InteractiveTile interactiveTile : interactiveTiles) {
-            if (Objects.nonNull(interactiveTile) && interactiveTile.destructible) {
+            if (Objects.nonNull(interactiveTile) && interactiveTile.isDestructible()) {
               int itCol = interactiveTile.worldX / gamePanel.tileSize;
               int itRow = interactiveTile.worldY / gamePanel.tileSize;
               if (itCol >= 0 && itCol < gamePanel.maxWorldCol && itRow >= 0 && itRow < gamePanel.maxWorldRow) {

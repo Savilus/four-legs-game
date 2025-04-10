@@ -19,7 +19,6 @@ public class Fireball extends Projectile {
 
   public Fireball(GamePanel gamePanel) {
     super(gamePanel);
-
     name = GameObjectType.FIREBALL.getName();
     speed = 5;
     maxLife = 80;

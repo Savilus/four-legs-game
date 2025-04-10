@@ -40,7 +40,6 @@ public class Chest extends GameEntity {
 
   @Override
   public void interact() {
-
     if (!opened) {
       gamePanel.playSoundEffect(UNLOCK);
       if (!gamePanel.player.canObtainItem(loot)) {

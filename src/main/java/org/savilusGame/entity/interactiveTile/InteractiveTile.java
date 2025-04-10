@@ -5,9 +5,15 @@ import java.awt.*;
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
 public class InteractiveTile extends GameEntity {
 
-  public boolean destructible = false;
+  private boolean destructible = false;
 
   public InteractiveTile(GamePanel gamePanel) {
     super(gamePanel);

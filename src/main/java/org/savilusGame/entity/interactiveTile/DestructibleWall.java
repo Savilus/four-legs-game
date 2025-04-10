@@ -2,14 +2,14 @@ package org.savilusGame.entity.interactiveTile;
 
 import static org.savilusGame.config.GameEntityNameFactory.CHIP_WALL;
 import static org.savilusGame.config.GameEntityNameFactory.DESTRUCTIBLE_WALL;
+import static org.savilusGame.enums.WorldGameTypes.PICKAXE;
 
 import java.awt.*;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.WorldGameTypes;
 
-public class DestructibleWall extends InteractiveTile{
+public class DestructibleWall extends InteractiveTile {
 
   public DestructibleWall(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
@@ -18,7 +18,7 @@ public class DestructibleWall extends InteractiveTile{
     this.worldY = gamePanel.tileSize * row;
 
     image = setup(DESTRUCTIBLE_WALL, gamePanel.tileSize, gamePanel.tileSize);
-    destructible = true;
+    setDestructible(true);
   }
 
   @Override
@@ -48,7 +48,7 @@ public class DestructibleWall extends InteractiveTile{
 
   @Override
   public boolean isCorrectItem(GameEntity item) {
-    return item.currentWeapon.type == WorldGameTypes.PICKAXE;
+    return item.currentWeapon.type == PICKAXE;
   }
 }
 

@@ -12,6 +12,5 @@ public class Boots extends GameEntity {
     super(gamePanel);
     name = GameObjectType.BOOTS.getName();
     down1 = setup(BOOTS, gamePanel.tileSize, gamePanel.tileSize);
-
   }
 }

@@ -57,7 +57,7 @@ public class CutsceneManager {
       }
 
       for (int i = 0; i < gamePanel.mapsNpc.get(CURRENT_MAP).length; i++) {
-        if (gamePanel.mapsNpc.get(CURRENT_MAP)[i] == null) {
+        if (Objects.isNull(gamePanel.mapsNpc.get(CURRENT_MAP)[i])) {
           PlayerDummy dummy = new PlayerDummy(gamePanel);
           dummy.worldX = gamePanel.player.worldX;
           dummy.worldY = gamePanel.player.worldY;

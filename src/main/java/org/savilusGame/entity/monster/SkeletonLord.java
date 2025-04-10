@@ -1,9 +1,7 @@
 package org.savilusGame.entity.monster;
 
 import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
-import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SECOND_FLOR;
 import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SONG;
-import static org.savilusGame.config.GameEntityNameFactory.IRON_DOOR;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_DOWN2;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_LEFT1;
@@ -39,7 +37,6 @@ import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_UP2;
 import static org.savilusGame.enums.MonsterObjectType.SKELETON_LORD;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
-import java.util.Objects;
 import java.util.stream.IntStream;
 
 import org.savilusGame.GamePanel;
@@ -52,7 +49,8 @@ import org.savilusGame.utils.text.TextManager;
 
 public class SkeletonLord extends GameEntity {
 
-  public final int bossScale = 5;
+  private final int bossScale = 5;
+  private final int widthHeight = gamePanel.tileSize * bossScale;
 
   public SkeletonLord(GamePanel gamePanel) {
     super(gamePanel);
@@ -88,47 +86,44 @@ public class SkeletonLord extends GameEntity {
 
   private void getImage() {
     if (!inRage) {
-      up1 = setup(SKELETON_LORD_UP1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      up2 = setup(SKELETON_LORD_UP2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      down1 = setup(SKELETON_LORD_DOWN1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      down2 = setup(SKELETON_LORD_DOWN2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      left1 = setup(SKELETON_LORD_LEFT1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      left2 = setup(SKELETON_LORD_LEFT2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      right1 = setup(SKELETON_LORD_RIGHT1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      right2 = setup(SKELETON_LORD_RIGHT2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
+      loadImages(SKELETON_LORD_UP1, SKELETON_LORD_UP2, SKELETON_LORD_DOWN1, SKELETON_LORD_DOWN2,
+          SKELETON_LORD_LEFT1, SKELETON_LORD_LEFT2, SKELETON_LORD_RIGHT1, SKELETON_LORD_RIGHT2);
     } else {
-      up1 = setup(SKELETON_LORD_PHASE2_UP1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      up2 = setup(SKELETON_LORD_PHASE2_UP2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      down1 = setup(SKELETON_LORD_PHASE2_DOWN1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      down2 = setup(SKELETON_LORD_PHASE2_DOWN2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      left1 = setup(SKELETON_LORD_PHASE2_LEFT1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      left2 = setup(SKELETON_LORD_PHASE2_LEFT2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      right1 = setup(SKELETON_LORD_PHASE2_RIGHT1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
-      right2 = setup(SKELETON_LORD_PHASE2_RIGHT2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale);
+      loadImages(SKELETON_LORD_PHASE2_UP1, SKELETON_LORD_PHASE2_UP2, SKELETON_LORD_PHASE2_DOWN1, SKELETON_LORD_PHASE2_DOWN2,
+          SKELETON_LORD_PHASE2_LEFT1, SKELETON_LORD_PHASE2_LEFT2, SKELETON_LORD_PHASE2_RIGHT1, SKELETON_LORD_PHASE2_RIGHT2);
     }
-
   }
 
-  public void getAttackImage() {
+  private void getAttackImage() {
     if (!inRage) {
-      attackUp1 = setup(SKELETON_LORD_ATTACK_UP1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackUp2 = setup(SKELETON_LORD_ATTACK_UP2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackDown1 = setup(SKELETON_LORD_ATTACK_DOWN1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackDown2 = setup(SKELETON_LORD_ATTACK_DOWN2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackLeft1 = setup(SKELETON_LORD_ATTACK_LEFT1, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
-      attackLeft2 = setup(SKELETON_LORD_ATTACK_LEFT2, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
-      attackRight1 = setup(SKELETON_LORD_ATTACK_RIGHT1, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
-      attackRight2 = setup(SKELETON_LORD_ATTACK_RIGHT2, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
+      loadAttackImages(SKELETON_LORD_ATTACK_UP1, SKELETON_LORD_ATTACK_UP2, SKELETON_LORD_ATTACK_DOWN1, SKELETON_LORD_ATTACK_DOWN2,
+          SKELETON_LORD_ATTACK_LEFT1, SKELETON_LORD_ATTACK_LEFT2, SKELETON_LORD_ATTACK_RIGHT1, SKELETON_LORD_ATTACK_RIGHT2);
     } else {
-      attackUp1 = setup(SKELETON_LORD_ATTACK_PHASE2_UP1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackUp2 = setup(SKELETON_LORD_ATTACK_PHASE2_UP2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackDown1 = setup(SKELETON_LORD_ATTACK_PHASE2_DOWN1, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackDown2 = setup(SKELETON_LORD_ATTACK_PHASE2_DOWN2, gamePanel.tileSize * bossScale, gamePanel.tileSize * bossScale * 2);
-      attackLeft1 = setup(SKELETON_LORD_ATTACK_PHASE2_LEFT1, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
-      attackLeft2 = setup(SKELETON_LORD_ATTACK_PHASE2_LEFT2, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
-      attackRight1 = setup(SKELETON_LORD_ATTACK_PHASE2_RIGHT1, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
-      attackRight2 = setup(SKELETON_LORD_ATTACK_PHASE2_RIGHT2, gamePanel.tileSize * bossScale * 2, gamePanel.tileSize * bossScale);
+      loadAttackImages(SKELETON_LORD_ATTACK_PHASE2_UP1, SKELETON_LORD_ATTACK_PHASE2_UP2, SKELETON_LORD_ATTACK_PHASE2_DOWN1,
+          SKELETON_LORD_ATTACK_PHASE2_DOWN2, SKELETON_LORD_ATTACK_PHASE2_LEFT1, SKELETON_LORD_ATTACK_PHASE2_LEFT2, SKELETON_LORD_ATTACK_PHASE2_RIGHT1, SKELETON_LORD_ATTACK_PHASE2_RIGHT2);
     }
+  }
+
+  private void loadImages(String skeletonLordUp1, String skeletonLordUp2, String skeletonLordDown1, String skeletonLordDown2, String skeletonLordLeft1, String skeletonLordLeft2, String skeletonLordRight1, String skeletonLordRight2) {
+    up1 = setup(skeletonLordUp1, widthHeight, widthHeight);
+    up2 = setup(skeletonLordUp2, widthHeight, widthHeight);
+    down1 = setup(skeletonLordDown1, widthHeight, widthHeight);
+    down2 = setup(skeletonLordDown2, widthHeight, widthHeight);
+    left1 = setup(skeletonLordLeft1, widthHeight, widthHeight);
+    left2 = setup(skeletonLordLeft2, widthHeight, widthHeight);
+    right1 = setup(skeletonLordRight1, widthHeight, widthHeight);
+    right2 = setup(skeletonLordRight2, widthHeight, widthHeight);
+  }
+
+  private void loadAttackImages(String skeletonLordAttackUp1, String skeletonLordAttackUp2, String skeletonLordAttackDown1, String skeletonLordAttackDown2, String skeletonLordAttackLeft1, String skeletonLordAttackLeft2, String skeletonLordAttackRight1, String skeletonLordAttackRight2) {
+    attackUp1 = setup(skeletonLordAttackUp1, widthHeight, widthHeight * 2);
+    attackUp2 = setup(skeletonLordAttackUp2, widthHeight, widthHeight * 2);
+    attackDown1 = setup(skeletonLordAttackDown1, widthHeight, widthHeight * 2);
+    attackDown2 = setup(skeletonLordAttackDown2, widthHeight, widthHeight * 2);
+    attackLeft1 = setup(skeletonLordAttackLeft1, widthHeight * 2, widthHeight);
+    attackLeft2 = setup(skeletonLordAttackLeft2, widthHeight * 2, widthHeight);
+    attackRight1 = setup(skeletonLordAttackRight1, widthHeight * 2, widthHeight);
+    attackRight2 = setup(skeletonLordAttackRight2, widthHeight * 2, widthHeight);
   }
 
   @Override
@@ -155,7 +150,6 @@ public class SkeletonLord extends GameEntity {
 
   @Override
   public void setAction() {
-
     if (!inRage && currentLife < maxLife / 2) {
       inRage = true;
       getImage();
