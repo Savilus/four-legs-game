@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.LANTERN;
 import static org.savilusGame.enums.WorldGameTypes.LIGHTING;
 
@@ -15,8 +16,8 @@ public class Lantern extends GameEntity {
 
     type = LIGHTING;
     name = GameObjectType.LANTERN.getName();
-    image = setup(LANTERN, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(LANTERN, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(LANTERN, TILE_SIZE, TILE_SIZE);
+    down1 = setup(LANTERN, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObjectType.LANTERN.getTextKey()), name);
     price = 200;
     lightRadius = 450;

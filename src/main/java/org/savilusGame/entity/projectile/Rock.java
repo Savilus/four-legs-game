@@ -1,5 +1,6 @@
 package org.savilusGame.entity.projectile;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.ROCK_ATTACK;
 
 import java.awt.*;
@@ -12,26 +13,25 @@ public class Rock extends Projectile {
 
   public Rock(GamePanel gamePanel) {
     super(gamePanel);
-
     name = GameObjectType.ROCK.getName();
     speed = 8;
     maxLife = 50;
     currentLife = maxLife;
     attack = 1;
-    useCost = 1;
     alive = false;
+    setUseCost(1);
     getImage();
   }
 
   private void getImage() {
-    up1 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(ROCK_ATTACK, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    up2 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    down1 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    down2 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    left1 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    left2 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    right1 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
+    right2 = setup(ROCK_ATTACK, TILE_SIZE, TILE_SIZE);
   }
 
   @Override
@@ -56,12 +56,12 @@ public class Rock extends Projectile {
 
   @Override
   public void substractResource(GameEntity user) {
-    user.ammo -= useCost;
+    user.ammo -= getUseCost();
   }
 
   @Override
   public boolean haveResource(GameEntity user) {
-    return user.ammo >= useCost;
+    return user.ammo >= getUseCost();
   }
 
 }

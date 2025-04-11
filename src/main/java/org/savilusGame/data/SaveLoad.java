@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
-import org.savilusGame.tile.TileManager;
 
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
@@ -36,7 +35,7 @@ public class SaveLoad {
       DataStorage dataStorage = new DataStorage();
 
       // Interactive tiles
-      for (String mapName : gamePanel.tileManager.gameMaps.keySet()) {
+      for (String mapName : gamePanel.tileManager.getGameMaps().keySet()) {
         var interactiveTiles = gamePanel.mapsInteractiveTiles.get(mapName);
         if (gamePanel.mapsInteractiveTiles.containsKey(mapName) && Objects.nonNull(interactiveTiles)) {
           List<Integer> currentLifeList = new ArrayList<>();
@@ -124,7 +123,7 @@ public class SaveLoad {
       DataStorage dataStorage = (DataStorage) inputStream.readObject();
 
       // Interactive tiles
-      for (String mapName : gamePanel.tileManager.gameMaps.keySet()) {
+      for (String mapName : gamePanel.tileManager.getGameMaps().keySet()) {
         if (dataStorage.mapInteractiveTilesCurrentLife.containsKey(mapName) && Objects.nonNull(dataStorage.mapInteractiveTilesCurrentLife.get(mapName))) {
           List<Integer> currentLifeList = dataStorage.mapInteractiveTilesCurrentLife.get(mapName);
           List<Boolean> invincibleList = dataStorage.mapInteractiveTilesInvincible.get(mapName);
@@ -160,7 +159,7 @@ public class SaveLoad {
       // Player equipment
       gamePanel.player.inventory.clear();
       for (int i = 0; i < dataStorage.itemNames.size(); i++) {
-        GameEntity item = gamePanel.entityGenerator.getGameEntity(dataStorage.itemNames.get(i));
+        GameEntity item = gamePanel.gameEntityFactory.getGameEntity(dataStorage.itemNames.get(i));
         item.amount = dataStorage.itemAmounts.get(i);
         gamePanel.player.inventory.add(item);
       }
@@ -172,7 +171,7 @@ public class SaveLoad {
       gamePanel.player.getAttackImage();
 
       // OBJECTS ON MAP
-      for (String mapName : gamePanel.tileManager.gameMaps.keySet()) {
+      for (String mapName : gamePanel.tileManager.getGameMaps().keySet()) {
         List<String> objectNames = dataStorage.mapObjectNames.get(mapName);
         List<String> lootNames = dataStorage.mapObjectLootNames.get(mapName);
         List<Integer> worldXList = dataStorage.mapObjectWorldX.get(mapName);
@@ -187,12 +186,12 @@ public class SaveLoad {
           if (StringUtils.equals(objectNames.get(i), NA)) {
             objectsOnMap[i] = null;
           } else {
-            objectsOnMap[i] = gamePanel.entityGenerator.getGameEntity(objectNames.get(i));
+            objectsOnMap[i] = gamePanel.gameEntityFactory.getGameEntity(objectNames.get(i));
             objectsOnMap[i].worldX = worldXList.get(i);
             objectsOnMap[i].worldY = worldYList.get(i);
 
             if (Objects.nonNull(lootNames.get(i))) {
-              objectsOnMap[i].setLoot(gamePanel.entityGenerator.getGameEntity(lootNames.get(i)));
+              objectsOnMap[i].setLoot(gamePanel.gameEntityFactory.getGameEntity(lootNames.get(i)));
             }
 
             objectsOnMap[i].opened = openedList.get(i);

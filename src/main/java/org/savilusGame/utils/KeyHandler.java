@@ -15,13 +15,21 @@ import java.awt.event.KeyListener;
 
 import org.savilusGame.GamePanel;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class KeyHandler implements KeyListener {
 
-  GamePanel gamePanel;
-  public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, shotKeyPressed;
+  final GamePanel gamePanel;
+  boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, spacePressed, shotKeyPressed;
   //DEBUG
-  public boolean showDebugText;
-  public boolean godModeOn = false;
+  boolean showDebugText;
+  boolean godModeOn = false;
 
   public KeyHandler(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -81,7 +89,7 @@ public class KeyHandler implements KeyListener {
       case KeyEvent.VK_F -> shotKeyPressed = true;
       case KeyEvent.VK_ESCAPE -> gamePanel.gameState = OPTIONS_STATE;
       case KeyEvent.VK_M -> gamePanel.gameState = MAP_STATE;
-      case KeyEvent.VK_X -> gamePanel.gameMap.miniMapOn = !gamePanel.gameMap.miniMapOn;
+      case KeyEvent.VK_X -> gamePanel.gameMap.setMiniMapOn(!gamePanel.gameMap.isMiniMapOn());
       case KeyEvent.VK_G -> godModeOn = !godModeOn;
 
       //DEBUG
@@ -97,7 +105,7 @@ public class KeyHandler implements KeyListener {
     }
   }
 
-  public void characterState(int code) {
+  private void characterState(int code) {
     switch (code) {
       case KeyEvent.VK_C -> gamePanel.gameState = PLAY_STATE;
       case KeyEvent.VK_ENTER -> gamePanel.player.selectItem();
@@ -105,7 +113,7 @@ public class KeyHandler implements KeyListener {
     playerInventory(code);
   }
 
-  public void playerInventory(int code) {
+  private void playerInventory(int code) {
     switch (code) {
       case KeyEvent.VK_W, KeyEvent.VK_UP -> {
         if (gamePanel.ui.playerSlotRow != 0) {
@@ -134,7 +142,7 @@ public class KeyHandler implements KeyListener {
     }
   }
 
-  public void npcInventory(int code) {
+  private void npcInventory(int code) {
     switch (code) {
       case KeyEvent.VK_W, KeyEvent.VK_UP -> {
         if (gamePanel.ui.npcSlotRow != 0) {
@@ -290,9 +298,7 @@ public class KeyHandler implements KeyListener {
   }
 
   @Override
-  public void keyTyped(KeyEvent keyEvent) {
-
-  }
+  public void keyTyped(KeyEvent keyEvent) {}
 
   @Override
   public void keyPressed(KeyEvent keyEvent) {
@@ -311,7 +317,6 @@ public class KeyHandler implements KeyListener {
       case MAP_STATE -> mapState(code);
     }
   }
-
 
   @Override
   public void keyReleased(KeyEvent e) {

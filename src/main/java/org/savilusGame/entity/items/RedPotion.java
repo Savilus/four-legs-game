@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.POWER_UP;
 import static org.savilusGame.config.GameEntityNameFactory.RED_POTION;
 
@@ -21,8 +22,8 @@ public class RedPotion extends GameEntity {
     dialogues = TextManager.getItemTexts(GameObjectType.RED_POTION.getTextKey(), name);
     type = WorldGameTypes.CONSUMABLE;
     stackable = true;
-    image = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(RED_POTION, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
+    down1 = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObjectType.RED_POTION.getTextKey()), name, healingValue);
     price = 3;
   }

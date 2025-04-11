@@ -7,10 +7,15 @@ import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.enums.DirectionType;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public abstract class Projectile extends GameEntity {
 
-  GameEntity owner;
-  public int useCost;
+  private GameEntity owner;
+  private int useCost;
 
   protected Projectile(GamePanel gamePanel) {
     super(gamePanel);

@@ -4,13 +4,15 @@ import java.awt.*;
 
 import org.savilusGame.GamePanel;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class EnvironmentManager {
 
   private final GamePanel gamePanel;
-  public Lighting lighting;
+  private Lighting lighting;
 
   public void setup() {
     lighting = new Lighting(gamePanel);

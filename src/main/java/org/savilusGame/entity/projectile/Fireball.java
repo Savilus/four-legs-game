@@ -1,5 +1,6 @@
 package org.savilusGame.entity.projectile;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.FIREBALL_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.FIREBALL_DOWN2;
 import static org.savilusGame.config.GameEntityNameFactory.FIREBALL_LEFT1;
@@ -24,21 +25,21 @@ public class Fireball extends Projectile {
     maxLife = 80;
     currentLife = maxLife;
     attack = 1;
-    useCost = 1;
     alive = false;
     knockBackPower = 5;
+    setUseCost(1);
     getImage();
   }
 
   private void getImage() {
-    up1 = setup(FIREBALL_UP1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(FIREBALL_UP2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(FIREBALL_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(FIREBALL_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(FIREBALL_LEFT1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(FIREBALL_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(FIREBALL_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(FIREBALL_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(FIREBALL_UP1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(FIREBALL_UP2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(FIREBALL_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(FIREBALL_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(FIREBALL_LEFT1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(FIREBALL_LEFT2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(FIREBALL_RIGHT1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(FIREBALL_RIGHT2, TILE_SIZE, TILE_SIZE);
   }
 
   @Override
@@ -63,11 +64,11 @@ public class Fireball extends Projectile {
 
   @Override
   public void substractResource(GameEntity user) {
-    user.mana -= useCost;
+    user.mana -= getUseCost();
   }
 
   @Override
   public boolean haveResource(GameEntity user) {
-    return user.mana >= useCost;
+    return user.mana >= getUseCost();
   }
 }

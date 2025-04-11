@@ -1,5 +1,6 @@
 package org.savilusGame.entity.interactiveTile;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.DESTROY_TREE;
 import static org.savilusGame.config.GameEntityNameFactory.DRY_TREE;
 import static org.savilusGame.enums.WorldGameTypes.AXE;
@@ -14,10 +15,10 @@ public class InteractiveDryTree extends InteractiveTile {
   public InteractiveDryTree(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
     currentLife = 1;
-    this.worldX = gamePanel.tileSize * col;
-    this.worldY = gamePanel.tileSize * row;
+    this.worldX = TILE_SIZE * col;
+    this.worldY = TILE_SIZE * row;
 
-    image = setup(DRY_TREE, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(DRY_TREE, TILE_SIZE, TILE_SIZE);
     setDestructible(true);
   }
 
@@ -48,7 +49,7 @@ public class InteractiveDryTree extends InteractiveTile {
 
   @Override
   public InteractiveTile getDestroyedForm() {
-    return new Trunk(gamePanel, worldX / gamePanel.tileSize, worldY / gamePanel.tileSize);
+    return new Trunk(gamePanel, worldX / TILE_SIZE, worldY / TILE_SIZE);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package org.savilusGame.entity.monster;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.BAT_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.BAT_DOWN2;
 
@@ -37,14 +38,14 @@ public class Bat extends GameEntity {
   }
 
   private void getImage() {
-    up1 = setup(BAT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(BAT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(BAT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(BAT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(BAT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(BAT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(BAT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(BAT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(BAT_DOWN1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(BAT_DOWN2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(BAT_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(BAT_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(BAT_DOWN1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(BAT_DOWN2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(BAT_DOWN1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(BAT_DOWN2, TILE_SIZE, TILE_SIZE);
   }
 
   @Override

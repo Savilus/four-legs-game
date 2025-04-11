@@ -1,5 +1,6 @@
 package org.savilusGame.entity.npc;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.OLD_MAN_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.OLD_MAN_DOWN2;
 import static org.savilusGame.config.GameEntityNameFactory.OLD_MAN_LEFT1;
@@ -34,14 +35,14 @@ public class OldManNPC extends GameEntity {
   }
 
   private void getPlayerImage() {
-    up1 = setup(OLD_MAN_UP1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(OLD_MAN_UP2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(OLD_MAN_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(OLD_MAN_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(OLD_MAN_LEFT1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(OLD_MAN_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(OLD_MAN_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(OLD_MAN_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(OLD_MAN_UP1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(OLD_MAN_UP2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(OLD_MAN_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(OLD_MAN_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(OLD_MAN_LEFT1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(OLD_MAN_LEFT2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(OLD_MAN_RIGHT1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(OLD_MAN_RIGHT2, TILE_SIZE, TILE_SIZE);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package org.savilusGame.ai;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.util.ArrayList;
@@ -70,8 +71,8 @@ public class PathFinder {
       for (int row = 0; row < gamePanel.maxWorldRow; row++) {
         // SET SOLID NODE
         // CHECK TILES
-        int tileNum = gamePanel.tileManager.gameMaps.get(CURRENT_MAP)[col][row];
-        if (gamePanel.tileManager.tile[tileNum].collision()) {
+        int tileNum = gamePanel.tileManager.getGameMaps().get(CURRENT_MAP)[col][row];
+        if (gamePanel.tileManager.getTile()[tileNum].collision()) {
           node[col][row].solid = true;
         }
         // CHECK INTERACTIVE TILES
@@ -79,8 +80,8 @@ public class PathFinder {
         if (Objects.nonNull(interactiveTiles)) {
           for (InteractiveTile interactiveTile : interactiveTiles) {
             if (Objects.nonNull(interactiveTile) && interactiveTile.isDestructible()) {
-              int itCol = interactiveTile.worldX / gamePanel.tileSize;
-              int itRow = interactiveTile.worldY / gamePanel.tileSize;
+              int itCol = interactiveTile.worldX / TILE_SIZE;
+              int itRow = interactiveTile.worldY / TILE_SIZE;
               if (itCol >= 0 && itCol < gamePanel.maxWorldCol && itRow >= 0 && itRow < gamePanel.maxWorldRow) {
                 node[itCol][itRow].solid = true;
               }

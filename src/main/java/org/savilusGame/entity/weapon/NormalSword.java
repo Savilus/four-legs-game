@@ -1,5 +1,6 @@
 package org.savilusGame.entity.weapon;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.NORMAL_SWORD;
 
 import org.savilusGame.GamePanel;
@@ -13,7 +14,7 @@ public class NormalSword extends GameEntity {
   public NormalSword(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.NORMAL_SWORD.getName();
-    down1 = setup(NORMAL_SWORD, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(NORMAL_SWORD, TILE_SIZE, TILE_SIZE);
     attackValue = 1;
     attackArea.width = 36;
     attackArea.height = 36;
@@ -23,6 +24,5 @@ public class NormalSword extends GameEntity {
     knockBackPower = 2;
     firstAttackMotionDuration = 5;
     secondAttackMotionDuration = 25;
-
   }
 }

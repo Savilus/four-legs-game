@@ -8,32 +8,35 @@ import java.util.stream.Collectors;
 
 import org.savilusGame.enums.GameObjectType;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TextManager {
-  private static final String DIALOGUES_PATH = "src/main/resources/texts/dialogues";
-  private static final String PLAYER_AND_ITEMS_INFO_PATH = "src/main/resources/texts/itemsInformation";
-  private static final String SETTINGS_AND_UI_TEXTS_PATH = "src/main/resources/texts/settingsAndUI";
-  private static final String DESCRIPTION = "description";
-  private static final String USE = "use";
-  private static final String OPEN_DOOR = "openDoor";
-  private static final String COLLECT_ITEM = "collectItem";
-  private static final String LVL_UP = "lvlUp";
-  private static final String NAME = "name";
-  private static final String EVENT_MESSAGES_KEY = "eventMessages";
+  static String DIALOGUES_PATH = "src/main/resources/texts/dialogues";
+  static String PLAYER_AND_ITEMS_INFO_PATH = "src/main/resources/texts/itemsInformation";
+  static String SETTINGS_AND_UI_TEXTS_PATH = "src/main/resources/texts/settingsAndUI";
+  static String DESCRIPTION = "description";
+  static String USE = "use";
+  static String OPEN_DOOR = "openDoor";
+  static String COLLECT_ITEM = "collectItem";
+  static String LVL_UP = "lvlUp";
+  static String NAME = "name";
+  static String EVENT_MESSAGES_KEY = "eventMessages";
 
   @Getter
-  private final Map<String, Map<String, List<String>>> dialogues = TextLoader.loadAllDialogues(DIALOGUES_PATH);
+  Map<String, Map<String, List<String>>> dialogues = TextLoader.loadAllDialogues(DIALOGUES_PATH);
   @Getter
-  private final Map<String, Map<String, String>> items = TextLoader.loadItemsInformation(PLAYER_AND_ITEMS_INFO_PATH);
+  Map<String, Map<String, String>> items = TextLoader.loadItemsInformation(PLAYER_AND_ITEMS_INFO_PATH);
   @Getter
-  private final Map<String, Map<String, String>> settingsAndUI = TextLoader.loadSettingsAndUITexts(SETTINGS_AND_UI_TEXTS_PATH);
+  Map<String, Map<String, String>> settingsAndUI = TextLoader.loadSettingsAndUITexts(SETTINGS_AND_UI_TEXTS_PATH);
 
-  private static final Map<String, String> formatKeys = new HashMap<>();
+  static Map<String, String> formatKeys = new HashMap<>();
 
   static {
     formatKeys.put(GameObjectType.CHEST.getTextKey(), COLLECT_ITEM);

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 @Getter
 @AllArgsConstructor
 public enum DirectionType {
+
   UP("up"),
   DOWN("down"),
   LEFT("left"),

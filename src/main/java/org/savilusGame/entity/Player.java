@@ -1,5 +1,6 @@
 package org.savilusGame.entity;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.BOY_ATTACK_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.BOY_ATTACK_DOWN2;
 import static org.savilusGame.config.GameEntityNameFactory.BOY_ATTACK_LEFT1;
@@ -67,7 +68,6 @@ import org.savilusGame.entity.weapon.Axe;
 import org.savilusGame.entity.weapon.NormalSword;
 import org.savilusGame.entity.weapon.PickAxe;
 import org.savilusGame.enums.WorldGameTypes;
-import org.savilusGame.tile.TileManager;
 import org.savilusGame.utils.KeyHandler;
 import org.savilusGame.utils.text.TextManager;
 
@@ -95,8 +95,8 @@ public class Player extends GameEntity {
     super(gamePanel);
     this.keyHandler = keyHandler;
     type = WorldGameTypes.PLAYER;
-    screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
-    screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize / 2);
+    screenX = gamePanel.screenWidth / 2 - (TILE_SIZE / 2);
+    screenY = gamePanel.screenHeight / 2 - (TILE_SIZE / 2);
 
     solidArea = new Rectangle();
     solidArea.x = 8;
@@ -122,32 +122,32 @@ public class Player extends GameEntity {
 
   public void getAttackImage() {
     if (currentWeapon.type == WorldGameTypes.SWORD) {
-      attackUp1 = setup(BOY_ATTACK_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackUp2 = setup(BOY_ATTACK_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackDown1 = setup(BOY_ATTACK_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackDown2 = setup(BOY_ATTACK_DOWN2, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackLeft1 = setup(BOY_ATTACK_LEFT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackLeft2 = setup(BOY_ATTACK_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackRight1 = setup(BOY_ATTACK_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackRight2 = setup(BOY_ATTACK_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackUp1 = setup(BOY_ATTACK_UP1, TILE_SIZE, TILE_SIZE * 2);
+      attackUp2 = setup(BOY_ATTACK_UP2, TILE_SIZE, TILE_SIZE * 2);
+      attackDown1 = setup(BOY_ATTACK_DOWN1, TILE_SIZE, TILE_SIZE * 2);
+      attackDown2 = setup(BOY_ATTACK_DOWN2, TILE_SIZE, TILE_SIZE * 2);
+      attackLeft1 = setup(BOY_ATTACK_LEFT1, TILE_SIZE * 2, TILE_SIZE);
+      attackLeft2 = setup(BOY_ATTACK_LEFT2, TILE_SIZE * 2, TILE_SIZE);
+      attackRight1 = setup(BOY_ATTACK_RIGHT1, TILE_SIZE * 2, TILE_SIZE);
+      attackRight2 = setup(BOY_ATTACK_RIGHT2, TILE_SIZE * 2, TILE_SIZE);
     } else if (currentWeapon.type == WorldGameTypes.AXE) {
-      attackUp1 = setup(BOY_AXE_ATTACK_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackUp2 = setup(BOY_AXE_ATTACK_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackDown1 = setup(BOY_AXE_ATTACK_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackDown2 = setup(BOY_AXE_ATTACK_DOWN2, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackLeft1 = setup(BOY_AXE_ATTACK_LEFT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackLeft2 = setup(BOY_AXE_ATTACK_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackRight1 = setup(BOY_AXE_ATTACK_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackRight2 = setup(BOY_AXE_ATTACK_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackUp1 = setup(BOY_AXE_ATTACK_UP1, TILE_SIZE, TILE_SIZE * 2);
+      attackUp2 = setup(BOY_AXE_ATTACK_UP2, TILE_SIZE, TILE_SIZE * 2);
+      attackDown1 = setup(BOY_AXE_ATTACK_DOWN1, TILE_SIZE, TILE_SIZE * 2);
+      attackDown2 = setup(BOY_AXE_ATTACK_DOWN2, TILE_SIZE, TILE_SIZE * 2);
+      attackLeft1 = setup(BOY_AXE_ATTACK_LEFT1, TILE_SIZE * 2, TILE_SIZE);
+      attackLeft2 = setup(BOY_AXE_ATTACK_LEFT2, TILE_SIZE * 2, TILE_SIZE);
+      attackRight1 = setup(BOY_AXE_ATTACK_RIGHT1, TILE_SIZE * 2, TILE_SIZE);
+      attackRight2 = setup(BOY_AXE_ATTACK_RIGHT2, TILE_SIZE * 2, TILE_SIZE);
     } else if (currentWeapon.type == WorldGameTypes.PICKAXE) {
-      attackUp1 = setup(PICK_AXE_UP_1, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackUp2 = setup(PICK_AXE_UP_2, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackDown1 = setup(PICK_AXE_DOWN_1, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackDown2 = setup(PICK_AXE_DOWN_2, gamePanel.tileSize, gamePanel.tileSize * 2);
-      attackLeft1 = setup(PICK_AXE_LEFT_1, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackLeft2 = setup(PICK_AXE_LEFT_2, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackRight1 = setup(PICK_AXE_RIGHT_1, gamePanel.tileSize * 2, gamePanel.tileSize);
-      attackRight2 = setup(PICK_AXE_RIGHT_2, gamePanel.tileSize * 2, gamePanel.tileSize);
+      attackUp1 = setup(PICK_AXE_UP_1, TILE_SIZE, TILE_SIZE * 2);
+      attackUp2 = setup(PICK_AXE_UP_2, TILE_SIZE, TILE_SIZE * 2);
+      attackDown1 = setup(PICK_AXE_DOWN_1, TILE_SIZE, TILE_SIZE * 2);
+      attackDown2 = setup(PICK_AXE_DOWN_2, TILE_SIZE, TILE_SIZE * 2);
+      attackLeft1 = setup(PICK_AXE_LEFT_1, TILE_SIZE * 2, TILE_SIZE);
+      attackLeft2 = setup(PICK_AXE_LEFT_2, TILE_SIZE * 2, TILE_SIZE);
+      attackRight1 = setup(PICK_AXE_RIGHT_1, TILE_SIZE * 2, TILE_SIZE);
+      attackRight2 = setup(PICK_AXE_RIGHT_2, TILE_SIZE * 2, TILE_SIZE);
     }
   }
 
@@ -178,17 +178,17 @@ public class Player extends GameEntity {
       }
     } else if (attacking) {
       attacking();
-    } else if (keyHandler.spacePressed) {
+    } else if (keyHandler.isSpacePressed()) {
       guarding = true;
       guardCounter++;
-    } else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
-      if (keyHandler.upPressed) {
+    } else if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed() || keyHandler.isEnterPressed()) {
+      if (keyHandler.isUpPressed()) {
         direction = UP;
-      } else if (keyHandler.downPressed) {
+      } else if (keyHandler.isDownPressed()) {
         direction = DOWN;
-      } else if (keyHandler.leftPressed) {
+      } else if (keyHandler.isLeftPressed()) {
         direction = LEFT;
-      } else if (keyHandler.rightPressed) {
+      } else if (keyHandler.isRightPressed()) {
         direction = RIGHT;
       }
 
@@ -215,7 +215,7 @@ public class Player extends GameEntity {
       gamePanel.eventHandler.checkEvent();
 
       // IF COLLISION IS FALSE, PLAYER CAN MOVE
-      if (!collisionOn && !keyHandler.enterPressed) {
+      if (!collisionOn && !keyHandler.isEnterPressed()) {
         switch (getDirection()) {
           case UP -> worldY -= speed;
           case DOWN -> worldY += speed;
@@ -224,7 +224,7 @@ public class Player extends GameEntity {
         }
       }
 
-      if (keyHandler.enterPressed && !attackCanceled) {
+      if (keyHandler.isEnterPressed() && !attackCanceled) {
         gamePanel.playSoundEffect(SWING_WEAPON);
         attacking = true;
         spriteCounter = 0;
@@ -232,7 +232,7 @@ public class Player extends GameEntity {
 
       attackCanceled = false;
       guarding = false;
-      gamePanel.keyHandler.enterPressed = false;
+      gamePanel.keyHandler.setEnterPressed(false);
       guardCounter = 0;
 
       spriteCounter++;
@@ -250,7 +250,7 @@ public class Player extends GameEntity {
       }
     }
 
-    if (keyHandler.shotKeyPressed && !projectile.alive && shootAvailableCounter == 50 &&
+    if (keyHandler.isShotKeyPressed() && !projectile.alive && shootAvailableCounter == 50 &&
         projectile.haveResource(this)) {
       // SET DEFAULT COORDINATES, DIRECTION AND USER
       projectile.set(worldX, worldY, direction, true, this);
@@ -287,7 +287,7 @@ public class Player extends GameEntity {
       mana = maxMana;
     }
 
-    if (!keyHandler.godModeOn && currentLife <= 0) {
+    if (!keyHandler.isGodModeOn() && currentLife <= 0) {
       gamePanel.gameState = GAME_OVER_STATE;
       gamePanel.ui.commandNum = -1;
       gamePanel.stopMusic();
@@ -418,21 +418,21 @@ public class Player extends GameEntity {
   }
 
   public void getImage() {
-    up1 = setup(BOY_UP1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(BOY_UP2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(BOY_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(BOY_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(BOY_LEFT1, gamePanel.tileSize, gamePanel.tileSize);
-    up1 = setup(BOY_UP1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(BOY_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(BOY_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(BOY_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(BOY_UP1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(BOY_UP2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(BOY_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(BOY_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(BOY_LEFT1, TILE_SIZE, TILE_SIZE);
+    up1 = setup(BOY_UP1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(BOY_LEFT2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(BOY_RIGHT1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(BOY_RIGHT2, TILE_SIZE, TILE_SIZE);
   }
 
   private void interactNPC(int npcIndex) {
     if (npcIndex != INIT_INDEX) {
 
-      if (gamePanel.keyHandler.enterPressed) {
+      if (gamePanel.keyHandler.isEnterPressed()) {
         attackCanceled = true;
         gamePanel.mapsNpc.get(CURRENT_MAP)[npcIndex].speak();
       }
@@ -442,14 +442,14 @@ public class Player extends GameEntity {
 
   public void setDefaultValues() {
     // DUNGEON 1
-    worldX = gamePanel.tileSize * 20;
-    worldY = gamePanel.tileSize * 27;
+//    worldX = TILE_SIZE * 20;
+//    worldY = TILE_SIZE * 27;
     // dungeon 1 góra
-//    worldX = gamePanel.tileSize * 9;
-//    worldY = gamePanel.tileSize * 10;
+    worldX = TILE_SIZE * 9;
+    worldY = TILE_SIZE * 10;
     // main map
-//    worldX = gamePanel.tileSize * 23;
-//    worldY = gamePanel.tileSize * 21;
+//    worldX = TILE_SIZE * 23;
+//    worldY = TILE_SIZE * 21;
     defaultSpeed = 4;
     speed = defaultSpeed;
     direction = DOWN;
@@ -516,16 +516,16 @@ public class Player extends GameEntity {
   }
 
   public void getGuardImage() {
-    guardUp = setup(BOY_GUARD_UP, gamePanel.tileSize, gamePanel.tileSize);
-    guardDown = setup(BOY_GUARD_DOWN, gamePanel.tileSize, gamePanel.tileSize);
-    guardLeft = setup(BOY_GUARD_LEFT, gamePanel.tileSize, gamePanel.tileSize);
-    guardRight = setup(BOY_GUARD_RIGHT, gamePanel.tileSize, gamePanel.tileSize);
+    guardUp = setup(BOY_GUARD_UP, TILE_SIZE, TILE_SIZE);
+    guardDown = setup(BOY_GUARD_DOWN, TILE_SIZE, TILE_SIZE);
+    guardLeft = setup(BOY_GUARD_LEFT, TILE_SIZE, TILE_SIZE);
+    guardRight = setup(BOY_GUARD_RIGHT, TILE_SIZE, TILE_SIZE);
   }
 
   public void setDefaultPositions() {
 
-    worldX = gamePanel.tileSize * 23;
-    worldY = gamePanel.tileSize * 21;
+    worldX = TILE_SIZE * 23;
+    worldY = TILE_SIZE * 21;
     direction = DOWN;
   }
 
@@ -547,7 +547,7 @@ public class Player extends GameEntity {
     BufferedImage image = switch (getDirection()) {
       case UP -> {
         if (attacking) {
-          temporaryScreenY = screenY - gamePanel.tileSize;
+          temporaryScreenY = screenY - TILE_SIZE;
           if (spriteNum == 1) yield attackUp1;
           else yield attackUp2;
         } else {
@@ -572,7 +572,7 @@ public class Player extends GameEntity {
       }
       case LEFT -> {
         if (attacking) {
-          temporaryScreenX = screenX - gamePanel.tileSize;
+          temporaryScreenX = screenX - TILE_SIZE;
           if (spriteNum == 1) yield attackLeft1;
           else yield attackLeft2;
         } else {
@@ -621,7 +621,7 @@ public class Player extends GameEntity {
   }
 
   public boolean canObtainItem(GameEntity item) {
-    GameEntity newItem = gamePanel.entityGenerator.getGameEntity(item.name);
+    GameEntity newItem = gamePanel.gameEntityFactory.getGameEntity(item.name);
     if (newItem.stackable) {
       int itemIndex = searchItemInInventory(item.name);
 
@@ -648,7 +648,7 @@ public class Player extends GameEntity {
           gamePanel.mapsObjects.get(CURRENT_MAP)[objectIndex] = null;
         }
         case OBSTACLE -> {
-          if (keyHandler.enterPressed) {
+          if (keyHandler.isEnterPressed()) {
             attackCanceled = true;
             gamePanel.mapsObjects.get(CURRENT_MAP)[objectIndex].interact();
           }

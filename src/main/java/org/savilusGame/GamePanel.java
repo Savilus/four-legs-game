@@ -24,7 +24,7 @@ import javax.swing.*;
 
 import org.savilusGame.ai.PathFinder;
 import org.savilusGame.data.SaveLoad;
-import org.savilusGame.entity.EntityGenerator;
+import org.savilusGame.entity.GameEntityFactory;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.Player;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
@@ -39,18 +39,17 @@ import org.savilusGame.utils.CutsceneManager;
 import org.savilusGame.utils.KeyHandler;
 import org.savilusGame.utils.event.EventHandler;
 
-// Game screen
 public class GamePanel extends JPanel implements Runnable {
 
   // SCREEN SETTINGS
-  final int originalTitleSize = 16; // 16x16 tile
-  final int scale = 3;
+  final static int originalTitleSize = 16; // 16x16 tile
+  final static int scale = 3;
+  public final static int TILE_SIZE = originalTitleSize * scale; // 48 x 48 tile
 
-  public final int tileSize = originalTitleSize * scale; // 48 x 48 tile
   public final int maxScreenColumn = 20;
   public final int maxScreenRow = 12;
-  public final int screenWidth = tileSize * maxScreenColumn; // 960 pixels
-  public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+  public final int screenWidth = TILE_SIZE * maxScreenColumn; // 960 pixels
+  public final int screenHeight = TILE_SIZE * maxScreenRow; // 576 pixels
 
   // WORLD SETTINGS
   public final int maxWorldCol = 50;
@@ -78,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
   public EventHandler eventHandler = new EventHandler(this);
   EnvironmentManager environmentManager = new EnvironmentManager(this);
   public GameMap gameMap = new GameMap(this);
-  public EntityGenerator entityGenerator = new EntityGenerator(this);
+  public GameEntityFactory gameEntityFactory = new GameEntityFactory(this);
   public CutsceneManager cutsceneManager = new CutsceneManager(this);
 
   // ENTITY AND OBJECT
@@ -214,7 +213,7 @@ public class GamePanel extends JPanel implements Runnable {
       assetSetter.setObject();
       assetSetter.setInteractiveTiles();
       assetSetter.setInteractiveObjects();
-      environmentManager.lighting.resetDay();
+      environmentManager.getLighting().resetDay();
     }
   }
 
@@ -259,7 +258,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void removeTemporaryGameEntity() {
-    for (String mapName : tileManager.gameMaps.keySet()) {
+    for (String mapName : tileManager.getGameMaps().keySet()) {
       List<GameEntity> allMapObjects = new ArrayList<>(List.of(mapsObjects.get(mapName)));
       if (allMapObjects.isEmpty()) continue;
 
@@ -340,7 +339,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     //DEBUG
-    if (keyHandler.showDebugText) {
+    if (keyHandler.isShowDebugText()) {
 
       tempGraphic2d.setFont(new Font("Arial", Font.PLAIN, 20));
       tempGraphic2d.setColor(Color.WHITE);
@@ -352,11 +351,11 @@ public class GamePanel extends JPanel implements Runnable {
       y += lineHeight;
       tempGraphic2d.drawString("WorldY ->" + player.worldY, x, y);
       y += lineHeight;
-      tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / tileSize, x, y);
+      tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / TILE_SIZE, x, y);
       y += lineHeight;
-      tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+      tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / TILE_SIZE, x, y);
       y += lineHeight;
-      tempGraphic2d.drawString("God Mode: -> " + keyHandler.godModeOn, x, y);
+      tempGraphic2d.drawString("God Mode: -> " + keyHandler.isGodModeOn(), x, y);
     }
   }
 

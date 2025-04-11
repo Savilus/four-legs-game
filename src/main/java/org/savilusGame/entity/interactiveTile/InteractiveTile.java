@@ -1,5 +1,7 @@
 package org.savilusGame.entity.interactiveTile;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
+
 import java.awt.*;
 
 import org.savilusGame.GamePanel;
@@ -35,10 +37,10 @@ public class InteractiveTile extends GameEntity {
     int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
     int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
-    if (worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-        worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-        worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-        worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
+    if (worldX + TILE_SIZE > gamePanel.player.worldX - gamePanel.player.screenX &&
+        worldX - TILE_SIZE < gamePanel.player.worldX + gamePanel.player.screenX &&
+        worldY + TILE_SIZE > gamePanel.player.worldY - gamePanel.player.screenY &&
+        worldY - TILE_SIZE < gamePanel.player.worldY + gamePanel.player.screenY) {
 
       graphics2D.drawImage(image, screenX, screenY, null);
 

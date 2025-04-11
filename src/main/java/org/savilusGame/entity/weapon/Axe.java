@@ -1,5 +1,6 @@
 package org.savilusGame.entity.weapon;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.AXE;
 
 import org.savilusGame.GamePanel;
@@ -13,8 +14,8 @@ public class Axe extends GameEntity {
   public Axe(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.AXE.getName();
-    image = setup(AXE, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(AXE, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(AXE, TILE_SIZE, TILE_SIZE);
+    down1 = setup(AXE, TILE_SIZE, TILE_SIZE);
     attackValue = 2;
     attackArea.width = 30;
     attackArea.height = 30;

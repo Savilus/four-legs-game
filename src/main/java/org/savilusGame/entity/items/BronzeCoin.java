@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.BRONZE_COIN;
 import static org.savilusGame.config.GameEntityNameFactory.COIN;
 
@@ -17,8 +18,8 @@ public class BronzeCoin extends GameEntity {
     type = WorldGameTypes.PICK_UP;
     name = GameObjectType.BRONZE_COIN.getName();
     value = 1;
-    image = setup(BRONZE_COIN, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(BRONZE_COIN, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
+    down1 = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
   }
 
   @Override
