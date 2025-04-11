@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.HEART_BLANK;
 import static org.savilusGame.config.GameEntityNameFactory.HEART_FULL;
 import static org.savilusGame.config.GameEntityNameFactory.HEART_HALF;
@@ -21,12 +22,12 @@ public class Heart extends GameEntity {
     type = WorldGameTypes.PICK_UP;
     name = GameObjectType.HEART.getName();
     value = 2;
-    down1 = setup(HEART_FULL, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
 
     name = GameObjectType.HEART.getName();
-    image = setup(HEART_FULL, gamePanel.tileSize, gamePanel.tileSize);
-    image2 = setup(HEART_HALF, gamePanel.tileSize, gamePanel.tileSize);
-    image3 = setup(HEART_BLANK, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
+    image2 = setup(HEART_HALF, TILE_SIZE, TILE_SIZE);
+    image3 = setup(HEART_BLANK, TILE_SIZE, TILE_SIZE);
   }
 
   @Override

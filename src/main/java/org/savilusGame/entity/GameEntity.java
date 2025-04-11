@@ -1,5 +1,6 @@
 package org.savilusGame.entity;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.BLOCKED;
 import static org.savilusGame.config.GameEntityNameFactory.PARRY;
 import static org.savilusGame.config.GameEntityNameFactory.RECEIVE_DAMAGE;
@@ -311,15 +312,15 @@ public abstract class GameEntity {
   }
 
   public void searchPath(int goalCol, int goalRow) {
-    int startCol = (worldX + solidArea.x) / gamePanel.tileSize;
-    int startRow = (worldY + solidArea.y) / gamePanel.tileSize;
+    int startCol = (worldX + solidArea.x) / TILE_SIZE;
+    int startRow = (worldY + solidArea.y) / TILE_SIZE;
 
     gamePanel.pathFinder.setNodes(startCol, startRow, goalCol, goalRow);
 
     if (gamePanel.pathFinder.search()) {
       // Next wordX & worldY
-      int nextX = gamePanel.pathFinder.getPathList().getFirst().getCol() * gamePanel.tileSize;
-      int nextY = gamePanel.pathFinder.getPathList().getFirst().getRow() * gamePanel.tileSize;
+      int nextX = gamePanel.pathFinder.getPathList().getFirst().getCol() * TILE_SIZE;
+      int nextY = gamePanel.pathFinder.getPathList().getFirst().getRow() * TILE_SIZE;
 
       // Entity's solid area position
       int entityLeftX = worldX + solidArea.x;
@@ -328,13 +329,13 @@ public abstract class GameEntity {
       int entityBottomY = worldY + solidArea.y + solidArea.height;
 
 
-      if (entityLeftX >= nextX && entityRightX < nextX + gamePanel.tileSize) {
+      if (entityLeftX >= nextX && entityRightX < nextX + TILE_SIZE) {
         if (entityTopY > nextY) {
           direction = UP;
         } else if (entityTopY < nextY) {
           direction = DOWN;
         }
-      } else if (entityTopY >= nextY && entityBottomY < nextY + gamePanel.tileSize) {
+      } else if (entityTopY >= nextY && entityBottomY < nextY + TILE_SIZE) {
         if (entityLeftX > nextX) {
           direction = LEFT;
         } else if (entityLeftX < nextX) {
@@ -382,10 +383,10 @@ public abstract class GameEntity {
 
   public boolean inCamera() {
     boolean inCamera = false;
-    if (worldX + gamePanel.tileSize * 5 > gamePanel.player.worldX - gamePanel.player.screenX &&
-        worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-        worldY + gamePanel.tileSize * 5 > gamePanel.player.worldY - gamePanel.player.screenY &&
-        worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
+    if (worldX + TILE_SIZE * 5 > gamePanel.player.worldX - gamePanel.player.screenX &&
+        worldX - TILE_SIZE < gamePanel.player.worldX + gamePanel.player.screenX &&
+        worldY + TILE_SIZE * 5 > gamePanel.player.worldY - gamePanel.player.screenY &&
+        worldY - TILE_SIZE < gamePanel.player.worldY + gamePanel.player.screenY) {
       inCamera = true;
     }
     return inCamera;
@@ -567,8 +568,8 @@ public abstract class GameEntity {
       case RIGHT -> nextWorldX = user.getRightX() + gamePanel.player.speed;
     }
 
-    int col = nextWorldX / gamePanel.tileSize;
-    int row = nextWorldY / gamePanel.tileSize;
+    int col = nextWorldX / TILE_SIZE;
+    int row = nextWorldY / TILE_SIZE;
 
     for (int objectIndex = 0; objectIndex < gameObjects.length; objectIndex++) {
       if (Objects.nonNull(gameObjects[objectIndex])) {
@@ -642,11 +643,11 @@ public abstract class GameEntity {
   }
 
   public int getCol() {
-    return (worldX + solidArea.x) / gamePanel.tileSize;
+    return (worldX + solidArea.x) / TILE_SIZE;
   }
 
   public int getRow() {
-    return (worldY + solidArea.y) / gamePanel.tileSize;
+    return (worldY + solidArea.y) / TILE_SIZE;
   }
 
   public void checkIfShouldAttack(int rate, int straight, int horizontal) {
@@ -762,15 +763,15 @@ public abstract class GameEntity {
   }
 
   public int getTileDistance(GameEntity target) {
-    return (getXDistance(target) + getYDistance(target)) / gamePanel.tileSize;
+    return (getXDistance(target) + getYDistance(target)) / TILE_SIZE;
   }
 
   public int getGoalCol(GameEntity target) {
-    return (target.worldX + target.solidArea.x) / gamePanel.tileSize;
+    return (target.worldX + target.solidArea.x) / TILE_SIZE;
   }
 
   public int getGoalRow(GameEntity target) {
-    return (target.worldY + target.solidArea.y) / gamePanel.tileSize;
+    return (target.worldY + target.solidArea.y) / TILE_SIZE;
   }
 
   public void resetCounter() {

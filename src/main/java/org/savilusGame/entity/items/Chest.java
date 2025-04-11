@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.CHEST;
 import static org.savilusGame.config.GameEntityNameFactory.CHEST_OPENED;
 import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
@@ -20,8 +21,8 @@ public class Chest extends GameEntity {
     super(gamePanel);
     type = OBSTACLE;
     name = GameObjectType.CHEST.getName();
-    image = setup(CHEST, gamePanel.tileSize, gamePanel.tileSize);
-    image2 = setup(CHEST_OPENED, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(CHEST, TILE_SIZE, TILE_SIZE);
+    image2 = setup(CHEST_OPENED, TILE_SIZE, TILE_SIZE);
     collision = true;
 
     solidArea.x = 4;

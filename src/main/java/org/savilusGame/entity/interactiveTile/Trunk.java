@@ -1,5 +1,6 @@
 package org.savilusGame.entity.interactiveTile;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.TRUNK;
 
 import org.savilusGame.GamePanel;
@@ -9,10 +10,10 @@ public class Trunk extends InteractiveTile {
   public Trunk(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
 
-    this.worldX = gamePanel.tileSize * col;
-    this.worldY = gamePanel.tileSize * row;
+    this.worldX = TILE_SIZE * col;
+    this.worldY = TILE_SIZE * row;
 
-    image = setup(TRUNK, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(TRUNK, TILE_SIZE, TILE_SIZE);
 
     solidArea.x = 0;
     solidArea.y = 0;

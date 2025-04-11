@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.KEY;
 import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
 import static org.savilusGame.enums.WorldGameTypes.CONSUMABLE;
@@ -21,8 +22,8 @@ public class Key extends GameEntity {
     name = GameObjectType.KEY.getName();
     type = CONSUMABLE;
     stackable = true;
-    image = setup(KEY, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(KEY, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(KEY, TILE_SIZE, TILE_SIZE);
+    down1 = setup(KEY, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObjectType.KEY.getTextKey()), name);
     dialogues = TextManager.getItemTexts(GameObjectType.KEY.getTextKey(), name);
     price = 1;

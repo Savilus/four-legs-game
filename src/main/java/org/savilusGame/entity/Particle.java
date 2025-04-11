@@ -1,20 +1,24 @@
 package org.savilusGame.entity;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
+
 import java.awt.*;
 
 import org.savilusGame.GamePanel;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Particle extends GameEntity {
 
-  GameEntity generator;
-  Color color;
-  int size;
-  int xd;
+  final Color color;
+  final int size;
+  final int xd;
   int yd;
 
   public Particle(GamePanel gamePanel, GameEntity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
     super(gamePanel);
-    this.generator = generator;
     this.color = color;
     this.size = size;
     this.speed = speed;
@@ -23,7 +27,7 @@ public class Particle extends GameEntity {
     this.yd = yd;
 
     currentLife = maxLife;
-    int offset = (gamePanel.tileSize / 2) - (size / 2);
+    int offset = (TILE_SIZE / 2) - (size / 2);
     worldX = generator.worldX + offset;
     worldY = generator.worldY + offset;
   }

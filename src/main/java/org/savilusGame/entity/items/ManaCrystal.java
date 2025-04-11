@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.MANA_CRYSTAL_BLANK;
 import static org.savilusGame.config.GameEntityNameFactory.MANA_CRYSTAL_FULL;
 import static org.savilusGame.config.GameEntityNameFactory.POWER_UP;
@@ -20,9 +21,9 @@ public class ManaCrystal extends GameEntity {
     type = WorldGameTypes.PICK_UP;
     name = GameObjectType.MANA_CRYSTAL.getName();
     value = 1;
-    down1 = setup(MANA_CRYSTAL_FULL, gamePanel.tileSize, gamePanel.tileSize);
-    image = setup(MANA_CRYSTAL_FULL, gamePanel.tileSize, gamePanel.tileSize);
-    image2 = setup(MANA_CRYSTAL_BLANK, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);
+    image = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);
+    image2 = setup(MANA_CRYSTAL_BLANK, TILE_SIZE, TILE_SIZE);
   }
 
   @Override

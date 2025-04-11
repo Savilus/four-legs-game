@@ -1,5 +1,6 @@
 package org.savilusGame.entity.interactiveTile;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.CHIP_WALL;
 import static org.savilusGame.config.GameEntityNameFactory.DESTRUCTIBLE_WALL;
 import static org.savilusGame.enums.WorldGameTypes.PICKAXE;
@@ -14,10 +15,10 @@ public class DestructibleWall extends InteractiveTile {
   public DestructibleWall(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
     currentLife = 1;
-    this.worldX = gamePanel.tileSize * col;
-    this.worldY = gamePanel.tileSize * row;
+    this.worldX = TILE_SIZE * col;
+    this.worldY = TILE_SIZE * row;
 
-    image = setup(DESTRUCTIBLE_WALL, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(DESTRUCTIBLE_WALL, TILE_SIZE, TILE_SIZE);
     setDestructible(true);
   }
 

@@ -19,5 +19,4 @@ public enum GameStateType {
   SLEEP_STATE,
   MAP_STATE,
   CUTSCENE_STATE,
-
 }

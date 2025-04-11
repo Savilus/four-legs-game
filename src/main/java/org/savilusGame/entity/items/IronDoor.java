@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.IRON_DOOR;
 import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
 
@@ -16,7 +17,7 @@ public class IronDoor extends GameEntity {
   public IronDoor(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.IRON_DOOR.getName();
-    image = setup(IRON_DOOR, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(IRON_DOOR, TILE_SIZE, TILE_SIZE);
     collision = true;
     type = OBSTACLE;
 

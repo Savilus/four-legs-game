@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum WorldGameTypes {
-
   PLAYER,
   INTERACTIVE,
   MONSTER,

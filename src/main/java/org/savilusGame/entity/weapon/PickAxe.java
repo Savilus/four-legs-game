@@ -1,5 +1,6 @@
 package org.savilusGame.entity.weapon;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.PICK_AXE;
 
 import org.savilusGame.GamePanel;
@@ -13,7 +14,7 @@ public class PickAxe extends GameEntity {
   public PickAxe(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObjectType.PICKAXE.getName();
-    down1 = setup(PICK_AXE, gamePanel.tileSize, gamePanel.tileSize);
+    down1 = setup(PICK_AXE, TILE_SIZE, TILE_SIZE);
     attackValue = 2;
     attackArea.width = 30;
     attackArea.height = 30;

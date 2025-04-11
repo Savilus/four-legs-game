@@ -1,7 +1,6 @@
 package org.savilusGame.tile;
 
-import static java.awt.Color.BLACK;
-import static java.awt.Color.WHITE;
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
@@ -14,14 +13,23 @@ import java.util.Objects;
 import org.savilusGame.GamePanel;
 import org.savilusGame.utils.text.TextManager;
 
-public class GameMap {
-  private final static String CLOSE_MAP_KEY = "closeMapText";
-  private final static String UI_MESSAGES = "uiMessages";
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 
-  private final GamePanel gamePanel;
-  private final TileManager tileManager;
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class GameMap {
+  static String CLOSE_MAP_KEY = "closeMapText";
+  static String UI_MESSAGES = "uiMessages";
+
+  GamePanel gamePanel;
+  TileManager tileManager;
   Map<String, BufferedImage> worldGameMap = new HashMap<>();
-  public boolean miniMapOn = false;
+  @NonFinal boolean miniMapOn = false;
 
   public GameMap(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -30,86 +38,83 @@ public class GameMap {
   }
 
   public void createWorldMap() {
-    int worldMapWidth = gamePanel.tileSize * gamePanel.maxWorldCol;
-    int worldMapHeight = gamePanel.tileSize * gamePanel.maxWorldRow;
+    int cols = gamePanel.maxWorldCol;
+    int rows = gamePanel.maxWorldRow;
 
-    worldGameMap.put(CURRENT_MAP, new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB));
-    var graphics2D = worldGameMap.get(CURRENT_MAP).createGraphics();
+    int width = TILE_SIZE * cols;
+    int height = TILE_SIZE * rows;
 
-    int col = 0;
-    int row = 0;
+    var worldMapImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    var graphics2D = worldMapImage.createGraphics();
 
-    while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      int tileNum = tileManager.gameMaps.get(CURRENT_MAP)[col][row];
-      int x = gamePanel.tileSize * col;
-      int y = gamePanel.tileSize * row;
-      if(Objects.nonNull(tileManager.tile[tileNum])){
-        graphics2D.drawImage(tileManager.tile[tileNum].image(), x, y, null);
-      }
+    int[][] tileMap = tileManager.getGameMaps().get(CURRENT_MAP);
 
-      col++;
-      if (col == gamePanel.maxWorldCol) {
-        col = 0;
-        row++;
+    for (int row = 0; row < rows; row++) {
+      for (int col = 0; col < cols; col++) {
+        int tileNum = tileMap[col][row];
+        var tile = tileManager.getTile()[tileNum];
+        if (Objects.nonNull(tile)) {
+          int x = TILE_SIZE * col;
+          int y = TILE_SIZE * row;
+          graphics2D.drawImage(tile.image(), x, y, null);
+        }
       }
     }
+
     graphics2D.dispose();
+    worldGameMap.put(CURRENT_MAP, worldMapImage);
   }
 
-  public void drawFullMapScreen(Graphics2D graphics2D) {
-    graphics2D.setColor(BLACK);
-    graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
 
-    // Draw map
-    int width = 500;
-    int height = 500;
-    int x = gamePanel.screenWidth / 2 - width / 2;
-    int y = gamePanel.screenHeight / 2 - height / 2;
-    graphics2D.drawImage(worldGameMap.get(CURRENT_MAP), x, y, width, height, null);
-    System.out.println(CURRENT_MAP);
-    // Draw Player
-    double scale = (double) (gamePanel.tileSize * gamePanel.maxWorldCol) / width;
+  public void drawFullMapScreen(Graphics2D g2) {
+    int size = 500;
+    int x = gamePanel.screenWidth / 2 - size / 2;
+    int y = gamePanel.screenHeight / 2 - size / 2;
+    drawMap(g2, x, y, size, size, false, true, 1F);
+
+    g2.setFont(gamePanel.ui.maruMonica.deriveFont(32F));
+    g2.setColor(Color.WHITE);
+    g2.drawString(TextManager.getUiText(UI_MESSAGES, CLOSE_MAP_KEY), 750, 550);
+  }
+
+
+  public void drawMiniMap(Graphics2D g2) {
+    if (!miniMapOn) return;
+    int diameter = 200;
+    int x = gamePanel.screenWidth - diameter - 15;
+    int y = 15;
+    drawMap(g2, x, y, diameter, diameter, true, false, 0.8F);
+  }
+
+
+  private void drawMap(Graphics2D g2, int x, int y, int width, int height, boolean isCircle, boolean withBackground, float alpha) {
+    if (withBackground) {
+      g2.setColor(Color.BLACK);
+      g2.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+    }
+
+    Shape originalClip = g2.getClip();
+    if (isCircle) {
+      Ellipse2D circle = new Ellipse2D.Float(x, y, width, height);
+      g2.setClip(circle);
+    }
+
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+    g2.drawImage(worldGameMap.get(CURRENT_MAP), x, y, width, height, null);
+
+    double scale = (double) (TILE_SIZE * gamePanel.maxWorldCol) / width;
     int playerX = (int) (x + gamePanel.player.worldX / scale);
     int playerY = (int) (y + gamePanel.player.worldY / scale);
-    int playerSize = gamePanel.tileSize / 3;
-    graphics2D.drawImage(gamePanel.player.down1, playerX, playerY, playerSize, playerSize, null);
+    int playerSize = TILE_SIZE / 3;
+    g2.drawImage(gamePanel.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
 
-    // Hint
-    graphics2D.setFont(gamePanel.ui.maruMonica.deriveFont(32F));
-    graphics2D.setColor(WHITE);
-    graphics2D.drawString(TextManager.getUiText(UI_MESSAGES, CLOSE_MAP_KEY), 750, 550);
+    g2.setClip(originalClip);
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
 
-  }
-
-  public void drawMiniMap(Graphics2D graphics2D) {
-    if (miniMapOn) {
-      int diameter = 200;
-      int x = gamePanel.screenWidth - diameter - 15;
-      int y = 15;
-
-      Shape originalClip = graphics2D.getClip();
-
-      Ellipse2D circleClip = new Ellipse2D.Float(x, y, diameter, diameter);
-      graphics2D.setClip(circleClip);
-
-      graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8F));
-      graphics2D.drawImage(worldGameMap.get(CURRENT_MAP), x, y, diameter, diameter, null);
-
-      // Draw player
-      double scale = (double) (gamePanel.tileSize * gamePanel.maxWorldCol) / diameter;
-      int playerX = (int) (x + gamePanel.player.worldX / scale);
-      int playerY = (int) (y + gamePanel.player.worldY / scale);
-      int playerSize = gamePanel.tileSize / 3;
-      graphics2D.drawImage(gamePanel.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
-
-      graphics2D.setClip(originalClip);
-
-      graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
-
-      graphics2D.setColor(Color.WHITE);
-      graphics2D.setStroke(new BasicStroke(3));
-      graphics2D.draw(circleClip);
+    if (isCircle) {
+      g2.setColor(Color.WHITE);
+      g2.setStroke(new BasicStroke(3));
+      g2.draw(new Ellipse2D.Float(x, y, width, height));
     }
   }
-
 }

@@ -1,5 +1,6 @@
 package org.savilusGame.utils.event;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_FIRST_FLOR;
 import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SECOND_FLOR;
 import static org.savilusGame.config.GameEntityNameFactory.INTERIOR_MAP;
@@ -48,21 +49,17 @@ public class EventHandler {
   public EventHandler(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
     eventRect.put(MAIN_MAP, new EventRect[gamePanel.maxWorldCol][gamePanel.maxWorldRow]);
-    int col = 0;
-    int row = 0;
-    while (col < gamePanel.maxWorldCol && row < gamePanel.maxWorldRow) {
-      eventRect.get(MAIN_MAP)[col][row] = new EventRect();
-      eventRect.get(MAIN_MAP)[col][row].x = 23;
-      eventRect.get(MAIN_MAP)[col][row].y = 23;
-      eventRect.get(MAIN_MAP)[col][row].width = 2;
-      eventRect.get(MAIN_MAP)[col][row].height = 2;
-      eventRect.get(MAIN_MAP)[col][row].eventRectDefaultX = eventRect.get(MAIN_MAP)[col][row].x;
-      eventRect.get(MAIN_MAP)[col][row].eventRectDefaultY = eventRect.get(MAIN_MAP)[col][row].y;
+    for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+      for (int col = 0; col < gamePanel.maxWorldCol; col++) {
+        EventRect rect = new EventRect();
+        rect.x = 23;
+        rect.y = 23;
+        rect.width = 2;
+        rect.height = 2;
+        rect.eventRectDefaultX = rect.x;
+        rect.eventRectDefaultY = rect.y;
 
-      col++;
-      if (col == gamePanel.maxWorldCol) {
-        col = 0;
-        row++;
+        eventRect.get(MAIN_MAP)[col][row] = rect;
       }
     }
   }
@@ -72,7 +69,7 @@ public class EventHandler {
     int yDistance = Math.abs(gamePanel.player.worldY - previousEventY);
     int distance = Math.max(xDistance, yDistance);
 
-    if (distance > gamePanel.tileSize) {
+    if (distance > TILE_SIZE) {
       canTouchEvent = true;
     }
 
@@ -117,7 +114,7 @@ public class EventHandler {
   }
 
   private void speak(GameEntity gameEntity) {
-    if (gamePanel.keyHandler.enterPressed) {
+    if (gamePanel.keyHandler.isEnterPressed()) {
       gamePanel.gameState = DIALOG_STATE;
       gamePanel.player.attackCanceled = true;
       gameEntity.speak();
@@ -133,8 +130,8 @@ public class EventHandler {
     );
 
     var eventArea = new Rectangle(
-        col * gamePanel.tileSize + eventRect.get(MAIN_MAP)[col][row].x,
-        row * gamePanel.tileSize + eventRect.get(MAIN_MAP)[col][row].y,
+        col * TILE_SIZE + eventRect.get(MAIN_MAP)[col][row].x,
+        row * TILE_SIZE + eventRect.get(MAIN_MAP)[col][row].y,
         eventRect.get(MAIN_MAP)[col][row].width,
         eventRect.get(MAIN_MAP)[col][row].height
     );
@@ -149,7 +146,6 @@ public class EventHandler {
 
     resetPlayerSolidArea();
     resetEventArea(col, row);
-
     return false;
   }
 
@@ -176,7 +172,7 @@ public class EventHandler {
   private void skeletonLord() {
     if (!gamePanel.bossBattleOn && !Progress.skeletonLordDefeated) {
       gamePanel.gameState = CUTSCENE_STATE;
-      gamePanel.cutsceneManager.sceneNum = gamePanel.cutsceneManager.skeletonLord;
+      gamePanel.cutsceneManager.setSceneNum(gamePanel.cutsceneManager.getSkeletonLord());
     }
   }
 
@@ -190,8 +186,7 @@ public class EventHandler {
   }
 
   private void healingPool() {
-
-    if (gamePanel.keyHandler.enterPressed) {
+    if (gamePanel.keyHandler.isEnterPressed()) {
       gamePanel.gameState = GameStateType.DIALOG_STATE;
       gamePanel.player.attackCanceled = true;
       gamePanel.playSoundEffect(POWER_UP);

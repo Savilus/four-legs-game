@@ -1,5 +1,6 @@
 package org.savilusGame.entity.items;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.SLEEP;
 import static org.savilusGame.config.GameEntityNameFactory.TENT;
 import static org.savilusGame.enums.GameStateType.SLEEP_STATE;
@@ -16,8 +17,8 @@ public class Tent extends GameEntity {
     super(gamePanel);
     type = CONSUMABLE;
     name = GameObjectType.TENT.getName();
-    image = setup(TENT, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(TENT, gamePanel.tileSize, gamePanel.tileSize);
+    image = setup(TENT, TILE_SIZE, TILE_SIZE);
+    down1 = setup(TENT, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObjectType.TENT.getTextKey()), name);
     price = 200;
     stackable = true;

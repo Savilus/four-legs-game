@@ -1,5 +1,6 @@
 package org.savilusGame.entity.monster;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
 import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SONG;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_ATTACK_DOWN1;
@@ -50,7 +51,7 @@ import org.savilusGame.utils.text.TextManager;
 public class SkeletonLord extends GameEntity {
 
   private final int bossScale = 5;
-  private final int widthHeight = gamePanel.tileSize * bossScale;
+  private final int widthHeight = TILE_SIZE * bossScale;
 
   public SkeletonLord(GamePanel gamePanel) {
     super(gamePanel);
@@ -68,7 +69,7 @@ public class SkeletonLord extends GameEntity {
     knockBackPower = 5;
     sleep = true;
 
-    int size = gamePanel.tileSize * 5;
+    int size = TILE_SIZE * 5;
     solidArea.x = 48;
     solidArea.y = 48;
     solidArea.width = size - 48 * 2;
@@ -166,7 +167,7 @@ public class SkeletonLord extends GameEntity {
     }
 
     if (!attacking) {
-      checkIfShouldAttack(60, gamePanel.tileSize * 7, gamePanel.tileSize * 5);
+      checkIfShouldAttack(60, TILE_SIZE * 7, TILE_SIZE * 5);
     }
   }
 }

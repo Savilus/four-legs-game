@@ -1,5 +1,6 @@
 package org.savilusGame.entity.interactiveObjects;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.BIGROCK;
 import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
 import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
@@ -87,14 +88,14 @@ public class BigRock extends GameEntity {
   }
 
   private void getImage() {
-    up1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(BIGROCK, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    up2 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    down1 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    down2 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    left1 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    left2 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    right1 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
+    right2 = setup(BIGROCK, TILE_SIZE, TILE_SIZE);
   }
 
   @Override

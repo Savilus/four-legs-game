@@ -1,5 +1,6 @@
 package org.savilusGame.entity.monster;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.RED_SLIME_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.RED_SLIME_DOWN2;
 
@@ -39,14 +40,14 @@ public class RedSlime extends GameEntity {
   }
 
   private void getImage() {
-    up1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(RED_SLIME_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(RED_SLIME_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(RED_SLIME_DOWN1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(RED_SLIME_DOWN2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(RED_SLIME_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(RED_SLIME_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(RED_SLIME_DOWN1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(RED_SLIME_DOWN2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(RED_SLIME_DOWN1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(RED_SLIME_DOWN2, TILE_SIZE, TILE_SIZE);
   }
 
   @Override

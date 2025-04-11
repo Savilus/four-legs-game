@@ -1,5 +1,6 @@
 package org.savilusGame.entity.npc;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.MERCHANT_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.MERCHANT_DOWN2;
 import static org.savilusGame.enums.GameStateType.TRADE_STATE;
@@ -30,14 +31,14 @@ public class MerchantNPC extends GameEntity {
   }
 
   private void getPlayerImage() {
-    up1 = setup(MERCHANT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(MERCHANT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(MERCHANT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(MERCHANT_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(MERCHANT_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(MERCHANT_DOWN1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(MERCHANT_DOWN2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(MERCHANT_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(MERCHANT_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(MERCHANT_DOWN1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(MERCHANT_DOWN2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(MERCHANT_DOWN1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(MERCHANT_DOWN2, TILE_SIZE, TILE_SIZE);
   }
 
   private void setItems() {

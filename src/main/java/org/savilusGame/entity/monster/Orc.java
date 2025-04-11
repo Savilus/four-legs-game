@@ -1,5 +1,6 @@
 package org.savilusGame.entity.monster;
 
+import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.ATTACK_ORC_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.ATTACK_ORC_DOWN2;
 import static org.savilusGame.config.GameEntityNameFactory.ATTACK_ORC_LEFT1;
@@ -58,25 +59,25 @@ public class Orc extends GameEntity {
   }
 
   private void getImage() {
-    up1 = setup(ORC_UP1, gamePanel.tileSize, gamePanel.tileSize);
-    up2 = setup(ORC_UP2, gamePanel.tileSize, gamePanel.tileSize);
-    down1 = setup(ORC_DOWN1, gamePanel.tileSize, gamePanel.tileSize);
-    down2 = setup(ORC_DOWN2, gamePanel.tileSize, gamePanel.tileSize);
-    left1 = setup(ORC_LEFT1, gamePanel.tileSize, gamePanel.tileSize);
-    left2 = setup(ORC_LEFT2, gamePanel.tileSize, gamePanel.tileSize);
-    right1 = setup(ORC_RIGHT1, gamePanel.tileSize, gamePanel.tileSize);
-    right2 = setup(ORC_RIGHT2, gamePanel.tileSize, gamePanel.tileSize);
+    up1 = setup(ORC_UP1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(ORC_UP2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(ORC_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(ORC_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(ORC_LEFT1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(ORC_LEFT2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(ORC_RIGHT1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(ORC_RIGHT2, TILE_SIZE, TILE_SIZE);
   }
 
   public void getAttackImage() {
-    attackUp1 = setup(ATTACK_ORC_UP1, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackUp2 = setup(ATTACK_ORC_UP2, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackDown1 = setup(ATTACK_ORC_DOWN1, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackDown2 = setup(ATTACK_ORC_DOWN2, gamePanel.tileSize, gamePanel.tileSize * 2);
-    attackLeft1 = setup(ATTACK_ORC_LEFT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-    attackLeft2 = setup(ATTACK_ORC_LEFT2, gamePanel.tileSize * 2, gamePanel.tileSize);
-    attackRight1 = setup(ATTACK_ORC_RIGHT1, gamePanel.tileSize * 2, gamePanel.tileSize);
-    attackRight2 = setup(ATTACK_ORC_RIGHT2, gamePanel.tileSize * 2, gamePanel.tileSize);
+    attackUp1 = setup(ATTACK_ORC_UP1, TILE_SIZE, TILE_SIZE * 2);
+    attackUp2 = setup(ATTACK_ORC_UP2, TILE_SIZE, TILE_SIZE * 2);
+    attackDown1 = setup(ATTACK_ORC_DOWN1, TILE_SIZE, TILE_SIZE * 2);
+    attackDown2 = setup(ATTACK_ORC_DOWN2, TILE_SIZE, TILE_SIZE * 2);
+    attackLeft1 = setup(ATTACK_ORC_LEFT1, TILE_SIZE * 2, TILE_SIZE);
+    attackLeft2 = setup(ATTACK_ORC_LEFT2, TILE_SIZE * 2, TILE_SIZE);
+    attackRight1 = setup(ATTACK_ORC_RIGHT1, TILE_SIZE * 2, TILE_SIZE);
+    attackRight2 = setup(ATTACK_ORC_RIGHT2, TILE_SIZE * 2, TILE_SIZE);
   }
 
   @Override
@@ -107,7 +108,7 @@ public class Orc extends GameEntity {
     }
 
     if (!attacking) {
-      checkIfShouldAttack(30, gamePanel.tileSize * 4, gamePanel.tileSize);
+      checkIfShouldAttack(30, TILE_SIZE * 4, TILE_SIZE);
     }
   }
 }
