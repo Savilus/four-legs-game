@@ -26,11 +26,11 @@ public class Tent extends GameEntity {
 
   @Override
   public boolean use(GameEntity gameEntity) {
-    gamePanel.gameState = SLEEP_STATE;
+    gamePanel.setGameState(SLEEP_STATE);
     gamePanel.playSoundEffect(SLEEP);
-    gamePanel.player.currentLife = gamePanel.player.maxLife;
-    gamePanel.player.mana = gamePanel.player.maxMana;
-    gamePanel.player.getSleepingImage(image);
+    gamePanel.getPlayer().currentLife = gamePanel.getPlayer().maxLife;
+    gamePanel.getPlayer().mana = gamePanel.getPlayer().maxMana;
+    gamePanel.getPlayer().getSleepingImage(image);
     return true;
   }
 }

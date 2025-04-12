@@ -33,7 +33,7 @@ public class Heart extends GameEntity {
   @Override
   public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(POWER_UP);
-    gamePanel.ui.addMessage(TextManager.getUiText(UI_MESSAGES, LIFE) + value);
+    gamePanel.getUi().addMessage(TextManager.getUiText(UI_MESSAGES, LIFE) + value);
     entity.currentLife += value;
     return true;
   }

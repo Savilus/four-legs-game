@@ -27,11 +27,11 @@ public final class Config {
   void saveConfig() {
     Try.run(() -> {
       BufferedWriter writer = new BufferedWriter(new FileWriter(GAME_CONFIG_FILE_NAME));
-      writer.write(gamePanel.fullScreenOn ? FULL_SCREEN_ON : FULL_SCREEN_OFF);
+      writer.write(gamePanel.isFullScreenOn() ? FULL_SCREEN_ON : FULL_SCREEN_OFF);
       writer.newLine();
-      writer.write(String.valueOf(gamePanel.music.getVolumeScale()));
+      writer.write(String.valueOf(gamePanel.getMusic().getVolumeScale()));
       writer.newLine();
-      writer.write(String.valueOf(gamePanel.soundEffect.getVolumeScale()));
+      writer.write(String.valueOf(gamePanel.getSoundEffect().getVolumeScale()));
     }).onFailure(e -> log.info("Could not save config: {}", e.getMessage()));
   }
 
@@ -39,11 +39,11 @@ public final class Config {
     Try.run(() -> {
       BufferedReader reader = new BufferedReader(new FileReader(GAME_CONFIG_FILE_NAME));
       String configLine = reader.readLine();
-      gamePanel.fullScreenOn = StringUtils.equalsIgnoreCase(configLine, FULL_SCREEN_ON);
+      gamePanel.setFullScreenOn(StringUtils.equalsIgnoreCase(configLine, FULL_SCREEN_ON));
       configLine = reader.readLine();
-      gamePanel.music.setVolumeScale(Integer.parseInt(configLine));
+      gamePanel.getMusic().setVolumeScale(Integer.parseInt(configLine));
       configLine = reader.readLine();
-      gamePanel.soundEffect.setVolumeScale(Integer.parseInt(configLine));
+      gamePanel.getSoundEffect().setVolumeScale(Integer.parseInt(configLine));
 
     }).onFailure(e -> log.info("Could not save config: {}", e.getMessage()));
   }

@@ -70,13 +70,13 @@ public class GreenSlime extends GameEntity {
   @Override
   public void setAction() {
     if (onPath) {
-      checkIfShouldStopChasing(gamePanel.player, 15, 100);
-      searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
+      checkIfShouldStopChasing(gamePanel.getPlayer(), 15, 100);
+      searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
 // Enable if you want green slime to shoot a rock
 //      checkIfShouldShoot(100, 50);
     } else {
       getRandomDirection(120);
-      checkIfShouldStartChasing(gamePanel.player, 5, 100);
+      checkIfShouldStartChasing(gamePanel.getPlayer(), 5, 100);
     }
   }
 }

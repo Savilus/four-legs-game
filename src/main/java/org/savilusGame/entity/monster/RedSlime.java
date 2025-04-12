@@ -70,12 +70,12 @@ public class RedSlime extends GameEntity {
   @Override
   public void setAction() {
     if (onPath) {
-      checkIfShouldStopChasing(gamePanel.player, 15, 100);
-      searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
+      checkIfShouldStopChasing(gamePanel.getPlayer(), 15, 100);
+      searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
       checkIfShouldShoot(100, 50);
     } else {
       getRandomDirection(80);
-      checkIfShouldStartChasing(gamePanel.player, 5, 100);
+      checkIfShouldStartChasing(gamePanel.getPlayer(), 5, 100);
     }
   }
 }

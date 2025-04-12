@@ -35,43 +35,31 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 import io.vavr.control.Try;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Sound {
 
-  private Clip clip;
-  private final Map<String, URL> soundMap = new HashMap<>(20);
-  private FloatControl floatControl;
-  @Getter
-  @Setter
-  private int volumeScale = 3;
-  private float volume;
+  Clip clip;
+  final Map<String, URL> soundMap = new HashMap<>(20);
+  FloatControl floatControl;
+  @Getter @Setter int volumeScale = 3;
+  float volume;
 
   public Sound() {
-    soundMap.put(OUTSIDE_MUSIC, Objects.requireNonNull(getClass().getResource(OUTSIDE_MUSIC)));
-    soundMap.put(MERCHANT_SONG, Objects.requireNonNull(getClass().getResource(MERCHANT_SONG)));
-    soundMap.put(DUNGEON_SONG, Objects.requireNonNull(getClass().getResource(DUNGEON_SONG)));
-    soundMap.put(COIN, Objects.requireNonNull(getClass().getResource(COIN)));
-    soundMap.put(POWER_UP, Objects.requireNonNull(getClass().getResource(POWER_UP)));
-    soundMap.put(UNLOCK, Objects.requireNonNull(getClass().getResource(UNLOCK)));
-    soundMap.put(FANFARE, Objects.requireNonNull(getClass().getResource(FANFARE)));
-    soundMap.put(HIT_MONSTER, Objects.requireNonNull(getClass().getResource(HIT_MONSTER)));
-    soundMap.put(RECEIVE_DAMAGE, Objects.requireNonNull(getClass().getResource(RECEIVE_DAMAGE)));
-    soundMap.put(SWING_WEAPON, Objects.requireNonNull(getClass().getResource(SWING_WEAPON)));
-    soundMap.put(LEVEL_UP, Objects.requireNonNull(getClass().getResource(LEVEL_UP)));
-    soundMap.put(CURSOR, Objects.requireNonNull(getClass().getResource(CURSOR)));
-    soundMap.put(FIREBALL_SOUND, Objects.requireNonNull(getClass().getResource(FIREBALL_SOUND)));
-    soundMap.put(DESTROY_TREE, Objects.requireNonNull(getClass().getResource(DESTROY_TREE)));
-    soundMap.put(GAME_OVER, Objects.requireNonNull(getClass().getResource(GAME_OVER)));
-    soundMap.put(STAIRS, Objects.requireNonNull(getClass().getResource(STAIRS)));
-    soundMap.put(SLEEP, Objects.requireNonNull(getClass().getResource(SLEEP)));
-    soundMap.put(BLOCKED, Objects.requireNonNull(getClass().getResource(BLOCKED)));
-    soundMap.put(PARRY, Objects.requireNonNull(getClass().getResource(PARRY)));
-    soundMap.put(SPEAK, Objects.requireNonNull(getClass().getResource(SPEAK)));
-    soundMap.put(CHIP_WALL, Objects.requireNonNull(getClass().getResource(CHIP_WALL)));
-    soundMap.put(DOOR_OPEN, Objects.requireNonNull(getClass().getResource(DOOR_OPEN)));
-    soundMap.put(FINAL_BATTLE, Objects.requireNonNull(getClass().getResource(FINAL_BATTLE)));
+    String[] sounds = {
+        OUTSIDE_MUSIC, MERCHANT_SONG, DUNGEON_SONG, COIN, POWER_UP, UNLOCK,
+        FANFARE, HIT_MONSTER, RECEIVE_DAMAGE, SWING_WEAPON, LEVEL_UP, CURSOR,
+        FIREBALL_SOUND, DESTROY_TREE, GAME_OVER, STAIRS, SLEEP, BLOCKED,
+        PARRY, SPEAK, CHIP_WALL, DOOR_OPEN, FINAL_BATTLE
+    };
+
+    for (String sound : sounds) {
+      soundMap.put(sound, Objects.requireNonNull(getClass().getResource(sound)));
+    }
   }
 
   protected void setFile(String sound) {

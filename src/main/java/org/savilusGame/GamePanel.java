@@ -24,8 +24,8 @@ import javax.swing.*;
 
 import org.savilusGame.ai.PathFinder;
 import org.savilusGame.data.SaveLoad;
-import org.savilusGame.entity.GameEntityFactory;
 import org.savilusGame.entity.GameEntity;
+import org.savilusGame.entity.GameEntityFactory;
 import org.savilusGame.entity.Player;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
 import org.savilusGame.enums.AreaType;
@@ -39,65 +39,71 @@ import org.savilusGame.utils.CutsceneManager;
 import org.savilusGame.utils.KeyHandler;
 import org.savilusGame.utils.event.EventHandler;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class GamePanel extends JPanel implements Runnable {
 
   // SCREEN SETTINGS
-  final static int originalTitleSize = 16; // 16x16 tile
-  final static int scale = 3;
-  public final static int TILE_SIZE = originalTitleSize * scale; // 48 x 48 tile
-
-  public final int maxScreenColumn = 20;
-  public final int maxScreenRow = 12;
-  public final int screenWidth = TILE_SIZE * maxScreenColumn; // 960 pixels
-  public final int screenHeight = TILE_SIZE * maxScreenRow; // 576 pixels
+  final static int ORIGINAL_TITLE_SIZE = 16; // 16x16 tile
+  final static int SCALE = 3;
+  public final static int TILE_SIZE = ORIGINAL_TITLE_SIZE * SCALE; // 48 x 48 tile
+  final int maxScreenColumn = 20;
+  final int maxScreenRow = 12;
+  final int screenWidth = TILE_SIZE * maxScreenColumn; // 960 pixels
+  final int screenHeight = TILE_SIZE * maxScreenRow; // 576 pixels
 
   // WORLD SETTINGS
-  public final int maxWorldCol = 50;
-  public final int maxWorldRow = 50;
+  final int maxWorldCol = 50;
+  final int maxWorldRow = 50;
   // FOR FULL SCREEN
   int screenWidthFull = screenWidth;
   int screenHeightFull = screenHeight;
   BufferedImage tempScreen;
   Graphics2D tempGraphic2d;
-  public boolean fullScreenOn = false;
+  boolean fullScreenOn = false;
 
   // SYSTEM
   static final int FPS = 60;
-  public TileManager tileManager = TileManager.getInstance(this);
-  public KeyHandler keyHandler = new KeyHandler(this);
-  public Sound music = new Sound();
-  public Sound soundEffect = new Sound();
-  public PathFinder pathFinder = new PathFinder(this);
-  public CollisionDetector collisionDetector = new CollisionDetector(this);
-  public AssetSetter assetSetter = new AssetSetter(this);
+  final TileManager tileManager = TileManager.getInstance(this);
+  final KeyHandler keyHandler = new KeyHandler(this);
+  Sound music = new Sound();
+  Sound soundEffect = new Sound();
+  PathFinder pathFinder = new PathFinder(this);
+  CollisionDetector collisionDetector = new CollisionDetector(this);
+  AssetSetter assetSetter = new AssetSetter(this);
   Thread gameThread;
-  public SaveLoad saveLoad = new SaveLoad(this);
+  SaveLoad saveLoad = new SaveLoad(this);
   Config config = new Config(this);
-  public UI ui = new UI(this);
-  public EventHandler eventHandler = new EventHandler(this);
-  EnvironmentManager environmentManager = new EnvironmentManager(this);
-  public GameMap gameMap = new GameMap(this);
-  public GameEntityFactory gameEntityFactory = new GameEntityFactory(this);
-  public CutsceneManager cutsceneManager = new CutsceneManager(this);
+  UI ui = new UI(this);
+  EventHandler eventHandler = new EventHandler(this);
+  final EnvironmentManager environmentManager = new EnvironmentManager(this);
+  final GameMap gameMap = new GameMap(this);
+  final GameEntityFactory gameEntityFactory = new GameEntityFactory(this);
+  final CutsceneManager cutsceneManager = new CutsceneManager(this);
 
   // ENTITY AND OBJECT
-  public Player player = new Player(this, keyHandler);
-  public Map<String, GameEntity[]> mapsObjects = new HashMap<>();
-  public Map<String, GameEntity[]> mapsNpc = new HashMap<>();
-  public Map<String, GameEntity[]> mapsMonsters = new HashMap<>();
-  public Map<String, InteractiveTile[]> mapsInteractiveTiles = new HashMap<>();
-  public Map<String, GameEntity[]> projectiles = new HashMap<>();
-  public ArrayList<GameEntity> particleList = new ArrayList<>();
+  Player player = new Player(this, keyHandler);
+  Map<String, GameEntity[]> mapsObjects = new HashMap<>();
+  Map<String, GameEntity[]> mapsNpc = new HashMap<>();
+  Map<String, GameEntity[]> mapsMonsters = new HashMap<>();
+  Map<String, InteractiveTile[]> mapsInteractiveTiles = new HashMap<>();
+  Map<String, GameEntity[]> projectiles = new HashMap<>();
+  ArrayList<GameEntity> particleList = new ArrayList<>();
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
 
   // AREA
-  public AreaType currentArea;
-  public AreaType nextArea;
+  AreaType currentArea;
+  AreaType nextArea;
 
   // GAME STATE
-  public GameStateType gameState;
-  public boolean bossBattleOn = false;
-
+  GameStateType gameState;
+  boolean bossBattleOn = false;
 
   public GamePanel() {
     this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -113,7 +119,187 @@ public class GamePanel extends JPanel implements Runnable {
     gameThread.start();
   }
 
-  public void update() {
+  public void setupGame() {
+    mapsObjects.put(CURRENT_MAP, new GameEntity[20]);
+    assetSetter.setNPC();
+    assetSetter.setObject();
+    assetSetter.setInteractiveTiles();
+    assetSetter.setMonster();
+    assetSetter.setProjectile();
+    assetSetter.setInteractiveObjects();
+    currentArea = AreaType.OUTSIDE;
+    environmentManager.setup();
+
+    tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+    tempGraphic2d = (Graphics2D) tempScreen.getGraphics();
+
+    if (fullScreenOn)
+      setFullScreen();
+  }
+
+  public void playMusic(String sound) {
+    music.setFile(sound);
+    music.play();
+    music.loop();
+  }
+
+  public void resetGame(boolean restart) {
+    player.setDefaultPositions();
+    player.restorePlayerStatus();
+    player.resetCounter();
+    removeTemporaryGameEntity();
+    bossBattleOn = false;
+    CURRENT_MAP = MAIN_MAP;
+    currentArea = AreaType.OUTSIDE;
+    assetSetter.setMonster();
+    assetSetter.setNPC();
+
+    if (restart) {
+      player.setDefaultValues();
+      player.setItems();
+      assetSetter.setObject();
+      assetSetter.setInteractiveTiles();
+      assetSetter.setInteractiveObjects();
+      environmentManager.getLighting().resetDay();
+    }
+  }
+
+  public void changeArea() {
+    if (nextArea != currentArea) {
+      stopMusic();
+
+      if (nextArea == AreaType.OUTSIDE) {
+        playMusic(OUTSIDE_MUSIC);
+      } else if (nextArea == AreaType.INDOOR) {
+        playMusic(MERCHANT_SONG);
+      } else if (nextArea == AreaType.DUNGEON) {
+        playMusic(DUNGEON_SONG);
+      }
+    }
+    currentArea = nextArea;
+    assetSetter.setMonster();
+  }
+
+  public void stopMusic() {
+    music.stop();
+  }
+
+  public void playSoundEffect(String sound) {
+    soundEffect.setFile(sound);
+    soundEffect.play();
+  }
+
+  private void setFullScreen() {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    double width = screenSize.getWidth();
+    double height = screenSize.getHeight();
+    Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    screenWidthFull = (int) width;
+    screenHeightFull = (int) height;
+  }
+
+  private void drawToScreen() {
+    var screenGraphics = getGraphics();
+    screenGraphics.drawImage(tempScreen, 0, 0, screenWidthFull, screenHeightFull, null);
+    screenGraphics.dispose();
+  }
+
+  private void removeTemporaryGameEntity() {
+    for (String mapName : tileManager.getGameMaps().keySet()) {
+      List<GameEntity> allMapObjects = new ArrayList<>(List.of(mapsObjects.get(mapName)));
+      if (allMapObjects.isEmpty()) continue;
+
+      allMapObjects.removeIf(object -> Objects.nonNull(object) && object.temporaryObject);
+    }
+  }
+
+  private void drawToTempScreen() {
+    if (gameState == TITLE_STATE) {
+      ui.draw(tempGraphic2d);
+    } else if (gameState == MAP_STATE) {
+      gameMap.drawFullMapScreen(tempGraphic2d);
+    } else {
+      tileManager.draw(tempGraphic2d);
+
+      if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP))) {
+        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(CURRENT_MAP).length; objIndex++) {
+          if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP)[objIndex])) {
+            mapsInteractiveTiles.get(CURRENT_MAP)[objIndex].draw(tempGraphic2d);
+          }
+        }
+      }
+
+      gameObjects.add(player);
+      // ADD ENTITY TO THE LIST
+      if (Objects.nonNull(mapsNpc.get(CURRENT_MAP))) {
+        for (GameEntity npc : mapsNpc.get(CURRENT_MAP)) {
+          if (Objects.nonNull(npc)) {
+            gameObjects.add(npc);
+          }
+        }
+      }
+      if (Objects.nonNull(mapsObjects.get(CURRENT_MAP))) {
+        for (GameEntity object : mapsObjects.get(CURRENT_MAP)) {
+          if (Objects.nonNull(object)) {
+            gameObjects.add(object);
+          }
+        }
+      }
+      if (Objects.nonNull(mapsMonsters.get(CURRENT_MAP))) {
+        for (GameEntity monster : mapsMonsters.get(CURRENT_MAP)) {
+          if (Objects.nonNull(monster)) {
+            gameObjects.add(monster);
+          }
+        }
+      }
+
+      for (GameEntity projectile : projectiles.get(CURRENT_MAP)) {
+        if (Objects.nonNull(projectile)) {
+          gameObjects.add(projectile);
+        }
+      }
+
+      for (GameEntity particle : particleList) {
+        if (Objects.nonNull(particle)) {
+          gameObjects.add(particle);
+        }
+      }
+
+      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.worldY));
+
+      for (GameEntity gameObject : gameObjects) {
+        gameObject.draw(tempGraphic2d);
+      }
+
+      gameObjects.clear();
+      environmentManager.draw(tempGraphic2d);
+      gameMap.drawMiniMap(tempGraphic2d);
+      cutsceneManager.draw(tempGraphic2d);
+      ui.draw(tempGraphic2d);
+    }
+
+    //DEBUG
+    if (keyHandler.isShowDebugText()) {
+
+      tempGraphic2d.setFont(new Font("Arial", Font.PLAIN, 20));
+      tempGraphic2d.setColor(Color.WHITE);
+      int x = 10;
+      int y = 400;
+      int lineHeight = 20;
+
+      tempGraphic2d.drawString("WorldX -> " + player.worldX, x, y);
+      y += lineHeight;
+      tempGraphic2d.drawString("WorldY ->" + player.worldY, x, y);
+      y += lineHeight;
+      tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / TILE_SIZE, x, y);
+      y += lineHeight;
+      tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / TILE_SIZE, x, y);
+      y += lineHeight;
+      tempGraphic2d.drawString("God Mode: -> " + keyHandler.isGodModeOn(), x, y);
+    }
+  }
+
+  private void update() {
     if (gameState == PLAY_STATE) {
       player.update();
       if (Objects.nonNull(mapsNpc.get(CURRENT_MAP))) {
@@ -172,193 +358,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
   }
 
-  public void setupGame() {
-    mapsObjects.put(CURRENT_MAP, new GameEntity[20]);
-    assetSetter.setNPC();
-    assetSetter.setObject();
-    assetSetter.setInteractiveTiles();
-    assetSetter.setMonster();
-    assetSetter.setProjectile();
-    assetSetter.setInteractiveObjects();
-    currentArea = AreaType.OUTSIDE;
-    environmentManager.setup();
-
-    tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
-    tempGraphic2d = (Graphics2D) tempScreen.getGraphics();
-
-    if (fullScreenOn)
-      setFullScreen();
-  }
-
-  public void playMusic(String sound) {
-    music.setFile(sound);
-    music.play();
-    music.loop();
-  }
-
-  public void resetGame(boolean restart) {
-    player.setDefaultPositions();
-    player.restorePlayerStatus();
-    player.resetCounter();
-    removeTemporaryGameEntity();
-    bossBattleOn = false;
-    CURRENT_MAP = MAIN_MAP;
-    currentArea = AreaType.OUTSIDE;
-    assetSetter.setMonster();
-    assetSetter.setNPC();
-
-    if (restart) {
-      player.setDefaultValues();
-      player.setItems();
-      assetSetter.setObject();
-      assetSetter.setInteractiveTiles();
-      assetSetter.setInteractiveObjects();
-      environmentManager.getLighting().resetDay();
-    }
-  }
-
-  public void stopMusic() {
-    music.stop();
-  }
-
-  public void playSoundEffect(String sound) {
-    soundEffect.setFile(sound);
-    soundEffect.play();
-  }
-
-  public void setFullScreen() {
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    double width = screenSize.getWidth();
-    double height = screenSize.getHeight();
-    Main.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    screenWidthFull = (int) width;
-    screenHeightFull = (int) height;
-  }
-
-  public void drawToScreen() {
-    var screenGraphics = getGraphics();
-    screenGraphics.drawImage(tempScreen, 0, 0, screenWidthFull, screenHeightFull, null);
-    screenGraphics.dispose();
-  }
-
-  public void changeArea() {
-    if (nextArea != currentArea) {
-      stopMusic();
-
-      if (nextArea == AreaType.OUTSIDE) {
-        playMusic(OUTSIDE_MUSIC);
-      } else if (nextArea == AreaType.INDOOR) {
-        playMusic(MERCHANT_SONG);
-      } else if (nextArea == AreaType.DUNGEON) {
-        playMusic(DUNGEON_SONG);
-      }
-    }
-    currentArea = nextArea;
-    assetSetter.setMonster();
-  }
-
-  public void removeTemporaryGameEntity() {
-    for (String mapName : tileManager.getGameMaps().keySet()) {
-      List<GameEntity> allMapObjects = new ArrayList<>(List.of(mapsObjects.get(mapName)));
-      if (allMapObjects.isEmpty()) continue;
-
-      allMapObjects.removeIf(object -> Objects.nonNull(object) && object.temporaryObject);
-    }
-  }
-
-
-  public void drawToTempScreen() {
-    if (gameState == TITLE_STATE) {
-      ui.draw(tempGraphic2d);
-    } else if (gameState == MAP_STATE) {
-      gameMap.drawFullMapScreen(tempGraphic2d);
-    } else {
-      tileManager.draw(tempGraphic2d);
-      // INTERACTIVE TILE
-      if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP))) {
-        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(CURRENT_MAP).length; objIndex++) {
-          if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP)[objIndex])) {
-            mapsInteractiveTiles.get(CURRENT_MAP)[objIndex].draw(tempGraphic2d);
-          }
-        }
-      }
-
-      gameObjects.add(player);
-      // ADD ENTITY TO THE LIST
-      if (Objects.nonNull(mapsNpc.get(CURRENT_MAP))) {
-        for (GameEntity npc : mapsNpc.get(CURRENT_MAP)) {
-          if (Objects.nonNull(npc)) {
-            gameObjects.add(npc);
-          }
-        }
-      }
-      if (Objects.nonNull(mapsObjects.get(CURRENT_MAP))) {
-        for (GameEntity object : mapsObjects.get(CURRENT_MAP)) {
-          if (Objects.nonNull(object)) {
-            gameObjects.add(object);
-          }
-        }
-      }
-      if (Objects.nonNull(mapsMonsters.get(CURRENT_MAP))) {
-        for (GameEntity monster : mapsMonsters.get(CURRENT_MAP)) {
-          if (Objects.nonNull(monster)) {
-            gameObjects.add(monster);
-          }
-        }
-      }
-
-      for (GameEntity projectile : projectiles.get(CURRENT_MAP)) {
-        if (Objects.nonNull(projectile)) {
-          gameObjects.add(projectile);
-        }
-      }
-
-      for (GameEntity particle : particleList) {
-        if (Objects.nonNull(particle)) {
-          gameObjects.add(particle);
-        }
-      }
-
-      // SORT
-      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.worldY));
-
-      // DRAW ENTITIES
-      for (GameEntity gameObject : gameObjects) {
-        gameObject.draw(tempGraphic2d);
-      }
-
-      // EMPLTY ENTITY LIST
-      gameObjects.clear();
-      environmentManager.draw(tempGraphic2d);
-      // Mini map
-      gameMap.drawMiniMap(tempGraphic2d);
-
-      cutsceneManager.draw(tempGraphic2d);
-
-      ui.draw(tempGraphic2d);
-    }
-
-    //DEBUG
-    if (keyHandler.isShowDebugText()) {
-
-      tempGraphic2d.setFont(new Font("Arial", Font.PLAIN, 20));
-      tempGraphic2d.setColor(Color.WHITE);
-      int x = 10;
-      int y = 400;
-      int lineHeight = 20;
-
-      tempGraphic2d.drawString("WorldX -> " + player.worldX, x, y);
-      y += lineHeight;
-      tempGraphic2d.drawString("WorldY ->" + player.worldY, x, y);
-      y += lineHeight;
-      tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / TILE_SIZE, x, y);
-      y += lineHeight;
-      tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / TILE_SIZE, x, y);
-      y += lineHeight;
-      tempGraphic2d.drawString("God Mode: -> " + keyHandler.isGodModeOn(), x, y);
-    }
-  }
-
   @Override
   public void run() {
     double drawInterval = (double) 1000000000 / FPS;
@@ -391,5 +390,4 @@ public class GamePanel extends JPanel implements Runnable {
       }
     }
   }
-
 }

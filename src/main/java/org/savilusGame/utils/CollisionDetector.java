@@ -36,13 +36,13 @@ public class CollisionDetector {
     if (gameEntity.knockBack) {
       direction = gameEntity.knockBackDirection;
     }
-    var currentMapTiles = gamePanel.tileManager.getGameMaps().get(CURRENT_MAP);
+    var currentMapTiles = gamePanel.getTileManager().getGameMaps().get(CURRENT_MAP);
     switch (direction) {
       case UP -> {
         entityTopRow = (entityTopWorldY - gameEntity.speed) / TILE_SIZE;
         tileNum1 = currentMapTiles[entityLeftCol][entityTopRow];
         tileNum2 = currentMapTiles[entityRightCol][entityTopRow];
-        if (gamePanel.tileManager.getTile()[tileNum1].collision() || gamePanel.tileManager.getTile()[tileNum2].collision()) {
+        if (gamePanel.getTileManager().getTile()[tileNum1].collision() || gamePanel.getTileManager().getTile()[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -50,7 +50,7 @@ public class CollisionDetector {
         entityBottomRow = (entityBottomWorldY + gameEntity.speed) / TILE_SIZE;
         tileNum1 = currentMapTiles[entityLeftCol][entityBottomRow];
         tileNum2 = currentMapTiles[entityRightCol][entityBottomRow];
-        if (gamePanel.tileManager.getTile()[tileNum1].collision() || gamePanel.tileManager.getTile()[tileNum2].collision()) {
+        if (gamePanel.getTileManager().getTile()[tileNum1].collision() || gamePanel.getTileManager().getTile()[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -58,7 +58,7 @@ public class CollisionDetector {
         entityLeftCol = (entityLeftWorldX - gameEntity.speed) / TILE_SIZE;
         tileNum1 = currentMapTiles[entityLeftCol][entityTopRow];
         tileNum2 = currentMapTiles[entityLeftCol][entityBottomRow];
-        if (gamePanel.tileManager.getTile()[tileNum1].collision() || gamePanel.tileManager.getTile()[tileNum2].collision()) {
+        if (gamePanel.getTileManager().getTile()[tileNum1].collision() || gamePanel.getTileManager().getTile()[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -66,7 +66,7 @@ public class CollisionDetector {
         entityRightCol = (entityRightWorldX + gameEntity.speed) / TILE_SIZE;
         tileNum1 = currentMapTiles[entityLeftCol][entityTopRow];
         tileNum2 = currentMapTiles[entityRightCol][entityBottomRow];
-        if (gamePanel.tileManager.getTile()[tileNum1].collision() || gamePanel.tileManager.getTile()[tileNum2].collision()) {
+        if (gamePanel.getTileManager().getTile()[tileNum1].collision() || gamePanel.getTileManager().getTile()[tileNum2].collision()) {
           gameEntity.collisionOn = true;
         }
       }
@@ -74,7 +74,7 @@ public class CollisionDetector {
   }
 
   public int checkObject(GameEntity gameEntity, boolean player) {
-    if (Objects.isNull(gamePanel.mapsObjects.get(CURRENT_MAP)))
+    if (Objects.isNull(gamePanel.getMapsObjects().get(CURRENT_MAP)))
       return INIT_INDEX;
 
     int index = INIT_INDEX;
@@ -84,8 +84,8 @@ public class CollisionDetector {
       direction = gameEntity.knockBackDirection;
     }
 
-    for (int i = 0; i < gamePanel.mapsObjects.get(CURRENT_MAP).length; i++) {
-      var mapObject = gamePanel.mapsObjects.get(CURRENT_MAP)[i];
+    for (int i = 0; i < gamePanel.getMapsObjects().get(CURRENT_MAP).length; i++) {
+      var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[i];
       if (Objects.nonNull(mapObject)) {
         //get entity's solid area position
         gameEntity.solidArea.x = gameEntity.worldX + gameEntity.solidArea.x;
@@ -153,18 +153,18 @@ public class CollisionDetector {
     gameEntity.solidArea.x = gameEntity.worldX + gameEntity.solidArea.x;
     gameEntity.solidArea.y = gameEntity.worldY + gameEntity.solidArea.y;
     // get player solid area position
-    gamePanel.player.solidArea.x = gamePanel.player.worldX + gamePanel.player.solidArea.x;
-    gamePanel.player.solidArea.y = gamePanel.player.worldY + gamePanel.player.solidArea.y;
+    gamePanel.getPlayer().solidArea.x = gamePanel.getPlayer().worldX + gamePanel.getPlayer().solidArea.x;
+    gamePanel.getPlayer().solidArea.y = gamePanel.getPlayer().worldY + gamePanel.getPlayer().solidArea.y;
 
     checkGameEntityCollision(gameEntity, gameEntity.direction);
-    if (gameEntity.solidArea.intersects(gamePanel.player.solidArea)) {
+    if (gameEntity.solidArea.intersects(gamePanel.getPlayer().solidArea)) {
       gameEntity.collisionOn = true;
       contactPlayer = true;
     }
     gameEntity.solidArea.x = gameEntity.solidAreaDefaultX;
     gameEntity.solidArea.y = gameEntity.solidAreaDefaultY;
-    gamePanel.player.solidArea.x = gamePanel.player.solidAreaDefaultX;
-    gamePanel.player.solidArea.y = gamePanel.player.solidAreaDefaultY;
+    gamePanel.getPlayer().solidArea.x = gamePanel.getPlayer().solidAreaDefaultX;
+    gamePanel.getPlayer().solidArea.y = gamePanel.getPlayer().solidAreaDefaultY;
 
     return contactPlayer;
   }

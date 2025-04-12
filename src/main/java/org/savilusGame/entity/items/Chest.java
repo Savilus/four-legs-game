@@ -43,7 +43,7 @@ public class Chest extends GameEntity {
   public void interact() {
     if (!opened) {
       gamePanel.playSoundEffect(UNLOCK);
-      if (!gamePanel.player.canObtainItem(loot)) {
+      if (!gamePanel.getPlayer().canObtainItem(loot)) {
         startDialogue(this, FULL_INVENTORY_TEXT_KEY);
       } else {
         startDialogue(this, COLLECT_ITEM_TEXT_KEY);

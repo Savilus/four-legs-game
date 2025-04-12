@@ -32,18 +32,18 @@ public class PathFinder {
   }
 
   public void instantiateNodes() {
-    node = new Node[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
+    node = new Node[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()];
 
-    for (int col = 0; col < gamePanel.maxWorldCol; col++) {
-      for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+    for (int col = 0; col < gamePanel.getMaxWorldCol(); col++) {
+      for (int row = 0; row < gamePanel.getMaxWorldRow(); row++) {
         node[col][row] = new Node(col, row);
       }
     }
   }
 
   public void resetNodes() {
-    for (int col = 0; col < gamePanel.maxWorldCol; col++) {
-      for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+    for (int col = 0; col < gamePanel.getMaxWorldCol(); col++) {
+      for (int row = 0; row < gamePanel.getMaxWorldRow(); row++) {
         // Reset open, checked and solid state
         node[col][row].open = false;
         node[col][row].checked = false;
@@ -67,22 +67,22 @@ public class PathFinder {
     goalNode = node[goalCol][goalRow];
     openList.add(currentNode);
 
-    for (int col = 0; col < gamePanel.maxWorldCol; col++) {
-      for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+    for (int col = 0; col < gamePanel.getMaxWorldCol(); col++) {
+      for (int row = 0; row < gamePanel.getMaxWorldRow(); row++) {
         // SET SOLID NODE
         // CHECK TILES
-        int tileNum = gamePanel.tileManager.getGameMaps().get(CURRENT_MAP)[col][row];
-        if (gamePanel.tileManager.getTile()[tileNum].collision()) {
+        int tileNum = gamePanel.getTileManager().getGameMaps().get(CURRENT_MAP)[col][row];
+        if (gamePanel.getTileManager().getTile()[tileNum].collision()) {
           node[col][row].solid = true;
         }
         // CHECK INTERACTIVE TILES
-        var interactiveTiles = gamePanel.mapsInteractiveTiles.get(CURRENT_MAP);
+        var interactiveTiles = gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP);
         if (Objects.nonNull(interactiveTiles)) {
           for (InteractiveTile interactiveTile : interactiveTiles) {
             if (Objects.nonNull(interactiveTile) && interactiveTile.isDestructible()) {
               int itCol = interactiveTile.worldX / TILE_SIZE;
               int itRow = interactiveTile.worldY / TILE_SIZE;
-              if (itCol >= 0 && itCol < gamePanel.maxWorldCol && itRow >= 0 && itRow < gamePanel.maxWorldRow) {
+              if (itCol >= 0 && itCol < gamePanel.getMaxWorldCol() && itRow >= 0 && itRow < gamePanel.getMaxWorldRow()) {
                 node[itCol][itRow].solid = true;
               }
             }
@@ -111,10 +111,10 @@ public class PathFinder {
       if (col - 1 >= 0)
         openNode(node[col - 1][row]);
       // OPEN THE DOWN NODE
-      if (row + 1 < gamePanel.maxWorldRow)
+      if (row + 1 < gamePanel.getMaxWorldRow())
         openNode(node[col][row + 1]);
       // OPEN THE RIGHT NODE
-      if (col + 1 < gamePanel.maxWorldCol)
+      if (col + 1 < gamePanel.getMaxWorldCol())
         openNode(node[col + 1][row]);
 
       // Find the best node

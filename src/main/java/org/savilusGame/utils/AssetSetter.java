@@ -37,19 +37,21 @@ import org.savilusGame.entity.shield.BlueShield;
 import org.savilusGame.entity.weapon.Axe;
 import org.savilusGame.entity.weapon.PickAxe;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AssetSetter {
 
-  private static final int MAIN_MAP_MONSTER_NUMBER = 20;
-  private static final int SECOND_FLOR_NPC_NUMBER = 1;
+  static int MAIN_MAP_MONSTER_NUMBER = 20;
+  static int SECOND_FLOR_NPC_NUMBER = 1;
 
   GamePanel gamePanel;
 
-  public AssetSetter(GamePanel gamePanel) {
-    this.gamePanel = gamePanel;
-  }
-
   public void setObject() {
-    gamePanel.mapsObjects = Map.of(
+    gamePanel.setMapsObjects(Map.of(
         MAIN_MAP, new GameEntity[]{
             new BronzeCoin(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 23),
             new BronzeCoin(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 19),
@@ -79,36 +81,35 @@ public class AssetSetter {
         DUNGEON_SECOND_FLOR, new GameEntity[]{
             new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 15),
             null
-        }
-    );
+        }));
   }
 
   public void setProjectile() {
-    gamePanel.projectiles = Map.of(
+    gamePanel.setProjectiles(Map.of(
         MAIN_MAP, new GameEntity[MAIN_MAP_MONSTER_NUMBER + 1],
         INTERIOR_MAP, new GameEntity[1],
         DUNGEON_FIRST_FLOR, new GameEntity[1],
         DUNGEON_SECOND_FLOR, new GameEntity[1]
-    );
+    ));
   }
 
   public void setNPC() {
-    gamePanel.mapsNpc = new HashMap<>();
-    gamePanel.mapsNpc.put(MAIN_MAP, new GameEntity[]{
+    gamePanel.setMapsNpc(new HashMap<>());
+    gamePanel.getMapsNpc().put(MAIN_MAP, new GameEntity[]{
         new OldManNPC(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 21)
     });
-    gamePanel.mapsNpc.put(INTERIOR_MAP, new GameEntity[]{
+    gamePanel.getMapsNpc().put(INTERIOR_MAP, new GameEntity[]{
         new MerchantNPC(gamePanel).setWorldPosition(TILE_SIZE * 12, TILE_SIZE * 7)
     });
-    gamePanel.mapsNpc.put(DUNGEON_SECOND_FLOR, new GameEntity[SECOND_FLOR_NPC_NUMBER]);
+    gamePanel.getMapsNpc().put(DUNGEON_SECOND_FLOR, new GameEntity[SECOND_FLOR_NPC_NUMBER]);
   }
 
 
   public void setInteractiveObjects() {
-    if (Objects.isNull(gamePanel.mapsNpc)) {
-      gamePanel.mapsNpc = new HashMap<>();
+    if (Objects.isNull(gamePanel.getMapsNpc())) {
+      gamePanel.setMapsNpc(new HashMap<>());
     }
-    gamePanel.mapsNpc.put(DUNGEON_FIRST_FLOR, new GameEntity[]{
+    gamePanel.getMapsNpc().put(DUNGEON_FIRST_FLOR, new GameEntity[]{
         new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 20, TILE_SIZE * 25),
         new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 11, TILE_SIZE * 18),
         new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 14)
@@ -116,7 +117,7 @@ public class AssetSetter {
   }
 
   public void setMonster() {
-    gamePanel.mapsMonsters = Map.of(
+    gamePanel.setMapsMonsters(Map.of(
         MAIN_MAP, new GameEntity[]{
             new GreenSlime(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 38),
             new GreenSlime(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 42),
@@ -135,11 +136,11 @@ public class AssetSetter {
         DUNGEON_SECOND_FLOR, new GameEntity[]{
             new SkeletonLord(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 16)
         }
-    );
+    ));
   }
 
   public void setInteractiveTiles() {
-    gamePanel.mapsInteractiveTiles = Map.of(
+    gamePanel.setMapsInteractiveTiles(Map.of(
         MAIN_MAP, new InteractiveTile[]{
             new InteractiveDryTree(gamePanel, 27, 12),
             new InteractiveDryTree(gamePanel, 28, 12),
@@ -174,6 +175,6 @@ public class AssetSetter {
             new MetalPlate(gamePanel, 8, 17),
             new MetalPlate(gamePanel, 39, 31)
         }
-    );
+    ));
   }
 }

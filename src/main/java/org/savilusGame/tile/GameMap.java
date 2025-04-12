@@ -38,8 +38,8 @@ public class GameMap {
   }
 
   public void createWorldMap() {
-    int cols = gamePanel.maxWorldCol;
-    int rows = gamePanel.maxWorldRow;
+    int cols = gamePanel.getMaxWorldCol();
+    int rows = gamePanel.getMaxWorldRow();
 
     int width = TILE_SIZE * cols;
     int height = TILE_SIZE * rows;
@@ -68,11 +68,11 @@ public class GameMap {
 
   public void drawFullMapScreen(Graphics2D g2) {
     int size = 500;
-    int x = gamePanel.screenWidth / 2 - size / 2;
-    int y = gamePanel.screenHeight / 2 - size / 2;
+    int x = gamePanel.getScreenWidth() / 2 - size / 2;
+    int y = gamePanel.getScreenHeight() / 2 - size / 2;
     drawMap(g2, x, y, size, size, false, true, 1F);
 
-    g2.setFont(gamePanel.ui.maruMonica.deriveFont(32F));
+    g2.setFont(gamePanel.getUi().maruMonica.deriveFont(32F));
     g2.setColor(Color.WHITE);
     g2.drawString(TextManager.getUiText(UI_MESSAGES, CLOSE_MAP_KEY), 750, 550);
   }
@@ -81,7 +81,7 @@ public class GameMap {
   public void drawMiniMap(Graphics2D g2) {
     if (!miniMapOn) return;
     int diameter = 200;
-    int x = gamePanel.screenWidth - diameter - 15;
+    int x = gamePanel.getScreenWidth() - diameter - 15;
     int y = 15;
     drawMap(g2, x, y, diameter, diameter, true, false, 0.8F);
   }
@@ -90,7 +90,7 @@ public class GameMap {
   private void drawMap(Graphics2D g2, int x, int y, int width, int height, boolean isCircle, boolean withBackground, float alpha) {
     if (withBackground) {
       g2.setColor(Color.BLACK);
-      g2.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+      g2.fillRect(0, 0, gamePanel.getScreenWidth(), gamePanel.getScreenHeight());
     }
 
     Shape originalClip = g2.getClip();
@@ -102,11 +102,11 @@ public class GameMap {
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     g2.drawImage(worldGameMap.get(CURRENT_MAP), x, y, width, height, null);
 
-    double scale = (double) (TILE_SIZE * gamePanel.maxWorldCol) / width;
-    int playerX = (int) (x + gamePanel.player.worldX / scale);
-    int playerY = (int) (y + gamePanel.player.worldY / scale);
+    double scale = (double) (TILE_SIZE * gamePanel.getMaxWorldCol()) / width;
+    int playerX = (int) (x + gamePanel.getPlayer().worldX / scale);
+    int playerY = (int) (y + gamePanel.getPlayer().worldY / scale);
     int playerSize = TILE_SIZE / 3;
-    g2.drawImage(gamePanel.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
+    g2.drawImage(gamePanel.getPlayer().down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
 
     g2.setClip(originalClip);
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
