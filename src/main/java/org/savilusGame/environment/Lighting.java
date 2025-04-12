@@ -63,16 +63,16 @@ public class Lighting {
   }
 
   public void setLightSource() {
-    darknessFilter = new BufferedImage(gamePanel.screenWidth, gamePanel.screenHeight, BufferedImage.TYPE_INT_ARGB);
+    darknessFilter = new BufferedImage(gamePanel.getScreenWidth(), gamePanel.getScreenHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-    if (Objects.isNull(gamePanel.player.currentLightItem)) {
+    if (Objects.isNull(gamePanel.getPlayer().currentLightItem)) {
       g2.setColor(new Color(0, 0, 0.1f, 0.98f));
     } else {
       g2.setPaint(createPlayerLightGradient());
     }
 
-    g2.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+    g2.fillRect(0, 0, gamePanel.getScreenWidth(), gamePanel.getScreenHeight());
     g2.dispose();
   }
 
@@ -82,8 +82,8 @@ public class Lighting {
   }
 
   void draw(Graphics2D g2) {
-    boolean isOutside = gamePanel.currentArea == AreaType.OUTSIDE;
-    boolean isDungeon = gamePanel.currentArea == AreaType.DUNGEON;
+    boolean isOutside = gamePanel.getCurrentArea() == AreaType.OUTSIDE;
+    boolean isDungeon = gamePanel.getCurrentArea() == AreaType.DUNGEON;
 
     if (isOutside) {
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
@@ -108,9 +108,9 @@ public class Lighting {
   }
 
   void update() {
-    if (gamePanel.player.lightUpdated) {
+    if (gamePanel.getPlayer().lightUpdated) {
       setLightSource();
-      gamePanel.player.lightUpdated = false;
+      gamePanel.getPlayer().lightUpdated = false;
     }
 
     switch (dayState) {
@@ -142,9 +142,9 @@ public class Lighting {
   }
 
   private RadialGradientPaint createPlayerLightGradient() {
-    int centerX = gamePanel.player.screenX + TILE_SIZE / 2;
-    int centerY = gamePanel.player.screenY + TILE_SIZE / 2;
-    float radius = gamePanel.player.currentLightItem.lightRadius / 2f;
+    int centerX = gamePanel.getPlayer().screenX + TILE_SIZE / 2;
+    int centerY = gamePanel.getPlayer().screenY + TILE_SIZE / 2;
+    float radius = gamePanel.getPlayer().currentLightItem.lightRadius / 2f;
 
     return new RadialGradientPaint(centerX, centerY, radius, GRADIENT_FRACTIONS, GRADIENT_COLORS);
   }

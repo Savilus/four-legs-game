@@ -129,13 +129,13 @@ public class SkeletonLord extends GameEntity {
 
   @Override
   public void checkDrop() {
-    gamePanel.bossBattleOn = false;
+    gamePanel.setBossBattleOn(false);
     Progress.skeletonLordDefeated = true;
 
     gamePanel.stopMusic();
     gamePanel.playMusic(DUNGEON_SONG);
 
-    var objects = gamePanel.mapsObjects.get(CURRENT_MAP);
+    var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
     if (objects == null) return;
 
     IntStream.range(0, objects.length)
@@ -160,7 +160,7 @@ public class SkeletonLord extends GameEntity {
       attack *= 2;
     }
 
-    if (getTileDistance(gamePanel.player) < 8) {
+    if (getTileDistance(gamePanel.getPlayer()) < 8) {
       moveTowardPlayer(60);
     } else {
       getRandomDirection(120);

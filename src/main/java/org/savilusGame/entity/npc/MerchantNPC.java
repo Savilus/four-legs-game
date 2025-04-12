@@ -53,7 +53,7 @@ public class MerchantNPC extends GameEntity {
   @Override
   public void speak() {
     facePlayer();
-    gamePanel.gameState = TRADE_STATE;
-    gamePanel.ui.npc = this;
+    gamePanel.setGameState(TRADE_STATE);
+    gamePanel.getUi().npc = this;
   }
 }

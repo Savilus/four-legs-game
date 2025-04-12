@@ -94,17 +94,17 @@ public class TileManager {
     if (gameMaps.containsKey(mapPath)) {
       return;
     }
-    gameMaps.put(mapPath, new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow]);
+    gameMaps.put(mapPath, new int[gamePanel.getMaxWorldCol()][gamePanel.getMaxWorldRow()]);
 
     Try.withResources(() -> getClass().getResourceAsStream(mapPath))
         .of(is -> {
           try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-            for (int row = 0; row < gamePanel.maxWorldRow; row++) {
+            for (int row = 0; row < gamePanel.getMaxWorldRow(); row++) {
               String line = br.readLine();
               if (Objects.isNull(line)) break;
 
               String[] numbers = line.trim().split("\\s+");
-              for (int col = 0; col < Math.min(numbers.length, gamePanel.maxWorldCol); col++) {
+              for (int col = 0; col < Math.min(numbers.length, gamePanel.getMaxWorldCol()); col++) {
                 gameMaps.get(mapPath)[col][row] = Integer.parseInt(numbers[col]);
               }
             }
@@ -115,14 +115,14 @@ public class TileManager {
   }
 
   public void draw(Graphics2D g2) {
-    int worldCols = gamePanel.maxWorldCol;
-    int worldRows = gamePanel.maxWorldRow;
+    int worldCols = gamePanel.getMaxWorldCol();
+    int worldRows = gamePanel.getMaxWorldRow();
     int[][] map = gameMaps.get(CURRENT_MAP);
 
-    int playerWorldX = gamePanel.player.worldX;
-    int playerWorldY = gamePanel.player.worldY;
-    int playerScreenX = gamePanel.player.screenX;
-    int playerScreenY = gamePanel.player.screenY;
+    int playerWorldX = gamePanel.getPlayer().worldX;
+    int playerWorldY = gamePanel.getPlayer().worldY;
+    int playerScreenX = gamePanel.getPlayer().screenX;
+    int playerScreenY = gamePanel.getPlayer().screenY;
 
     int visibleMinX = playerWorldX - playerScreenX - TILE_SIZE;
     int visibleMaxX = playerWorldX + playerScreenX + TILE_SIZE;

@@ -31,12 +31,12 @@ public class Key extends GameEntity {
 
   @Override
   public boolean use(GameEntity gameEntity) {
-    int objIndex = getDetected(gameEntity, gamePanel.mapsObjects, GameObjectType.DOOR.name());
+    int objIndex = getDetected(gameEntity, gamePanel.getMapsObjects(), GameObjectType.DOOR.name());
 
     if (objIndex != INIT_INDEX) {
       startDialogue(this, OPEN_DOOR_TEXT_KEY);
       gamePanel.playSoundEffect(UNLOCK);
-      gamePanel.mapsObjects.get(CURRENT_MAP)[objIndex] = null;
+      gamePanel.getMapsObjects().get(CURRENT_MAP)[objIndex] = null;
       return true;
     } else {
       startDialogue(this, WRONG_USE_TEXT_KEY);

@@ -100,11 +100,11 @@ public class Orc extends GameEntity {
   @Override
   public void setAction() {
     if (onPath) {
-      checkIfShouldStopChasing(gamePanel.player, 15, 100);
-      searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
+      checkIfShouldStopChasing(gamePanel.getPlayer(), 15, 100);
+      searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
     } else {
       getRandomDirection(120);
-      checkIfShouldStartChasing(gamePanel.player, 5, 100);
+      checkIfShouldStartChasing(gamePanel.getPlayer(), 5, 100);
     }
 
     if (!attacking) {

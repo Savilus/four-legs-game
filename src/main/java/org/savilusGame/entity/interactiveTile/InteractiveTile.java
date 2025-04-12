@@ -34,13 +34,13 @@ public class InteractiveTile extends GameEntity {
 
   @Override
   public void draw(Graphics2D graphics2D) {
-    int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
-    int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
+    int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
+    int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
 
-    if (worldX + TILE_SIZE > gamePanel.player.worldX - gamePanel.player.screenX &&
-        worldX - TILE_SIZE < gamePanel.player.worldX + gamePanel.player.screenX &&
-        worldY + TILE_SIZE > gamePanel.player.worldY - gamePanel.player.screenY &&
-        worldY - TILE_SIZE < gamePanel.player.worldY + gamePanel.player.screenY) {
+    if (worldX + TILE_SIZE > gamePanel.getPlayer().worldX - gamePanel.getPlayer().screenX &&
+        worldX - TILE_SIZE < gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX &&
+        worldY + TILE_SIZE > gamePanel.getPlayer().worldY - gamePanel.getPlayer().screenY &&
+        worldY - TILE_SIZE < gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY) {
 
       graphics2D.drawImage(image, screenX, screenY, null);
 

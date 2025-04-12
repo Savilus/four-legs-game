@@ -45,14 +45,14 @@ public class BigRock extends GameEntity {
   }
 
   private void detectPlate() {
-    var currentMap = gamePanel.mapsInteractiveTiles.get(CURRENT_MAP);
+    var currentMap = gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP);
 
     List<InteractiveTile> plateList = Arrays.stream(currentMap)
         .filter(Objects::nonNull)
         .filter(tile -> StringUtils.equals(GameObjectType.METAL_PLATE.getName(), tile.name))
         .toList();
 
-    List<GameEntity> rockList = Arrays.stream(gamePanel.mapsNpc.get(CURRENT_MAP))
+    List<GameEntity> rockList = Arrays.stream(gamePanel.getMapsNpc().get(CURRENT_MAP))
         .filter(Objects::nonNull)
         .filter(npc -> StringUtils.equals(GameObjectType.BIG_ROCK.getName(), npc.name))
         .toList();
@@ -75,7 +75,7 @@ public class BigRock extends GameEntity {
         .count();
 
     if (linkedRocks == rockList.size()) {
-      var objects = gamePanel.mapsObjects.get(CURRENT_MAP);
+      var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
       for (int i = 0; i < objects.length; i++) {
         if (Objects.nonNull(objects[i]) &&
             GameObjectType.IRON_DOOR.getName().equals(objects[i].name)) {
