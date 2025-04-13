@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public enum DirectionType {
+public enum Direction {
 
   UP("up"),
   DOWN("down"),
@@ -15,7 +15,7 @@ public enum DirectionType {
 
   private final String value;
 
-  public DirectionType getOpposite() {
+  public Direction getOpposite() {
     return switch (this) {
       case UP -> DOWN;
       case DOWN -> UP;

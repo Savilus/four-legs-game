@@ -7,13 +7,13 @@ import java.awt.*;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 
 public class Rock extends Projectile {
 
   public Rock(GamePanel gamePanel) {
     super(gamePanel);
-    name = GameObjectType.ROCK.getName();
+    name = GameObject.ROCK.getName();
     speed = 8;
     maxLife = 50;
     currentLife = maxLife;

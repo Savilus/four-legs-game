@@ -15,7 +15,7 @@ import java.util.Random;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.DirectionType;
+import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -27,7 +27,7 @@ public class OldManNPC extends GameEntity {
   public OldManNPC(GamePanel gamePanel) {
     super(gamePanel);
 
-    direction = DirectionType.DOWN;
+    direction = Direction.DOWN;
     speed = 1;
     type = WorldGameTypes.INTERACTIVE;
     getPlayerImage();
@@ -74,10 +74,10 @@ public class OldManNPC extends GameEntity {
         Random random = new Random();
         int randomNumber = random.nextInt(100) + 1;
 
-        if (randomNumber <= 25) direction = DirectionType.UP;
-        else if (randomNumber <= 50) direction = DirectionType.DOWN;
-        else if (randomNumber <= 75) direction = DirectionType.LEFT;
-        else if (randomNumber <= 100) direction = DirectionType.RIGHT;
+        if (randomNumber <= 25) direction = Direction.UP;
+        else if (randomNumber <= 50) direction = Direction.DOWN;
+        else if (randomNumber <= 75) direction = Direction.LEFT;
+        else if (randomNumber <= 100) direction = Direction.RIGHT;
 
         actionLockCounter = 0;
       }

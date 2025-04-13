@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum GameStateType {
+public enum GameState {
   TITLE_STATE,
   PLAY_STATE,
   PAUSE_STATE,

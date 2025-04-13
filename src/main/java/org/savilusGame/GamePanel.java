@@ -4,10 +4,10 @@ import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SONG;
 import static org.savilusGame.config.GameEntityNameFactory.MAIN_MAP;
 import static org.savilusGame.config.GameEntityNameFactory.MERCHANT_SONG;
 import static org.savilusGame.config.GameEntityNameFactory.OUTSIDE_MUSIC;
-import static org.savilusGame.enums.GameStateType.MAP_STATE;
-import static org.savilusGame.enums.GameStateType.PAUSE_STATE;
-import static org.savilusGame.enums.GameStateType.PLAY_STATE;
-import static org.savilusGame.enums.GameStateType.TITLE_STATE;
+import static org.savilusGame.enums.GameState.MAP_STATE;
+import static org.savilusGame.enums.GameState.PAUSE_STATE;
+import static org.savilusGame.enums.GameState.PLAY_STATE;
+import static org.savilusGame.enums.GameState.TITLE_STATE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
@@ -28,8 +28,8 @@ import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.GameEntityFactory;
 import org.savilusGame.entity.Player;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
-import org.savilusGame.enums.AreaType;
-import org.savilusGame.enums.GameStateType;
+import org.savilusGame.enums.Area;
+import org.savilusGame.enums.GameState;
 import org.savilusGame.environment.EnvironmentManager;
 import org.savilusGame.tile.GameMap;
 import org.savilusGame.tile.TileManager;
@@ -98,11 +98,11 @@ public class GamePanel extends JPanel implements Runnable {
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
 
   // AREA
-  AreaType currentArea;
-  AreaType nextArea;
+  Area currentArea;
+  Area nextArea;
 
   // GAME STATE
-  GameStateType gameState;
+  GameState gameState;
   boolean bossBattleOn = false;
 
   public GamePanel() {
@@ -127,7 +127,7 @@ public class GamePanel extends JPanel implements Runnable {
     assetSetter.setMonster();
     assetSetter.setProjectile();
     assetSetter.setInteractiveObjects();
-    currentArea = AreaType.OUTSIDE;
+    currentArea = Area.OUTSIDE;
     environmentManager.setup();
 
     tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
@@ -150,7 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
     removeTemporaryGameEntity();
     bossBattleOn = false;
     CURRENT_MAP = MAIN_MAP;
-    currentArea = AreaType.OUTSIDE;
+    currentArea = Area.OUTSIDE;
     assetSetter.setMonster();
     assetSetter.setNPC();
 
@@ -168,11 +168,11 @@ public class GamePanel extends JPanel implements Runnable {
     if (nextArea != currentArea) {
       stopMusic();
 
-      if (nextArea == AreaType.OUTSIDE) {
+      if (nextArea == Area.OUTSIDE) {
         playMusic(OUTSIDE_MUSIC);
-      } else if (nextArea == AreaType.INDOOR) {
+      } else if (nextArea == Area.INDOOR) {
         playMusic(MERCHANT_SONG);
-      } else if (nextArea == AreaType.DUNGEON) {
+      } else if (nextArea == Area.DUNGEON) {
         playMusic(DUNGEON_SONG);
       }
     }

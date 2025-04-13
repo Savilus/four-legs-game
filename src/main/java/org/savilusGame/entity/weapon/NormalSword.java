@@ -5,7 +5,7 @@ import static org.savilusGame.config.GameEntityNameFactory.NORMAL_SWORD;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -13,12 +13,12 @@ public class NormalSword extends GameEntity {
 
   public NormalSword(GamePanel gamePanel) {
     super(gamePanel);
-    name = GameObjectType.NORMAL_SWORD.getName();
+    name = GameObject.NORMAL_SWORD.getName();
     down1 = setup(NORMAL_SWORD, TILE_SIZE, TILE_SIZE);
     attackValue = 1;
     attackArea.width = 36;
     attackArea.height = 36;
-    description = String.format(TextManager.getItemDescription(GameObjectType.NORMAL_SWORD.getTextKey()), name);
+    description = String.format(TextManager.getItemDescription(GameObject.NORMAL_SWORD.getTextKey()), name);
     type = WorldGameTypes.SWORD;
     price = 10;
     knockBackPower = 2;

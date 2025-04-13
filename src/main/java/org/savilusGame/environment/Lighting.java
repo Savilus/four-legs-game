@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 import org.savilusGame.GamePanel;
-import org.savilusGame.enums.AreaType;
+import org.savilusGame.enums.Area;
 import org.savilusGame.enums.DayState;
 import org.savilusGame.utils.text.TextManager;
 
@@ -82,8 +82,8 @@ public class Lighting {
   }
 
   void draw(Graphics2D g2) {
-    boolean isOutside = gamePanel.getCurrentArea() == AreaType.OUTSIDE;
-    boolean isDungeon = gamePanel.getCurrentArea() == AreaType.DUNGEON;
+    boolean isOutside = gamePanel.getCurrentArea() == Area.OUTSIDE;
+    boolean isDungeon = gamePanel.getCurrentArea() == Area.DUNGEON;
 
     if (isOutside) {
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));

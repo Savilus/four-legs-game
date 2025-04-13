@@ -45,6 +45,6 @@ public final class Config {
       configLine = reader.readLine();
       gamePanel.getSoundEffect().setVolumeScale(Integer.parseInt(configLine));
 
-    }).onFailure(e -> log.info("Could not save config: {}", e.getMessage()));
+    }).onFailure(e -> log.info("Could not load config: {}", e.getMessage()));
   }
 }

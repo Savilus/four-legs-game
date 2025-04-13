@@ -8,7 +8,7 @@ import static org.savilusGame.config.GameEntityNameFactory.POWER_UP;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -20,11 +20,11 @@ public class Heart extends GameEntity {
   public Heart(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.PICK_UP;
-    name = GameObjectType.HEART.getName();
+    name = GameObject.HEART.getName();
     value = 2;
     down1 = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
 
-    name = GameObjectType.HEART.getName();
+    name = GameObject.HEART.getName();
     image = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
     image2 = setup(HEART_HALF, TILE_SIZE, TILE_SIZE);
     image3 = setup(HEART_BLANK, TILE_SIZE, TILE_SIZE);

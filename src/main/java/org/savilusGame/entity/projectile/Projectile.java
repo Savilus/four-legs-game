@@ -5,7 +5,7 @@ import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.DirectionType;
+import org.savilusGame.enums.Direction;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public abstract class Projectile extends GameEntity {
 
   public abstract boolean haveResource(GameEntity user);
 
-  public void set(int worldX, int worldY, DirectionType direction, boolean alive, GameEntity owner) {
+  public void set(int worldX, int worldY, Direction direction, boolean alive, GameEntity owner) {
     this.worldX = worldX;
     this.worldY = worldY;
     this.direction = direction;
