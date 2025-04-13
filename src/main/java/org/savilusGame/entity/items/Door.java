@@ -6,7 +6,7 @@ import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.utils.text.TextManager;
 
 public class Door extends GameEntity {
@@ -16,7 +16,7 @@ public class Door extends GameEntity {
 
   public Door(GamePanel gamePanel) {
     super(gamePanel);
-    name = GameObjectType.DOOR.name();
+    name = GameObject.DOOR.name();
     image = setup(DOOR, TILE_SIZE, TILE_SIZE);
     collision = true;
     type = OBSTACLE;

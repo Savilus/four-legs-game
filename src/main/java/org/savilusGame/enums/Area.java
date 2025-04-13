@@ -1,6 +1,6 @@
 package org.savilusGame.enums;
 
-public enum AreaType {
+public enum Area {
   OUTSIDE,
   INDOOR,
   DUNGEON,

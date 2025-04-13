@@ -8,9 +8,9 @@ import static org.savilusGame.config.GameEntityNameFactory.MAIN_MAP;
 import static org.savilusGame.config.GameEntityNameFactory.POWER_UP;
 import static org.savilusGame.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.savilusGame.config.GameEntityNameFactory.STAIRS;
-import static org.savilusGame.enums.GameStateType.CUTSCENE_STATE;
-import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
-import static org.savilusGame.enums.GameStateType.TRANSITION_STATE;
+import static org.savilusGame.enums.GameState.CUTSCENE_STATE;
+import static org.savilusGame.enums.GameState.DIALOG_STATE;
+import static org.savilusGame.enums.GameState.TRANSITION_STATE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
@@ -21,9 +21,8 @@ import java.util.Objects;
 import org.savilusGame.GamePanel;
 import org.savilusGame.data.Progress;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.AreaType;
-import org.savilusGame.enums.DirectionType;
-import org.savilusGame.enums.GameStateType;
+import org.savilusGame.enums.Area;
+import org.savilusGame.enums.Direction;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -92,25 +91,25 @@ public class EventHandler {
   }
 
   private void handleMainMapEvents() {
-    if (hit(27, 16, DirectionType.RIGHT)) damagePit();
-    else if (hit(23, 12, DirectionType.UP)) healingPool();
-    else if (hit(10, 39, DirectionType.ANY)) mapTeleport(INTERIOR_MAP, 12, 13, AreaType.INDOOR);
-    else if (hit(12, 9, DirectionType.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 9, 41, AreaType.DUNGEON);
+    if (hit(27, 16, Direction.RIGHT)) damagePit();
+    else if (hit(23, 12, Direction.UP)) healingPool();
+    else if (hit(10, 39, Direction.ANY)) mapTeleport(INTERIOR_MAP, 12, 13, Area.INDOOR);
+    else if (hit(12, 9, Direction.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 9, 41, Area.DUNGEON);
   }
 
   private void handleDungeonFirstFloorEvents() {
-    if (hit(8, 7, DirectionType.ANY)) mapTeleport(DUNGEON_SECOND_FLOR, 26, 41, AreaType.DUNGEON);
-    else if (hit(9, 41, DirectionType.ANY)) mapTeleport(MAIN_MAP, 12, 10, AreaType.OUTSIDE);
+    if (hit(8, 7, Direction.ANY)) mapTeleport(DUNGEON_SECOND_FLOR, 26, 41, Area.DUNGEON);
+    else if (hit(9, 41, Direction.ANY)) mapTeleport(MAIN_MAP, 12, 10, Area.OUTSIDE);
   }
 
   private void handleDungeonSecondFloorEvents() {
-    if (hit(26, 41, DirectionType.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 8, 7, AreaType.DUNGEON);
-    if (hit(25, 27, DirectionType.ANY)) skeletonLord();
+    if (hit(26, 41, Direction.ANY)) mapTeleport(DUNGEON_FIRST_FLOR, 8, 7, Area.DUNGEON);
+    if (hit(25, 27, Direction.ANY)) skeletonLord();
   }
 
   private void handleInteriorMapEvents() {
-    if (hit(12, 13, DirectionType.ANY)) mapTeleport(MAIN_MAP, 10, 39, AreaType.OUTSIDE);
-    else if (hit(12, 9, DirectionType.UP)) speak(gamePanel.getMapsNpc().get(INTERIOR_MAP)[0]);
+    if (hit(12, 13, Direction.ANY)) mapTeleport(MAIN_MAP, 10, 39, Area.OUTSIDE);
+    else if (hit(12, 9, Direction.UP)) speak(gamePanel.getMapsNpc().get(INTERIOR_MAP)[0]);
   }
 
   private void speak(GameEntity gameEntity) {
@@ -121,7 +120,7 @@ public class EventHandler {
     }
   }
 
-  private boolean hit(int col, int row, DirectionType requiredDirection) {
+  private boolean hit(int col, int row, Direction requiredDirection) {
     var playerSolidArea = new Rectangle(
         gamePanel.getPlayer().worldX + gamePanel.getPlayer().solidArea.x,
         gamePanel.getPlayer().worldY + gamePanel.getPlayer().solidArea.y,
@@ -138,7 +137,7 @@ public class EventHandler {
 
     boolean hitResult = playerSolidArea.intersects(eventArea) && !eventRect.get(MAIN_MAP)[col][row].oneTimeEventDone;
 
-    if (hitResult && (gamePanel.getPlayer().direction.equals(requiredDirection) || requiredDirection.equals(DirectionType.ANY))) {
+    if (hitResult && (gamePanel.getPlayer().direction.equals(requiredDirection) || requiredDirection.equals(Direction.ANY))) {
       previousEventX = gamePanel.getPlayer().worldX;
       previousEventY = gamePanel.getPlayer().worldY;
       return true;
@@ -159,9 +158,9 @@ public class EventHandler {
     eventRect.get(MAIN_MAP)[col][row].y = eventRect.get(MAIN_MAP)[col][row].eventRectDefaultY;
   }
 
-  private void mapTeleport(String teleportToMap, int col, int row, AreaType areaType) {
+  private void mapTeleport(String teleportToMap, int col, int row, Area area) {
     gamePanel.setGameState(TRANSITION_STATE);
-    gamePanel.setNextArea(areaType);
+    gamePanel.setNextArea(area);
     tempMap = teleportToMap;
     tempCol = col;
     tempRow = row;

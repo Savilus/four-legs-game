@@ -25,14 +25,14 @@ import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Heart;
 import org.savilusGame.entity.items.ManaCrystal;
-import org.savilusGame.enums.MonsterObjectType;
+import org.savilusGame.enums.MonsterType;
 import org.savilusGame.enums.WorldGameTypes;
 
 public class Orc extends GameEntity {
 
   public Orc(GamePanel gamePanel) {
     super(gamePanel);
-    name = MonsterObjectType.ORC.getName();
+    name = MonsterType.ORC.getName();
     defaultSpeed = 1;
     speed = defaultSpeed;
     maxLife = 7;

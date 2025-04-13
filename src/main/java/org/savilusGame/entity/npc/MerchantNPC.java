@@ -3,7 +3,7 @@ package org.savilusGame.entity.npc;
 import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.MERCHANT_DOWN1;
 import static org.savilusGame.config.GameEntityNameFactory.MERCHANT_DOWN2;
-import static org.savilusGame.enums.GameStateType.TRADE_STATE;
+import static org.savilusGame.enums.GameState.TRADE_STATE;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
@@ -13,7 +13,7 @@ import org.savilusGame.entity.shield.BlueShield;
 import org.savilusGame.entity.shield.WoodShield;
 import org.savilusGame.entity.weapon.Axe;
 import org.savilusGame.entity.weapon.NormalSword;
-import org.savilusGame.enums.DirectionType;
+import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -22,7 +22,7 @@ public class MerchantNPC extends GameEntity {
 
   public MerchantNPC(GamePanel gamePanel) {
     super(gamePanel);
-    direction = DirectionType.DOWN;
+    direction = Direction.DOWN;
     speed = 1;
     type = WorldGameTypes.INTERACTIVE;
     getPlayerImage();
@@ -54,6 +54,6 @@ public class MerchantNPC extends GameEntity {
   public void speak() {
     facePlayer();
     gamePanel.setGameState(TRADE_STATE);
-    gamePanel.getUi().npc = this;
+    gamePanel.getUi().setNpc(this);
   }
 }

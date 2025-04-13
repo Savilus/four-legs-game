@@ -7,7 +7,7 @@ import org.savilusGame.utils.text.TextManager;
 import lombok.Getter;
 
 @Getter
-public enum GameObjectType {
+public enum GameObject {
   // GAME ITEMS
   KEY("key"),
   DOOR("door"),
@@ -41,13 +41,13 @@ public enum GameObjectType {
   private final String name;
   private final String textKey;
 
-  GameObjectType(String textKey) {
+  GameObject(String textKey) {
     this.textKey = textKey;
     name = TextManager.getItemName(textKey);
   }
 
-  public static GameObjectType getObjectFromName(String name) {
-    for (GameObjectType type : GameObjectType.values()) {
+  public static GameObject getObjectFromName(String name) {
+    for (GameObject type : GameObject.values()) {
       if (StringUtils.equalsIgnoreCase(type.name, name)) {
         return type;
       }

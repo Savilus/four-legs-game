@@ -5,10 +5,13 @@ import static org.savilusGame.config.GameEntityNameFactory.MARU_MONICA_FONT;
 import static org.savilusGame.config.GameEntityNameFactory.PURISA_BOLD_FONT;
 import static org.savilusGame.config.GameEntityNameFactory.SPEAK;
 import static org.savilusGame.enums.DayState.DAY;
-import static org.savilusGame.enums.GameStateType.CUTSCENE_STATE;
-import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
-import static org.savilusGame.enums.GameStateType.PLAY_STATE;
-import static org.savilusGame.enums.GameStateType.TITLE_STATE;
+import static org.savilusGame.enums.GameState.CUTSCENE_STATE;
+import static org.savilusGame.enums.GameState.DIALOG_STATE;
+import static org.savilusGame.enums.GameState.PLAY_STATE;
+import static org.savilusGame.enums.GameState.TITLE_STATE;
+import static org.savilusGame.enums.SubState.MENU;
+import static org.savilusGame.enums.SubState.NPC_INVENTORY;
+import static org.savilusGame.enums.SubState.PLAYER_INVENTORY;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
@@ -23,13 +26,18 @@ import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Heart;
 import org.savilusGame.entity.items.ManaCrystal;
+import org.savilusGame.enums.SubState;
 import org.savilusGame.environment.Lighting;
 import org.savilusGame.utils.text.TextManager;
 
 import io.vavr.control.Try;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Getter
+@Setter
 public class UI {
   private static final String MERCHANT_COME_AGAIN_DIALOGUE_KEY = "merchantNpcComeAgain";
   private static final String MERCHANT_NO_MONEY_DIALOGUE_KEY = "merchantNpcNotEnoughMoney";
@@ -94,19 +102,19 @@ public class UI {
   private static final String ESCAPE_BACK = "escapeBack";
   private static final String YOUR_COIN = "yourCoin";
 
-  BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank, coin;
-  GamePanel gamePanel;
-  Graphics2D graphics2D;
-  public Font maruMonica, purisaBoldFont;
-  ArrayList<String> messages = new ArrayList<>();
-  ArrayList<Integer> messageCounter = new ArrayList<>();
-  public GameEntity npc;
+  private final BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank, coin;
+  private final GamePanel gamePanel;
+  private Graphics2D graphics2D;
+  private final Font maruMonica, purisaBoldFont;
+  private final ArrayList<String> messages = new ArrayList<>();
+  private final ArrayList<Integer> messageCounter = new ArrayList<>();
+  private GameEntity npc;
 
-  public int commandNum = 0;
-  public int subState = 0;
+  private int commandNum = 0;
+  public SubState subState = MENU;
   public int playerSlotCol = 0;
-  public int npcSlotCol = 0;
   public int playerSlotRow = 0;
+  public int npcSlotCol = 0;
   public int npcSlotRow = 0;
   private int transitionCounter = 0;
   int characterIndex = 0;
@@ -237,12 +245,11 @@ public class UI {
     int frameHeight = TILE_SIZE * 10;
     drawSubWindow(frameX, frameY, frameWidth, frameHeight);
 
-    // TODO: switch subState for something else
     switch (subState) {
-      case 0 -> optionsMainSettings(frameX, frameY);
-      case 1 -> optionsFullScreenNotification(frameX, frameY);
-      case 2 -> optionsControl(frameX, frameY);
-      case 3 -> optionsEndGameConfirmation(frameX, frameY);
+      case MENU -> optionsMainSettings(frameX, frameY);
+      case NPC_INVENTORY -> optionsFullScreenNotification(frameX, frameY);
+      case PLAYER_INVENTORY -> optionsControl(frameX, frameY);
+      case END_GAME -> optionsEndGameConfirmation(frameX, frameY);
     }
 
     gamePanel.getKeyHandler().setEnterPressed(false);
@@ -250,9 +257,9 @@ public class UI {
 
   private void drawTradeScreen() {
     switch (subState) {
-      case 0 -> tradeSelect();
-      case 1 -> tradeBuy();
-      case 2 -> tradeSell();
+      case MENU -> tradeSelect();
+      case NPC_INVENTORY -> tradeBuy();
+      case PLAYER_INVENTORY -> tradeSell();
     }
     gamePanel.getKeyHandler().setEnterPressed(false);
   }
@@ -276,14 +283,14 @@ public class UI {
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, x - 24, y);
       if (gamePanel.getKeyHandler().isEnterPressed())
-        subState = 1;
+        subState = NPC_INVENTORY;
     }
     y += TILE_SIZE;
     graphics2D.drawString(TextManager.getUiText(SHOP, SELL), x, y);
     if (commandNum == 1) {
       graphics2D.drawString(CURSOR_SELECTOR, x - 24, y);
       if (gamePanel.getKeyHandler().isEnterPressed())
-        subState = 2;
+        subState = PLAYER_INVENTORY;
     }
     y += TILE_SIZE;
     graphics2D.drawString(TextManager.getUiText(SHOP, LEAVE), x, y);
@@ -330,11 +337,11 @@ public class UI {
       // BUY ITEM
       if (gamePanel.getKeyHandler().isEnterPressed()) {
         if (npc.inventory.get(itemIndex).price > gamePanel.getPlayer().money) {
-          subState = 0;
+          subState = MENU;
           gamePanel.setGameState(DIALOG_STATE);
           npc.startDialogue(npc, MERCHANT_NO_MONEY_DIALOGUE_KEY);
         } else if (!gamePanel.getPlayer().canObtainItem(npc.inventory.get(itemIndex))) {
-          subState = 0;
+          subState = MENU;
           npc.startDialogue(npc, MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY);
         } else {
           gamePanel.getPlayer().money -= npc.inventory.get(itemIndex).price;
@@ -378,7 +385,7 @@ public class UI {
         if (gamePanel.getPlayer().inventory.get(itemIndex) == gamePanel.getPlayer().currentWeapon
             || gamePanel.getPlayer().inventory.get(itemIndex) == gamePanel.getPlayer().currentShield) {
           commandNum = 0;
-          subState = 0;
+          subState = MENU;
           npc.startDialogue(npc, MERCHANT_CANNOT_SELL_KEY);
         } else {
           if (gamePanel.getPlayer().inventory.get(itemIndex).amount > 1)
@@ -408,7 +415,7 @@ public class UI {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
         gamePanel.stopMusic();
-        subState = 0;
+        subState = MENU;
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, gamePanel.getScreenWidth(), gamePanel.getScreenHeight());
         gamePanel.setGameState(TITLE_STATE);
@@ -423,7 +430,7 @@ public class UI {
     if (commandNum == 1) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = 0;
+        subState = MENU;
         commandNum = 4;
       }
     }
@@ -446,7 +453,7 @@ public class UI {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
         gamePanel.setFullScreenOn(!gamePanel.isFullScreenOn());
-        subState = 1;
+        subState = NPC_INVENTORY;
       }
     }
 
@@ -467,7 +474,7 @@ public class UI {
     if (commandNum == 3) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = 2;
+        subState = PLAYER_INVENTORY;
         commandNum = 0;
       }
     }
@@ -478,7 +485,7 @@ public class UI {
     if (commandNum == 4) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = 3;
+        subState = SubState.END_GAME;
         commandNum = 0;
       }
 
@@ -569,7 +576,7 @@ public class UI {
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = 0;
+        subState = MENU;
         commandNum = 3;
       }
     }
@@ -688,7 +695,7 @@ public class UI {
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = 0;
+        subState = MENU;
       }
     }
   }
@@ -855,7 +862,10 @@ public class UI {
   }
 
   public void drawMonsterLife() {
-    for (GameEntity monster : gamePanel.getMapsMonsters().get(CURRENT_MAP)) {
+    var monsters = gamePanel.getMapsMonsters().get(CURRENT_MAP);
+    if (Objects.isNull(monsters)) return;
+
+    for (GameEntity monster : monsters) {
       if (Objects.nonNull(monster) && monster.inCamera()) {
         boolean isBoss = monster.boss;
         double oneScaleLifeBar = (double) (TILE_SIZE * (isBoss ? 8 : 1)) / monster.maxLife;
@@ -865,11 +875,13 @@ public class UI {
         int x = isBoss ? (gamePanel.getScreenWidth() / 2 - TILE_SIZE * 4) : monster.getScreenX();
         int y = isBoss ? (TILE_SIZE * 10) : (monster.getScreenY() - 15);
 
-        graphics2D.setColor(new Color(35, 35, 35));
-        graphics2D.fillRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
+        if(monster.hpBarOn) {
+          graphics2D.setColor(new Color(35, 35, 35));
+          graphics2D.fillRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
 
-        graphics2D.setColor(new Color(255, 0, 30));
-        graphics2D.fillRect(x, y, (int) hpBarValue, barHeight);
+          graphics2D.setColor(new Color(255, 0, 30));
+          graphics2D.fillRect(x, y, (int) hpBarValue, barHeight);
+        }
 
         if (isBoss) {
           graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 24F));

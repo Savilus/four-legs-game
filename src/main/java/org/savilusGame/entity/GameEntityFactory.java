@@ -1,23 +1,23 @@
 package org.savilusGame.entity;
 
-import static org.savilusGame.enums.GameObjectType.AXE;
-import static org.savilusGame.enums.GameObjectType.BLUE_SHIELD;
-import static org.savilusGame.enums.GameObjectType.BOOTS;
-import static org.savilusGame.enums.GameObjectType.BRONZE_COIN;
-import static org.savilusGame.enums.GameObjectType.CHEST;
-import static org.savilusGame.enums.GameObjectType.DOOR;
-import static org.savilusGame.enums.GameObjectType.FIREBALL;
-import static org.savilusGame.enums.GameObjectType.HEART;
-import static org.savilusGame.enums.GameObjectType.IRON_DOOR;
-import static org.savilusGame.enums.GameObjectType.KEY;
-import static org.savilusGame.enums.GameObjectType.LANTERN;
-import static org.savilusGame.enums.GameObjectType.MANA_CRYSTAL;
-import static org.savilusGame.enums.GameObjectType.NORMAL_SWORD;
-import static org.savilusGame.enums.GameObjectType.PICKAXE;
-import static org.savilusGame.enums.GameObjectType.RED_POTION;
-import static org.savilusGame.enums.GameObjectType.ROCK;
-import static org.savilusGame.enums.GameObjectType.TENT;
-import static org.savilusGame.enums.GameObjectType.WOOD_SHIELD;
+import static org.savilusGame.enums.GameObject.AXE;
+import static org.savilusGame.enums.GameObject.BLUE_SHIELD;
+import static org.savilusGame.enums.GameObject.BOOTS;
+import static org.savilusGame.enums.GameObject.BRONZE_COIN;
+import static org.savilusGame.enums.GameObject.CHEST;
+import static org.savilusGame.enums.GameObject.DOOR;
+import static org.savilusGame.enums.GameObject.FIREBALL;
+import static org.savilusGame.enums.GameObject.HEART;
+import static org.savilusGame.enums.GameObject.IRON_DOOR;
+import static org.savilusGame.enums.GameObject.KEY;
+import static org.savilusGame.enums.GameObject.LANTERN;
+import static org.savilusGame.enums.GameObject.MANA_CRYSTAL;
+import static org.savilusGame.enums.GameObject.NORMAL_SWORD;
+import static org.savilusGame.enums.GameObject.PICKAXE;
+import static org.savilusGame.enums.GameObject.RED_POTION;
+import static org.savilusGame.enums.GameObject.ROCK;
+import static org.savilusGame.enums.GameObject.TENT;
+import static org.savilusGame.enums.GameObject.WOOD_SHIELD;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -42,14 +42,12 @@ import org.savilusGame.entity.shield.WoodShield;
 import org.savilusGame.entity.weapon.Axe;
 import org.savilusGame.entity.weapon.NormalSword;
 import org.savilusGame.entity.weapon.PickAxe;
-import org.savilusGame.enums.GameObjectType;
-
-import lombok.AllArgsConstructor;
+import org.savilusGame.enums.GameObject;
 
 public class GameEntityFactory {
 
   private final GamePanel gamePanel;
-  private final Map<GameObjectType, Supplier<GameEntity>> entityMap = new EnumMap<>(GameObjectType.class);
+  private final Map<GameObject, Supplier<GameEntity>> entityMap = new EnumMap<>(GameObject.class);
 
   public GameEntityFactory(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -57,7 +55,7 @@ public class GameEntityFactory {
   }
 
   public GameEntity getGameEntity(String itemName) {
-    GameObjectType type = GameObjectType.getObjectFromName(itemName);
+    GameObject type = GameObject.getObjectFromName(itemName);
     Supplier<GameEntity> supplier = entityMap.get(type);
     return supplier != null ? supplier.get() : null;
   }

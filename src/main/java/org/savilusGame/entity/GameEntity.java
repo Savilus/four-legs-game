@@ -4,12 +4,12 @@ import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.BLOCKED;
 import static org.savilusGame.config.GameEntityNameFactory.PARRY;
 import static org.savilusGame.config.GameEntityNameFactory.RECEIVE_DAMAGE;
-import static org.savilusGame.enums.DirectionType.DOWN;
-import static org.savilusGame.enums.DirectionType.LEFT;
-import static org.savilusGame.enums.DirectionType.RIGHT;
-import static org.savilusGame.enums.DirectionType.UP;
-import static org.savilusGame.enums.GameStateType.CUTSCENE_STATE;
-import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
+import static org.savilusGame.enums.Direction.DOWN;
+import static org.savilusGame.enums.Direction.LEFT;
+import static org.savilusGame.enums.Direction.RIGHT;
+import static org.savilusGame.enums.Direction.UP;
+import static org.savilusGame.enums.GameState.CUTSCENE_STATE;
+import static org.savilusGame.enums.GameState.DIALOG_STATE;
 import static org.savilusGame.enums.WorldGameTypes.MONSTER;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.items.Chest;
 import org.savilusGame.entity.projectile.Projectile;
-import org.savilusGame.enums.DirectionType;
+import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.UtilityTool;
 import org.savilusGame.utils.text.TextManager;
@@ -63,7 +63,7 @@ public abstract class GameEntity {
 
   // STATE
   @Getter
-  public DirectionType direction = DirectionType.ANY;
+  public Direction direction = Direction.ANY;
   public int spriteNum = 1;
   public int dialogueIndex = 0;
   public String dialogueSet = StringUtils.EMPTY;
@@ -76,7 +76,7 @@ public abstract class GameEntity {
   public boolean hpBarOn = false;
   public boolean onPath = false;
   public boolean knockBack = false;
-  public DirectionType knockBackDirection;
+  public Direction knockBackDirection;
   public boolean guarding = false;
   public boolean transparent = false;
   public boolean offBalance = false;
@@ -164,15 +164,15 @@ public abstract class GameEntity {
   public void speak() {
   }
 
-  public void move(DirectionType direction) {
+  public void move(Direction direction) {
   }
 
   public void facePlayer() {
     switch (gamePanel.getPlayer().getDirection()) {
       case UP -> direction = DOWN;
       case DOWN -> direction = UP;
-      case LEFT -> direction = DirectionType.RIGHT;
-      case RIGHT -> direction = DirectionType.LEFT;
+      case LEFT -> direction = Direction.RIGHT;
+      case RIGHT -> direction = Direction.LEFT;
     }
   }
 
@@ -180,7 +180,7 @@ public abstract class GameEntity {
     if (gamePanel.getGameState() != CUTSCENE_STATE) {
       gamePanel.setGameState(DIALOG_STATE);
     }
-    gamePanel.getUi().npc = entity;
+    gamePanel.getUi().setNpc(entity);
     dialogueSet = selectedDialogue;
   }
 
@@ -342,8 +342,8 @@ public abstract class GameEntity {
           direction = RIGHT;
         }
       } else {
-        DirectionType primaryDir = (entityTopY > nextY) ? UP : DOWN;
-        DirectionType secondaryDir = (entityLeftX > nextX) ? LEFT : RIGHT;
+        Direction primaryDir = (entityTopY > nextY) ? UP : DOWN;
+        Direction secondaryDir = (entityLeftX > nextX) ? LEFT : RIGHT;
         direction = primaryDir;
         checkCollision();
         if (collisionOn) {
@@ -526,7 +526,7 @@ public abstract class GameEntity {
     if (!gamePanel.getPlayer().invincible) {
       int damage = attack - gamePanel.getPlayer().defense;
       // Get and oposite direction of this attacker
-      DirectionType canGuardDirection = direction.getOpposite();
+      Direction canGuardDirection = direction.getOpposite();
       if (gamePanel.getPlayer().guarding && gamePanel.getPlayer().direction == canGuardDirection) {
         // Parry
         if (gamePanel.getPlayer().guardCounter < 10) {
@@ -722,10 +722,10 @@ public abstract class GameEntity {
     if (actionLockCounter > interval) {
       int randomNumber = new Random().nextInt(100) + 1;
 
-      if (randomNumber <= 25) direction = DirectionType.UP;
-      else if (randomNumber <= 50) direction = DirectionType.DOWN;
-      else if (randomNumber <= 75) direction = DirectionType.LEFT;
-      else if (randomNumber <= 100) direction = DirectionType.RIGHT;
+      if (randomNumber <= 25) direction = Direction.UP;
+      else if (randomNumber <= 50) direction = Direction.DOWN;
+      else if (randomNumber <= 75) direction = Direction.LEFT;
+      else if (randomNumber <= 100) direction = Direction.RIGHT;
 
       actionLockCounter = 0;
     }

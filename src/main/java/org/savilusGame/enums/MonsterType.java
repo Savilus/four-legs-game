@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public enum MonsterObjectType {
+public enum MonsterType {
   GREEN_SLIME("Green Slime"),
   RED_SLIME("Red Slime"),
   ORC("Orc"),

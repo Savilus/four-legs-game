@@ -6,7 +6,7 @@ import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.utils.text.TextManager;
 
 public class IronDoor extends GameEntity {
@@ -16,7 +16,7 @@ public class IronDoor extends GameEntity {
 
   public IronDoor(GamePanel gamePanel) {
     super(gamePanel);
-    name = GameObjectType.IRON_DOOR.getName();
+    name = GameObject.IRON_DOOR.getName();
     image = setup(IRON_DOOR, TILE_SIZE, TILE_SIZE);
     collision = true;
     type = OBSTACLE;

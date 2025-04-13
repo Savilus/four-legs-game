@@ -6,7 +6,7 @@ import static org.savilusGame.config.GameEntityNameFactory.COIN;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.enums.WorldGameTypes;
 
 public class BronzeCoin extends GameEntity {
@@ -16,7 +16,7 @@ public class BronzeCoin extends GameEntity {
     super(gamePanel);
 
     type = WorldGameTypes.PICK_UP;
-    name = GameObjectType.BRONZE_COIN.getName();
+    name = GameObject.BRONZE_COIN.getName();
     value = 1;
     image = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
     down1 = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);

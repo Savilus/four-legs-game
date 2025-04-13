@@ -6,7 +6,7 @@ import static org.savilusGame.enums.WorldGameTypes.LIGHTING;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.utils.text.TextManager;
 
 public class Lantern extends GameEntity {
@@ -15,10 +15,10 @@ public class Lantern extends GameEntity {
     super(gamePanel);
 
     type = LIGHTING;
-    name = GameObjectType.LANTERN.getName();
+    name = GameObject.LANTERN.getName();
     image = setup(LANTERN, TILE_SIZE, TILE_SIZE);
     down1 = setup(LANTERN, TILE_SIZE, TILE_SIZE);
-    description = String.format(TextManager.getItemDescription(GameObjectType.LANTERN.getTextKey()), name);
+    description = String.format(TextManager.getItemDescription(GameObject.LANTERN.getTextKey()), name);
     price = 200;
     lightRadius = 450;
   }

@@ -15,8 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
-import org.savilusGame.enums.DirectionType;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.Direction;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -28,8 +28,8 @@ public class BigRock extends GameEntity {
   public BigRock(GamePanel gamePanel) {
     super(gamePanel);
 
-    name = GameObjectType.BIG_ROCK.getName();
-    direction = DirectionType.DOWN;
+    name = GameObject.BIG_ROCK.getName();
+    direction = Direction.DOWN;
     speed = 4;
     type = WorldGameTypes.OBSTACLE;
     getImage();
@@ -49,12 +49,12 @@ public class BigRock extends GameEntity {
 
     List<InteractiveTile> plateList = Arrays.stream(currentMap)
         .filter(Objects::nonNull)
-        .filter(tile -> StringUtils.equals(GameObjectType.METAL_PLATE.getName(), tile.name))
+        .filter(tile -> StringUtils.equals(GameObject.METAL_PLATE.getName(), tile.name))
         .toList();
 
     List<GameEntity> rockList = Arrays.stream(gamePanel.getMapsNpc().get(CURRENT_MAP))
         .filter(Objects::nonNull)
-        .filter(npc -> StringUtils.equals(GameObjectType.BIG_ROCK.getName(), npc.name))
+        .filter(npc -> StringUtils.equals(GameObject.BIG_ROCK.getName(), npc.name))
         .toList();
 
     for (InteractiveTile plate : plateList) {
@@ -78,7 +78,7 @@ public class BigRock extends GameEntity {
       var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
       for (int i = 0; i < objects.length; i++) {
         if (Objects.nonNull(objects[i]) &&
-            GameObjectType.IRON_DOOR.getName().equals(objects[i].name)) {
+            GameObject.IRON_DOOR.getName().equals(objects[i].name)) {
 
           objects[i] = null;
           gamePanel.playSoundEffect(DOOR_OPEN);
@@ -99,7 +99,7 @@ public class BigRock extends GameEntity {
   }
 
   @Override
-  public void move(DirectionType direction) {
+  public void move(Direction direction) {
     this.direction = direction;
     checkCollision();
 

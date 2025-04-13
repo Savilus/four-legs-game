@@ -7,7 +7,7 @@ import static org.savilusGame.config.GameEntityNameFactory.POWER_UP;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -19,7 +19,7 @@ public class ManaCrystal extends GameEntity {
   public ManaCrystal(GamePanel gamePanel) {
     super(gamePanel);
     type = WorldGameTypes.PICK_UP;
-    name = GameObjectType.MANA_CRYSTAL.getName();
+    name = GameObject.MANA_CRYSTAL.getName();
     value = 1;
     down1 = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);
     image = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);

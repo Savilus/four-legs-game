@@ -35,7 +35,7 @@ import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_RIGHT1;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_RIGHT2;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_UP1;
 import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_UP2;
-import static org.savilusGame.enums.MonsterObjectType.SKELETON_LORD;
+import static org.savilusGame.enums.MonsterType.SKELETON_LORD;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.util.stream.IntStream;
@@ -44,7 +44,7 @@ import org.savilusGame.GamePanel;
 import org.savilusGame.data.Progress;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.items.IronDoor;
-import org.savilusGame.enums.DirectionType;
+import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
@@ -56,7 +56,7 @@ public class SkeletonLord extends GameEntity {
   public SkeletonLord(GamePanel gamePanel) {
     super(gamePanel);
     name = SKELETON_LORD.getName();
-    direction = DirectionType.DOWN;
+    direction = Direction.DOWN;
     boss = true;
     defaultSpeed = 1;
     speed = defaultSpeed;

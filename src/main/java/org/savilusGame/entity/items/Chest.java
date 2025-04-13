@@ -8,7 +8,7 @@ import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.utils.text.TextManager;
 
 public class Chest extends GameEntity {
@@ -20,7 +20,7 @@ public class Chest extends GameEntity {
   public Chest(GamePanel gamePanel) {
     super(gamePanel);
     type = OBSTACLE;
-    name = GameObjectType.CHEST.getName();
+    name = GameObject.CHEST.getName();
     image = setup(CHEST, TILE_SIZE, TILE_SIZE);
     image2 = setup(CHEST_OPENED, TILE_SIZE, TILE_SIZE);
     collision = true;
@@ -35,7 +35,7 @@ public class Chest extends GameEntity {
 
   public Chest setLoot(GameEntity loot) {
     this.loot = loot;
-    dialogues = TextManager.getItemTexts(GameObjectType.CHEST.getTextKey(), loot.name);
+    dialogues = TextManager.getItemTexts(GameObject.CHEST.getTextKey(), loot.name);
     return this;
   }
 

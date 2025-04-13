@@ -4,7 +4,7 @@ import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.METAL_PLATE;
 
 import org.savilusGame.GamePanel;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 
 public class MetalPlate extends InteractiveTile {
 
@@ -14,7 +14,7 @@ public class MetalPlate extends InteractiveTile {
     this.worldX = TILE_SIZE * col;
     this.worldY = TILE_SIZE * row;
 
-    name = GameObjectType.METAL_PLATE.getName();
+    name = GameObject.METAL_PLATE.getName();
     image = setup(METAL_PLATE, TILE_SIZE, TILE_SIZE);
 
     solidArea.x = 0;

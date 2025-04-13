@@ -9,7 +9,7 @@ import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.GameObjectType;
+import org.savilusGame.enums.GameObject;
 import org.savilusGame.utils.text.TextManager;
 
 public class Key extends GameEntity {
@@ -19,19 +19,19 @@ public class Key extends GameEntity {
 
   public Key(GamePanel gamePanel) {
     super(gamePanel);
-    name = GameObjectType.KEY.getName();
+    name = GameObject.KEY.getName();
     type = CONSUMABLE;
     stackable = true;
     image = setup(KEY, TILE_SIZE, TILE_SIZE);
     down1 = setup(KEY, TILE_SIZE, TILE_SIZE);
-    description = String.format(TextManager.getItemDescription(GameObjectType.KEY.getTextKey()), name);
-    dialogues = TextManager.getItemTexts(GameObjectType.KEY.getTextKey(), name);
+    description = String.format(TextManager.getItemDescription(GameObject.KEY.getTextKey()), name);
+    dialogues = TextManager.getItemTexts(GameObject.KEY.getTextKey(), name);
     price = 1;
   }
 
   @Override
   public boolean use(GameEntity gameEntity) {
-    int objIndex = getDetected(gameEntity, gamePanel.getMapsObjects(), GameObjectType.DOOR.name());
+    int objIndex = getDetected(gameEntity, gamePanel.getMapsObjects(), GameObject.DOOR.name());
 
     if (objIndex != INIT_INDEX) {
       startDialogue(this, OPEN_DOOR_TEXT_KEY);

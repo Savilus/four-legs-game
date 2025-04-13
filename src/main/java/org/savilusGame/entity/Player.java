@@ -44,12 +44,12 @@ import static org.savilusGame.config.GameEntityNameFactory.PICK_AXE_UP_1;
 import static org.savilusGame.config.GameEntityNameFactory.PICK_AXE_UP_2;
 import static org.savilusGame.config.GameEntityNameFactory.RECEIVE_DAMAGE;
 import static org.savilusGame.config.GameEntityNameFactory.SWING_WEAPON;
-import static org.savilusGame.enums.DirectionType.DOWN;
-import static org.savilusGame.enums.DirectionType.LEFT;
-import static org.savilusGame.enums.DirectionType.RIGHT;
-import static org.savilusGame.enums.DirectionType.UP;
-import static org.savilusGame.enums.GameStateType.DIALOG_STATE;
-import static org.savilusGame.enums.GameStateType.GAME_OVER_STATE;
+import static org.savilusGame.enums.Direction.DOWN;
+import static org.savilusGame.enums.Direction.LEFT;
+import static org.savilusGame.enums.Direction.RIGHT;
+import static org.savilusGame.enums.Direction.UP;
+import static org.savilusGame.enums.GameState.DIALOG_STATE;
+import static org.savilusGame.enums.GameState.GAME_OVER_STATE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
@@ -289,7 +289,7 @@ public class Player extends GameEntity {
 
     if (!keyHandler.isGodModeOn() && currentLife <= 0) {
       gamePanel.setGameState(GAME_OVER_STATE);
-      gamePanel.getUi().commandNum = -1;
+      gamePanel.getUi().setCommandNum(-1);
       gamePanel.stopMusic();
       gamePanel.playSoundEffect(GAME_OVER);
     }
@@ -444,12 +444,12 @@ public class Player extends GameEntity {
     // DUNGEON 1
 //    worldX = TILE_SIZE * 20;
 //    worldY = TILE_SIZE * 27;
-    // dungeon 1 góra
-    worldX = TILE_SIZE * 9;
-    worldY = TILE_SIZE * 10;
+    // dungeon 1 UP
+//    worldX = TILE_SIZE * 9;
+//    worldY = TILE_SIZE * 10;
     // main map
-//    worldX = TILE_SIZE * 23;
-//    worldY = TILE_SIZE * 21;
+    worldX = TILE_SIZE * 23;
+    worldY = TILE_SIZE * 21;
     defaultSpeed = 4;
     speed = defaultSpeed;
     direction = DOWN;

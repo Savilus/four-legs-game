@@ -72,7 +72,7 @@ public class GameMap {
     int y = gamePanel.getScreenHeight() / 2 - size / 2;
     drawMap(g2, x, y, size, size, false, true, 1F);
 
-    g2.setFont(gamePanel.getUi().maruMonica.deriveFont(32F));
+    g2.setFont(gamePanel.getUi().getMaruMonica().deriveFont(32F));
     g2.setColor(Color.WHITE);
     g2.drawString(TextManager.getUiText(UI_MESSAGES, CLOSE_MAP_KEY), 750, 550);
   }

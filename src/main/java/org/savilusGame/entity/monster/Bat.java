@@ -11,14 +11,14 @@ import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Heart;
 import org.savilusGame.entity.items.ManaCrystal;
-import org.savilusGame.enums.MonsterObjectType;
+import org.savilusGame.enums.MonsterType;
 import org.savilusGame.enums.WorldGameTypes;
 
 public class Bat extends GameEntity {
 
   public Bat(GamePanel gamePanel) {
     super(gamePanel);
-    name = MonsterObjectType.BAT.getName();
+    name = MonsterType.BAT.getName();
     defaultSpeed = 4;
     speed = defaultSpeed;
     maxLife = 2;

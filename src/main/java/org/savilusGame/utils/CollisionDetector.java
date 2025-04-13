@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.enums.DirectionType;
+import org.savilusGame.enums.Direction;
 
 public class CollisionDetector {
   public final static int INIT_INDEX = 999;
@@ -32,7 +32,7 @@ public class CollisionDetector {
     int tileNum1, tileNum2;
 
     // Use a temporal direction when it's being knock backed
-    DirectionType direction = gameEntity.direction;
+    Direction direction = gameEntity.direction;
     if (gameEntity.knockBack) {
       direction = gameEntity.knockBackDirection;
     }
@@ -79,7 +79,7 @@ public class CollisionDetector {
 
     int index = INIT_INDEX;
 
-    DirectionType direction = gameEntity.direction;
+    Direction direction = gameEntity.direction;
     if (gameEntity.knockBack) {
       direction = gameEntity.knockBackDirection;
     }
@@ -119,7 +119,7 @@ public class CollisionDetector {
     int index = INIT_INDEX;
 
     // Use a temporal direction when it's being knock backed
-    DirectionType direction = gameEntity.direction;
+    Direction direction = gameEntity.direction;
     if (gameEntity.knockBack) {
       direction = gameEntity.knockBackDirection;
     }
@@ -169,7 +169,7 @@ public class CollisionDetector {
     return contactPlayer;
   }
 
-  private void checkGameEntityCollision(GameEntity gameEntity, DirectionType direction) {
+  private void checkGameEntityCollision(GameEntity gameEntity, Direction direction) {
     switch (direction) {
       case UP -> gameEntity.solidArea.y -= gameEntity.speed;
       case DOWN -> gameEntity.solidArea.y += gameEntity.speed;

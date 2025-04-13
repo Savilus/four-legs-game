@@ -2,12 +2,15 @@ package org.savilusGame.utils;
 
 import static org.savilusGame.config.GameEntityNameFactory.CURSOR;
 import static org.savilusGame.config.GameEntityNameFactory.OUTSIDE_MUSIC;
-import static org.savilusGame.enums.GameStateType.CHARACTER_STATE;
-import static org.savilusGame.enums.GameStateType.MAP_STATE;
-import static org.savilusGame.enums.GameStateType.OPTIONS_STATE;
-import static org.savilusGame.enums.GameStateType.PAUSE_STATE;
-import static org.savilusGame.enums.GameStateType.PLAY_STATE;
-import static org.savilusGame.enums.GameStateType.TITLE_STATE;
+import static org.savilusGame.enums.GameState.CHARACTER_STATE;
+import static org.savilusGame.enums.GameState.MAP_STATE;
+import static org.savilusGame.enums.GameState.OPTIONS_STATE;
+import static org.savilusGame.enums.GameState.PAUSE_STATE;
+import static org.savilusGame.enums.GameState.PLAY_STATE;
+import static org.savilusGame.enums.GameState.TITLE_STATE;
+import static org.savilusGame.enums.SubState.MENU;
+import static org.savilusGame.enums.SubState.NPC_INVENTORY;
+import static org.savilusGame.enums.SubState.PLAYER_INVENTORY;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.event.KeyEvent;
@@ -39,31 +42,29 @@ public class KeyHandler implements KeyListener {
     switch (code) {
       case KeyEvent.VK_W, KeyEvent.VK_UP -> {
         upPressed = true;
-        gamePanel.getUi().commandNum--;
-
-        if (gamePanel.getUi().commandNum < 0) {
-          gamePanel.getUi().commandNum = 2;
+        navigateCommandUp();
+        if (gamePanel.getUi().getCommandNum() < 0) {
+          gamePanel.getUi().setCommandNum(2);
         }
       }
       case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
         downPressed = true;
-        gamePanel.getUi().commandNum++;
-
-        if (gamePanel.getUi().commandNum > 2) {
-          gamePanel.getUi().commandNum = 0;
+        navigateCommandDown();
+        if (gamePanel.getUi().getCommandNum() > 2) {
+          gamePanel.getUi().setCommandNum(0);
         }
       }
       case KeyEvent.VK_ENTER -> {
-        if (gamePanel.getUi().commandNum == 0) {
+        if (gamePanel.getUi().getCommandNum() == 0) {
           gamePanel.setGameState(PLAY_STATE);
           gamePanel.playMusic(OUTSIDE_MUSIC);
         }
-        if (gamePanel.getUi().commandNum == 1) {
+        if (gamePanel.getUi().getCommandNum() == 1) {
           gamePanel.getSaveLoad().load();
           gamePanel.setGameState(PLAY_STATE);
           gamePanel.playMusic(OUTSIDE_MUSIC);
         }
-        if (gamePanel.getUi().commandNum == 2) {
+        if (gamePanel.getUi().getCommandNum() == 2) {
           System.exit(0);
         }
       }
@@ -175,33 +176,32 @@ public class KeyHandler implements KeyListener {
     if (code == KeyEvent.VK_ENTER) {
       enterPressed = true;
     }
-
-    if (gamePanel.getUi().subState == 0) {
+    if (gamePanel.getUi().subState == MENU) {
       switch (code) {
         case KeyEvent.VK_W -> {
-          gamePanel.getUi().commandNum--;
-          if (gamePanel.getUi().commandNum < 0) {
-            gamePanel.getUi().commandNum = 2;
+          navigateCommandUp();
+          if (gamePanel.getUi().getCommandNum() < 0) {
+            gamePanel.getUi().setCommandNum(2);
           }
           gamePanel.playSoundEffect(CURSOR);
         }
         case KeyEvent.VK_S -> {
-          gamePanel.getUi().commandNum++;
-          if (gamePanel.getUi().commandNum > 2) {
-            gamePanel.getUi().commandNum = 0;
+          navigateCommandDown();
+          if (gamePanel.getUi().getCommandNum() > 2) {
+            gamePanel.getUi().setCommandNum(0);
           }
           gamePanel.playSoundEffect(CURSOR);
         }
       }
-    } else if (gamePanel.getUi().subState == 1) {
+    } else if (gamePanel.getUi().subState == NPC_INVENTORY) {
       npcInventory(code);
       if (code == KeyEvent.VK_ESCAPE) {
-        gamePanel.getUi().subState = 0;
+        gamePanel.getUi().subState = MENU;
       }
-    } else if (gamePanel.getUi().subState == 2) {
+    } else if (gamePanel.getUi().subState == PLAYER_INVENTORY) {
       playerInventory(code);
       if (code == KeyEvent.VK_ESCAPE) {
-        gamePanel.getUi().subState = 0;
+        gamePanel.getUi().subState = MENU;
 
       }
     }
@@ -210,24 +210,24 @@ public class KeyHandler implements KeyListener {
   private void gameOverState(int code) {
     switch (code) {
       case KeyEvent.VK_W, KeyEvent.VK_UP -> {
-        gamePanel.getUi().commandNum--;
-        if (gamePanel.getUi().commandNum < 0) {
-          gamePanel.getUi().commandNum = 1;
+        navigateCommandUp();
+        if (gamePanel.getUi().getCommandNum() < 0) {
+          gamePanel.getUi().setCommandNum(1);
         }
         gamePanel.playSoundEffect(CURSOR);
       }
       case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
-        gamePanel.getUi().commandNum++;
-        if (gamePanel.getUi().commandNum > 1) {
-          gamePanel.getUi().commandNum = 0;
+        navigateCommandDown();
+        if (gamePanel.getUi().getCommandNum() > 1) {
+          gamePanel.getUi().setCommandNum(0);
         }
         gamePanel.playSoundEffect(CURSOR);
       }
       case KeyEvent.VK_ENTER -> {
-        if (gamePanel.getUi().commandNum == 0) {
+        if (gamePanel.getUi().getCommandNum() == 0) {
           gamePanel.setGameState(PLAY_STATE);
           gamePanel.resetGame(false);
-        } else if (gamePanel.getUi().commandNum == 1) {
+        } else if (gamePanel.getUi().getCommandNum() == 1) {
           gamePanel.setGameState(TITLE_STATE);
           gamePanel.resetGame(true);
         }
@@ -238,51 +238,51 @@ public class KeyHandler implements KeyListener {
   private void optionState(int code) {
     int maxCommandNum = 0;
     switch (gamePanel.getUi().subState) {
-      case 0 -> maxCommandNum = 5;
-      case 3 -> maxCommandNum = 1;
+      case MENU -> maxCommandNum = 5;
+      case END_GAME -> maxCommandNum = 1;
     }
     switch (code) {
       case KeyEvent.VK_ESCAPE -> gamePanel.setGameState(PLAY_STATE);
       case KeyEvent.VK_ENTER -> enterPressed = true;
       case KeyEvent.VK_W -> {
-        gamePanel.getUi().commandNum--;
+        navigateCommandUp();
         gamePanel.playSoundEffect(CURSOR);
-        if (gamePanel.getUi().commandNum < 0) {
-          gamePanel.getUi().commandNum = maxCommandNum;
+        if (gamePanel.getUi().getCommandNum() < 0) {
+          gamePanel.getUi().setCommandNum(maxCommandNum);
         }
       }
       case KeyEvent.VK_S -> {
-        gamePanel.getUi().commandNum++;
+        navigateCommandDown();
         gamePanel.playSoundEffect(CURSOR);
-        if (gamePanel.getUi().commandNum > maxCommandNum) {
-          gamePanel.getUi().commandNum = 0;
+        if (gamePanel.getUi().getCommandNum() > maxCommandNum) {
+          gamePanel.getUi().setCommandNum(0);
         }
       }
       case KeyEvent.VK_A -> {
-        if (gamePanel.getUi().subState == 0) {
-          if (gamePanel.getUi().commandNum == 1 && gamePanel.getMusic().getVolumeScale() > 0) {
+        if (gamePanel.getUi().subState == MENU) {
+          if (gamePanel.getUi().getCommandNum() == 1 && gamePanel.getMusic().getVolumeScale() > 0) {
             gamePanel.getMusic().setVolumeScale(gamePanel.getMusic().getVolumeScale() - 1);
             gamePanel.getMusic().checkVolume();
             gamePanel.playSoundEffect(CURSOR);
           }
         }
-        if (gamePanel.getUi().subState == 0) {
-          if (gamePanel.getUi().commandNum == 2 && gamePanel.getSoundEffect().getVolumeScale() > 0) {
+        if (gamePanel.getUi().subState == MENU) {
+          if (gamePanel.getUi().getCommandNum() == 2 && gamePanel.getSoundEffect().getVolumeScale() > 0) {
             gamePanel.getSoundEffect().setVolumeScale(gamePanel.getSoundEffect().getVolumeScale() - 1);
             gamePanel.playSoundEffect(CURSOR);
           }
         }
       }
       case KeyEvent.VK_D -> {
-        if (gamePanel.getUi().subState == 0) {
-          if (gamePanel.getUi().commandNum == 1 && gamePanel.getMusic().getVolumeScale() < 5) {
+        if (gamePanel.getUi().subState == MENU) {
+          if (gamePanel.getUi().getCommandNum() == 1 && gamePanel.getMusic().getVolumeScale() < 5) {
             gamePanel.getMusic().setVolumeScale(gamePanel.getMusic().getVolumeScale() + 1);
             gamePanel.getMusic().checkVolume();
             gamePanel.playSoundEffect(CURSOR);
           }
         }
-        if (gamePanel.getUi().subState == 0) {
-          if (gamePanel.getUi().commandNum == 2 && gamePanel.getSoundEffect().getVolumeScale() < 5) {
+        if (gamePanel.getUi().subState == MENU) {
+          if (gamePanel.getUi().getCommandNum() == 2 && gamePanel.getSoundEffect().getVolumeScale() < 5) {
             gamePanel.getSoundEffect().setVolumeScale(gamePanel.getSoundEffect().getVolumeScale() + 1);
             gamePanel.playSoundEffect(CURSOR);
           }
@@ -295,6 +295,14 @@ public class KeyHandler implements KeyListener {
     if (code == KeyEvent.VK_M) {
       gamePanel.setGameState(PLAY_STATE);
     }
+  }
+  
+  private void navigateCommandUp(){
+    gamePanel.getUi().setCommandNum(gamePanel.getUi().getCommandNum() - 1);
+  }
+  
+  private void navigateCommandDown(){
+    gamePanel.getUi().setCommandNum(gamePanel.getUi().getCommandNum() + 1);
   }
 
   @Override

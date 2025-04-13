@@ -3,7 +3,7 @@ package org.savilusGame.utils;
 import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.config.GameEntityNameFactory.DOOR_OPEN;
 import static org.savilusGame.config.GameEntityNameFactory.FINAL_BATTLE;
-import static org.savilusGame.enums.GameStateType.PLAY_STATE;
+import static org.savilusGame.enums.GameState.PLAY_STATE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
@@ -14,7 +14,7 @@ import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.PlayerDummy;
 import org.savilusGame.entity.items.IronDoor;
-import org.savilusGame.enums.MonsterObjectType;
+import org.savilusGame.enums.MonsterType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -89,9 +89,9 @@ public class CutsceneManager {
       var monsters = gamePanel.getMapsMonsters().get(CURRENT_MAP);
       for (GameEntity monster : monsters) {
         if (Objects.nonNull(monster) &&
-            StringUtils.equalsIgnoreCase(monster.name, MonsterObjectType.SKELETON_LORD.getName())) {
+            StringUtils.equalsIgnoreCase(monster.name, MonsterType.SKELETON_LORD.getName())) {
           monster.sleep = false;
-          gamePanel.getUi().npc = monster;
+          gamePanel.getUi().setNpc(monster);
           scenePhase++;
           break;
         }
@@ -102,7 +102,7 @@ public class CutsceneManager {
       var monsters = gamePanel.getMapsMonsters().get(CURRENT_MAP);
       for (GameEntity monster : monsters) {
         if (Objects.nonNull(monster) &&
-            StringUtils.equalsIgnoreCase(monster.name, MonsterObjectType.SKELETON_LORD.getName())) {
+            StringUtils.equalsIgnoreCase(monster.name, MonsterType.SKELETON_LORD.getName())) {
           monster.startDialogue(monster, CUTSCENE_DIALOGUE);
           gamePanel.getUi().drawDialogueScreen();
           break;

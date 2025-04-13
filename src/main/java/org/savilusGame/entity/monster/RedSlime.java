@@ -12,14 +12,14 @@ import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Heart;
 import org.savilusGame.entity.items.ManaCrystal;
 import org.savilusGame.entity.projectile.Rock;
-import org.savilusGame.enums.MonsterObjectType;
+import org.savilusGame.enums.MonsterType;
 import org.savilusGame.enums.WorldGameTypes;
 
 public class RedSlime extends GameEntity {
 
   public RedSlime(GamePanel gamePanel) {
     super(gamePanel);
-    name = MonsterObjectType.RED_SLIME.getName();
+    name = MonsterType.RED_SLIME.getName();
     defaultSpeed = 2;
     speed = defaultSpeed;
     maxLife = 8;
