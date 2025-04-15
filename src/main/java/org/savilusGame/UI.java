@@ -9,6 +9,10 @@ import static org.savilusGame.enums.GameState.CUTSCENE_STATE;
 import static org.savilusGame.enums.GameState.DIALOG_STATE;
 import static org.savilusGame.enums.GameState.PLAY_STATE;
 import static org.savilusGame.enums.GameState.TITLE_STATE;
+import static org.savilusGame.enums.SubState.CONTROL_OPTIONS;
+import static org.savilusGame.enums.SubState.DEFAULT;
+import static org.savilusGame.enums.SubState.FULL_SCREEN_OPTION;
+import static org.savilusGame.enums.SubState.MAIN_SETTINGS;
 import static org.savilusGame.enums.SubState.MENU;
 import static org.savilusGame.enums.SubState.NPC_INVENTORY;
 import static org.savilusGame.enums.SubState.PLAYER_INVENTORY;
@@ -31,95 +35,98 @@ import org.savilusGame.environment.Lighting;
 import org.savilusGame.utils.text.TextManager;
 
 import io.vavr.control.Try;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UI {
-  private static final String MERCHANT_COME_AGAIN_DIALOGUE_KEY = "merchantNpcComeAgain";
-  private static final String MERCHANT_NO_MONEY_DIALOGUE_KEY = "merchantNpcNotEnoughMoney";
-  private static final String MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY = "merchantNpcTooMuchItems";
-  private static final String MERCHANT_TRADE_DIALOGUE_KEY = "merchantNpcTradeQuestion";
-  private static final String MERCHANT_CANNOT_SELL_KEY = "merchantNpcCannotSellItem";
-  private static final String CURSOR_SELECTOR = ">";
-  private static final String PLAYER_LIFE_FORMAT = "%s / %s";
-  private static final String CHARACTER_CONTROL = "WASD";
-  private static final String CONFIRM = "Enter";
-  private static final String PROJECTILE_KEY = "F";
-  private static final String CHARACTER_KEY = "C";
-  private static final String PAUSE_KEY = "P";
-  private static final String CLOSE_KEY = "ESC";
-  private static final String SPACE_KEY = "SPACE";
-  private static final String DEFAULT_FONT = "SansSerif";
-  private static final String MENU_OPTIONS = "menuOptions";
-  private static final String DIALOGUES = "dialogues";
-  private static final String SETTINGS = "settings";
-  private static final String UI_MESSAGES = "uiMessages";
-  private static final String GAME_STATS = "gameStats";
-  private static final String NEW_GAME = "newGame";
-  private static final String LOAD_GAME = "loadGame";
-  private static final String QUIT = "quit";
-  private static final String END_GAME_QUESTION = "endGameQuestion";
-  private static final String FULL_SCREEN_NOTIFICATION = "fullScreenNotification";
-  private static final String PAUSED = "paused";
-  private static final String COIN = "coin";
-  private static final String TITLE = "title";
-  private static final String END_GAME = "endGame";
-  private static final String LIFE = "life";
-  private static final String DEXTERITY = "dexterity";
-  private static final String WEAPON = "weapon";
-  private static final String LEVEL = "level";
-  private static final String SHIELD = "shield";
-  private static final String EXP = "exp";
-  private static final String STRENGTH = "strength";
-  private static final String GAME_OVER = "gameOver";
-  private static final String RETRY = "retry";
-  private static final String OPTIONS = "options";
-  private static final String ATTACK = "attack";
-  private static final String NEXT_LEVEL = "nextLevel";
-  private static final String DEFENSE = "defense";
-  private static final String FULL_SCREEN = "fullScreen";
-  private static final String YES = "yes";
-  private static final String BACK = "back";
-  private static final String MUSIC = "music";
-  private static final String SOUND_EFFECT = "soundEffect";
-  private static final String NO = "no";
-  private static final String MOVE = "move";
-  private static final String SHOOT_CAST = "shootCast";
-  private static final String PARRY = "parry";
-  private static final String CONFIRM_ATTACK = "confirmAttack";
-  private static final String CHARACTER_SCREEN = "characterScreen";
-  private static final String CONTROL = "control";
-  private static final String CONTROLS = "controls";
-  private static final String PAUSE = "pause";
-  private static final String BUY = "buy";
-  private static final String SHOP = "shop";
-  private static final String SELL = "sell";
-  private static final String LEAVE = "leave";
-  private static final String ESCAPE_BACK = "escapeBack";
-  private static final String YOUR_COIN = "yourCoin";
+  static final String MERCHANT_COME_AGAIN_DIALOGUE_KEY = "merchantNpcComeAgain";
+  static final String MERCHANT_NO_MONEY_DIALOGUE_KEY = "merchantNpcNotEnoughMoney";
+  static final String MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY = "merchantNpcTooMuchItems";
+  static final String MERCHANT_TRADE_DIALOGUE_KEY = "merchantNpcTradeQuestion";
+  static final String MERCHANT_CANNOT_SELL_KEY = "merchantNpcCannotSellItem";
+  static final String CURSOR_SELECTOR = ">";
+  static final String PLAYER_LIFE_FORMAT = "%s / %s";
+  static final String CHARACTER_CONTROL = "WASD";
+  static final String CONFIRM = "Enter";
+  static final String PROJECTILE_KEY = "F";
+  static final String CHARACTER_KEY = "C";
+  static final String PAUSE_KEY = "P";
+  static final String CLOSE_KEY = "ESC";
+  static final String SPACE_KEY = "SPACE";
+  static final String DEFAULT_FONT = "SansSerif";
+  static final String MENU_OPTIONS = "menuOptions";
+  static final String DIALOGUES = "dialogues";
+  static final String SETTINGS = "settings";
+  static final String UI_MESSAGES = "uiMessages";
+  static final String GAME_STATS = "gameStats";
+  static final String NEW_GAME = "newGame";
+  static final String LOAD_GAME = "loadGame";
+  static final String QUIT = "quit";
+  static final String END_GAME_QUESTION = "endGameQuestion";
+  static final String FULL_SCREEN_NOTIFICATION = "fullScreenNotification";
+  static final String PAUSED = "paused";
+  static final String COIN = "coin";
+  static final String TITLE = "title";
+  static final String END_GAME = "endGame";
+  static final String LIFE = "life";
+  static final String DEXTERITY = "dexterity";
+  static final String WEAPON = "weapon";
+  static final String LEVEL = "level";
+  static final String SHIELD = "shield";
+  static final String EXP = "exp";
+  static final String STRENGTH = "strength";
+  static final String GAME_OVER = "gameOver";
+  static final String RETRY = "retry";
+  static final String OPTIONS = "options";
+  static final String ATTACK = "attack";
+  static final String NEXT_LEVEL = "nextLevel";
+  static final String DEFENSE = "defense";
+  static final String FULL_SCREEN = "fullScreen";
+  static final String YES = "yes";
+  static final String BACK = "back";
+  static final String MUSIC = "music";
+  static final String SOUND_EFFECT = "soundEffect";
+  static final String NO = "no";
+  static final String MOVE = "move";
+  static final String SHOOT_CAST = "shootCast";
+  static final String PARRY = "parry";
+  static final String CONFIRM_ATTACK = "confirmAttack";
+  static final String CHARACTER_SCREEN = "characterScreen";
+  static final String CONTROL = "control";
+  static final String CONTROLS = "controls";
+  static final String PAUSE = "pause";
+  static final String BUY = "buy";
+  static final String SHOP = "shop";
+  static final String SELL = "sell";
+  static final String LEAVE = "leave";
+  static final String ESCAPE_BACK = "escapeBack";
+  static final String YOUR_COIN = "yourCoin";
 
-  private final BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank, coin;
-  private final GamePanel gamePanel;
-  private Graphics2D graphics2D;
-  private final Font maruMonica, purisaBoldFont;
-  private final ArrayList<String> messages = new ArrayList<>();
-  private final ArrayList<Integer> messageCounter = new ArrayList<>();
-  private GameEntity npc;
+  final BufferedImage heartFull, heartHalf, heartBlank, manaCrystalFull, manaCrystalBlank, coin;
+  final GamePanel gamePanel;
+  Graphics2D graphics2D;
+  final Font maruMonica, purisaBoldFont;
+  final ArrayList<String> messages = new ArrayList<>();
+  final ArrayList<Integer> messageCounter = new ArrayList<>();
+  GameEntity npc;
 
-  private int commandNum = 0;
-  public SubState subState = MENU;
-  public int playerSlotCol = 0;
-  public int playerSlotRow = 0;
-  public int npcSlotCol = 0;
-  public int npcSlotRow = 0;
-  private int transitionCounter = 0;
+  int commandNum = 0;
+  SubState subState = DEFAULT;
+  int playerSlotCol = 0;
+  int playerSlotRow = 0;
+  int npcSlotCol = 0;
+  int npcSlotRow = 0;
+  int transitionCounter = 0;
   int characterIndex = 0;
-  public String currentDialogue = StringUtils.EMPTY;
-  StringBuilder combinedText = new StringBuilder();
+  String currentDialogue = StringUtils.EMPTY;
+  final StringBuilder combinedText = new StringBuilder();
 
   public UI(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -164,9 +171,7 @@ public class UI {
         drawPlayerLife();
         drawPauseScreen();
       }
-      case DIALOG_STATE -> {
-        drawDialogueScreen();
-      }
+      case DIALOG_STATE -> drawDialogueScreen();
       case CHARACTER_STATE -> {
         drawCharacterScreen();
         drawInventory(gamePanel.getPlayer(), true);
@@ -246,9 +251,9 @@ public class UI {
     drawSubWindow(frameX, frameY, frameWidth, frameHeight);
 
     switch (subState) {
-      case MENU -> optionsMainSettings(frameX, frameY);
-      case NPC_INVENTORY -> optionsFullScreenNotification(frameX, frameY);
-      case PLAYER_INVENTORY -> optionsControl(frameX, frameY);
+      case MAIN_SETTINGS -> optionsMainSettings(frameX, frameY);
+      case FULL_SCREEN_OPTION -> optionsFullScreenNotification(frameX, frameY);
+      case CONTROL_OPTIONS -> optionsControl(frameX, frameY);
       case END_GAME -> optionsEndGameConfirmation(frameX, frameY);
     }
 
@@ -257,7 +262,7 @@ public class UI {
 
   private void drawTradeScreen() {
     switch (subState) {
-      case MENU -> tradeSelect();
+      case DEFAULT -> tradeSelect();
       case NPC_INVENTORY -> tradeBuy();
       case PLAYER_INVENTORY -> tradeSell();
     }
@@ -430,7 +435,7 @@ public class UI {
     if (commandNum == 1) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = MENU;
+        subState = MAIN_SETTINGS;
         commandNum = 4;
       }
     }
@@ -453,7 +458,7 @@ public class UI {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
         gamePanel.setFullScreenOn(!gamePanel.isFullScreenOn());
-        subState = NPC_INVENTORY;
+        subState = FULL_SCREEN_OPTION;
       }
     }
 
@@ -474,7 +479,7 @@ public class UI {
     if (commandNum == 3) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = PLAYER_INVENTORY;
+        subState = CONTROL_OPTIONS;
         commandNum = 0;
       }
     }
@@ -498,6 +503,7 @@ public class UI {
       if (gamePanel.getKeyHandler().isEnterPressed()) {
         gamePanel.setGameState(PLAY_STATE);
         commandNum = 0;
+        subState = DEFAULT;
       }
     }
 
@@ -526,47 +532,40 @@ public class UI {
   }
 
   public void optionsControl(int frameX, int frameY) {
-    int textX;
-    int textY;
-
-    textX = getXForCenteredText(TextManager.getSettingText(CONTROLS, CONTROL));
-    textY = frameY + TILE_SIZE;
+    int textX = getXForCenteredText(TextManager.getSettingText(CONTROLS, CONTROL));
+    int textY = frameY + TILE_SIZE;
     graphics2D.drawString(TextManager.getSettingText(CONTROLS, CONTROL), textX, textY);
 
     textX = frameX + TILE_SIZE;
     textY += TILE_SIZE;
 
-    graphics2D.drawString(TextManager.getSettingText(CONTROLS, MOVE), textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(TextManager.getSettingText(CONTROLS, CONFIRM_ATTACK), textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(TextManager.getSettingText(CONTROLS, SHOOT_CAST), textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(TextManager.getSettingText(CONTROLS, PARRY), textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(TextManager.getSettingText(CONTROLS, CHARACTER_SCREEN), textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(TextManager.getSettingText(CONTROLS, PAUSE), textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(TextManager.getSettingText(MENU_OPTIONS, OPTIONS), textX, textY);
+    String[] optionsLabels = {
+        TextManager.getSettingText(CONTROLS, MOVE),
+        TextManager.getSettingText(CONTROLS, CONFIRM_ATTACK),
+        TextManager.getSettingText(CONTROLS, SHOOT_CAST),
+        TextManager.getSettingText(CONTROLS, PARRY),
+        TextManager.getSettingText(CONTROLS, CHARACTER_SCREEN),
+        TextManager.getSettingText(CONTROLS, PAUSE),
+        TextManager.getSettingText(MENU_OPTIONS, OPTIONS)
+    };
+
+    for (String label : optionsLabels) {
+      graphics2D.drawString(label, textX, textY);
+      textY += TILE_SIZE;
+    }
 
     textX = frameX + TILE_SIZE * 6;
     textY = frameY + TILE_SIZE * 2;
 
-    graphics2D.drawString(CHARACTER_CONTROL, textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(CONFIRM, textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(PROJECTILE_KEY, textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(SPACE_KEY, textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(CHARACTER_KEY, textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(PAUSE_KEY, textX, textY);
-    textY += TILE_SIZE;
-    graphics2D.drawString(CLOSE_KEY, textX, textY);
-    textY += TILE_SIZE;
+    String[] controlLabels = {
+        CHARACTER_CONTROL, CONFIRM, PROJECTILE_KEY,
+        SPACE_KEY, CHARACTER_KEY, PAUSE_KEY, CLOSE_KEY
+    };
+
+    for (String key : controlLabels) {
+      graphics2D.drawString(key, textX, textY);
+      textY += TILE_SIZE;
+    }
 
     // BACK
     textX = frameX + TILE_SIZE;
@@ -576,11 +575,12 @@ public class UI {
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = MENU;
+        subState = MAIN_SETTINGS;
         commandNum = 3;
       }
     }
   }
+
 
   private void drawInventory(GameEntity gameEntity, boolean cursor) {
     int frameX;
@@ -695,7 +695,7 @@ public class UI {
     if (commandNum == 0) {
       graphics2D.drawString(CURSOR_SELECTOR, textX - 25, textY);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        subState = MENU;
+        subState = MAIN_SETTINGS;
       }
     }
   }
@@ -875,7 +875,7 @@ public class UI {
         int x = isBoss ? (gamePanel.getScreenWidth() / 2 - TILE_SIZE * 4) : monster.getScreenX();
         int y = isBoss ? (TILE_SIZE * 10) : (monster.getScreenY() - 15);
 
-        if(monster.hpBarOn) {
+        if (monster.hpBarOn) {
           graphics2D.setColor(new Color(35, 35, 35));
           graphics2D.fillRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
 

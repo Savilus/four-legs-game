@@ -209,7 +209,7 @@ public class Player extends GameEntity {
       detectMonsterContact(monsterIndex);
 
       // CHECK INTERACTIVE TILE COLLISION
-      int interactiveTileIndex = gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP));
+      gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP));
 
       // CHECK EVENT
       gamePanel.getEventHandler().checkEvent();
@@ -366,7 +366,7 @@ public class Player extends GameEntity {
   }
 
   public void selectItem() {
-    int itemIndex = gamePanel.getUi().getItemIndexFromInventory(gamePanel.getUi().playerSlotCol, gamePanel.getUi().playerSlotRow);
+    int itemIndex = gamePanel.getUi().getItemIndexFromInventory(gamePanel.getUi().getPlayerSlotCol(), gamePanel.getUi().getPlayerSlotRow());
 
     if (itemIndex < inventory.size()) {
       GameEntity selectedItem = inventory.get(itemIndex);
@@ -450,6 +450,9 @@ public class Player extends GameEntity {
     // main map
     worldX = TILE_SIZE * 23;
     worldY = TILE_SIZE * 21;
+    // TRADER
+//    worldX = TILE_SIZE * 10;
+//    worldY = TILE_SIZE * 41;
     defaultSpeed = 4;
     speed = defaultSpeed;
     direction = DOWN;

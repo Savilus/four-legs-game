@@ -1,11 +1,12 @@
 package org.savilusGame.enums;
 
 public enum SubState {
+  DEFAULT,
   MENU,
   NPC_INVENTORY,
   PLAYER_INVENTORY,
   END_GAME,
-  OPTIONS_CONTROL,
-  FULL_SCREEN,
+  CONTROL_OPTIONS,
+  FULL_SCREEN_OPTION,
   MAIN_SETTINGS,
 }
