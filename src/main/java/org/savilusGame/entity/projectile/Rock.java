@@ -56,12 +56,12 @@ public class Rock extends Projectile {
 
   @Override
   public void substractResource(GameEntity user) {
-    user.ammo -= getUseCost();
+    user.setAmmo(user.getAmmo() - getUseCost());
   }
 
   @Override
   public boolean haveResource(GameEntity user) {
-    return user.ammo >= getUseCost();
+    return user.getAmmo() >= getUseCost();
   }
 
 }

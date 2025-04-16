@@ -103,10 +103,10 @@ public class GameMap {
     g2.drawImage(worldGameMap.get(CURRENT_MAP), x, y, width, height, null);
 
     double scale = (double) (TILE_SIZE * gamePanel.getMaxWorldCol()) / width;
-    int playerX = (int) (x + gamePanel.getPlayer().worldX / scale);
-    int playerY = (int) (y + gamePanel.getPlayer().worldY / scale);
+    int playerX = (int) (x + gamePanel.getPlayer().getWorldX() / scale);
+    int playerY = (int) (y + gamePanel.getPlayer().getWorldY() / scale);
     int playerSize = TILE_SIZE / 3;
-    g2.drawImage(gamePanel.getPlayer().down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
+    g2.drawImage(gamePanel.getPlayer().getDown1(), playerX - 6, playerY - 6, playerSize, playerSize, null);
 
     g2.setClip(originalClip);
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));

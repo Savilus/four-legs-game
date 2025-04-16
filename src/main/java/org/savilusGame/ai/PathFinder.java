@@ -80,8 +80,8 @@ public class PathFinder {
         if (Objects.nonNull(interactiveTiles)) {
           for (InteractiveTile interactiveTile : interactiveTiles) {
             if (Objects.nonNull(interactiveTile) && interactiveTile.isDestructible()) {
-              int itCol = interactiveTile.worldX / TILE_SIZE;
-              int itRow = interactiveTile.worldY / TILE_SIZE;
+              int itCol = interactiveTile.getWorldX() / TILE_SIZE;
+              int itRow = interactiveTile.getWorldY() / TILE_SIZE;
               if (itCol >= 0 && itCol < gamePanel.getMaxWorldCol() && itRow >= 0 && itRow < gamePanel.getMaxWorldRow()) {
                 node[itCol][itRow].solid = true;
               }

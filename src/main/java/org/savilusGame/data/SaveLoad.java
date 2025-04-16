@@ -16,17 +16,20 @@ import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
 
 import io.vavr.control.Try;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SaveLoad {
 
-  private static final String SAVE_LOAD_PATH_FILE = "save.dat";
-  private static final String NA = "NA";
+  static String SAVE_LOAD_PATH_FILE = "save.dat";
+  static String NA = "NA";
 
-  private GamePanel gamePanel;
+  GamePanel gamePanel;
 
   public void save() {
     Try.run(() -> {
@@ -42,8 +45,8 @@ public class SaveLoad {
           List<Boolean> invincibleList = new ArrayList<>();
           for (InteractiveTile interactiveTile : interactiveTiles) {
             if (Objects.nonNull(interactiveTile)) {
-              currentLifeList.add(interactiveTile.currentLife);
-              invincibleList.add(interactiveTile.invincible);
+              currentLifeList.add(interactiveTile.getCurrentLife());
+              invincibleList.add(interactiveTile.isInvincible());
             } else {
               currentLifeList.add(0);
               invincibleList.add(false);
@@ -55,26 +58,26 @@ public class SaveLoad {
       }
 
       // Player stats
-      dataStorage.level = gamePanel.getPlayer().level;
-      dataStorage.maxLife = gamePanel.getPlayer().maxLife;
-      dataStorage.life = gamePanel.getPlayer().currentLife;
-      dataStorage.mana = gamePanel.getPlayer().mana;
-      dataStorage.maxMana = gamePanel.getPlayer().maxMana;
-      dataStorage.strength = gamePanel.getPlayer().strength;
-      dataStorage.dexterity = gamePanel.getPlayer().dexterity;
-      dataStorage.exp = gamePanel.getPlayer().exp;
-      dataStorage.nextLevelExp = gamePanel.getPlayer().nextLevelExp;
-      dataStorage.money = gamePanel.getPlayer().money;
+      dataStorage.setLevel(gamePanel.getPlayer().getLevel());
+      dataStorage.setMaxLife(gamePanel.getPlayer().getMaxLife());
+      dataStorage.setLife(gamePanel.getPlayer().getCurrentLife());
+      dataStorage.setMana(gamePanel.getPlayer().getMana());
+      dataStorage.setMaxMana(gamePanel.getPlayer().getMaxMana());
+      dataStorage.setStrength(gamePanel.getPlayer().getStrength());
+      dataStorage.setDexterity(gamePanel.getPlayer().getDexterity());
+      dataStorage.setExp(gamePanel.getPlayer().getExp());
+      dataStorage.setNextLevelExp(gamePanel.getPlayer().getNextLevelExp());
+      dataStorage.setMoney(gamePanel.getPlayer().getMoney());
 
       // Player inventory
-      for (int i = 0; i < gamePanel.getPlayer().inventory.size(); i++) {
-        dataStorage.itemNames.add(gamePanel.getPlayer().inventory.get(i).name);
-        dataStorage.itemAmounts.add(gamePanel.getPlayer().inventory.get(i).amount);
+      for (int i = 0; i < gamePanel.getPlayer().getInventory().size(); i++) {
+        dataStorage.getItemNames().add(gamePanel.getPlayer().getInventory().get(i).getName());
+        dataStorage.getItemAmounts().add(gamePanel.getPlayer().getInventory().get(i).getAmount());
       }
 
       // Player equipment
-      dataStorage.currentWeaponSlot = gamePanel.getPlayer().getCurrentWeaponSlot();
-      dataStorage.currentShieldSlot = gamePanel.getPlayer().getCurrentShieldSlot();
+      dataStorage.setCurrentWeaponSlot(gamePanel.getPlayer().getCurrentWeaponSlot());
+      dataStorage.setCurrentShieldSlot(gamePanel.getPlayer().getCurrentShieldSlot());
 
 
       List<String> objectNamesList = new ArrayList<>();
@@ -86,29 +89,29 @@ public class SaveLoad {
       for (int i = 0; i < gamePanel.getMapsObjects().get(CURRENT_MAP).length; i++) {
         var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[i];
         if (Objects.isNull(mapObject)) {
-          objectNamesList.add("NA");
+          objectNamesList.add(NA);
           worldXList.add(0);
           worldYList.add(0);
           lootNamesList.add(null);
           openedList.add(false);
         } else {
-          objectNamesList.add(mapObject.name);
-          worldXList.add(mapObject.worldX);
-          worldYList.add(mapObject.worldY);
-          if (Objects.nonNull(mapObject.loot)) {
-            lootNamesList.add(mapObject.loot.name);
+          objectNamesList.add(mapObject.getName());
+          worldXList.add(mapObject.getWorldX());
+          worldYList.add(mapObject.getWorldY());
+          if (Objects.nonNull(mapObject.getLoot())) {
+            lootNamesList.add(mapObject.getLoot().getName());
           } else {
             lootNamesList.add(null);
           }
-          openedList.add(mapObject.opened);
+          openedList.add(mapObject.isOpened());
         }
       }
 
-      dataStorage.mapObjectNames.put(CURRENT_MAP, objectNamesList);
-      dataStorage.mapObjectWorldX.put(CURRENT_MAP, worldXList);
-      dataStorage.mapObjectWorldY.put(CURRENT_MAP, worldYList);
-      dataStorage.mapObjectLootNames.put(CURRENT_MAP, lootNamesList);
-      dataStorage.mapObjectOpened.put(CURRENT_MAP, openedList);
+      dataStorage.getMapObjectNames().put(CURRENT_MAP, objectNamesList);
+      dataStorage.getMapObjectWorldX().put(CURRENT_MAP, worldXList);
+      dataStorage.getMapObjectWorldY().put(CURRENT_MAP, worldYList);
+      dataStorage.getMapObjectLootNames().put(CURRENT_MAP, lootNamesList);
+      dataStorage.getMapObjectOpened().put(CURRENT_MAP, openedList);
 
       // Write the DataStorage object
       outputStream.writeObject(dataStorage);
@@ -119,7 +122,6 @@ public class SaveLoad {
   public void load() {
     Try.run(() -> {
       ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(SAVE_LOAD_PATH_FILE));
-
       DataStorage dataStorage = (DataStorage) inputStream.readObject();
 
       // Interactive tiles
@@ -128,13 +130,14 @@ public class SaveLoad {
           List<Integer> currentLifeList = dataStorage.mapInteractiveTilesCurrentLife.get(mapName);
           List<Boolean> invincibleList = dataStorage.mapInteractiveTilesInvincible.get(mapName);
           var interactiveTiles = gamePanel.getMapsInteractiveTiles().get(mapName);
+
           if (Objects.nonNull(currentLifeList) && Objects.nonNull(invincibleList) &&
               currentLifeList.size() == invincibleList.size()) {
             for (int index = 0; index < currentLifeList.size(); index++) {
               if (gamePanel.getMapsInteractiveTiles().containsKey(mapName) && interactiveTiles.length > index && Objects.nonNull(interactiveTiles[index])) {
-                interactiveTiles[index].currentLife = currentLifeList.get(index);
-                interactiveTiles[index].invincible = invincibleList.get(index);
-                if (interactiveTiles[index].currentLife <= 0 && Objects.nonNull(interactiveTiles[index].getDestroyedForm())) {
+                interactiveTiles[index].setCurrentLife(currentLifeList.get(index));
+                interactiveTiles[index].setInvincible(invincibleList.get(index));
+                if (interactiveTiles[index].getCurrentLife() <= 0 && Objects.nonNull(interactiveTiles[index].getDestroyedForm())) {
                   gamePanel.getMapsInteractiveTiles().get(mapName)[index] = gamePanel.getMapsInteractiveTiles().get(mapName)[index].getDestroyedForm();
                 }
               }
@@ -145,38 +148,38 @@ public class SaveLoad {
 
       // Player stats
       gamePanel.getPlayer().setDefaultPositions();
-      gamePanel.getPlayer().level = dataStorage.level;
-      gamePanel.getPlayer().maxLife = dataStorage.maxLife;
-      gamePanel.getPlayer().currentLife = dataStorage.life;
-      gamePanel.getPlayer().mana = dataStorage.mana;
-      gamePanel.getPlayer().maxMana = dataStorage.maxMana;
-      gamePanel.getPlayer().strength = dataStorage.strength;
-      gamePanel.getPlayer().dexterity = dataStorage.dexterity;
-      gamePanel.getPlayer().exp = dataStorage.exp;
-      gamePanel.getPlayer().nextLevelExp = dataStorage.nextLevelExp;
-      gamePanel.getPlayer().money = dataStorage.money;
+      gamePanel.getPlayer().setLevel(dataStorage.getLevel());
+      gamePanel.getPlayer().setMaxLife(dataStorage.getMaxLife());
+      gamePanel.getPlayer().setCurrentLife(dataStorage.getLife());
+      gamePanel.getPlayer().setMana(dataStorage.getMana());
+      gamePanel.getPlayer().setMaxMana(dataStorage.getMaxMana());
+      gamePanel.getPlayer().setStrength(dataStorage.getStrength());
+      gamePanel.getPlayer().setDexterity(dataStorage.getDexterity());
+      gamePanel.getPlayer().setExp(dataStorage.getExp());
+      gamePanel.getPlayer().setNextLevelExp(dataStorage.getNextLevelExp());
+      gamePanel.getPlayer().setMoney(dataStorage.getMoney());
 
       // Player equipment
-      gamePanel.getPlayer().inventory.clear();
-      for (int i = 0; i < dataStorage.itemNames.size(); i++) {
-        GameEntity item = gamePanel.getGameEntityFactory().getGameEntity(dataStorage.itemNames.get(i));
-        item.amount = dataStorage.itemAmounts.get(i);
-        gamePanel.getPlayer().inventory.add(item);
+      gamePanel.getPlayer().getInventory().clear();
+      for (int i = 0; i < dataStorage.getItemNames().size(); i++) {
+        GameEntity item = gamePanel.getGameEntityFactory().getGameEntity(dataStorage.getItemNames().get(i));
+        item.setAmount(dataStorage.getItemAmounts().get(i));
+        gamePanel.getPlayer().getInventory().add(item);
       }
 
-      gamePanel.getPlayer().currentWeapon = gamePanel.getPlayer().inventory.get(dataStorage.currentWeaponSlot);
-      gamePanel.getPlayer().currentShield = gamePanel.getPlayer().inventory.get(dataStorage.currentShieldSlot);
+      gamePanel.getPlayer().setCurrentWeapon(gamePanel.getPlayer().getInventory().get(dataStorage.getCurrentWeaponSlot()));
+      gamePanel.getPlayer().setCurrentShield(gamePanel.getPlayer().getInventory().get(dataStorage.getCurrentShieldSlot()));
       gamePanel.getPlayer().getAttack();
       gamePanel.getPlayer().getDefense();
       gamePanel.getPlayer().getAttackImage();
 
       // OBJECTS ON MAP
       for (String mapName : gamePanel.getTileManager().getGameMaps().keySet()) {
-        List<String> objectNames = dataStorage.mapObjectNames.get(mapName);
-        List<String> lootNames = dataStorage.mapObjectLootNames.get(mapName);
-        List<Integer> worldXList = dataStorage.mapObjectWorldX.get(mapName);
-        List<Integer> worldYList = dataStorage.mapObjectWorldY.get(mapName);
-        List<Boolean> openedList = dataStorage.mapObjectOpened.get(mapName);
+        List<String> objectNames = dataStorage.getMapObjectNames().get(mapName);
+        List<String> lootNames = dataStorage.getMapObjectLootNames().get(mapName);
+        List<Integer> worldXList = dataStorage.getMapObjectWorldX().get(mapName);
+        List<Integer> worldYList = dataStorage.getMapObjectWorldY().get(mapName);
+        List<Boolean> openedList = dataStorage.getMapObjectOpened().get(mapName);
 
         if (Objects.isNull(objectNames)) continue;
 
@@ -187,16 +190,16 @@ public class SaveLoad {
             objectsOnMap[i] = null;
           } else {
             objectsOnMap[i] = gamePanel.getGameEntityFactory().getGameEntity(objectNames.get(i));
-            objectsOnMap[i].worldX = worldXList.get(i);
-            objectsOnMap[i].worldY = worldYList.get(i);
+            objectsOnMap[i].setWorldX(worldXList.get(i));
+            objectsOnMap[i].setWorldY(worldYList.get(i));
 
             if (Objects.nonNull(lootNames.get(i))) {
               objectsOnMap[i].setLoot(gamePanel.getGameEntityFactory().getGameEntity(lootNames.get(i)));
             }
 
-            objectsOnMap[i].opened = openedList.get(i);
-            if (objectsOnMap[i].opened) {
-              objectsOnMap[i].image = objectsOnMap[i].image2;
+            objectsOnMap[i].setOpened(openedList.get(i));
+            if (objectsOnMap[i].isOpened()) {
+              objectsOnMap[i].setMainImage(objectsOnMap[i].getMainImage2());
             }
           }
         }

@@ -119,10 +119,10 @@ public class TileManager {
     int worldRows = gamePanel.getMaxWorldRow();
     int[][] map = gameMaps.get(CURRENT_MAP);
 
-    int playerWorldX = gamePanel.getPlayer().worldX;
-    int playerWorldY = gamePanel.getPlayer().worldY;
-    int playerScreenX = gamePanel.getPlayer().screenX;
-    int playerScreenY = gamePanel.getPlayer().screenY;
+    int playerWorldX = gamePanel.getPlayer().getWorldX();
+    int playerWorldY = gamePanel.getPlayer().getWorldY();
+    int playerScreenX = gamePanel.getPlayer().getScreenX();
+    int playerScreenY = gamePanel.getPlayer().getScreenY();
 
     int visibleMinX = playerWorldX - playerScreenX - TILE_SIZE;
     int visibleMaxX = playerWorldX + playerScreenX + TILE_SIZE;

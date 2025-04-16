@@ -14,7 +14,7 @@ public class Axe extends GameEntity {
   public Axe(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObject.AXE.getName();
-    image = setup(AXE, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(AXE, TILE_SIZE, TILE_SIZE);
     down1 = setup(AXE, TILE_SIZE, TILE_SIZE);
     attackValue = 2;
     attackArea.width = 30;

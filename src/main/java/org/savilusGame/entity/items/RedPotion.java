@@ -22,7 +22,7 @@ public class RedPotion extends GameEntity {
     dialogues = TextManager.getItemTexts(GameObject.RED_POTION.getTextKey(), name);
     type = WorldGameTypes.CONSUMABLE;
     stackable = true;
-    image = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
     down1 = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.RED_POTION.getTextKey()), name, healingValue);
     price = 3;
@@ -31,7 +31,7 @@ public class RedPotion extends GameEntity {
   @Override
   public boolean use(GameEntity gameEntity) {
     startDialogue(this, USE);
-    gameEntity.currentLife += healingValue;
+    gameEntity.setCurrentLife(gameEntity.getCurrentLife() + healingValue);
     gamePanel.playSoundEffect(POWER_UP);
     return true;
   }

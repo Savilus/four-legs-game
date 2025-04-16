@@ -49,16 +49,16 @@ public class BigRock extends GameEntity {
 
     List<InteractiveTile> plateList = Arrays.stream(currentMap)
         .filter(Objects::nonNull)
-        .filter(tile -> StringUtils.equals(GameObject.METAL_PLATE.getName(), tile.name))
+        .filter(tile -> StringUtils.equals(GameObject.METAL_PLATE.getName(), tile.getName()))
         .toList();
 
     List<GameEntity> rockList = Arrays.stream(gamePanel.getMapsNpc().get(CURRENT_MAP))
         .filter(Objects::nonNull)
-        .filter(npc -> StringUtils.equals(GameObject.BIG_ROCK.getName(), npc.name))
+        .filter(npc -> StringUtils.equals(GameObject.BIG_ROCK.getName(), npc.getName()))
         .toList();
 
     for (InteractiveTile plate : plateList) {
-      int distance = Math.max(Math.abs(worldX - plate.worldX), Math.abs(worldY - plate.worldY));
+      int distance = Math.max(Math.abs(worldX - plate.getWorldX()), Math.abs(worldY - plate.getWorldY()));
 
       if (distance < 12) {
         if (Objects.isNull(linkedEntity)) {
@@ -71,14 +71,14 @@ public class BigRock extends GameEntity {
     }
 
     long linkedRocks = rockList.stream()
-        .filter(rock -> Objects.nonNull(rock.linkedEntity))
+        .filter(rock -> Objects.nonNull(rock.getLinkedEntity()))
         .count();
 
     if (linkedRocks == rockList.size()) {
       var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
       for (int i = 0; i < objects.length; i++) {
         if (Objects.nonNull(objects[i]) &&
-            GameObject.IRON_DOOR.getName().equals(objects[i].name)) {
+            GameObject.IRON_DOOR.getName().equals(objects[i].getName())) {
 
           objects[i] = null;
           gamePanel.playSoundEffect(DOOR_OPEN);

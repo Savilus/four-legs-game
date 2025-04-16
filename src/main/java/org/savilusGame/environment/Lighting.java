@@ -66,7 +66,7 @@ public class Lighting {
     darknessFilter = new BufferedImage(gamePanel.getScreenWidth(), gamePanel.getScreenHeight(), BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-    if (Objects.isNull(gamePanel.getPlayer().currentLightItem)) {
+    if (Objects.isNull(gamePanel.getPlayer().getCurrentLightItem())) {
       g2.setColor(new Color(0, 0, 0.1f, 0.98f));
     } else {
       g2.setPaint(createPlayerLightGradient());
@@ -108,9 +108,9 @@ public class Lighting {
   }
 
   void update() {
-    if (gamePanel.getPlayer().lightUpdated) {
+    if (gamePanel.getPlayer().isLightUpdated()) {
       setLightSource();
-      gamePanel.getPlayer().lightUpdated = false;
+      gamePanel.getPlayer().setLightUpdated(false);
     }
 
     switch (dayState) {
@@ -142,9 +142,9 @@ public class Lighting {
   }
 
   private RadialGradientPaint createPlayerLightGradient() {
-    int centerX = gamePanel.getPlayer().screenX + TILE_SIZE / 2;
-    int centerY = gamePanel.getPlayer().screenY + TILE_SIZE / 2;
-    float radius = gamePanel.getPlayer().currentLightItem.lightRadius / 2f;
+    int centerX = gamePanel.getPlayer().getScreenX() + TILE_SIZE / 2;
+    int centerY = gamePanel.getPlayer().getScreenY() + TILE_SIZE / 2;
+    float radius = gamePanel.getPlayer().getCurrentLightItem().getLightRadius() / 2f;
 
     return new RadialGradientPaint(centerX, centerY, radius, GRADIENT_FRACTIONS, GRADIENT_COLORS);
   }

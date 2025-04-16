@@ -13,7 +13,7 @@ public class Trunk extends InteractiveTile {
     this.worldX = TILE_SIZE * col;
     this.worldY = TILE_SIZE * row;
 
-    image = setup(TRUNK, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(TRUNK, TILE_SIZE, TILE_SIZE);
 
     solidArea.x = 0;
     solidArea.y = 0;

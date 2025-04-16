@@ -40,15 +40,15 @@ public abstract class Projectile extends GameEntity {
     if (owner == gamePanel.getPlayer()) {
       int monsterIndex = gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsMonsters().get(CURRENT_MAP));
       if (monsterIndex != INIT_INDEX) {
-        gamePanel.getPlayer().damageMonster(this, monsterIndex, attack * (gamePanel.getPlayer().level / 2), knockBackPower);
-        generateParticle(owner.projectile, gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex]);
+        gamePanel.getPlayer().damageMonster(this, monsterIndex, attack * (gamePanel.getPlayer().getLevel() / 2), knockBackPower);
+        generateParticle(owner.getProjectile(), gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex]);
         alive = false;
       }
     } else {
       boolean contactPlayer = gamePanel.getCollisionDetector().checkPlayer(this);
-      if (!gamePanel.getPlayer().invincible && contactPlayer) {
+      if (!gamePanel.getPlayer().isInvincible() && contactPlayer) {
         damagePlayer(attackValue);
-        generateParticle(owner.projectile, owner.projectile);
+        generateParticle(owner.getProjectile(), owner.getProjectile());
         alive = false;
       }
     }

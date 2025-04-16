@@ -17,7 +17,7 @@ public class Tent extends GameEntity {
     super(gamePanel);
     type = CONSUMABLE;
     name = GameObject.TENT.getName();
-    image = setup(TENT, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(TENT, TILE_SIZE, TILE_SIZE);
     down1 = setup(TENT, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.TENT.getTextKey()), name);
     price = 200;
@@ -28,9 +28,9 @@ public class Tent extends GameEntity {
   public boolean use(GameEntity gameEntity) {
     gamePanel.setGameState(SLEEP_STATE);
     gamePanel.playSoundEffect(SLEEP);
-    gamePanel.getPlayer().currentLife = gamePanel.getPlayer().maxLife;
-    gamePanel.getPlayer().mana = gamePanel.getPlayer().maxMana;
-    gamePanel.getPlayer().getSleepingImage(image);
+    gamePanel.getPlayer().setCurrentLife(gamePanel.getPlayer().getMaxLife());
+    gamePanel.getPlayer().setMana(gamePanel.getPlayer().getMaxMana());
+    gamePanel.getPlayer().getSleepingImage(mainImage);
     return true;
   }
 }

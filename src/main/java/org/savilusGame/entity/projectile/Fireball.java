@@ -64,11 +64,11 @@ public class Fireball extends Projectile {
 
   @Override
   public void substractResource(GameEntity user) {
-    user.mana -= getUseCost();
+    user.setMana(user.getMana() - getUseCost());
   }
 
   @Override
   public boolean haveResource(GameEntity user) {
-    return user.mana >= getUseCost();
+    return user.getMana() >= getUseCost();
   }
 }
