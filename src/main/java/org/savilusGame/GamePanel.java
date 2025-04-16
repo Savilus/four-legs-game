@@ -209,7 +209,7 @@ public class GamePanel extends JPanel implements Runnable {
       List<GameEntity> allMapObjects = new ArrayList<>(List.of(mapsObjects.get(mapName)));
       if (allMapObjects.isEmpty()) continue;
 
-      allMapObjects.removeIf(object -> Objects.nonNull(object) && object.temporaryObject);
+      allMapObjects.removeIf(object -> Objects.nonNull(object) && object.isTemporaryObject());
     }
   }
 
@@ -265,7 +265,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.worldY));
+      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.getWorldY()));
 
       for (GameEntity gameObject : gameObjects) {
         gameObject.draw(tempGraphic2d);
@@ -287,13 +287,13 @@ public class GamePanel extends JPanel implements Runnable {
       int y = 400;
       int lineHeight = 20;
 
-      tempGraphic2d.drawString("WorldX -> " + player.worldX, x, y);
+      tempGraphic2d.drawString("WorldX -> " + player.getWorldX(), x, y);
       y += lineHeight;
-      tempGraphic2d.drawString("WorldY ->" + player.worldY, x, y);
+      tempGraphic2d.drawString("WorldY ->" + player.getWorldY(), x, y);
       y += lineHeight;
-      tempGraphic2d.drawString("Col ->" + (player.worldX + player.solidArea.x) / TILE_SIZE, x, y);
+      tempGraphic2d.drawString("Col ->" + (player.getWorldX() + player.getSolidArea().x) / TILE_SIZE, x, y);
       y += lineHeight;
-      tempGraphic2d.drawString("Row -> " + (player.worldY + player.solidArea.y) / TILE_SIZE, x, y);
+      tempGraphic2d.drawString("Row -> " + (player.getWorldY() + player.getSolidArea().y) / TILE_SIZE, x, y);
       y += lineHeight;
       tempGraphic2d.drawString("God Mode: -> " + keyHandler.isGodModeOn(), x, y);
     }
@@ -314,9 +314,9 @@ public class GamePanel extends JPanel implements Runnable {
         for (int monsterIndex = 0; monsterIndex < mapsMonsters.get(CURRENT_MAP).length; monsterIndex++) {
           var monster = mapsMonsters.get(CURRENT_MAP)[monsterIndex];
           if (Objects.nonNull(monster)) {
-            if (monster.alive && !monster.dying)
+            if (monster.isAlive() && !monster.isDying())
               monster.update();
-            if (!monster.alive) {
+            if (!monster.isAlive()) {
               monster.checkDrop();
               mapsMonsters.get(CURRENT_MAP)[monsterIndex] = null;
             }
@@ -327,7 +327,7 @@ public class GamePanel extends JPanel implements Runnable {
       for (int i = 0; i < projectiles.get(CURRENT_MAP).length; i++) {
         GameEntity projectile = projectiles.get(CURRENT_MAP)[i];
 
-        if (Objects.nonNull(projectile) && projectile.alive) {
+        if (Objects.nonNull(projectile) && projectile.isAlive()) {
           projectile.update();
         } else {
           projectiles.get(CURRENT_MAP)[i] = null;
@@ -345,7 +345,7 @@ public class GamePanel extends JPanel implements Runnable {
       Iterator<GameEntity> particleIterator = particleList.iterator();
       while (particleIterator.hasNext()) {
         GameEntity particle = particleIterator.next();
-        if (Objects.nonNull(particle) && particle.alive) {
+        if (Objects.nonNull(particle) && particle.isAlive()) {
           particle.update();
         } else {
           particleIterator.remove();

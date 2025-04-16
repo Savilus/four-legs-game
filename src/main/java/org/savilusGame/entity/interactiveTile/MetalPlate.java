@@ -15,7 +15,7 @@ public class MetalPlate extends InteractiveTile {
     this.worldY = TILE_SIZE * row;
 
     name = GameObject.METAL_PLATE.getName();
-    image = setup(METAL_PLATE, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(METAL_PLATE, TILE_SIZE, TILE_SIZE);
 
     solidArea.x = 0;
     solidArea.y = 0;

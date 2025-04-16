@@ -22,15 +22,15 @@ public class ManaCrystal extends GameEntity {
     name = GameObject.MANA_CRYSTAL.getName();
     value = 1;
     down1 = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);
-    image = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);
-    image2 = setup(MANA_CRYSTAL_BLANK, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(MANA_CRYSTAL_FULL, TILE_SIZE, TILE_SIZE);
+    mainImage2 = setup(MANA_CRYSTAL_BLANK, TILE_SIZE, TILE_SIZE);
   }
 
   @Override
   public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(POWER_UP);
     gamePanel.getUi().addMessage(TextManager.getUiText(UI_MESSAGES, MANA) + value);
-    entity.mana += value;
+    entity.setMana(entity.getMana() + value);
     return true;
   }
 }

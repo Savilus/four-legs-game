@@ -64,8 +64,8 @@ public class EventHandler {
   }
 
   public void checkEvent() {
-    int xDistance = Math.abs(gamePanel.getPlayer().worldX - previousEventX);
-    int yDistance = Math.abs(gamePanel.getPlayer().worldY - previousEventY);
+    int xDistance = Math.abs(gamePanel.getPlayer().getWorldX() - previousEventX);
+    int yDistance = Math.abs(gamePanel.getPlayer().getWorldY()- previousEventY);
     int distance = Math.max(xDistance, yDistance);
 
     if (distance > TILE_SIZE) {
@@ -115,17 +115,17 @@ public class EventHandler {
   private void speak(GameEntity gameEntity) {
     if (gamePanel.getKeyHandler().isEnterPressed()) {
       gamePanel.setGameState(DIALOG_STATE);
-      gamePanel.getPlayer().attackCanceled = true;
+      gamePanel.getPlayer().setAttackCanceled(true);
       gameEntity.speak();
     }
   }
 
   private boolean hit(int col, int row, Direction requiredDirection) {
     var playerSolidArea = new Rectangle(
-        gamePanel.getPlayer().worldX + gamePanel.getPlayer().solidArea.x,
-        gamePanel.getPlayer().worldY + gamePanel.getPlayer().solidArea.y,
-        gamePanel.getPlayer().solidArea.width,
-        gamePanel.getPlayer().solidArea.height
+        gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getSolidArea().x,
+        gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getSolidArea().y,
+        gamePanel.getPlayer().getSolidArea().width,
+        gamePanel.getPlayer().getSolidArea().height
     );
 
     var eventArea = new Rectangle(
@@ -137,9 +137,9 @@ public class EventHandler {
 
     boolean hitResult = playerSolidArea.intersects(eventArea) && !eventRect.get(MAIN_MAP)[col][row].oneTimeEventDone;
 
-    if (hitResult && (gamePanel.getPlayer().direction.equals(requiredDirection) || requiredDirection.equals(Direction.ANY))) {
-      previousEventX = gamePanel.getPlayer().worldX;
-      previousEventY = gamePanel.getPlayer().worldY;
+    if (hitResult && (gamePanel.getPlayer().getDirection().equals(requiredDirection) || requiredDirection.equals(Direction.ANY))) {
+      previousEventX = gamePanel.getPlayer().getWorldX();
+      previousEventY = gamePanel.getPlayer().getWorldY();
       return true;
     }
 
@@ -149,8 +149,8 @@ public class EventHandler {
   }
 
   private void resetPlayerSolidArea() {
-    gamePanel.getPlayer().solidArea.x = gamePanel.getPlayer().solidAreaDefaultX;
-    gamePanel.getPlayer().solidArea.y = gamePanel.getPlayer().solidAreaDefaultY;
+    gamePanel.getPlayer().getSolidArea().x = gamePanel.getPlayer().getSolidAreaDefaultX();
+    gamePanel.getPlayer().getSolidArea().y = gamePanel.getPlayer().getSolidAreaDefaultY();
   }
 
   private void resetEventArea(int col, int row) {
@@ -178,7 +178,7 @@ public class EventHandler {
   private void damagePit() {
     gamePanel.setGameState(DIALOG_STATE);
     gamePanel.getPlayer().startDialogue(gamePanel.getPlayer(), DAMAGE_PIT);
-    gamePanel.getPlayer().currentLife -= 1;
+    gamePanel.getPlayer().setCurrentLife(gamePanel.getPlayer().getCurrentLife() - 1);
     gamePanel.playSoundEffect(RECEIVE_DAMAGE);
 //    eventRect[col][row].eventDone = true;
     canTouchEvent = false;
@@ -187,11 +187,11 @@ public class EventHandler {
   private void healingPool() {
     if (gamePanel.getKeyHandler().isEnterPressed()) {
       gamePanel.setGameState(DIALOG_STATE);
-      gamePanel.getPlayer().attackCanceled = true;
+      gamePanel.getPlayer().setAttackCanceled(true);
       gamePanel.playSoundEffect(POWER_UP);
       gamePanel.getPlayer().startDialogue(gamePanel.getPlayer(), HEALING_POOL);
-      gamePanel.getPlayer().currentLife = gamePanel.getPlayer().maxLife;
-      gamePanel.getPlayer().mana = gamePanel.getPlayer().maxMana;
+      gamePanel.getPlayer().setCurrentLife(gamePanel.getPlayer().getMaxLife());
+      gamePanel.getPlayer().setMana(gamePanel.getPlayer().getMaxMana());
       gamePanel.getAssetSetter().setMonster();
       gamePanel.getSaveLoad().save();
     }

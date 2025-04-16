@@ -139,14 +139,14 @@ public class UI {
 
     // CREATE HUD OBJECT
     GameEntity heart = new Heart(gamePanel);
-    heartFull = heart.image;
-    heartHalf = heart.image2;
-    heartBlank = heart.image3;
+    heartFull = heart.getMainImage();
+    heartHalf = heart.getMainImage2();
+    heartBlank = heart.getMainImage3();
     GameEntity manaCrysta = new ManaCrystal(gamePanel);
-    manaCrystalFull = manaCrysta.image;
-    manaCrystalBlank = manaCrysta.image2;
+    manaCrystalFull = manaCrysta.getMainImage();
+    manaCrystalBlank = manaCrysta.getMainImage2();
     GameEntity bronzeCoin = new BronzeCoin(gamePanel);
-    coin = bronzeCoin.image;
+    coin = bronzeCoin.getMainImage();
   }
 
   public void addMessage(String text) {
@@ -270,7 +270,7 @@ public class UI {
   }
 
   private void tradeSelect() {
-    npc.dialogueSet = MERCHANT_TRADE_DIALOGUE_KEY;
+    npc.setDialogueSet(MERCHANT_TRADE_DIALOGUE_KEY);
     drawDialogueScreen();
     // DRAW WINDOW
 
@@ -323,11 +323,11 @@ public class UI {
     // DRAW PLAYER COIN WINDOW
     x = TILE_SIZE * 12;
     drawSubWindow(x, y, width, height);
-    graphics2D.drawString(String.format(TextManager.getUiText(UI_MESSAGES, YOUR_COIN), gamePanel.getPlayer().money), x + 24, y + 60);
+    graphics2D.drawString(String.format(TextManager.getUiText(UI_MESSAGES, YOUR_COIN), gamePanel.getPlayer().getMoney()), x + 24, y + 60);
 
     // DRAW PRICE WINDOW
     int itemIndex = getItemIndexFromInventory(npcSlotCol, npcSlotRow);
-    if (itemIndex < npc.inventory.size()) {
+    if (itemIndex < npc.getInventory().size()) {
       x = (int) (TILE_SIZE * 5.5);
       y = (int) (TILE_SIZE * 5.5);
       width = (int) (TILE_SIZE * 2.5);
@@ -335,21 +335,23 @@ public class UI {
       drawSubWindow(x, y, width, height);
       graphics2D.drawImage(coin, x + 10, y + 8, 32, 32, null);
 
-      int price = npc.inventory.get(itemIndex).price;
+      int price = npc.getInventory().get(itemIndex).getPrice();
       x = getXForAlignTextToRight(String.valueOf(price), TILE_SIZE * 8 - 20);
       graphics2D.drawString(String.valueOf(price), x, y + 34);
 
       // BUY ITEM
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        if (npc.inventory.get(itemIndex).price > gamePanel.getPlayer().money) {
+        if (npc.getInventory().get(itemIndex).getPrice() > gamePanel.getPlayer().getMoney()) {
           subState = MENU;
           gamePanel.setGameState(DIALOG_STATE);
           npc.startDialogue(npc, MERCHANT_NO_MONEY_DIALOGUE_KEY);
-        } else if (!gamePanel.getPlayer().canObtainItem(npc.inventory.get(itemIndex))) {
+        } else if (!gamePanel.getPlayer().canObtainItem(npc.getInventory().get(itemIndex))) {
           subState = MENU;
           npc.startDialogue(npc, MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY);
         } else {
-          gamePanel.getPlayer().money -= npc.inventory.get(itemIndex).price;
+          gamePanel.getPlayer().setMoney(
+              gamePanel.getPlayer().getMoney() - npc.getInventory().get(itemIndex).getPrice()
+          );
         }
       }
     }
@@ -369,11 +371,11 @@ public class UI {
     // DRAW PLAYER COIN WINDOW
     x = TILE_SIZE * 12;
     drawSubWindow(x, y, width, height);
-    graphics2D.drawString(String.format(TextManager.getUiText(UI_MESSAGES, YOUR_COIN), gamePanel.getPlayer().money), x + 24, y + 60);
+    graphics2D.drawString(String.format(TextManager.getUiText(UI_MESSAGES, YOUR_COIN), gamePanel.getPlayer().getMoney()), x + 24, y + 60);
 
     // DRAW PRICE WINDOW
     int itemIndex = getItemIndexFromInventory(playerSlotCol, playerSlotRow);
-    if (itemIndex < gamePanel.getPlayer().inventory.size()) {
+    if (itemIndex < gamePanel.getPlayer().getInventory().size()) {
       x = (int) (TILE_SIZE * 15.5);
       y = (int) (TILE_SIZE * 5.5);
       width = (int) (TILE_SIZE * 2.5);
@@ -381,23 +383,25 @@ public class UI {
       drawSubWindow(x, y, width, height);
       graphics2D.drawImage(coin, x + 10, y + 8, 32, 32, null);
 
-      int price = gamePanel.getPlayer().inventory.get(itemIndex).price / 2;
+      int price = gamePanel.getPlayer().getInventory().get(itemIndex).getPrice() / 2;
       x = getXForAlignTextToRight(String.valueOf(price), TILE_SIZE * 18 - 20);
       graphics2D.drawString(String.valueOf(price), x, y + 34);
 
       // SELL ITEM
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        if (gamePanel.getPlayer().inventory.get(itemIndex) == gamePanel.getPlayer().currentWeapon
-            || gamePanel.getPlayer().inventory.get(itemIndex) == gamePanel.getPlayer().currentShield) {
+        if (gamePanel.getPlayer().getInventory().get(itemIndex) == gamePanel.getPlayer().getCurrentWeapon()
+            || gamePanel.getPlayer().getInventory().get(itemIndex) == gamePanel.getPlayer().getCurrentShield()) {
           commandNum = 0;
           subState = MENU;
           npc.startDialogue(npc, MERCHANT_CANNOT_SELL_KEY);
         } else {
-          if (gamePanel.getPlayer().inventory.get(itemIndex).amount > 1)
-            gamePanel.getPlayer().inventory.get(itemIndex).amount--;
+          if (gamePanel.getPlayer().getInventory().get(itemIndex).getAmount() > 1){
+            int currentAmount = gamePanel.getPlayer().getInventory().get(itemIndex).getAmount();
+            gamePanel.getPlayer().getInventory().get(itemIndex).setAmount(currentAmount - 1);
+          }
           else
-            gamePanel.getPlayer().inventory.remove(itemIndex);
-          gamePanel.getPlayer().money += price;
+            gamePanel.getPlayer().getInventory().remove(itemIndex);
+          gamePanel.getPlayer().setMoney(gamePanel.getPlayer().getMoney() + price);
         }
       }
     }
@@ -612,31 +616,31 @@ public class UI {
 
 
     // DRAW PLAYER'S ITEMS
-    for (int inventoryItem = 0; inventoryItem < gameEntity.inventory.size(); inventoryItem++) {
+    for (int inventoryItem = 0; inventoryItem < gameEntity.getInventory().size(); inventoryItem++) {
 
       // EQUIP CURSOR
-      if (gameEntity.inventory.get(inventoryItem) == gameEntity.currentWeapon ||
-          gameEntity.inventory.get(inventoryItem) == gameEntity.currentShield ||
-          gameEntity.inventory.get(inventoryItem) == gameEntity.currentLightItem) {
+      if (gameEntity.getInventory().get(inventoryItem) == gameEntity.getCurrentWeapon() ||
+          gameEntity.getInventory().get(inventoryItem) == gameEntity.getCurrentShield() ||
+          gameEntity.getInventory().get(inventoryItem) == gameEntity.getCurrentLightItem()) {
         graphics2D.setColor(new Color(240, 190, 90));
         graphics2D.fillRoundRect(slotX, slotY, TILE_SIZE, TILE_SIZE, 10, 10);
       }
-      graphics2D.drawImage(gameEntity.inventory.get(inventoryItem).down1, slotX, slotY, null);
+      graphics2D.drawImage(gameEntity.getInventory().get(inventoryItem).getDown1(), slotX, slotY, null);
 
       // DISPLAY AMOUNT
-      if (gameEntity == gamePanel.getPlayer() && gameEntity.inventory.get(inventoryItem).amount > 1) {
+      if (gameEntity == gamePanel.getPlayer() && gameEntity.getInventory().get(inventoryItem).getAmount() > 1) {
         graphics2D.setFont(graphics2D.getFont().deriveFont(32f));
         int amountX;
         int amountY;
-        amountX = getXForAlignTextToRight(String.valueOf(gameEntity.inventory.get(inventoryItem).amount), slotX + 44);
+        amountX = getXForAlignTextToRight(String.valueOf(gameEntity.getInventory().get(inventoryItem).getAmount()), slotX + 44);
         amountY = slotY + TILE_SIZE;
 
         //SHADOW
         graphics2D.setColor(new Color(60, 60, 60));
-        graphics2D.drawString(String.valueOf(gameEntity.inventory.get(inventoryItem).amount), amountX, amountY);
+        graphics2D.drawString(String.valueOf(gameEntity.getInventory().get(inventoryItem).getAmount()), amountX, amountY);
         // NUMBER
         graphics2D.setColor(Color.WHITE);
-        graphics2D.drawString(String.valueOf(gameEntity.inventory.get(inventoryItem).amount), amountX - 3, amountY - 3);
+        graphics2D.drawString(String.valueOf(gameEntity.getInventory().get(inventoryItem).getAmount()), amountX - 3, amountY - 3);
       }
       slotX += slotSize;
 
@@ -666,9 +670,9 @@ public class UI {
       graphics2D.setFont(graphics2D.getFont().deriveFont(28F));
 
       int itemIndex = getItemIndexFromInventory(slotCol, slotRow);
-      if (itemIndex < gameEntity.inventory.size()) {
+      if (itemIndex < gameEntity.getInventory().size()) {
         drawSubWindow(frameX, descriptionFrameY, frameWidth, descriptionFrameHeight);
-        for (String line : gameEntity.inventory.get(itemIndex).description.split("\n")) {
+        for (String line : gameEntity.getInventory().get(itemIndex).getDescription().split("\n")) {
           graphics2D.drawString(line, textX, textY);
           textY += 32;
         }
@@ -770,48 +774,48 @@ public class UI {
     textY = frameY + TILE_SIZE;
     String value;
 
-    value = String.valueOf(gamePanel.getPlayer().level);
+    value = String.valueOf(gamePanel.getPlayer().getLevel());
     textX = getXForAlignTextToRight(value, tailX);
     graphics2D.drawString(value, textX, textY);
     textY += lineHeight;
 
-    String playerLife = String.format(PLAYER_LIFE_FORMAT, gamePanel.getPlayer().currentLife, gamePanel.getPlayer().maxLife);
+    String playerLife = String.format(PLAYER_LIFE_FORMAT, gamePanel.getPlayer().getCurrentLife(), gamePanel.getPlayer().getMaxLife());
     textX = getXForAlignTextToRight(playerLife, tailX);
     graphics2D.drawString(playerLife, textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().strength), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().strength), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getStrength()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getStrength()), textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().dexterity), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().dexterity), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getDexterity()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getDexterity()), textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().attack), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().attack), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getAttack()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getAttack()), textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().defense), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().defense), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getDefense()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getDefense()), textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().exp), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().exp), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getExp()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getExp()), textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().nextLevelExp), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().nextLevelExp), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getNextLevelExp()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getNextLevelExp()), textX, textY);
     textY += lineHeight;
 
-    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().money), tailX);
-    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().money), textX, textY);
+    textX = getXForAlignTextToRight(String.valueOf(gamePanel.getPlayer().getMoney()), tailX);
+    graphics2D.drawString(String.valueOf(gamePanel.getPlayer().getMoney()), textX, textY);
     textY += lineHeight;
 
-    graphics2D.drawImage(gamePanel.getPlayer().currentWeapon.down1, tailX - TILE_SIZE, textY - 14, null);
+    graphics2D.drawImage(gamePanel.getPlayer().getCurrentWeapon().getDown1(), tailX - TILE_SIZE, textY - 14, null);
     textY += TILE_SIZE;
 
-    graphics2D.drawImage(gamePanel.getPlayer().currentShield.down1, tailX - TILE_SIZE, textY - 14, null);
+    graphics2D.drawImage(gamePanel.getPlayer().getCurrentShield().getDown1(), tailX - TILE_SIZE, textY - 14, null);
   }
 
   private void drawPlayerLife() {
@@ -821,7 +825,7 @@ public class UI {
     int i = 0;
 
     // DRAW MAX LIFE
-    while (i < gamePanel.getPlayer().maxLife / 2) {
+    while (i < gamePanel.getPlayer().getMaxLife() / 2) {
       graphics2D.drawImage(heartBlank, x, y, iconSize, iconSize, null);
       i++;
       x += TILE_SIZE - 15;
@@ -831,10 +835,10 @@ public class UI {
     i = 0;
 
     // DRAW CURRENT LIFE
-    while (i < gamePanel.getPlayer().currentLife) {
+    while (i < gamePanel.getPlayer().getCurrentLife()) {
       graphics2D.drawImage(heartHalf, x, y, iconSize, iconSize, null);
       i++;
-      if (i < gamePanel.getPlayer().currentLife) {
+      if (i < gamePanel.getPlayer().getCurrentLife()) {
         graphics2D.drawImage(heartFull, x, y, iconSize, iconSize, null);
       }
       i++;
@@ -845,7 +849,7 @@ public class UI {
     x = TILE_SIZE - 20;
     y = TILE_SIZE + 10;
     i = 0;
-    while (i < gamePanel.getPlayer().maxMana) {
+    while (i < gamePanel.getPlayer().getMaxMana()) {
       graphics2D.drawImage(manaCrystalBlank, x, y, iconSize, iconSize, null);
       i++;
       x += 15;
@@ -854,7 +858,7 @@ public class UI {
     // DRAW MANA
     x = TILE_SIZE - 20;
     i = 0;
-    while (i < gamePanel.getPlayer().mana) {
+    while (i < gamePanel.getPlayer().getMana()) {
       graphics2D.drawImage(manaCrystalFull, x, y, iconSize, iconSize, null);
       i++;
       x += 15;
@@ -867,15 +871,15 @@ public class UI {
 
     for (GameEntity monster : monsters) {
       if (Objects.nonNull(monster) && monster.inCamera()) {
-        boolean isBoss = monster.boss;
-        double oneScaleLifeBar = (double) (TILE_SIZE * (isBoss ? 8 : 1)) / monster.maxLife;
-        double hpBarValue = oneScaleLifeBar * monster.currentLife;
+        boolean isBoss = monster.isBoss();
+        double oneScaleLifeBar = (double) (TILE_SIZE * (isBoss ? 8 : 1)) / monster.getMaxLife();
+        double hpBarValue = oneScaleLifeBar * monster.getCurrentLife();
         int barWidth = TILE_SIZE * (isBoss ? 8 : 1);
         int barHeight = isBoss ? 20 : 10;
         int x = isBoss ? (gamePanel.getScreenWidth() / 2 - TILE_SIZE * 4) : monster.getScreenX();
         int y = isBoss ? (TILE_SIZE * 10) : (monster.getScreenY() - 15);
 
-        if (monster.hpBarOn) {
+        if (monster.isHpBarOn()) {
           graphics2D.setColor(new Color(35, 35, 35));
           graphics2D.fillRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
 
@@ -886,11 +890,12 @@ public class UI {
         if (isBoss) {
           graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 24F));
           graphics2D.setColor(Color.WHITE);
-          graphics2D.drawString(monster.name, x + 4, y - 10);
+          graphics2D.drawString(monster.getName(), x + 4, y - 10);
         } else {
-          if (++monster.hpBarCounter > 600) {
-            monster.hpBarCounter = 0;
-            monster.hpBarOn = false;
+          monster.setHpBarCounter(monster.getHpBarCounter() + 1);
+          if (monster.getHpBarCounter() > 600) {
+            monster.setHpBarCounter(0);
+            monster.setHpBarOn(false);
           }
         }
       }
@@ -916,7 +921,7 @@ public class UI {
     // BLUE BOY IMAGE
     x = gamePanel.getScreenWidth() / 2 - (TILE_SIZE * 2) / 2;
     y += TILE_SIZE * 2;
-    graphics2D.drawImage(gamePanel.getPlayer().down1, x, y, TILE_SIZE * 2, TILE_SIZE * 2, null);
+    graphics2D.drawImage(gamePanel.getPlayer().getDown1(), x, y, TILE_SIZE * 2, TILE_SIZE * 2, null);
 
     // MENU
     graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 48F));
@@ -953,14 +958,14 @@ public class UI {
     x += TILE_SIZE;
     y += TILE_SIZE;
 
-    List<String> dialoguesForSet = npc.dialogues.get(npc.dialogueSet);
+    List<String> dialoguesForSet = npc.getDialogues().get(npc.getDialogueSet());
 
     if (Objects.nonNull(dialoguesForSet) && !dialoguesForSet.isEmpty()) {
-      if (npc.dialogueIndex >= dialoguesForSet.size()) {
-        npc.dialogueIndex = 0;
+      if (npc.getDialogueIndex() >= dialoguesForSet.size()) {
+        npc.setDialogueIndex(0);
       }
 
-      String fullDialogue = dialoguesForSet.get(npc.dialogueIndex);
+      String fullDialogue = dialoguesForSet.get(npc.getDialogueIndex());
       currentDialogue = fullDialogue;
 
       if (characterIndex < fullDialogue.length()) {
@@ -975,12 +980,12 @@ public class UI {
 
         characterIndex = 0;
         combinedText.setLength(0);
-        npc.dialogueIndex++;
+        npc.setDialogueIndex(npc.getDialogueIndex() + 1);
         gamePanel.getKeyHandler().setEnterPressed(false);
 
 
-        if (npc.dialogueIndex >= dialoguesForSet.size()) {
-          npc.dialogueIndex = 0;
+        if (npc.getDialogueIndex() >= dialoguesForSet.size()) {
+          npc.setDialogueIndex(0);
           if (gamePanel.getGameState() == CUTSCENE_STATE) {
             gamePanel.getCutsceneManager().setScenePhase(gamePanel.getCutsceneManager().getScenePhase() + 1);
           } else {
@@ -989,7 +994,7 @@ public class UI {
         }
       }
     } else {
-      npc.dialogueIndex = 0;
+      npc.setDialogueIndex(0);
       if (gamePanel.getGameState() == DIALOG_STATE) {
         gamePanel.setGameState(PLAY_STATE);
       }
@@ -1021,10 +1026,10 @@ public class UI {
       gamePanel.setGameState(PLAY_STATE);
       CURRENT_MAP = gamePanel.getEventHandler().getTempMap();
       gamePanel.getGameMap().createWorldMap();
-      gamePanel.getPlayer().worldX = TILE_SIZE * gamePanel.getEventHandler().getTempCol();
-      gamePanel.getPlayer().worldY = TILE_SIZE * gamePanel.getEventHandler().getTempRow();
-      gamePanel.getEventHandler().setPreviousEventX(gamePanel.getPlayer().worldX);
-      gamePanel.getEventHandler().setPreviousEventY(gamePanel.getPlayer().worldY);
+      gamePanel.getPlayer().setWorldX(TILE_SIZE * gamePanel.getEventHandler().getTempCol());
+      gamePanel.getPlayer().setWorldY(TILE_SIZE * gamePanel.getEventHandler().getTempRow());
+      gamePanel.getEventHandler().setPreviousEventX(gamePanel.getPlayer().getWorldX());
+      gamePanel.getEventHandler().setPreviousEventY(gamePanel.getPlayer().getWorldY());
       gamePanel.changeArea();
     }
   }

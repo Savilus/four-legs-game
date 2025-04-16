@@ -17,7 +17,7 @@ public class Door extends GameEntity {
   public Door(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObject.DOOR.name();
-    image = setup(DOOR, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(DOOR, TILE_SIZE, TILE_SIZE);
     collision = true;
     type = OBSTACLE;
 

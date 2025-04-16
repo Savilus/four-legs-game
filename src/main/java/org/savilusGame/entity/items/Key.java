@@ -22,7 +22,7 @@ public class Key extends GameEntity {
     name = GameObject.KEY.getName();
     type = CONSUMABLE;
     stackable = true;
-    image = setup(KEY, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(KEY, TILE_SIZE, TILE_SIZE);
     down1 = setup(KEY, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.KEY.getTextKey()), name);
     dialogues = TextManager.getItemTexts(GameObject.KEY.getTextKey(), name);

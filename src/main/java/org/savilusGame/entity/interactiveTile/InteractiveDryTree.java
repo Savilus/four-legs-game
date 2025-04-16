@@ -18,7 +18,7 @@ public class InteractiveDryTree extends InteractiveTile {
     this.worldX = TILE_SIZE * col;
     this.worldY = TILE_SIZE * row;
 
-    image = setup(DRY_TREE, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(DRY_TREE, TILE_SIZE, TILE_SIZE);
     setDestructible(true);
   }
 
@@ -54,6 +54,6 @@ public class InteractiveDryTree extends InteractiveTile {
 
   @Override
   public boolean isCorrectItem(GameEntity item) {
-    return item.currentWeapon.type == AXE;
+    return item.getCurrentWeapon().getType() == AXE;
   }
 }

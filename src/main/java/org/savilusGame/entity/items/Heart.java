@@ -25,16 +25,16 @@ public class Heart extends GameEntity {
     down1 = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
 
     name = GameObject.HEART.getName();
-    image = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
-    image2 = setup(HEART_HALF, TILE_SIZE, TILE_SIZE);
-    image3 = setup(HEART_BLANK, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(HEART_FULL, TILE_SIZE, TILE_SIZE);
+    mainImage2 = setup(HEART_HALF, TILE_SIZE, TILE_SIZE);
+    mainImage3 = setup(HEART_BLANK, TILE_SIZE, TILE_SIZE);
   }
 
   @Override
   public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(POWER_UP);
     gamePanel.getUi().addMessage(TextManager.getUiText(UI_MESSAGES, LIFE) + value);
-    entity.currentLife += value;
+    entity.setCurrentLife(entity.getCurrentLife() + value);
     return true;
   }
 }

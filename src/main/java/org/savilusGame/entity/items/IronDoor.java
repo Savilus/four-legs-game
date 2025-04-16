@@ -17,7 +17,7 @@ public class IronDoor extends GameEntity {
   public IronDoor(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObject.IRON_DOOR.getName();
-    image = setup(IRON_DOOR, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(IRON_DOOR, TILE_SIZE, TILE_SIZE);
     collision = true;
     type = OBSTACLE;
 

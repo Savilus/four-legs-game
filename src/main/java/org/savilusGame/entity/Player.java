@@ -71,25 +71,33 @@ import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.KeyHandler;
 import org.savilusGame.utils.text.TextManager;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+@Setter
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Player extends GameEntity {
 
-  private static final String PICKED_UP = "pickedUp";
-  private static final String DAMAGE_UI_MESSAGE = "damageUiMessage";
-  private static final String KILLED_UI_MESSAGE = "killedUiMessage";
-  private static final String UI_MESSAGE = "uiMessages";
-  private static final String LVL_UP = "lvlUp";
-  private static final String EXP_UI_MESSAGE = "expUiMessage";
-  private static final String INVENTORY_FULL = "inventoryFull";
-  private static final String EVENT_MESSAGES_KEY = "eventMessages";
+  static final String PICKED_UP = "pickedUp";
+  static final String DAMAGE_UI_MESSAGE = "damageUiMessage";
+  static final String KILLED_UI_MESSAGE = "killedUiMessage";
+  static final String UI_MESSAGE = "uiMessages";
+  static final String LVL_UP = "lvlUp";
+  static final String EXP_UI_MESSAGE = "expUiMessage";
+  static final String INVENTORY_FULL = "inventoryFull";
+  static final String EVENT_MESSAGES_KEY = "eventMessages";
 
-  KeyHandler keyHandler;
+  final KeyHandler keyHandler;
 
-  public final int screenX;
-  public final int screenY;
-  public int standCounter = 0;
-  public boolean attackCanceled = false;
-  public boolean lightUpdated = true;
-  public boolean drawing = true;
+  final int screenX;
+  final int screenY;
+  int standCounter = 0;
+  boolean attackCanceled = false;
+  boolean lightUpdated = true;
+  boolean drawing = true;
 
   public Player(GamePanel gamePanel, KeyHandler keyHandler) {
     super(gamePanel);
@@ -110,45 +118,343 @@ public class Player extends GameEntity {
   }
 
   public void getSleepingImage(BufferedImage image) {
-    up1 = image;
-    up2 = image;
+    this.mainImage = image;
     down1 = image;
-    down2 = image;
-    left1 = image;
-    left2 = image;
-    right1 = image;
-    right2 = image;
   }
 
   public void getAttackImage() {
-    if (currentWeapon.type == WorldGameTypes.SWORD) {
-      attackUp1 = setup(BOY_ATTACK_UP1, TILE_SIZE, TILE_SIZE * 2);
-      attackUp2 = setup(BOY_ATTACK_UP2, TILE_SIZE, TILE_SIZE * 2);
-      attackDown1 = setup(BOY_ATTACK_DOWN1, TILE_SIZE, TILE_SIZE * 2);
-      attackDown2 = setup(BOY_ATTACK_DOWN2, TILE_SIZE, TILE_SIZE * 2);
-      attackLeft1 = setup(BOY_ATTACK_LEFT1, TILE_SIZE * 2, TILE_SIZE);
-      attackLeft2 = setup(BOY_ATTACK_LEFT2, TILE_SIZE * 2, TILE_SIZE);
-      attackRight1 = setup(BOY_ATTACK_RIGHT1, TILE_SIZE * 2, TILE_SIZE);
-      attackRight2 = setup(BOY_ATTACK_RIGHT2, TILE_SIZE * 2, TILE_SIZE);
-    } else if (currentWeapon.type == WorldGameTypes.AXE) {
-      attackUp1 = setup(BOY_AXE_ATTACK_UP1, TILE_SIZE, TILE_SIZE * 2);
-      attackUp2 = setup(BOY_AXE_ATTACK_UP2, TILE_SIZE, TILE_SIZE * 2);
-      attackDown1 = setup(BOY_AXE_ATTACK_DOWN1, TILE_SIZE, TILE_SIZE * 2);
-      attackDown2 = setup(BOY_AXE_ATTACK_DOWN2, TILE_SIZE, TILE_SIZE * 2);
-      attackLeft1 = setup(BOY_AXE_ATTACK_LEFT1, TILE_SIZE * 2, TILE_SIZE);
-      attackLeft2 = setup(BOY_AXE_ATTACK_LEFT2, TILE_SIZE * 2, TILE_SIZE);
-      attackRight1 = setup(BOY_AXE_ATTACK_RIGHT1, TILE_SIZE * 2, TILE_SIZE);
-      attackRight2 = setup(BOY_AXE_ATTACK_RIGHT2, TILE_SIZE * 2, TILE_SIZE);
-    } else if (currentWeapon.type == WorldGameTypes.PICKAXE) {
-      attackUp1 = setup(PICK_AXE_UP_1, TILE_SIZE, TILE_SIZE * 2);
-      attackUp2 = setup(PICK_AXE_UP_2, TILE_SIZE, TILE_SIZE * 2);
-      attackDown1 = setup(PICK_AXE_DOWN_1, TILE_SIZE, TILE_SIZE * 2);
-      attackDown2 = setup(PICK_AXE_DOWN_2, TILE_SIZE, TILE_SIZE * 2);
-      attackLeft1 = setup(PICK_AXE_LEFT_1, TILE_SIZE * 2, TILE_SIZE);
-      attackLeft2 = setup(PICK_AXE_LEFT_2, TILE_SIZE * 2, TILE_SIZE);
-      attackRight1 = setup(PICK_AXE_RIGHT_1, TILE_SIZE * 2, TILE_SIZE);
-      attackRight2 = setup(PICK_AXE_RIGHT_2, TILE_SIZE * 2, TILE_SIZE);
+    String[] attackKeys = getAttackImages();
+
+    if (attackKeys != null) {
+      attackUp1 = setup(attackKeys[0], TILE_SIZE, TILE_SIZE * 2);
+      attackUp2 = setup(attackKeys[1], TILE_SIZE, TILE_SIZE * 2);
+      attackDown1 = setup(attackKeys[2], TILE_SIZE, TILE_SIZE * 2);
+      attackDown2 = setup(attackKeys[3], TILE_SIZE, TILE_SIZE * 2);
+      attackLeft1 = setup(attackKeys[4], TILE_SIZE * 2, TILE_SIZE);
+      attackLeft2 = setup(attackKeys[5], TILE_SIZE * 2, TILE_SIZE);
+      attackRight1 = setup(attackKeys[6], TILE_SIZE * 2, TILE_SIZE);
+      attackRight2 = setup(attackKeys[7], TILE_SIZE * 2, TILE_SIZE);
     }
+  }
+
+  public int getCurrentWeaponSlot() {
+    return inventory.indexOf(currentWeapon);
+  }
+
+  public int getCurrentShieldSlot() {
+    return inventory.indexOf(currentShield);
+  }
+
+  public void selectItem() {
+    int itemIndex = gamePanel.getUi().getItemIndexFromInventory(gamePanel.getUi().getPlayerSlotCol(), gamePanel.getUi().getPlayerSlotRow());
+
+    if (itemIndex < inventory.size()) {
+      GameEntity selectedItem = inventory.get(itemIndex);
+
+      switch (selectedItem.type) {
+        case SWORD, AXE, PICKAXE -> {
+          currentWeapon = selectedItem;
+          attack = getAttack();
+          getAttackImage();
+        }
+        case SHIELD -> {
+          currentShield = selectedItem;
+          defense = getDefense();
+        }
+        case CONSUMABLE -> {
+          if (selectedItem.use(this))
+            if (selectedItem.amount > 1) {
+              selectedItem.amount--;
+            } else {
+              inventory.remove(itemIndex);
+            }
+        }
+        case LIGHTING -> {
+          if (currentLightItem == selectedItem) {
+            currentLightItem = null;
+          } else {
+            currentLightItem = selectedItem;
+          }
+          lightUpdated = true;
+        }
+      }
+    }
+  }
+
+  public void getImage() {
+    up1 = setup(BOY_UP1, TILE_SIZE, TILE_SIZE);
+    up2 = setup(BOY_UP2, TILE_SIZE, TILE_SIZE);
+    down1 = setup(BOY_DOWN1, TILE_SIZE, TILE_SIZE);
+    down2 = setup(BOY_DOWN2, TILE_SIZE, TILE_SIZE);
+    left1 = setup(BOY_LEFT1, TILE_SIZE, TILE_SIZE);
+    up1 = setup(BOY_UP1, TILE_SIZE, TILE_SIZE);
+    left2 = setup(BOY_LEFT2, TILE_SIZE, TILE_SIZE);
+    right1 = setup(BOY_RIGHT1, TILE_SIZE, TILE_SIZE);
+    right2 = setup(BOY_RIGHT2, TILE_SIZE, TILE_SIZE);
+  }
+
+  public void setDefaultValues() {
+    // DUNGEON 1
+//    worldX = TILE_SIZE * 20;
+//    worldY = TILE_SIZE * 27;
+    // dungeon 1 UP
+//    worldX = TILE_SIZE * 9;
+//    worldY = TILE_SIZE * 10;
+    // main map
+    worldX = TILE_SIZE * 23;
+    worldY = TILE_SIZE * 21;
+    // TRADER
+//    worldX = TILE_SIZE * 10;
+//    worldY = TILE_SIZE * 41;
+    defaultSpeed = 4;
+    speed = defaultSpeed;
+    direction = DOWN;
+
+    // PLAYER STATUS
+    maxLife = 6;
+    currentLife = maxLife;
+    maxMana = 4;
+    mana = maxMana;
+    ammo = 10;
+    level = 1;
+    strength = 5;
+    dexterity = 1;
+    exp = 0;
+    nextLevelExp = 5;
+    money = 100;
+    setItems();
+    attack = getAttack();
+    defense = getDefense();
+    dialogues = TextManager.getAllDialoguesForTarget(EVENT_MESSAGES_KEY);
+    getImage();
+    getAttackImage();
+    getGuardImage();
+  }
+
+  public void setItems() {
+    currentWeapon = new NormalSword(gamePanel);
+    currentShield = new WoodShield(gamePanel);
+    projectile = new Fireball(gamePanel);
+    currentLightItem = new Lantern(gamePanel);
+    inventory.clear();
+    inventory.add(currentWeapon);
+    inventory.add(currentShield);
+    inventory.add(new Axe(gamePanel));
+    inventory.add(new Key(gamePanel));
+    inventory.add(new PickAxe(gamePanel));
+  }
+
+  public int getDefense() {
+    defense = dexterity * currentShield.defenseValue;
+    return defense;
+  }
+
+  public int getAttack() {
+    attackArea = currentWeapon.attackArea;
+    firstAttackMotionDuration = currentWeapon.firstAttackMotionDuration;
+    secondAttackMotionDuration = currentWeapon.secondAttackMotionDuration;
+    attack = strength * currentWeapon.attackValue;
+    return attack;
+  }
+
+  public void setDefaultPositions() {
+    worldX = TILE_SIZE * 23;
+    worldY = TILE_SIZE * 21;
+    direction = DOWN;
+  }
+
+  public void restorePlayerStatus() {
+    currentLife = maxLife;
+    mana = maxMana;
+    invincible = false;
+    transparent = false;
+    attacking = false;
+    lightUpdated = true;
+    knockBack = false;
+    speed = defaultSpeed;
+  }
+
+  public boolean canObtainItem(GameEntity item) {
+    GameEntity newItem = gamePanel.getGameEntityFactory().getGameEntity(item.name);
+    if (newItem.stackable) {
+      int itemIndex = searchItemInInventory(item.name);
+
+      if (itemIndex != INIT_INDEX) {
+        inventory.get(itemIndex).amount++;
+        return true;
+      }
+
+    }
+    if (doesInventoryHaveSpace()) {
+      inventory.add(newItem);
+      return true;
+    }
+    return false;
+  }
+
+  public void damageMonster(GameEntity attacker, int monsterIndex, int attack, int knockBackPower) {
+    if (monsterIndex == INIT_INDEX) return;
+    var monster = gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex];
+    if (monster.invincible) return;
+
+    gamePanel.playSoundEffect(HIT_MONSTER);
+
+    if (knockBackPower > 0) {
+      setKnockBack(monster, attacker, knockBackPower);
+    }
+    if (monster.offBalance) {
+      attack *= 3;
+    }
+
+    int damage = Math.max(0, attack - monster.defense);
+    monster.currentLife -= damage;
+    gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, DAMAGE_UI_MESSAGE), damage));
+
+    monster.invincible = true;
+    monster.damageReaction();
+
+    if (monster.currentLife <= 0) {
+      monster.dying = true;
+      gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, KILLED_UI_MESSAGE), monster.name));
+      gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, EXP_UI_MESSAGE), monster.exp));
+      exp += monster.exp;
+      checkLevelUp();
+    }
+  }
+
+  void damageProjectile(int projectileIndex) {
+    if (projectileIndex != INIT_INDEX) {
+      var projectile = gamePanel.getProjectiles().get(CURRENT_MAP)[projectileIndex];
+      projectile.alive = false;
+      generateParticle(projectile, projectile);
+    }
+  }
+
+  void damageInteractiveTile(int interactiveTileIndex) {
+    var tiles = gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP);
+
+    if (interactiveTileIndex != INIT_INDEX && tiles[interactiveTileIndex].isDestructible()
+        && tiles[interactiveTileIndex].isCorrectItem(this) && !tiles[interactiveTileIndex].invincible) {
+      var interactiveTile = tiles[interactiveTileIndex];
+      interactiveTile.playSoundEffect();
+      interactiveTile.currentLife--;
+      interactiveTile.invincible = true;
+
+      generateParticle(interactiveTile, interactiveTile);
+
+      if (interactiveTile.currentLife <= 0) {
+        tiles[interactiveTileIndex] = interactiveTile.getDestroyedForm();
+      }
+    }
+  }
+
+  private void getGuardImage() {
+    guardUp = setup(BOY_GUARD_UP, TILE_SIZE, TILE_SIZE);
+    guardDown = setup(BOY_GUARD_DOWN, TILE_SIZE, TILE_SIZE);
+    guardLeft = setup(BOY_GUARD_LEFT, TILE_SIZE, TILE_SIZE);
+    guardRight = setup(BOY_GUARD_RIGHT, TILE_SIZE, TILE_SIZE);
+  }
+
+  // Use also to check if player has special event item
+  private int searchItemInInventory(String itemName) {
+    return IntStream.range(0, inventory.size())
+        .filter(itemIndex -> StringUtils.equals(inventory.get(itemIndex).name, itemName))
+        .findFirst()
+        .orElse(INIT_INDEX);
+  }
+
+  private void pickUpObject(int objectIndex) {
+    if (objectIndex != INIT_INDEX) {
+      var interactedObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex];
+
+      switch (interactedObject.type) {
+        case PICK_UP -> {
+          interactedObject.use(this);
+          gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex] = null;
+        }
+        case OBSTACLE -> {
+          if (keyHandler.isEnterPressed()) {
+            attackCanceled = true;
+            gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex].interact();
+          }
+        }
+        default -> {
+          // INVENTORY ITEMS
+          String text;
+          if (canObtainItem(interactedObject)) {
+            gamePanel.playSoundEffect(COIN);
+            text = String.format(TextManager.getUiText(UI_MESSAGE, PICKED_UP), interactedObject.name);
+          } else {
+            text = TextManager.getUiText(UI_MESSAGE, INVENTORY_FULL);
+          }
+          gamePanel.getUi().addMessage(text);
+          gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex] = null;
+        }
+      }
+    }
+  }
+
+  private void checkLevelUp() {
+    if (exp >= nextLevelExp) {
+      level++;
+      nextLevelExp = nextLevelExp * 2;
+      maxLife += 2;
+      strength++;
+      dexterity++;
+      attack = getAttack();
+      defense = getDefense();
+      gamePanel.playSoundEffect(LEVEL_UP);
+      gamePanel.setGameState(DIALOG_STATE);
+
+      startDialogue(this, LVL_UP);
+    }
+  }
+
+  private void interactNPC(int npcIndex) {
+    if (npcIndex != INIT_INDEX) {
+      if (gamePanel.getKeyHandler().isEnterPressed()) {
+        attackCanceled = true;
+        gamePanel.getMapsNpc().get(CURRENT_MAP)[npcIndex].speak();
+      }
+      gamePanel.getMapsNpc().get(CURRENT_MAP)[npcIndex].move(direction);
+    }
+  }
+
+  private void detectMonsterContact(int monsterIndex) {
+    if (monsterIndex != INIT_INDEX && !invincible && !gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].dying) {
+      int damage = gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].attack - defense;
+      if (damage < 1)
+        damage = 1;
+      currentLife -= damage;
+      gamePanel.playSoundEffect(RECEIVE_DAMAGE);
+      invincible = true;
+      transparent = true;
+      currentLife -= 1;
+    }
+  }
+
+  private String[] getAttackImages() {
+    String[] attackKeys = null;
+
+    switch (currentWeapon.type) {
+      case WorldGameTypes.SWORD -> attackKeys = new String[]{
+          BOY_ATTACK_UP1, BOY_ATTACK_UP2, BOY_ATTACK_DOWN1, BOY_ATTACK_DOWN2,
+          BOY_ATTACK_LEFT1, BOY_ATTACK_LEFT2, BOY_ATTACK_RIGHT1, BOY_ATTACK_RIGHT2
+      };
+      case WorldGameTypes.AXE -> attackKeys = new String[]{
+          BOY_AXE_ATTACK_UP1, BOY_AXE_ATTACK_UP2, BOY_AXE_ATTACK_DOWN1, BOY_AXE_ATTACK_DOWN2,
+          BOY_AXE_ATTACK_LEFT1, BOY_AXE_ATTACK_LEFT2, BOY_AXE_ATTACK_RIGHT1, BOY_AXE_ATTACK_RIGHT2
+      };
+      case WorldGameTypes.PICKAXE -> attackKeys = new String[]{
+          PICK_AXE_UP_1, PICK_AXE_UP_2, PICK_AXE_DOWN_1, PICK_AXE_DOWN_2,
+          PICK_AXE_LEFT_1, PICK_AXE_LEFT_2, PICK_AXE_RIGHT_1, PICK_AXE_RIGHT_2
+      };
+    }
+    return attackKeys;
+  }
+
+  private boolean doesInventoryHaveSpace() {
+    return inventory.size() < maxInventorySize;
   }
 
   @Override
@@ -181,7 +487,8 @@ public class Player extends GameEntity {
     } else if (keyHandler.isSpacePressed()) {
       guarding = true;
       guardCounter++;
-    } else if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed() || keyHandler.isEnterPressed()) {
+    } else if (keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed()
+        || keyHandler.isRightPressed() || keyHandler.isEnterPressed()) {
       if (keyHandler.isUpPressed()) {
         direction = UP;
       } else if (keyHandler.isDownPressed()) {
@@ -295,254 +602,6 @@ public class Player extends GameEntity {
     }
   }
 
-  void damageProjectile(int projectileIndex) {
-    if (projectileIndex != INIT_INDEX) {
-      var projectile = gamePanel.getProjectiles().get(CURRENT_MAP)[projectileIndex];
-      projectile.alive = false;
-      generateParticle(projectile, projectile);
-    }
-  }
-
-  void damageInteractiveTile(int interactiveTileIndex) {
-
-    if (interactiveTileIndex != INIT_INDEX && gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].isDestructible()
-        && gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].isCorrectItem(this) && !gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].invincible) {
-      gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].playSoundEffect();
-      gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].currentLife--;
-      gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].invincible = true;
-
-      generateParticle(gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex], gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex]);
-
-      if (gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].currentLife <= 0)
-        gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex] = gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)[interactiveTileIndex].getDestroyedForm();
-    }
-  }
-
-  public void damageMonster(GameEntity attacker, int monsterIndex, int attack, int knockBackPower) {
-    if (monsterIndex != INIT_INDEX && !gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].invincible) {
-      gamePanel.playSoundEffect(HIT_MONSTER);
-      if (knockBackPower > 0) {
-        setKnockBack(gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex], attacker, knockBackPower);
-      }
-
-      if (gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].offBalance) {
-        attack *= 3;
-      }
-
-      int damage = Math.max(0, attack - gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].defense);
-      gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].currentLife -= damage;
-      gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, DAMAGE_UI_MESSAGE), damage));
-      gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].invincible = true;
-      gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].damageReaction();
-
-      if (gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].currentLife <= 0) {
-        gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].dying = true;
-        gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, KILLED_UI_MESSAGE), gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].name));
-        gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, EXP_UI_MESSAGE), gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].exp));
-        exp += gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].exp;
-        checkLevelUp();
-      }
-    }
-  }
-
-  public int getCurrentWeaponSlot() {
-    int currentWeaponSlot = 0;
-    for (int inventoryIndex = 0; inventory.size() > inventoryIndex; inventoryIndex++) {
-      if (inventory.get(inventoryIndex) == currentWeapon) {
-        currentWeaponSlot = inventoryIndex;
-      }
-    }
-    return currentWeaponSlot;
-  }
-
-  public int getCurrentShieldSlot() {
-    int currentShieldSlot = 0;
-    for (int inventoryIndex = 0; inventory.size() > inventoryIndex; inventoryIndex++) {
-      if (inventory.get(inventoryIndex) == currentShield) {
-        currentShieldSlot = inventoryIndex;
-      }
-    }
-    return currentShieldSlot;
-  }
-
-  public void selectItem() {
-    int itemIndex = gamePanel.getUi().getItemIndexFromInventory(gamePanel.getUi().getPlayerSlotCol(), gamePanel.getUi().getPlayerSlotRow());
-
-    if (itemIndex < inventory.size()) {
-      GameEntity selectedItem = inventory.get(itemIndex);
-
-      switch (selectedItem.type) {
-        case SWORD, AXE, PICKAXE -> {
-          currentWeapon = selectedItem;
-          attack = getAttack();
-          getAttackImage();
-        }
-        case SHIELD -> {
-          currentShield = selectedItem;
-          defense = getDefense();
-        }
-        case CONSUMABLE -> {
-          if (selectedItem.use(this))
-            if (selectedItem.amount > 1) {
-              selectedItem.amount--;
-            } else {
-              inventory.remove(itemIndex);
-            }
-        }
-        case LIGHTING -> {
-          if (currentLightItem == selectedItem) {
-            currentLightItem = null;
-          } else {
-            currentLightItem = selectedItem;
-          }
-          lightUpdated = true;
-        }
-      }
-    }
-  }
-
-  private void checkLevelUp() {
-    if (exp >= nextLevelExp) {
-      level++;
-      nextLevelExp = nextLevelExp * 2;
-      maxLife += 2;
-      strength++;
-      dexterity++;
-      attack = getAttack();
-      defense = getDefense();
-      gamePanel.playSoundEffect(LEVEL_UP);
-      gamePanel.setGameState(DIALOG_STATE);
-
-      startDialogue(this, LVL_UP);
-    }
-  }
-
-  public void getImage() {
-    up1 = setup(BOY_UP1, TILE_SIZE, TILE_SIZE);
-    up2 = setup(BOY_UP2, TILE_SIZE, TILE_SIZE);
-    down1 = setup(BOY_DOWN1, TILE_SIZE, TILE_SIZE);
-    down2 = setup(BOY_DOWN2, TILE_SIZE, TILE_SIZE);
-    left1 = setup(BOY_LEFT1, TILE_SIZE, TILE_SIZE);
-    up1 = setup(BOY_UP1, TILE_SIZE, TILE_SIZE);
-    left2 = setup(BOY_LEFT2, TILE_SIZE, TILE_SIZE);
-    right1 = setup(BOY_RIGHT1, TILE_SIZE, TILE_SIZE);
-    right2 = setup(BOY_RIGHT2, TILE_SIZE, TILE_SIZE);
-  }
-
-  private void interactNPC(int npcIndex) {
-    if (npcIndex != INIT_INDEX) {
-
-      if (gamePanel.getKeyHandler().isEnterPressed()) {
-        attackCanceled = true;
-        gamePanel.getMapsNpc().get(CURRENT_MAP)[npcIndex].speak();
-      }
-      gamePanel.getMapsNpc().get(CURRENT_MAP)[npcIndex].move(direction);
-    }
-  }
-
-  public void setDefaultValues() {
-    // DUNGEON 1
-//    worldX = TILE_SIZE * 20;
-//    worldY = TILE_SIZE * 27;
-    // dungeon 1 UP
-//    worldX = TILE_SIZE * 9;
-//    worldY = TILE_SIZE * 10;
-    // main map
-    worldX = TILE_SIZE * 23;
-    worldY = TILE_SIZE * 21;
-    // TRADER
-//    worldX = TILE_SIZE * 10;
-//    worldY = TILE_SIZE * 41;
-    defaultSpeed = 4;
-    speed = defaultSpeed;
-    direction = DOWN;
-
-    // PLAYER STATUS
-    maxLife = 6;
-    currentLife = maxLife;
-    maxMana = 4;
-    mana = maxMana;
-    ammo = 10;
-    level = 1;
-    strength = 5;
-    dexterity = 1;
-    exp = 0;
-    nextLevelExp = 5;
-    money = 100;
-    setItems();
-    attack = getAttack();
-    defense = getDefense();
-    dialogues = TextManager.getAllDialoguesForTarget(EVENT_MESSAGES_KEY);
-    getImage();
-    getAttackImage();
-    getGuardImage();
-  }
-
-  public void setItems() {
-    currentWeapon = new NormalSword(gamePanel);
-    currentShield = new WoodShield(gamePanel);
-    projectile = new Fireball(gamePanel);
-    currentLightItem = new Lantern(gamePanel);
-    inventory.clear();
-    inventory.add(currentWeapon);
-    inventory.add(currentShield);
-    inventory.add(new Axe(gamePanel));
-    inventory.add(new Key(gamePanel));
-    inventory.add(new PickAxe(gamePanel));
-  }
-
-  public int getDefense() {
-    defense = dexterity * currentShield.defenseValue;
-    return defense;
-  }
-
-  public int getAttack() {
-    attackArea = currentWeapon.attackArea;
-    firstAttackMotionDuration = currentWeapon.firstAttackMotionDuration;
-    secondAttackMotionDuration = currentWeapon.secondAttackMotionDuration;
-    attack = strength * currentWeapon.attackValue;
-    return attack;
-  }
-
-  private void detectMonsterContact(int monsterIndex) {
-    if (monsterIndex != INIT_INDEX && !invincible && !gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].dying) {
-
-      int damage = gamePanel.getMapsMonsters().get(CURRENT_MAP)[monsterIndex].attack - defense;
-      if (damage < 1)
-        damage = 1;
-      currentLife -= damage;
-      gamePanel.playSoundEffect(RECEIVE_DAMAGE);
-      invincible = true;
-      transparent = true;
-      currentLife -= 1;
-    }
-  }
-
-  public void getGuardImage() {
-    guardUp = setup(BOY_GUARD_UP, TILE_SIZE, TILE_SIZE);
-    guardDown = setup(BOY_GUARD_DOWN, TILE_SIZE, TILE_SIZE);
-    guardLeft = setup(BOY_GUARD_LEFT, TILE_SIZE, TILE_SIZE);
-    guardRight = setup(BOY_GUARD_RIGHT, TILE_SIZE, TILE_SIZE);
-  }
-
-  public void setDefaultPositions() {
-
-    worldX = TILE_SIZE * 23;
-    worldY = TILE_SIZE * 21;
-    direction = DOWN;
-  }
-
-  public void restorePlayerStatus() {
-    currentLife = maxLife;
-    mana = maxMana;
-    invincible = false;
-    transparent = false;
-    attacking = false;
-    lightUpdated = true;
-    knockBack = false;
-    speed = defaultSpeed;
-  }
-
   @Override
   public void draw(Graphics2D graphic2d) {
     int temporaryScreenX = screenX;
@@ -609,71 +668,9 @@ public class Player extends GameEntity {
       graphic2d.drawImage(image, temporaryScreenX, temporaryScreenY, null);
     }
     graphic2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-    // COLLISION RECTANGLE
+    // COLLISION RECTANGLE DRAWING
 //    graphic2d.setColor(Color.RED);
 //    graphic2d.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
   }
 
-  // Use also to check if player has special event item
-  // TODO: implement in different places
-  public int searchItemInInventory(String itemName) {
-    return IntStream.range(0, inventory.size())
-        .filter(itemIndex -> StringUtils.equals(inventory.get(itemIndex).name, itemName))
-        .findFirst()
-        .orElse(INIT_INDEX);
-  }
-
-  public boolean canObtainItem(GameEntity item) {
-    GameEntity newItem = gamePanel.getGameEntityFactory().getGameEntity(item.name);
-    if (newItem.stackable) {
-      int itemIndex = searchItemInInventory(item.name);
-
-      if (itemIndex != INIT_INDEX) {
-        inventory.get(itemIndex).amount++;
-        return true;
-      }
-
-    }
-    if (doesInventoryHaveSpace()) {
-      inventory.add(newItem);
-      return true;
-    }
-    return false;
-  }
-
-  public void pickUpObject(int objectIndex) {
-    if (objectIndex != INIT_INDEX) {
-      var interactedObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex];
-
-      switch (interactedObject.type) {
-        case PICK_UP -> {
-          interactedObject.use(this);
-          gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex] = null;
-        }
-        case OBSTACLE -> {
-          if (keyHandler.isEnterPressed()) {
-            attackCanceled = true;
-            gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex].interact();
-          }
-        }
-        default -> {
-          // INVENTORY ITEMS
-          String text;
-          if (canObtainItem(interactedObject)) {
-            gamePanel.playSoundEffect(COIN);
-            text = String.format(TextManager.getUiText(UI_MESSAGE, PICKED_UP), interactedObject.name);
-          } else {
-            text = TextManager.getUiText(UI_MESSAGE, INVENTORY_FULL);
-          }
-          gamePanel.getUi().addMessage(text);
-          gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex] = null;
-        }
-      }
-    }
-  }
-
-  private boolean doesInventoryHaveSpace() {
-    return inventory.size() < maxInventorySize;
-  }
-  
 }

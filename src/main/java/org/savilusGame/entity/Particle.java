@@ -48,8 +48,8 @@ public class Particle extends GameEntity {
 
   @Override
   public void draw(Graphics2D graphics2D) {
-    int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().screenX;
-    int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().screenY;
+    int screenX = worldX - gamePanel.getPlayer().worldX + gamePanel.getPlayer().getScreenX();
+    int screenY = worldY - gamePanel.getPlayer().worldY + gamePanel.getPlayer().getScreenY();
 
     graphics2D.setColor(color);
     graphics2D.fillRect(screenX, screenY, size, size);

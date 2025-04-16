@@ -44,10 +44,14 @@ import org.savilusGame.entity.weapon.NormalSword;
 import org.savilusGame.entity.weapon.PickAxe;
 import org.savilusGame.enums.GameObject;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GameEntityFactory {
 
-  private final GamePanel gamePanel;
-  private final Map<GameObject, Supplier<GameEntity>> entityMap = new EnumMap<>(GameObject.class);
+  GamePanel gamePanel;
+  Map<GameObject, Supplier<GameEntity>> entityMap = new EnumMap<>(GameObject.class);
 
   public GameEntityFactory(GamePanel gamePanel) {
     this.gamePanel = gamePanel;

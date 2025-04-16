@@ -54,9 +54,9 @@ public class CutsceneManager {
       for (int i = 0; i < mapObjects.length; i++) {
         if (Objects.isNull(gamePanel.getMapsObjects().get(CURRENT_MAP)[i])) {
           mapObjects[i] = new IronDoor(gamePanel);
-          mapObjects[i].worldX = TILE_SIZE * 25;
-          mapObjects[i].worldY = TILE_SIZE * 28;
-          mapObjects[i].temporaryObject = true;
+          mapObjects[i].setWorldX(TILE_SIZE * 25);
+          mapObjects[i].setWorldY(TILE_SIZE * 28);
+          mapObjects[i].setTemporaryObject(true);
           gamePanel.playSoundEffect(DOOR_OPEN);
           break;
         }
@@ -65,22 +65,22 @@ public class CutsceneManager {
       for (int i = 0; i < mapNpcs.length; i++) {
         if (Objects.isNull(mapNpcs[i])) {
           PlayerDummy dummy = new PlayerDummy(gamePanel);
-          dummy.worldX = gamePanel.getPlayer().worldX;
-          dummy.worldY = gamePanel.getPlayer().worldY;
-          dummy.direction = gamePanel.getPlayer().direction;
+          dummy.setWorldX(gamePanel.getPlayer().getWorldX());
+          dummy.setWorldY(gamePanel.getPlayer().getWorldY());
+          dummy.setDirection(gamePanel.getPlayer().getDirection());
 
           gamePanel.getMapsNpc().get(CURRENT_MAP)[i] = dummy;
           break;
         }
       }
 
-      gamePanel.getPlayer().drawing = false;
+      gamePanel.getPlayer().setDrawing(false);
       scenePhase++;
     }
 
     if (scenePhase == 1) {
-      gamePanel.getPlayer().worldY -= 2;
-      if (gamePanel.getPlayer().worldY < TILE_SIZE * 16) {
+      gamePanel.getPlayer().setWorldY(gamePanel.getPlayer().getWorldY() - 2);
+      if (gamePanel.getPlayer().getWorldY() < TILE_SIZE * 16) {
         scenePhase++;
       }
     }
@@ -89,8 +89,8 @@ public class CutsceneManager {
       var monsters = gamePanel.getMapsMonsters().get(CURRENT_MAP);
       for (GameEntity monster : monsters) {
         if (Objects.nonNull(monster) &&
-            StringUtils.equalsIgnoreCase(monster.name, MonsterType.SKELETON_LORD.getName())) {
-          monster.sleep = false;
+            StringUtils.equalsIgnoreCase(monster.getName(), MonsterType.SKELETON_LORD.getName())) {
+          monster.setSleep(false);
           gamePanel.getUi().setNpc(monster);
           scenePhase++;
           break;
@@ -102,7 +102,7 @@ public class CutsceneManager {
       var monsters = gamePanel.getMapsMonsters().get(CURRENT_MAP);
       for (GameEntity monster : monsters) {
         if (Objects.nonNull(monster) &&
-            StringUtils.equalsIgnoreCase(monster.name, MonsterType.SKELETON_LORD.getName())) {
+            StringUtils.equalsIgnoreCase(monster.getName(), MonsterType.SKELETON_LORD.getName())) {
           monster.startDialogue(monster, CUTSCENE_DIALOGUE);
           gamePanel.getUi().drawDialogueScreen();
           break;
@@ -113,14 +113,14 @@ public class CutsceneManager {
     if (scenePhase == 4) {
       for (int i = 0; i < mapNpcs.length; i++) {
         if (Objects.nonNull(mapNpcs[i]) && mapNpcs[i] instanceof PlayerDummy) {
-          gamePanel.getPlayer().worldX = mapNpcs[i].worldX;
-          gamePanel.getPlayer().worldY = mapNpcs[i].worldY;
+          gamePanel.getPlayer().setWorldX(mapNpcs[i].getWorldX());
+          gamePanel.getPlayer().setWorldY(mapNpcs[i].getWorldY());
           gamePanel.getMapsNpc().get(CURRENT_MAP)[i] = null;
           break;
         }
       }
 
-      gamePanel.getPlayer().drawing = true;
+      gamePanel.getPlayer().setDrawing(true);
       sceneNum = NA;
       scenePhase = 0;
       gamePanel.setGameState(PLAY_STATE);

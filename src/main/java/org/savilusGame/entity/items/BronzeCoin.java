@@ -18,7 +18,7 @@ public class BronzeCoin extends GameEntity {
     type = WorldGameTypes.PICK_UP;
     name = GameObject.BRONZE_COIN.getName();
     value = 1;
-    image = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
     down1 = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
   }
 
@@ -26,7 +26,7 @@ public class BronzeCoin extends GameEntity {
   public boolean use(GameEntity entity) {
     gamePanel.playSoundEffect(COIN);
     gamePanel.getUi().addMessage(COIN_TEXT + value);
-    gamePanel.getPlayer().money += value;
+    gamePanel.getPlayer().setMoney(gamePanel.getPlayer().getMoney() + value);
     return true;
   }
 }

@@ -16,7 +16,7 @@ public class Lantern extends GameEntity {
 
     type = LIGHTING;
     name = GameObject.LANTERN.getName();
-    image = setup(LANTERN, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(LANTERN, TILE_SIZE, TILE_SIZE);
     down1 = setup(LANTERN, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.LANTERN.getTextKey()), name);
     price = 200;

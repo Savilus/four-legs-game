@@ -21,8 +21,8 @@ public class Chest extends GameEntity {
     super(gamePanel);
     type = OBSTACLE;
     name = GameObject.CHEST.getName();
-    image = setup(CHEST, TILE_SIZE, TILE_SIZE);
-    image2 = setup(CHEST_OPENED, TILE_SIZE, TILE_SIZE);
+    mainImage = setup(CHEST, TILE_SIZE, TILE_SIZE);
+    mainImage2 = setup(CHEST_OPENED, TILE_SIZE, TILE_SIZE);
     collision = true;
 
     solidArea.x = 4;
@@ -35,7 +35,7 @@ public class Chest extends GameEntity {
 
   public Chest setLoot(GameEntity loot) {
     this.loot = loot;
-    dialogues = TextManager.getItemTexts(GameObject.CHEST.getTextKey(), loot.name);
+    dialogues = TextManager.getItemTexts(GameObject.CHEST.getTextKey(), loot.getName());
     return this;
   }
 
@@ -47,7 +47,7 @@ public class Chest extends GameEntity {
         startDialogue(this, FULL_INVENTORY_TEXT_KEY);
       } else {
         startDialogue(this, COLLECT_ITEM_TEXT_KEY);
-        image = image2;
+        mainImage = mainImage2;
         opened = true;
       }
     } else {
