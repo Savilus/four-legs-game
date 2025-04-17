@@ -3,10 +3,12 @@ package org.savilusGame.utils;
 import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
+import java.awt.*;
 import java.util.Objects;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
+import org.savilusGame.entity.Player;
 import org.savilusGame.enums.Direction;
 
 import lombok.RequiredArgsConstructor;
@@ -87,13 +89,13 @@ public class CollisionDetector {
       var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[i];
       if (Objects.nonNull(mapObject)) {
         //get entity's solid area position
-        gameEntity.getSolidArea().x = getXSolidArea(gameEntity);
-        gameEntity.getSolidArea().y = getYSolidArea(gameEntity);
+        getSolidArea(gameEntity).x = getXSolidArea(gameEntity);
+        getSolidArea(gameEntity).y = getYSolidArea(gameEntity);
         // get object's solid area position
         mapObject.getSolidArea().x = mapObject.getWorldX() + mapObject.getSolidArea().x;
         mapObject.getSolidArea().y = mapObject.getWorldY() + mapObject.getSolidArea().y;
         checkGameEntityCollision(gameEntity, direction);
-        if (gameEntity.getSolidArea().intersects(mapObject.getSolidArea())) {
+        if (getSolidArea(gameEntity).intersects(mapObject.getSolidArea())) {
           if (mapObject.isCollision()) {
             gameEntity.setCollisionOn(true);
           }
@@ -101,8 +103,8 @@ public class CollisionDetector {
             index = i;
           }
         }
-        gameEntity.getSolidArea().x = gameEntity.getSolidAreaDefaultX();
-        gameEntity.getSolidArea().y = gameEntity.getSolidAreaDefaultY();
+        getSolidArea(gameEntity).x = gameEntity.getSolidAreaDefaultX();
+        getSolidArea(gameEntity).y = gameEntity.getSolidAreaDefaultY();
         mapObject.getSolidArea().x = mapObject.getSolidAreaDefaultX();
         mapObject.getSolidArea().y = mapObject.getSolidAreaDefaultY();
       }
@@ -124,23 +126,24 @@ public class CollisionDetector {
     }
 
     for (int targetIndex = 0; targetIndex < target.length; targetIndex++) {
-      if (Objects.nonNull(target[targetIndex])) {
+      var currentTarget = target[targetIndex];
+      if (Objects.nonNull(currentTarget)) {
         //get entity's solid area position
-        gameEntity.getSolidArea().x = getXSolidArea(gameEntity);
-        gameEntity.getSolidArea().y = getYSolidArea(gameEntity);
+        getSolidArea(gameEntity).x = getXSolidArea(gameEntity);
+        getSolidArea(gameEntity).y = getYSolidArea(gameEntity);
         // get target solid area position
-        target[targetIndex].getSolidArea().x = target[targetIndex].getWorldX() + target[targetIndex].getSolidArea().x;
-        target[targetIndex].getSolidArea().y = target[targetIndex].getWorldY() + target[targetIndex].getSolidArea().y;
+        currentTarget.getSolidArea().x = currentTarget.getWorldX() + currentTarget.getSolidArea().x;
+        currentTarget.getSolidArea().y = currentTarget.getWorldY() + currentTarget.getSolidArea().y;
         checkGameEntityCollision(gameEntity, direction);
-        if (gameEntity.getSolidArea().intersects(target[targetIndex].getSolidArea()) && target[targetIndex] != gameEntity) {
+        if (getSolidArea(gameEntity).intersects(currentTarget.getSolidArea()) && currentTarget != gameEntity) {
           gameEntity.setCollisionOn(true);
           index = targetIndex;
         }
 
-        gameEntity.getSolidArea().x = gameEntity.getSolidAreaDefaultX();
-        gameEntity.getSolidArea().y = gameEntity.getSolidAreaDefaultY();
-        target[targetIndex].getSolidArea().x = target[targetIndex].getSolidAreaDefaultX();
-        target[targetIndex].getSolidArea().y = target[targetIndex].getSolidAreaDefaultY();
+        getSolidArea(gameEntity).x = gameEntity.getSolidAreaDefaultX();
+        getSolidArea(gameEntity).y = gameEntity.getSolidAreaDefaultY();
+        currentTarget.getSolidArea().x = currentTarget.getSolidAreaDefaultX();
+        currentTarget.getSolidArea().y = currentTarget.getSolidAreaDefaultY();
       }
     }
     return index;
@@ -149,23 +152,31 @@ public class CollisionDetector {
   public boolean checkPlayer(GameEntity gameEntity) {
     boolean contactPlayer = false;
     //get entity's solid area position
-    gameEntity.getSolidArea().x = getXSolidArea(gameEntity);
-    gameEntity.getSolidArea().y = getYSolidArea(gameEntity);
+    getSolidArea(gameEntity).x = getXSolidArea(gameEntity);
+    getSolidArea(gameEntity).y = getYSolidArea(gameEntity);
     // get player solid area position
-    gamePanel.getPlayer().getSolidArea().x = gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getSolidArea().x;
-    gamePanel.getPlayer().getSolidArea().y = gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getSolidArea().y;
+    getPlayer().getSolidArea().x = getPlayer().getWorldX() + getPlayer().getSolidArea().x;
+    getPlayer().getSolidArea().y = getPlayer().getWorldY() + getPlayer().getSolidArea().y;
 
     checkGameEntityCollision(gameEntity, gameEntity.getDirection());
-    if (gameEntity.getSolidArea().intersects(gamePanel.getPlayer().getSolidArea())) {
+    if (getSolidArea(gameEntity).intersects(getPlayer().getSolidArea())) {
       gameEntity.setCollisionOn(true);
       contactPlayer = true;
     }
-    gameEntity.getSolidArea().x = gameEntity.getSolidAreaDefaultX();
-    gameEntity.getSolidArea().y = gameEntity.getSolidAreaDefaultY();
-    gamePanel.getPlayer().getSolidArea().x = gamePanel.getPlayer().getSolidAreaDefaultX();
-    gamePanel.getPlayer().getSolidArea().y = gamePanel.getPlayer().getSolidAreaDefaultY();
+    getSolidArea(gameEntity).x = gameEntity.getSolidAreaDefaultX();
+    getSolidArea(gameEntity).y = gameEntity.getSolidAreaDefaultY();
+    getPlayer().getSolidArea().x = getPlayer().getSolidAreaDefaultX();
+    getPlayer().getSolidArea().y = getPlayer().getSolidAreaDefaultY();
 
     return contactPlayer;
+  }
+
+  private Player getPlayer() {
+    return gamePanel.getPlayer();
+  }
+
+  private Rectangle getSolidArea(GameEntity gameEntity) {
+    return gameEntity.getSolidArea();
   }
 
   private int getYSolidArea(GameEntity gameEntity){
@@ -178,10 +189,10 @@ public class CollisionDetector {
 
   private void checkGameEntityCollision(GameEntity gameEntity, Direction direction) {
     switch (direction) {
-      case UP -> gameEntity.getSolidArea().y -= gameEntity.getSpeed();
-      case DOWN -> gameEntity.getSolidArea().y += gameEntity.getSpeed();
-      case LEFT -> gameEntity.getSolidArea().x -= gameEntity.getSpeed();
-      case RIGHT -> gameEntity.getSolidArea().x += gameEntity.getSpeed();
+      case UP -> getSolidArea(gameEntity).y -= gameEntity.getSpeed();
+      case DOWN -> getSolidArea(gameEntity).y += gameEntity.getSpeed();
+      case LEFT -> getSolidArea(gameEntity).x -= gameEntity.getSpeed();
+      case RIGHT -> getSolidArea(gameEntity).x += gameEntity.getSpeed();
     }
   }
 }

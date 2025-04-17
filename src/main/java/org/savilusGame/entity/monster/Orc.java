@@ -30,6 +30,12 @@ import org.savilusGame.enums.WorldGameTypes;
 
 public class Orc extends GameEntity {
 
+  private final static int CHASE_RATE = 100;
+  private final static int ATTACK_RATE = 30;
+  private final static int RANDOM_DIRECTION_INTERVAL = 120;
+  private final static int STOP_CHASING_DISTANCE = 15;
+  private final static int START_CHASING_DISTANCE = 5;
+
   public Orc(GamePanel gamePanel) {
     super(gamePanel);
     name = MonsterType.ORC.getName();
@@ -100,15 +106,15 @@ public class Orc extends GameEntity {
   @Override
   public void setAction() {
     if (onPath) {
-      checkIfShouldStopChasing(gamePanel.getPlayer(), 15, 100);
+      checkIfShouldStopChasing(gamePanel.getPlayer(), START_CHASING_DISTANCE, CHASE_RATE);
       searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
     } else {
-      getRandomDirection(120);
-      checkIfShouldStartChasing(gamePanel.getPlayer(), 5, 100);
+      getRandomDirection(RANDOM_DIRECTION_INTERVAL);
+      checkIfShouldStartChasing(gamePanel.getPlayer(), STOP_CHASING_DISTANCE, CHASE_RATE);
     }
 
     if (!attacking) {
-      checkIfShouldAttack(30, TILE_SIZE * 4, TILE_SIZE);
+      checkIfShouldAttack(ATTACK_RATE, TILE_SIZE * 4, TILE_SIZE);
     }
   }
 }

@@ -49,6 +49,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GamePanel extends JPanel implements Runnable {
 
+  final static int ALLOWED_ITEMS = 20;
+
   // SCREEN SETTINGS
   final static int ORIGINAL_TITLE_SIZE = 16; // 16x16 tile
   final static int SCALE = 3;
@@ -120,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
-    mapsObjects.put(CURRENT_MAP, new GameEntity[20]);
+    mapsObjects.put(CURRENT_MAP, new GameEntity[ALLOWED_ITEMS]);
     assetSetter.setNPC();
     assetSetter.setObject();
     assetSetter.setInteractiveTiles();
@@ -168,14 +170,14 @@ public class GamePanel extends JPanel implements Runnable {
     if (nextArea != currentArea) {
       stopMusic();
 
-      if (nextArea == Area.OUTSIDE) {
-        playMusic(OUTSIDE_MUSIC);
-      } else if (nextArea == Area.INDOOR) {
-        playMusic(MERCHANT_SONG);
-      } else if (nextArea == Area.DUNGEON) {
-        playMusic(DUNGEON_SONG);
+      switch (nextArea) {
+        case OUTSIDE -> playMusic(OUTSIDE_MUSIC);
+        case INDOOR -> playMusic(MERCHANT_SONG);
+        case DUNGEON -> playMusic(DUNGEON_SONG);
+        default -> throw new IllegalStateException("Unexpected value: " + nextArea);
       }
     }
+
     currentArea = nextArea;
     assetSetter.setMonster();
   }
@@ -220,11 +222,11 @@ public class GamePanel extends JPanel implements Runnable {
       gameMap.drawFullMapScreen(tempGraphic2d);
     } else {
       tileManager.draw(tempGraphic2d);
-
-      if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP))) {
-        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(CURRENT_MAP).length; objIndex++) {
-          if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP)[objIndex])) {
-            mapsInteractiveTiles.get(CURRENT_MAP)[objIndex].draw(tempGraphic2d);
+      var interactiveTiles = mapsInteractiveTiles.get(CURRENT_MAP);
+      if (Objects.nonNull(interactiveTiles)) {
+        for (InteractiveTile interactiveTile : interactiveTiles) {
+          if (Objects.nonNull(interactiveTile)) {
+            interactiveTile.draw(tempGraphic2d);
           }
         }
       }
@@ -265,7 +267,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      gameObjects.sort(Comparator.comparingInt(gameEntity -> gameEntity.getWorldY()));
+      gameObjects.sort(Comparator.comparingInt(GameEntity::getWorldY));
 
       for (GameEntity gameObject : gameObjects) {
         gameObject.draw(tempGraphic2d);
@@ -324,13 +326,13 @@ public class GamePanel extends JPanel implements Runnable {
         }
       }
 
-      for (int i = 0; i < projectiles.get(CURRENT_MAP).length; i++) {
-        GameEntity projectile = projectiles.get(CURRENT_MAP)[i];
+      for (int currentProjectile = 0; currentProjectile < projectiles.get(CURRENT_MAP).length; currentProjectile++) {
+        var projectile = projectiles.get(CURRENT_MAP)[currentProjectile];
 
         if (Objects.nonNull(projectile) && projectile.isAlive()) {
           projectile.update();
         } else {
-          projectiles.get(CURRENT_MAP)[i] = null;
+          projectiles.get(CURRENT_MAP)[currentProjectile] = null;
         }
       }
 

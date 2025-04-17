@@ -21,6 +21,7 @@ import java.util.Objects;
 import org.savilusGame.GamePanel;
 import org.savilusGame.data.Progress;
 import org.savilusGame.entity.GameEntity;
+import org.savilusGame.entity.Player;
 import org.savilusGame.enums.Area;
 import org.savilusGame.enums.Direction;
 
@@ -64,8 +65,8 @@ public class EventHandler {
   }
 
   public void checkEvent() {
-    int xDistance = Math.abs(gamePanel.getPlayer().getWorldX() - previousEventX);
-    int yDistance = Math.abs(gamePanel.getPlayer().getWorldY()- previousEventY);
+    int xDistance = Math.abs(getPlayer().getWorldX() - previousEventX);
+    int yDistance = Math.abs(getPlayer().getWorldY()- previousEventY);
     int distance = Math.max(xDistance, yDistance);
 
     if (distance > TILE_SIZE) {
@@ -115,17 +116,17 @@ public class EventHandler {
   private void speak(GameEntity gameEntity) {
     if (gamePanel.getKeyHandler().isEnterPressed()) {
       gamePanel.setGameState(DIALOG_STATE);
-      gamePanel.getPlayer().setAttackCanceled(true);
+      getPlayer().setAttackCanceled(true);
       gameEntity.speak();
     }
   }
 
   private boolean hit(int col, int row, Direction requiredDirection) {
     var playerSolidArea = new Rectangle(
-        gamePanel.getPlayer().getWorldX() + gamePanel.getPlayer().getSolidArea().x,
-        gamePanel.getPlayer().getWorldY() + gamePanel.getPlayer().getSolidArea().y,
-        gamePanel.getPlayer().getSolidArea().width,
-        gamePanel.getPlayer().getSolidArea().height
+        getPlayer().getWorldX() + getPlayer().getSolidArea().x,
+        getPlayer().getWorldY() + getPlayer().getSolidArea().y,
+        getPlayer().getSolidArea().width,
+        getPlayer().getSolidArea().height
     );
 
     var eventArea = new Rectangle(
@@ -137,9 +138,9 @@ public class EventHandler {
 
     boolean hitResult = playerSolidArea.intersects(eventArea) && !eventRect.get(MAIN_MAP)[col][row].oneTimeEventDone;
 
-    if (hitResult && (gamePanel.getPlayer().getDirection().equals(requiredDirection) || requiredDirection.equals(Direction.ANY))) {
-      previousEventX = gamePanel.getPlayer().getWorldX();
-      previousEventY = gamePanel.getPlayer().getWorldY();
+    if (hitResult && (getPlayer().getDirection().equals(requiredDirection) || requiredDirection.equals(Direction.ANY))) {
+      previousEventX = getPlayer().getWorldX();
+      previousEventY = getPlayer().getWorldY();
       return true;
     }
 
@@ -149,8 +150,8 @@ public class EventHandler {
   }
 
   private void resetPlayerSolidArea() {
-    gamePanel.getPlayer().getSolidArea().x = gamePanel.getPlayer().getSolidAreaDefaultX();
-    gamePanel.getPlayer().getSolidArea().y = gamePanel.getPlayer().getSolidAreaDefaultY();
+    getPlayer().getSolidArea().x = getPlayer().getSolidAreaDefaultX();
+    getPlayer().getSolidArea().y = getPlayer().getSolidAreaDefaultY();
   }
 
   private void resetEventArea(int col, int row) {
@@ -177,8 +178,8 @@ public class EventHandler {
 
   private void damagePit() {
     gamePanel.setGameState(DIALOG_STATE);
-    gamePanel.getPlayer().startDialogue(gamePanel.getPlayer(), DAMAGE_PIT);
-    gamePanel.getPlayer().setCurrentLife(gamePanel.getPlayer().getCurrentLife() - 1);
+    getPlayer().startDialogue(getPlayer(), DAMAGE_PIT);
+    getPlayer().setCurrentLife(getPlayer().getCurrentLife() - 1);
     gamePanel.playSoundEffect(RECEIVE_DAMAGE);
 //    eventRect[col][row].eventDone = true;
     canTouchEvent = false;
@@ -187,13 +188,17 @@ public class EventHandler {
   private void healingPool() {
     if (gamePanel.getKeyHandler().isEnterPressed()) {
       gamePanel.setGameState(DIALOG_STATE);
-      gamePanel.getPlayer().setAttackCanceled(true);
+      getPlayer().setAttackCanceled(true);
       gamePanel.playSoundEffect(POWER_UP);
-      gamePanel.getPlayer().startDialogue(gamePanel.getPlayer(), HEALING_POOL);
-      gamePanel.getPlayer().setCurrentLife(gamePanel.getPlayer().getMaxLife());
-      gamePanel.getPlayer().setMana(gamePanel.getPlayer().getMaxMana());
+      getPlayer().startDialogue(getPlayer(), HEALING_POOL);
+      getPlayer().setCurrentLife(getPlayer().getMaxLife());
+      getPlayer().setMana(getPlayer().getMaxMana());
       gamePanel.getAssetSetter().setMonster();
       gamePanel.getSaveLoad().save();
     }
+  }
+  
+  private Player getPlayer() {
+    return gamePanel.getPlayer();
   }
 }

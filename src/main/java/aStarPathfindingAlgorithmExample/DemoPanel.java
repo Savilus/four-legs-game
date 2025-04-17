@@ -73,107 +73,56 @@ class DemoPanel extends JPanel {
 
   }
 
-  void autoSearch() {
+  private void searchStep() {
+    int col = currentNode.col;
+    int row = currentNode.row;
 
-    while (!goealReached && step < 300) {
-      int col = currentNode.col;
-      int row = currentNode.row;
+    currentNode.setAsChecked();
+    checkedList.add(currentNode);
+    openList.remove(currentNode);
 
-      currentNode.setAsChecked();
-      checkedList.add(currentNode);
-      openList.remove(currentNode);
+    // Open neighboring nodes
+    if (row - 1 >= 0) openNode(node[col][row - 1]); // UP
+    if (col - 1 >= 0) openNode(node[col - 1][row]); // LEFT
+    if (row + 1 < maxRow) openNode(node[col][row + 1]); // DOWN
+    if (col + 1 < maxCol) openNode(node[col + 1][row]); // RIGHT
 
-      // OPEN THE UP NODE
-      if (row - 1 >= 0)
-        openNode(node[col][row - 1]);
-      // OPEN THE LEFT NODE
-      if (col - 1 >= 0)
-        openNode(node[col - 1][row]);
-      // OPEN THE DOWN NODE
-      if (row + 1 < maxRow)
-        openNode(node[col][row + 1]);
-      // OPEN THE RIGHT NODE
-      if (col + 1 < maxCol)
-        openNode(node[col + 1][row]);
+    // Find the best node based on fCost (and gCost in case of ties)
+    int bestNodeIndex = 0;
+    int bestNodeCost = 999;
 
-      // FIND THE BEST NODE
-      int bestNodeIndex = 0;
-      int bestNodeCost = 999;
-
-      for (int i = 0; i < openList.size(); i++) {
-        // Check if this node's F cost is better
-        if (openList.get(i).fCost < bestNodeCost) {
+    for (int i = 0; i < openList.size(); i++) {
+      int currentCost = openList.get(i).fCost;
+      if (currentCost < bestNodeCost) {
+        bestNodeIndex = i;
+        bestNodeCost = currentCost;
+      } else if (currentCost == bestNodeCost) {
+        if (openList.get(i).gCost < openList.get(bestNodeIndex).gCost) {
           bestNodeIndex = i;
-          bestNodeCost = openList.get(i).fCost;
-        }
-        // If F cost is equal, check the G cost
-        else if (openList.get(i).fCost == bestNodeCost) {
-          if (openList.get(i).gCost < openList.get(bestNodeIndex).gCost) {
-            bestNodeIndex = i;
-          }
         }
       }
+    }
 
-      // After the loop, we get the best node which is our next step
-      currentNode = openList.get(bestNodeIndex);
+    // After finding the best node, set it as the current node
+    currentNode = openList.get(bestNodeIndex);
 
-      if (currentNode == goalNode) {
-        goealReached = true;
-        trackThePath();
-      }
+    // Check if we've reached the goal
+    if (currentNode == goalNode) {
+      goealReached = true;
+      trackThePath();
+    }
+  }
+
+  void autoSearch() {
+    while (!goealReached && step < 300) {
+      searchStep();
       step++;
     }
   }
 
-  // Manual search to see how algorithm works step by step (press enter)
   void manualSearch() {
-
     if (!goealReached) {
-      int col = currentNode.col;
-      int row = currentNode.row;
-
-      currentNode.setAsChecked();
-      checkedList.add(currentNode);
-      openList.remove(currentNode);
-
-      // OPEN THE UP NODE
-      if (row - 1 >= 0)
-        openNode(node[col][row - 1]);
-      // OPEN THE LEFT NODE
-      if (col - 1 >= 0)
-        openNode(node[col - 1][row]);
-      // OPEN THE DOWN NODE
-      if (row + 1 < maxRow)
-        openNode(node[col][row + 1]);
-      // OPEN THE RIGHT NODE
-      if (col + 1 < maxCol)
-        openNode(node[col + 1][row]);
-
-      // FIND THE BEST NODE
-      int bestNodeIndex = 0;
-      int bestNodeCost = 999;
-
-      for (int i = 0; i < openList.size(); i++) {
-        // Check if this node's F cost is better
-        if (openList.get(i).fCost < bestNodeCost) {
-          bestNodeIndex = i;
-          bestNodeCost = openList.get(i).fCost;
-        }
-        // If F cost is equal, check the G cost
-        else if (openList.get(i).fCost == bestNodeCost) {
-          if (openList.get(i).gCost < openList.get(bestNodeIndex).gCost) {
-            bestNodeIndex = i;
-          }
-        }
-      }
-
-      // After the loop, we get the best node which is our next step
-      currentNode = openList.get(bestNodeIndex);
-
-      if (currentNode == goalNode) {
-        goealReached = true;
-        trackThePath();
-      }
+      searchStep();
     }
   }
 

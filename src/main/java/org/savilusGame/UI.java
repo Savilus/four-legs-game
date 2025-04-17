@@ -208,7 +208,6 @@ public class UI {
   }
 
   private void drawGameOverScreen() {
-
     graphics2D.setColor(new Color(0, 0, 0, 150));
     graphics2D.fillRect(0, 0, gamePanel.getScreenWidth(), gamePanel.getScreenHeight());
 

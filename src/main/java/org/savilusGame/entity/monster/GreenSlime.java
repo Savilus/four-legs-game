@@ -17,6 +17,11 @@ import org.savilusGame.enums.WorldGameTypes;
 
 public class GreenSlime extends GameEntity {
 
+  private final static int SHOOT_RATE = 100;
+  private final static int RANDOM_DIRECTION_INTERVAL = 120;
+  private final static int STOP_CHASING_DISTANCE = 15;
+  private final static int START_CHASING_DISTANCE = 5;
+
   public GreenSlime(GamePanel gamePanel) {
     super(gamePanel);
     name = MonsterType.GREEN_SLIME.getName();
@@ -70,13 +75,13 @@ public class GreenSlime extends GameEntity {
   @Override
   public void setAction() {
     if (onPath) {
-      checkIfShouldStopChasing(gamePanel.getPlayer(), 15, 100);
+      checkIfShouldStopChasing(gamePanel.getPlayer(), STOP_CHASING_DISTANCE, SHOOT_RATE);
       searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
 // Enable if you want green slime to shoot a rock
 //      checkIfShouldShoot(100, 50);
     } else {
-      getRandomDirection(120);
-      checkIfShouldStartChasing(gamePanel.getPlayer(), 5, 100);
+      getRandomDirection(RANDOM_DIRECTION_INTERVAL);
+      checkIfShouldStartChasing(gamePanel.getPlayer(), START_CHASING_DISTANCE, SHOOT_RATE);
     }
   }
 }
