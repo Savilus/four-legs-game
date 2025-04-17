@@ -21,7 +21,7 @@ public class PathFinder {
   Node[][] node;
   final ArrayList<Node> openList = new ArrayList<>();
   @Getter
-  ArrayList<Node> pathList = new ArrayList<>();
+  final ArrayList<Node> pathList = new ArrayList<>();
   Node startNode, goalNode, currentNode;
   boolean goalReached = false;
   int step = 0;
@@ -88,7 +88,6 @@ public class PathFinder {
             }
           }
         }
-
         // SET COST
         getCost(node[col][row]);
       }
@@ -97,59 +96,66 @@ public class PathFinder {
 
   public boolean search() {
     while (!goalReached && step < MAX_PATH_LENGTH) {
-      int col = currentNode.col;
-      int row = currentNode.row;
-
-      // Check the current node
+      // Current node is processed
       currentNode.checked = true;
       openList.remove(currentNode);
 
-      // OPEN THE UP NODE
-      if (row - 1 >= 0)
-        openNode(node[col][row - 1]);
-      // OPEN THE LEFT NODE
-      if (col - 1 >= 0)
-        openNode(node[col - 1][row]);
-      // OPEN THE DOWN NODE
-      if (row + 1 < gamePanel.getMaxWorldRow())
-        openNode(node[col][row + 1]);
-      // OPEN THE RIGHT NODE
-      if (col + 1 < gamePanel.getMaxWorldCol())
-        openNode(node[col + 1][row]);
+      // Open neighboring nodes
+      openNeighboringNodes(currentNode);
 
-      // Find the best node
-      int bestNodeIndex = 0;
-      int bestNodeCost = 999;
+      // Find the best node in the open list
+      Node bestNode = findBestNode();
 
-      for (int nodeIndex = 0; nodeIndex < openList.size(); nodeIndex++) {
-        // Check if this node's F cost is better
-        if (openList.get(nodeIndex).fCost < bestNodeCost) {
-          bestNodeIndex = nodeIndex;
-          bestNodeCost = openList.get(nodeIndex).fCost;
-        }
-        // If F cost is equal, check the G cost
-        else if (openList.get(nodeIndex).fCost == bestNodeCost) {
-          if (openList.get(nodeIndex).gCost < openList.get(bestNodeIndex).gCost) {
-            bestNodeIndex = nodeIndex;
-          }
-        }
+      if (bestNode == null) {
+        break; // If there is no best node, exit the loop
       }
 
-      if (openList.isEmpty()) {
-        break;
-      }
+      // Move to the best node
+      currentNode = bestNode;
 
-      currentNode = openList.get(bestNodeIndex);
-
+      // Check if goal is reached
       if (currentNode == goalNode) {
         goalReached = true;
         trackThePath();
+        break; // Exit the loop once the goal is reached
       }
+
       step++;
     }
 
     return goalReached;
   }
+
+  private void openNeighboringNodes(Node currentNode) {
+    int col = currentNode.col;
+    int row = currentNode.row;
+
+    // OPEN THE UP NODE
+    if (row - 1 >= 0) openNode(node[col][row - 1]);
+    // OPEN THE LEFT NODE
+    if (col - 1 >= 0) openNode(node[col - 1][row]);
+    // OPEN THE DOWN NODE
+    if (row + 1 < gamePanel.getMaxWorldRow()) openNode(node[col][row + 1]);
+    // OPEN THE RIGHT NODE
+    if (col + 1 < gamePanel.getMaxWorldCol()) openNode(node[col + 1][row]);
+  }
+
+  private Node findBestNode() {
+    int bestNodeCost = Integer.MAX_VALUE;
+    Node bestNode = null;
+
+    for (Node n : openList) {
+      if (n.fCost < bestNodeCost) {
+        bestNodeCost = n.fCost;
+        bestNode = n;
+      } else if (n.fCost == bestNodeCost && n.gCost < bestNode.gCost) {
+        bestNode = n;
+      }
+    }
+
+    return bestNode;
+  }
+
 
   private void trackThePath() {
     Node current = goalNode;

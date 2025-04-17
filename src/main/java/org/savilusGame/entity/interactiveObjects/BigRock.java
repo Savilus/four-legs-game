@@ -24,6 +24,7 @@ public class BigRock extends GameEntity {
 
   private static final String BIG_ROCK_DIALOGUES_KEY = "bigRock";
   private static final String USE = "use";
+  private static final int LINKED_OBJECTS_DISTANCE = 12;
 
   public BigRock(GamePanel gamePanel) {
     super(gamePanel);
@@ -60,7 +61,7 @@ public class BigRock extends GameEntity {
     for (InteractiveTile plate : plateList) {
       int distance = Math.max(Math.abs(worldX - plate.getWorldX()), Math.abs(worldY - plate.getWorldY()));
 
-      if (distance < 12) {
+      if (distance < LINKED_OBJECTS_DISTANCE) {
         if (Objects.isNull(linkedEntity)) {
           linkedEntity = plate;
           gamePanel.playSoundEffect(UNLOCK);
@@ -76,11 +77,11 @@ public class BigRock extends GameEntity {
 
     if (linkedRocks == rockList.size()) {
       var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
-      for (int i = 0; i < objects.length; i++) {
-        if (Objects.nonNull(objects[i]) &&
-            GameObject.IRON_DOOR.getName().equals(objects[i].getName())) {
+      for (int doorQuantity = 0; doorQuantity < objects.length; doorQuantity++) {
+        if (Objects.nonNull(objects[doorQuantity]) &&
+            GameObject.IRON_DOOR.getName().equals(objects[doorQuantity].getName())) {
 
-          objects[i] = null;
+          objects[doorQuantity] = null;
           gamePanel.playSoundEffect(DOOR_OPEN);
         }
       }

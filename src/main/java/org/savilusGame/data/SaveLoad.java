@@ -70,9 +70,9 @@ public class SaveLoad {
       dataStorage.setMoney(gamePanel.getPlayer().getMoney());
 
       // Player inventory
-      for (int i = 0; i < gamePanel.getPlayer().getInventory().size(); i++) {
-        dataStorage.getItemNames().add(gamePanel.getPlayer().getInventory().get(i).getName());
-        dataStorage.getItemAmounts().add(gamePanel.getPlayer().getInventory().get(i).getAmount());
+      for (int invetoryIndex = 0; invetoryIndex < gamePanel.getPlayer().getInventory().size(); invetoryIndex++) {
+        dataStorage.getItemNames().add(gamePanel.getPlayer().getInventory().get(invetoryIndex).getName());
+        dataStorage.getItemAmounts().add(gamePanel.getPlayer().getInventory().get(invetoryIndex).getAmount());
       }
 
       // Player equipment
@@ -86,8 +86,8 @@ public class SaveLoad {
       List<String> lootNamesList = new ArrayList<>();
       List<Boolean> openedList = new ArrayList<>();
 
-      for (int i = 0; i < gamePanel.getMapsObjects().get(CURRENT_MAP).length; i++) {
-        var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[i];
+      for (int objectIndex = 0; objectIndex < gamePanel.getMapsObjects().get(CURRENT_MAP).length; objectIndex++) {
+        var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex];
         if (Objects.isNull(mapObject)) {
           objectNamesList.add(NA);
           worldXList.add(0);
@@ -185,21 +185,21 @@ public class SaveLoad {
 
         GameEntity[] objectsOnMap = gamePanel.getMapsObjects().get(mapName);
 
-        for (int i = 0; i < objectNames.size(); i++) {
-          if (StringUtils.equals(objectNames.get(i), NA)) {
-            objectsOnMap[i] = null;
+        for (int name = 0; name < objectNames.size(); name++) {
+          if (StringUtils.equals(objectNames.get(name), NA)) {
+            objectsOnMap[name] = null;
           } else {
-            objectsOnMap[i] = gamePanel.getGameEntityFactory().getGameEntity(objectNames.get(i));
-            objectsOnMap[i].setWorldX(worldXList.get(i));
-            objectsOnMap[i].setWorldY(worldYList.get(i));
+            objectsOnMap[name] = gamePanel.getGameEntityFactory().getGameEntity(objectNames.get(name));
+            objectsOnMap[name].setWorldX(worldXList.get(name));
+            objectsOnMap[name].setWorldY(worldYList.get(name));
 
-            if (Objects.nonNull(lootNames.get(i))) {
-              objectsOnMap[i].setLoot(gamePanel.getGameEntityFactory().getGameEntity(lootNames.get(i)));
+            if (Objects.nonNull(lootNames.get(name))) {
+              objectsOnMap[name].setLoot(gamePanel.getGameEntityFactory().getGameEntity(lootNames.get(name)));
             }
 
-            objectsOnMap[i].setOpened(openedList.get(i));
-            if (objectsOnMap[i].isOpened()) {
-              objectsOnMap[i].setMainImage(objectsOnMap[i].getMainImage2());
+            objectsOnMap[name].setOpened(openedList.get(name));
+            if (objectsOnMap[name].isOpened()) {
+              objectsOnMap[name].setMainImage(objectsOnMap[name].getMainImage2());
             }
           }
         }
