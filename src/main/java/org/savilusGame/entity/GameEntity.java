@@ -240,61 +240,33 @@ public abstract class GameEntity {
       BufferedImage image = switch (getDirection()) {
         case UP -> {
           if (!attacking) {
-            if (spriteNum == 1)
-              yield up1;
-            else if (spriteNum == 2)
-              yield up2;
+            yield (spriteNum == 1) ? up1 : up2;
           } else {
             temporaryScreenY = getScreenY() - up1.getHeight();
-            if (spriteNum == 1)
-              yield attackUp1;
-            else if (spriteNum == 2)
-              yield attackUp2;
+            yield (spriteNum == 1) ? attackUp1 : attackUp2;
           }
-          yield null;
         }
         case DOWN -> {
           if (!attacking) {
-            if (spriteNum == 1)
-              yield down1;
-            else if (spriteNum == 2)
-              yield down2;
+            yield (spriteNum == 1) ? down1 : down2;
           } else {
-            if (spriteNum == 1)
-              yield attackDown1;
-            else if (spriteNum == 2)
-              yield attackDown2;
+            yield (spriteNum == 1) ? attackDown1 : attackDown2;
           }
-          yield null;
         }
         case LEFT -> {
           if (!attacking) {
-            if (spriteNum == 1)
-              yield left1;
-            else if (spriteNum == 2)
-              yield left2;
+            yield (spriteNum == 1) ? left1 : left2;
           } else {
             temporaryScreenX = getScreenX() - left1.getWidth();
-            if (spriteNum == 1)
-              yield attackLeft1;
-            else if (spriteNum == 2)
-              yield attackLeft2;
+            yield (spriteNum == 1) ? attackLeft1 : attackLeft2;
           }
-          yield null;
         }
         case RIGHT -> {
           if (!attacking) {
-            if (spriteNum == 1)
-              yield right1;
-            else if (spriteNum == 2)
-              yield right2;
+            yield (spriteNum == 1) ? right1 : right2;
           } else {
-            if (spriteNum == 1)
-              yield attackRight1;
-            else if (spriteNum == 2)
-              yield attackRight2;
+            yield (spriteNum == 1) ? attackRight1 : attackRight2;
           }
-          yield null;
         }
         case ANY -> this.mainImage;
       };
@@ -316,15 +288,11 @@ public abstract class GameEntity {
   }
 
   public void dropItem(GameEntity droppedItem) {
-    for (int i = 0; i < gamePanel.getMapsObjects().get(CURRENT_MAP).length; i++) {
-      var item = gamePanel.getMapsObjects().get(CURRENT_MAP)[i];
-      if (Objects.isNull(item)) {
-        item = droppedItem;
-        item.worldX = worldX;
-        item.worldY = worldY;
-        break;
-      }
-    }
+    droppedItem.worldX = worldX;
+    droppedItem.worldY = worldY;
+    gamePanel.getMapsObjects()
+        .computeIfAbsent(CURRENT_MAP, key -> new ArrayList<>())
+        .add(droppedItem);
   }
 
   public Color getParticleColor() {
@@ -343,7 +311,7 @@ public abstract class GameEntity {
     return 0;
   }
 
-  public int getDetected(GameEntity user, Map<String, GameEntity[]> target, String targetName) {
+  public int getDetected(GameEntity user, Map<String, List<GameEntity>> target, String targetName) {
     int index = INIT_INDEX;
     var gameObjects = target.get(CURRENT_MAP);
     // Check the surround object
@@ -360,15 +328,16 @@ public abstract class GameEntity {
     int col = nextWorldX / TILE_SIZE;
     int row = nextWorldY / TILE_SIZE;
 
-    for (int objectIndex = 0; objectIndex < gameObjects.length; objectIndex++) {
-      if (Objects.nonNull(gameObjects[objectIndex])) {
-        if (gameObjects[objectIndex].getCol() == col
-            && gameObjects[objectIndex].getRow() == row && gameObjects[objectIndex].name.equals(targetName)) {
+    for (int objectIndex = 0; objectIndex < gameObjects.size(); objectIndex++) {
+      var gameObject = gameObjects.get(objectIndex);
+      if (Objects.nonNull(gameObject)) {
+        if (gameObject.getCol() == col
+            && gameObject.getRow() == row && gameObject.name.equals(targetName)) {
           index = objectIndex;
         }
-
       }
     }
+
     return index;
   }
 

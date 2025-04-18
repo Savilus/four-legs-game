@@ -16,10 +16,10 @@ public class Axe extends GameEntity {
     name = GameObject.AXE.getName();
     mainImage = setup(AXE, TILE_SIZE, TILE_SIZE);
     down1 = setup(AXE, TILE_SIZE, TILE_SIZE);
-    attackValue = 2;
+    attackValue = 1;
     attackArea.width = 30;
     attackArea.height = 30;
-    price = 25;
+    price = 40;
     description = String.format(TextManager.getItemDescription(GameObject.AXE.getTextKey()), name);
     type = WorldGameTypes.AXE;
     knockBackPower = 5;

@@ -16,22 +16,25 @@ import org.savilusGame.entity.PlayerDummy;
 import org.savilusGame.entity.items.IronDoor;
 import org.savilusGame.enums.MonsterType;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CutsceneManager {
-  private static final String CUTSCENE_DIALOGUE = "cutsceneDialogue";
+  static final String CUTSCENE_DIALOGUE = "cutsceneDialogue";
 
-  private final GamePanel gamePanel;
+  final GamePanel gamePanel;
   //  private Graphics2D graphics2D;
-  private int sceneNum;
-  private int scenePhase;
+  int sceneNum;
+  int scenePhase;
 
   //scene number
-  private final int NA = 0;
-  private final int skeletonLord = 1;
+  final int NA = 0;
+  final int skeletonLord = 1;
 
   public CutsceneManager(GamePanel gamePanel) {
     this.gamePanel = gamePanel;
@@ -50,17 +53,14 @@ public class CutsceneManager {
 
     if (scenePhase == 0) {
       gamePanel.setBossBattleOn(true);
-      var mapObjects = gamePanel.getMapsObjects().get(CURRENT_MAP);
-      for (int i = 0; i < mapObjects.length; i++) {
-        if (Objects.isNull(gamePanel.getMapsObjects().get(CURRENT_MAP)[i])) {
-          mapObjects[i] = new IronDoor(gamePanel);
-          mapObjects[i].setWorldX(TILE_SIZE * 25);
-          mapObjects[i].setWorldY(TILE_SIZE * 28);
-          mapObjects[i].setTemporaryObject(true);
-          gamePanel.playSoundEffect(DOOR_OPEN);
-          break;
-        }
-      }
+
+      GameEntity ironDoor = new IronDoor(gamePanel);
+      ironDoor.setWorldX(TILE_SIZE * 25);
+      ironDoor.setWorldY(TILE_SIZE * 28);
+      ironDoor.setTemporaryObject(true);
+      gamePanel.getMapsObjects().get(CURRENT_MAP).add(ironDoor);
+      gamePanel.playSoundEffect(DOOR_OPEN);
+
 
       for (int i = 0; i < mapNpcs.length; i++) {
         if (Objects.isNull(mapNpcs[i])) {

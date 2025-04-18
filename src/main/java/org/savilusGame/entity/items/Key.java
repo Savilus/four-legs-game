@@ -36,7 +36,7 @@ public class Key extends GameEntity {
     if (objIndex != INIT_INDEX) {
       startDialogue(this, OPEN_DOOR_TEXT_KEY);
       gamePanel.playSoundEffect(UNLOCK);
-      gamePanel.getMapsObjects().get(CURRENT_MAP)[objIndex] = null;
+      gamePanel.getMapsObjects().get(CURRENT_MAP).remove(objIndex);
       return true;
     } else {
       startDialogue(this, WRONG_USE_TEXT_KEY);

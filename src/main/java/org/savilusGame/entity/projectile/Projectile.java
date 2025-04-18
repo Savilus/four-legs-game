@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 public abstract class Projectile extends GameEntity {
 
+  private final int SPRITE_CHANGE_INTERVAL = 12;
   private GameEntity owner;
   private int useCost;
 
@@ -65,12 +66,8 @@ public abstract class Projectile extends GameEntity {
     }
 
     spriteCounter++;
-    if (spriteCounter > 12) {
-      if (spriteNum == 1) {
-        spriteNum = 2;
-      } else if (spriteNum == 2) {
-        spriteNum = 1;
-      }
+    if (spriteCounter > SPRITE_CHANGE_INTERVAL) {
+      spriteNum = (spriteNum == 1) ? 2 : 1;
       spriteCounter = 0;
     }
   }

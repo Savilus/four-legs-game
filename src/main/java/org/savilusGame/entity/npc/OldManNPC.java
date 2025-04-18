@@ -19,10 +19,15 @@ import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class OldManNPC extends GameEntity {
 
-  private static final String OLD_MAN_DIALOGUES_KEY = "oldManNpc";
-  private int dialogueSelector = 0;
+  static final int ACTION_INTERVAL = 120;
+  static final String OLD_MAN_DIALOGUES_KEY = "oldManNpc";
+  int dialogueSelector = 0;
 
   public OldManNPC(GamePanel gamePanel) {
     super(gamePanel);
@@ -70,7 +75,7 @@ public class OldManNPC extends GameEntity {
     } else {
       actionLockCounter++;
 
-      if (actionLockCounter == 120) {
+      if (actionLockCounter == ACTION_INTERVAL) {
         Random random = new Random();
         int randomNumber = random.nextInt(100) + 1;
 

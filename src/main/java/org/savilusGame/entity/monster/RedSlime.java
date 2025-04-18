@@ -15,7 +15,18 @@ import org.savilusGame.entity.projectile.Rock;
 import org.savilusGame.enums.MonsterType;
 import org.savilusGame.enums.WorldGameTypes;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RedSlime extends GameEntity {
+
+  static int STOP_CHASE_DISTANCE = 15;
+  static int START_CHASE_DISTANCE = 5;
+  static int CHASE_POSSIBILITY_RATE = 100;
+  static int SHOOT_POSSIBILITY_RATE = 100;
+  static int SHOOT_INTERVAL = 50;
+  static int RANDOM_DIRECTION_INTERVAL = 80;
 
   public RedSlime(GamePanel gamePanel) {
     super(gamePanel);
@@ -70,12 +81,12 @@ public class RedSlime extends GameEntity {
   @Override
   public void setAction() {
     if (onPath) {
-      checkIfShouldStopChasing(gamePanel.getPlayer(), 15, 100);
+      checkIfShouldStopChasing(gamePanel.getPlayer(),STOP_CHASE_DISTANCE , CHASE_POSSIBILITY_RATE);
       searchPath(getGoalCol(gamePanel.getPlayer()), getGoalRow(gamePanel.getPlayer()));
-      checkIfShouldShoot(100, 50);
+      checkIfShouldShoot(SHOOT_POSSIBILITY_RATE, SHOOT_INTERVAL);
     } else {
-      getRandomDirection(80);
-      checkIfShouldStartChasing(gamePanel.getPlayer(), 5, 100);
+      getRandomDirection(RANDOM_DIRECTION_INTERVAL);
+      checkIfShouldStartChasing(gamePanel.getPlayer(), START_CHASE_DISTANCE, CHASE_POSSIBILITY_RATE);
     }
   }
 }

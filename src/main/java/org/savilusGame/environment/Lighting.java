@@ -26,6 +26,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Lighting {
 
+  static final int DAY_STATE_CHANGE_INTERVAL = 2000;
   static final String DAY_STATUS_KEY = "dayStatus";
   static final String DAY_KEY = "day";
   static final String DUSK_KEY = "dusk";
@@ -115,7 +116,7 @@ public class Lighting {
 
     switch (dayState) {
       case DAY -> {
-        if (++dayCounter > 1000) {
+        if (++dayCounter > DAY_STATE_CHANGE_INTERVAL) {
           dayCounter = 0;
           dayState = DUSK;
         }
@@ -127,7 +128,7 @@ public class Lighting {
         }
       }
       case NIGHT -> {
-        if (++dayCounter > 1000) {
+        if (++dayCounter > DAY_STATE_CHANGE_INTERVAL) {
           dayCounter = 0;
           dayState = DAWN;
         }

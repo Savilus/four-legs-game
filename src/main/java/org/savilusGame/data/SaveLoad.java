@@ -86,8 +86,7 @@ public class SaveLoad {
       List<String> lootNamesList = new ArrayList<>();
       List<Boolean> openedList = new ArrayList<>();
 
-      for (int objectIndex = 0; objectIndex < gamePanel.getMapsObjects().get(CURRENT_MAP).length; objectIndex++) {
-        var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex];
+      for (var mapObject : gamePanel.getMapsObjects().get(CURRENT_MAP)) {
         if (Objects.isNull(mapObject)) {
           objectNamesList.add(NA);
           worldXList.add(0);
@@ -183,26 +182,29 @@ public class SaveLoad {
 
         if (Objects.isNull(objectNames)) continue;
 
-        GameEntity[] objectsOnMap = gamePanel.getMapsObjects().get(mapName);
+        List<GameEntity> objectsOnMap = gamePanel.getMapsObjects().get(mapName);
+        objectsOnMap.clear();
 
         for (int name = 0; name < objectNames.size(); name++) {
           if (StringUtils.equals(objectNames.get(name), NA)) {
-            objectsOnMap[name] = null;
+//            objectsOnMap.add(null);
           } else {
-            objectsOnMap[name] = gamePanel.getGameEntityFactory().getGameEntity(objectNames.get(name));
-            objectsOnMap[name].setWorldX(worldXList.get(name));
-            objectsOnMap[name].setWorldY(worldYList.get(name));
+            GameEntity entity = gamePanel.getGameEntityFactory().getGameEntity(objectNames.get(name));
+            entity.setWorldX(worldXList.get(name));
+            entity.setWorldY(worldYList.get(name));
 
             if (Objects.nonNull(lootNames.get(name))) {
-              objectsOnMap[name].setLoot(gamePanel.getGameEntityFactory().getGameEntity(lootNames.get(name)));
+              entity.setLoot(gamePanel.getGameEntityFactory().getGameEntity(lootNames.get(name)));
             }
 
-            objectsOnMap[name].setOpened(openedList.get(name));
-            if (objectsOnMap[name].isOpened()) {
-              objectsOnMap[name].setMainImage(objectsOnMap[name].getMainImage2());
+            entity.setOpened(openedList.get(name));
+            if (entity.isOpened()) {
+              entity.setMainImage(entity.getMainImage2());
             }
+            objectsOnMap.add(entity);
           }
         }
+
       }
     }).onFailure(error -> log.error("Error loading data", error));
   }

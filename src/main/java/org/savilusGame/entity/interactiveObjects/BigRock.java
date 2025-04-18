@@ -77,12 +77,14 @@ public class BigRock extends GameEntity {
 
     if (linkedRocks == rockList.size()) {
       var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
-      for (int doorQuantity = 0; doorQuantity < objects.length; doorQuantity++) {
-        if (Objects.nonNull(objects[doorQuantity]) &&
-            GameObject.IRON_DOOR.getName().equals(objects[doorQuantity].getName())) {
+      for (int doorQuantity = 0; doorQuantity < objects.size(); doorQuantity++) {
+        var object = objects.get(doorQuantity);
+        if (Objects.nonNull(object) &&
+            GameObject.IRON_DOOR.getName().equals(object.getName())) {
 
-          objects[doorQuantity] = null;
+          objects.remove(doorQuantity);
           gamePanel.playSoundEffect(DOOR_OPEN);
+          break;
         }
       }
     }

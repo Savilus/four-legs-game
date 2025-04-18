@@ -17,7 +17,7 @@ public class BronzeCoin extends GameEntity {
 
     type = WorldGameTypes.PICK_UP;
     name = GameObject.BRONZE_COIN.getName();
-    value = 1;
+    value = 5;
     mainImage = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
     down1 = setup(BRONZE_COIN, TILE_SIZE, TILE_SIZE);
   }

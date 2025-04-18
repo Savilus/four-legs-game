@@ -20,7 +20,7 @@ public class Tent extends GameEntity {
     mainImage = setup(TENT, TILE_SIZE, TILE_SIZE);
     down1 = setup(TENT, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.TENT.getTextKey()), name);
-    price = 200;
+    price = 25;
     stackable = true;
   }
 

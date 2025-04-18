@@ -23,6 +23,8 @@ import lombok.experimental.NonFinal;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GameMap {
+
+  static int MINIMAP_DIAMETER = 200;
   static String CLOSE_MAP_KEY = "closeMapText";
   static String UI_MESSAGES = "uiMessages";
 
@@ -80,10 +82,9 @@ public class GameMap {
 
   public void drawMiniMap(Graphics2D g2) {
     if (!miniMapOn) return;
-    int diameter = 200;
-    int x = gamePanel.getScreenWidth() - diameter - 15;
+    int x = gamePanel.getScreenWidth() - MINIMAP_DIAMETER - 15;
     int y = 15;
-    drawMap(g2, x, y, diameter, diameter, true, false, 0.8F);
+    drawMap(g2, x, y, MINIMAP_DIAMETER, MINIMAP_DIAMETER, true, false, 0.8F);
   }
 
 
