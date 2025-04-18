@@ -91,7 +91,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   // ENTITY AND OBJECT
   Player player = new Player(this, keyHandler);
-  Map<String, GameEntity[]> mapsObjects = new HashMap<>();
+  Map<String, List<GameEntity>> mapsObjects = new HashMap<>();
   Map<String, GameEntity[]> mapsNpc = new HashMap<>();
   Map<String, GameEntity[]> mapsMonsters = new HashMap<>();
   Map<String, InteractiveTile[]> mapsInteractiveTiles = new HashMap<>();
@@ -122,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   public void setupGame() {
-    mapsObjects.put(CURRENT_MAP, new GameEntity[ALLOWED_ITEMS]);
+    mapsObjects.put(CURRENT_MAP, new ArrayList<>());
     assetSetter.setNPC();
     assetSetter.setObject();
     assetSetter.setInteractiveTiles();
@@ -208,12 +208,13 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void removeTemporaryGameEntity() {
     for (String mapName : tileManager.getGameMaps().keySet()) {
-      List<GameEntity> allMapObjects = new ArrayList<>(List.of(mapsObjects.get(mapName)));
-      if (allMapObjects.isEmpty()) continue;
+      List<GameEntity> allMapObjects = mapsObjects.get(mapName);
+      if (allMapObjects == null || allMapObjects.isEmpty()) continue;
 
-      allMapObjects.removeIf(object -> Objects.nonNull(object) && object.isTemporaryObject());
+      allMapObjects.removeIf(object -> object != null && object.isTemporaryObject());
     }
   }
+
 
   private void drawToTempScreen() {
     if (gameState == TITLE_STATE) {

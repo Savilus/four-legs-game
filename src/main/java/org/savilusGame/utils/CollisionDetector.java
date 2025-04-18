@@ -85,15 +85,17 @@ public class CollisionDetector {
       direction = gameEntity.getKnockBackDirection();
     }
 
-    for (int i = 0; i < gamePanel.getMapsObjects().get(CURRENT_MAP).length; i++) {
-      var mapObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[i];
+    var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
+
+    for (int i = 0; i < objects.size(); i++) {
+      var mapObject = objects.get(i);
       if (Objects.nonNull(mapObject)) {
-        //get entity's solid area position
         getSolidArea(gameEntity).x = getXSolidArea(gameEntity);
         getSolidArea(gameEntity).y = getYSolidArea(gameEntity);
-        // get object's solid area position
+
         mapObject.getSolidArea().x = mapObject.getWorldX() + mapObject.getSolidArea().x;
         mapObject.getSolidArea().y = mapObject.getWorldY() + mapObject.getSolidArea().y;
+
         checkGameEntityCollision(gameEntity, direction);
         if (getSolidArea(gameEntity).intersects(mapObject.getSolidArea())) {
           if (mapObject.isCollision()) {
@@ -109,7 +111,6 @@ public class CollisionDetector {
         mapObject.getSolidArea().y = mapObject.getSolidAreaDefaultY();
       }
     }
-
     return index;
   }
 

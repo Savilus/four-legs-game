@@ -1,48 +1,5 @@
 1) Find a better solution for drawing strings and window
-2) command num not just int -> maybe a class with possible commands, and text so it's not like 1 but it's (for example LOADING)
-3) switch subState for something else, not just numbers
-5) replace if statements with stream
-7) WorldGameTypes with more details like description, stackable etc.
-8) Methods like Objects.requireNonNull(getClass().getResource(PARRY)) -> utility class
-9) direction handler
 10) add M map to controls
 
-Hello @RyiSnow. The code you provided is using a switch statement to create a new object based on the input itemName. This approach works, but it could be improved by using a more object-oriented approach, like using a factory pattern.
 
-Here's an example of how you could refactor your code using a factory pattern:
 
-1) Create an interface EntityFactory:
-
-public interface EntityFactory {
-    Entity create(GamePanel gp);
-}
-
-2) Implement the interface for each object:
-
-public class OBJ_AxeFactory implements EntityFactory {
-    @Override
-    public Entity create(GamePanel gp) {
-        return new OBJ_Axe(gp);
-    }
-}
-
-// Do the same for other objects
-
-3) Use a Map to store the factories:
-
-private Map<String, EntityFactory> factories;
-
-public void initFactories() {
-    factories = new HashMap<>();
-    factories.put("Woodcutter's Axe", new OBJ_AxeFactory());
-    // Add other factories
-}
-
-4) Modify the getObject method:
-
-public Entity getObject(String itemName) {
-    EntityFactory factory = factories.get(itemName);
-    return factory != null ? factory.create(gp) : null;
-}
-
-With this approach, you can easily add new objects without modifying the getObject method. Additionally, it follows the Open-Closed Principle (OCP), which states that a software entity should be open for extension but closed for modification.

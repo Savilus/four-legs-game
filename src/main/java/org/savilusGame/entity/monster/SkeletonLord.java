@@ -48,10 +48,18 @@ import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.text.TextManager;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SkeletonLord extends GameEntity {
 
-  private final int bossScale = 5;
-  private final int widthHeight = TILE_SIZE * bossScale;
+  static int SHOOT_INTERVAL = 60;
+  static int MOVE_TOWARDS_PLAYER_INTERVAL = 60;
+  static int RANDOM_DIRECTION_INTERVAL = 120;
+
+  int bossScale = 5;
+  int widthHeight = TILE_SIZE * bossScale;
 
   public SkeletonLord(GamePanel gamePanel) {
     super(gamePanel);
@@ -138,9 +146,7 @@ public class SkeletonLord extends GameEntity {
     var objects = gamePanel.getMapsObjects().get(CURRENT_MAP);
     if (objects == null) return;
 
-    IntStream.range(0, objects.length)
-        .filter(i -> objects[i] instanceof IronDoor)
-        .forEach(i -> objects[i] = null);
+    objects.removeIf(object -> object instanceof IronDoor);
     gamePanel.playSoundEffect(DOOR_OPEN);
   }
 
@@ -161,13 +167,13 @@ public class SkeletonLord extends GameEntity {
     }
 
     if (getTileDistance(gamePanel.getPlayer()) < 8) {
-      moveTowardPlayer(60);
+      moveTowardPlayer(MOVE_TOWARDS_PLAYER_INTERVAL);
     } else {
-      getRandomDirection(120);
+      getRandomDirection(RANDOM_DIRECTION_INTERVAL);
     }
 
     if (!attacking) {
-      checkIfShouldAttack(60, TILE_SIZE * 7, TILE_SIZE * 5);
+      checkIfShouldAttack(SHOOT_INTERVAL, TILE_SIZE * 7, TILE_SIZE * 5);
     }
   }
 }

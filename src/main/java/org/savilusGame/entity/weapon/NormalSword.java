@@ -20,7 +20,7 @@ public class NormalSword extends GameEntity {
     attackArea.height = 36;
     description = String.format(TextManager.getItemDescription(GameObject.NORMAL_SWORD.getTextKey()), name);
     type = WorldGameTypes.SWORD;
-    price = 10;
+    price = 15;
     knockBackPower = 2;
     firstAttackMotionDuration = 5;
     secondAttackMotionDuration = 25;

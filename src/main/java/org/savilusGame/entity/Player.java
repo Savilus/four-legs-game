@@ -50,6 +50,8 @@ import static org.savilusGame.enums.Direction.RIGHT;
 import static org.savilusGame.enums.Direction.UP;
 import static org.savilusGame.enums.GameState.DIALOG_STATE;
 import static org.savilusGame.enums.GameState.GAME_OVER_STATE;
+import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
+import static org.savilusGame.enums.WorldGameTypes.PICK_UP;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
@@ -81,6 +83,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Player extends GameEntity {
 
+  static final int CHANGE_SPRITE_INTERVAL = 12;
+  static final int INVINCIBLE_TIME = 60;
+  static final int SHOOT_RATE = 50;
   static final String PICKED_UP = "pickedUp";
   static final String DAMAGE_UI_MESSAGE = "damageUiMessage";
   static final String KILLED_UI_MESSAGE = "killedUiMessage";
@@ -162,19 +167,15 @@ public class Player extends GameEntity {
           defense = getDefense();
         }
         case CONSUMABLE -> {
-          if (selectedItem.use(this))
-            if (selectedItem.amount > 1) {
-              selectedItem.amount--;
-            } else {
-              inventory.remove(itemIndex);
-            }
+          if (selectedItem.use(this)) {
+            if (selectedItem.amount > 1) selectedItem.amount--;
+            else inventory.remove(itemIndex);
+          }
         }
         case LIGHTING -> {
-          if (currentLightItem == selectedItem) {
-            currentLightItem = null;
-          } else {
-            currentLightItem = selectedItem;
-          }
+          if (currentLightItem == selectedItem) currentLightItem = null;
+          else currentLightItem = selectedItem;
+
           lightUpdated = true;
         }
       }
@@ -306,7 +307,7 @@ public class Player extends GameEntity {
       attack *= 3;
     }
 
-    int damage = Math.max(0, attack - monster.defense);
+    int damage = Math.max(1, attack - monster.defense);
     monster.currentLife -= damage;
     gamePanel.getUi().addMessage(String.format(TextManager.getUiText(UI_MESSAGE, DAMAGE_UI_MESSAGE), damage));
 
@@ -365,21 +366,20 @@ public class Player extends GameEntity {
 
   private void pickUpObject(int objectIndex) {
     if (objectIndex != INIT_INDEX) {
-      var interactedObject = gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex];
+      var interactedObject = gamePanel.getMapsObjects().get(CURRENT_MAP).get(objectIndex);
 
       switch (interactedObject.type) {
         case PICK_UP -> {
           interactedObject.use(this);
-          gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex] = null;
+          gamePanel.getMapsObjects().get(CURRENT_MAP).remove(objectIndex);
         }
         case OBSTACLE -> {
           if (keyHandler.isEnterPressed()) {
             attackCanceled = true;
-            gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex].interact();
+            interactedObject.interact();
           }
         }
         default -> {
-          // INVENTORY ITEMS
           String text;
           if (canObtainItem(interactedObject)) {
             gamePanel.playSoundEffect(COIN);
@@ -388,7 +388,7 @@ public class Player extends GameEntity {
             text = TextManager.getUiText(UI_MESSAGE, INVENTORY_FULL);
           }
           gamePanel.getUi().addMessage(text);
-          gamePanel.getMapsObjects().get(CURRENT_MAP)[objectIndex] = null;
+          gamePanel.getMapsObjects().get(CURRENT_MAP).remove(objectIndex);
         }
       }
     }
@@ -543,7 +543,7 @@ public class Player extends GameEntity {
       guardCounter = 0;
 
       spriteCounter++;
-      if (spriteCounter > 12) {
+      if (spriteCounter > CHANGE_SPRITE_INTERVAL) {
         spriteNum = spriteNum == 1 ? 2 : 1;
         spriteCounter = 0;
       }
@@ -575,14 +575,14 @@ public class Player extends GameEntity {
 
     if (invincible) {
       invincibleCounter++;
-      if (invincibleCounter > 60) {
+      if (invincibleCounter > INVINCIBLE_TIME) {
         invincible = false;
         transparent = false;
         invincibleCounter = 0;
       }
     }
 
-    if (shootAvailableCounter < 50) {
+    if (shootAvailableCounter < SHOOT_RATE) {
       shootAvailableCounter++;
     }
 

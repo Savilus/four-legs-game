@@ -18,7 +18,7 @@ public class PickAxe extends GameEntity {
     attackValue = 2;
     attackArea.width = 30;
     attackArea.height = 30;
-    price = 75;
+    price = 55;
     description = String.format(TextManager.getItemDescription(GameObject.PICKAXE.getTextKey()), name);
     type = WorldGameTypes.PICKAXE;
     knockBackPower = 10;

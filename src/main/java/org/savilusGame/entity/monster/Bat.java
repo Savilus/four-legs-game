@@ -16,6 +16,8 @@ import org.savilusGame.enums.WorldGameTypes;
 
 public class Bat extends GameEntity {
 
+  private static final int CHANGE_DIRECTION_INTERVAL = 10;
+
   public Bat(GamePanel gamePanel) {
     super(gamePanel);
     name = MonsterType.BAT.getName();
@@ -67,6 +69,6 @@ public class Bat extends GameEntity {
 
   @Override
   public void setAction() {
-    getRandomDirection(10);
+    getRandomDirection(CHANGE_DIRECTION_INTERVAL);
   }
 }

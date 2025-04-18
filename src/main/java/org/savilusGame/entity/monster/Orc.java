@@ -24,6 +24,7 @@ import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Heart;
+import org.savilusGame.entity.items.Key;
 import org.savilusGame.entity.items.ManaCrystal;
 import org.savilusGame.enums.MonsterType;
 import org.savilusGame.enums.WorldGameTypes;
@@ -88,13 +89,8 @@ public class Orc extends GameEntity {
 
   @Override
   public void checkDrop() {
-    int percentForDrop = new Random().nextInt(100) + 1;
 
-    if (percentForDrop < 50)
-      dropItem(new BronzeCoin(gamePanel));
-    else if (percentForDrop < 75)
-      dropItem(new Heart(gamePanel));
-    else dropItem(new ManaCrystal(gamePanel));
+    dropItem(new Key(gamePanel));
   }
 
   @Override

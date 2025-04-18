@@ -6,7 +6,9 @@ import static org.savilusGame.config.GameEntityNameFactory.DUNGEON_SECOND_FLOR;
 import static org.savilusGame.config.GameEntityNameFactory.INTERIOR_MAP;
 import static org.savilusGame.config.GameEntityNameFactory.MAIN_MAP;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,10 +28,10 @@ import org.savilusGame.entity.items.Key;
 import org.savilusGame.entity.items.Lantern;
 import org.savilusGame.entity.items.ManaCrystal;
 import org.savilusGame.entity.items.RedPotion;
-import org.savilusGame.entity.items.Tent;
 import org.savilusGame.entity.monster.Bat;
 import org.savilusGame.entity.monster.GreenSlime;
 import org.savilusGame.entity.monster.Orc;
+import org.savilusGame.entity.monster.RedSlime;
 import org.savilusGame.entity.monster.SkeletonLord;
 import org.savilusGame.entity.npc.MerchantNPC;
 import org.savilusGame.entity.npc.OldManNPC;
@@ -51,38 +53,38 @@ public class AssetSetter {
   GamePanel gamePanel;
 
   public void setObject() {
-    gamePanel.setMapsObjects(Map.of(
-        MAIN_MAP, new GameEntity[]{
-            new BronzeCoin(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 23),
-            new BronzeCoin(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 19),
-            new Key(gamePanel).setWorldPosition(TILE_SIZE * 26, TILE_SIZE * 21),
-            new Axe(gamePanel).setWorldPosition(TILE_SIZE * 33, TILE_SIZE * 21),
-            new BlueShield(gamePanel).setWorldPosition(TILE_SIZE * 35, TILE_SIZE * 21),
-            new RedPotion(gamePanel).setWorldPosition(TILE_SIZE * 22, TILE_SIZE * 27),
-            new Heart(gamePanel).setWorldPosition(TILE_SIZE * 22, TILE_SIZE * 29),
-            new ManaCrystal(gamePanel).setWorldPosition(TILE_SIZE * 22, TILE_SIZE * 31),
-            new Door(gamePanel).setWorldPosition(TILE_SIZE * 14, TILE_SIZE * 28),
-            new Door(gamePanel).setWorldPosition(TILE_SIZE * 12, TILE_SIZE * 12),
-            new Chest(gamePanel).setLoot(new Key(gamePanel)).setWorldPosition(TILE_SIZE * 33, TILE_SIZE * 7),
-            new RedPotion(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 20),
-            new RedPotion(gamePanel).setWorldPosition(TILE_SIZE * 20, TILE_SIZE * 20),
-            new RedPotion(gamePanel).setWorldPosition(TILE_SIZE * 17, TILE_SIZE * 21),
-            new Lantern(gamePanel).setWorldPosition(TILE_SIZE * 18, TILE_SIZE * 20),
-            new Tent(gamePanel).setWorldPosition(TILE_SIZE * 19, TILE_SIZE * 20),
-            new Chest(gamePanel).setLoot(new Tent(gamePanel)).setWorldPosition(TILE_SIZE * 17, TILE_SIZE * 20)
-        },
-        DUNGEON_FIRST_FLOR, new GameEntity[]{
-            new Chest(gamePanel).setLoot(new PickAxe(gamePanel)).setWorldPosition(TILE_SIZE * 40, TILE_SIZE * 41),
-            new Chest(gamePanel).setLoot(new RedPotion(gamePanel)).setWorldPosition(TILE_SIZE * 13, TILE_SIZE * 16),
-            new Chest(gamePanel).setLoot(new RedPotion(gamePanel)).setWorldPosition(TILE_SIZE * 26, TILE_SIZE * 34),
-            new Chest(gamePanel).setLoot(new RedPotion(gamePanel)).setWorldPosition(TILE_SIZE * 27, TILE_SIZE * 15),
-            new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 18, TILE_SIZE * 23)
-        },
-        DUNGEON_SECOND_FLOR, new GameEntity[]{
-            new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 15),
-            null
-        }));
+    Map<String, List<GameEntity>> mapsObjects = new HashMap<>();
+
+    mapsObjects.put(MAIN_MAP, new ArrayList<>(List.of(
+        new BronzeCoin(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 23),
+        new BronzeCoin(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 19),
+        new RedPotion(gamePanel).setWorldPosition(TILE_SIZE * 22, TILE_SIZE * 27),
+        new Heart(gamePanel).setWorldPosition(TILE_SIZE * 22, TILE_SIZE * 29),
+        new ManaCrystal(gamePanel).setWorldPosition(TILE_SIZE * 22, TILE_SIZE * 31),
+        new BlueShield(gamePanel).setWorldPosition(TILE_SIZE * 39, TILE_SIZE * 19),
+        new Door(gamePanel).setWorldPosition(TILE_SIZE * 14, TILE_SIZE * 28),
+        new Door(gamePanel).setWorldPosition(TILE_SIZE * 12, TILE_SIZE * 12),
+        new RedPotion(gamePanel).setWorldPosition(TILE_SIZE * 13, TILE_SIZE * 25),
+        new Chest(gamePanel).setLoot(new Key(gamePanel)).setWorldPosition(TILE_SIZE * 33, TILE_SIZE * 7),
+        new Chest(gamePanel).setLoot(new Lantern(gamePanel)).setWorldPosition(TILE_SIZE * 19, TILE_SIZE * 41),
+        new Chest(gamePanel).setLoot(new Axe(gamePanel)).setWorldPosition(TILE_SIZE * 37, TILE_SIZE * 43)
+    )));
+
+    mapsObjects.put(DUNGEON_FIRST_FLOR, new ArrayList<>(List.of(
+        new Chest(gamePanel).setLoot(new PickAxe(gamePanel)).setWorldPosition(TILE_SIZE * 40, TILE_SIZE * 41),
+        new Chest(gamePanel).setLoot(new RedPotion(gamePanel)).setWorldPosition(TILE_SIZE * 13, TILE_SIZE * 16),
+        new Chest(gamePanel).setLoot(new RedPotion(gamePanel)).setWorldPosition(TILE_SIZE * 26, TILE_SIZE * 34),
+        new Chest(gamePanel).setLoot(new RedPotion(gamePanel)).setWorldPosition(TILE_SIZE * 27, TILE_SIZE * 15),
+        new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 18, TILE_SIZE * 23)
+    )));
+
+    mapsObjects.put(DUNGEON_SECOND_FLOR, new ArrayList<>(List.of(
+        new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 15)
+    )));
+
+    gamePanel.setMapsObjects(mapsObjects);
   }
+
 
   public void setProjectile() {
     gamePanel.setProjectiles(Map.of(
@@ -96,7 +98,7 @@ public class AssetSetter {
   public void setNPC() {
     gamePanel.setMapsNpc(new HashMap<>());
     gamePanel.getMapsNpc().put(MAIN_MAP, new GameEntity[]{
-        new OldManNPC(gamePanel).setWorldPosition(TILE_SIZE * 21, TILE_SIZE * 21)
+        new OldManNPC(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 13)
     });
     gamePanel.getMapsNpc().put(INTERIOR_MAP, new GameEntity[]{
         new MerchantNPC(gamePanel).setWorldPosition(TILE_SIZE * 12, TILE_SIZE * 7)
@@ -124,14 +126,17 @@ public class AssetSetter {
             new GreenSlime(gamePanel).setWorldPosition(TILE_SIZE * 24, TILE_SIZE * 37),
             new GreenSlime(gamePanel).setWorldPosition(TILE_SIZE * 34, TILE_SIZE * 42),
             new GreenSlime(gamePanel).setWorldPosition(TILE_SIZE * 38, TILE_SIZE * 42),
-            new Orc(gamePanel).setWorldPosition(TILE_SIZE * 12, TILE_SIZE * 33)
+            new RedSlime(gamePanel).setWorldPosition(TILE_SIZE * 34, TILE_SIZE * 11),
+            new RedSlime(gamePanel).setWorldPosition(TILE_SIZE * 37, TILE_SIZE * 7),
+            new RedSlime(gamePanel).setWorldPosition(TILE_SIZE * 40, TILE_SIZE * 11),
+            new Orc(gamePanel).setWorldPosition(TILE_SIZE * 12, TILE_SIZE * 31)
         },
         DUNGEON_FIRST_FLOR, new GameEntity[]{
             new Bat(gamePanel).setWorldPosition(TILE_SIZE * 34, TILE_SIZE * 39),
             new Bat(gamePanel).setWorldPosition(TILE_SIZE * 36, TILE_SIZE * 25),
             new Bat(gamePanel).setWorldPosition(TILE_SIZE * 39, TILE_SIZE * 26),
             new Bat(gamePanel).setWorldPosition(TILE_SIZE * 28, TILE_SIZE * 11),
-            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 10, TILE_SIZE * 19)
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 10, TILE_SIZE * 20)
         },
         DUNGEON_SECOND_FLOR, new GameEntity[]{
             new SkeletonLord(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 16)
@@ -151,7 +156,14 @@ public class AssetSetter {
             new InteractiveDryTree(gamePanel, 33, 12),
             new InteractiveDryTree(gamePanel, 18, 40),
             new InteractiveDryTree(gamePanel, 17, 40),
-            new InteractiveDryTree(gamePanel, 16, 40)
+            new InteractiveDryTree(gamePanel, 16, 40),
+            new InteractiveDryTree(gamePanel, 30, 21),
+            new InteractiveDryTree(gamePanel, 31, 21),
+            new InteractiveDryTree(gamePanel, 32, 21),
+            new InteractiveDryTree(gamePanel, 36, 30),
+            new InteractiveDryTree(gamePanel, 15, 40),
+            new InteractiveDryTree(gamePanel, 14, 40),
+            new InteractiveDryTree(gamePanel, 13, 40)
         },
         DUNGEON_FIRST_FLOR, new InteractiveTile[]{
             new DestructibleWall(gamePanel, 18, 30),
