@@ -146,6 +146,7 @@ items:
     lantern: /objects/lantern.png
     tent: /objects/tent.png
     pickAxe: /objects/pickaxe.png
+    blueHeart: /objects/blueheart.png
 
 ui:
   images:

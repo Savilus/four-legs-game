@@ -7,13 +7,10 @@ import static org.savilusGame.enums.GameState.TRADE_STATE;
 
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.entity.items.Key;
 import org.savilusGame.entity.items.RedPotion;
 import org.savilusGame.entity.items.Tent;
 import org.savilusGame.entity.shield.BlueShield;
-import org.savilusGame.entity.shield.WoodShield;
 import org.savilusGame.entity.weapon.Axe;
-import org.savilusGame.entity.weapon.NormalSword;
 import org.savilusGame.entity.weapon.PickAxe;
 import org.savilusGame.enums.Direction;
 import org.savilusGame.enums.WorldGameTypes;
@@ -55,6 +52,6 @@ public class MerchantNPC extends GameEntity {
   public void speak() {
     facePlayer();
     gamePanel.setGameState(TRADE_STATE);
-    gamePanel.getUi().setNpc(this);
+    gamePanel.getUi().setDialogueObject(this);
   }
 }

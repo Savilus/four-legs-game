@@ -19,6 +19,7 @@ import org.savilusGame.entity.interactiveTile.DestructibleWall;
 import org.savilusGame.entity.interactiveTile.InteractiveDryTree;
 import org.savilusGame.entity.interactiveTile.InteractiveTile;
 import org.savilusGame.entity.interactiveTile.MetalPlate;
+import org.savilusGame.entity.items.BlueHeart;
 import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Chest;
 import org.savilusGame.entity.items.Door;
@@ -78,7 +79,8 @@ public class AssetSetter {
     )));
 
     mapsObjects.put(DUNGEON_SECOND_FLOR, new ArrayList<>(List.of(
-        new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 15)
+        new IronDoor(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 15),
+        new BlueHeart(gamePanel).setWorldPosition(TILE_SIZE * 25, TILE_SIZE * 8)
     )));
 
     gamePanel.setMapsObjects(mapsObjects);

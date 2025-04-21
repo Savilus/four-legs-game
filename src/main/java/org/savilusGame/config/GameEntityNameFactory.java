@@ -268,6 +268,8 @@ public class GameEntityNameFactory {
   public static String OLD_MAN_RIGHT2;
 
   // ITEMS IMAGES
+  @YamlValue("items.images.blueHeart")
+  public static String BLUE_HEART;
   @YamlValue("items.images.boots")
   public static String BOOTS;
   @YamlValue("items.images.chest")

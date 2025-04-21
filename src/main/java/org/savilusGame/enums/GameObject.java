@@ -20,6 +20,7 @@ public enum GameObject {
   RED_POTION("redPotion"),
   BRONZE_COIN("bronzeCoin"),
   MANA_CRYSTAL("manaCrystal"),
+  BLUE_HEART("blueHeart"),
 
   // WEAPONS
   NORMAL_SWORD("normalSword"),
