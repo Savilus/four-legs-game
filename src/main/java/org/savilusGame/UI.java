@@ -115,7 +115,7 @@ public class UI {
   final Font maruMonica, purisaBoldFont;
   final ArrayList<String> messages = new ArrayList<>();
   final ArrayList<Integer> messageCounter = new ArrayList<>();
-  GameEntity npc;
+  GameEntity dialogueObject;
 
   int commandNum = 0;
   SubState subState = DEFAULT;
@@ -269,7 +269,7 @@ public class UI {
   }
 
   private void tradeSelect() {
-    npc.setDialogueSet(MERCHANT_TRADE_DIALOGUE_KEY);
+    dialogueObject.setDialogueSet(MERCHANT_TRADE_DIALOGUE_KEY);
     drawDialogueScreen();
     // DRAW WINDOW
 
@@ -302,14 +302,14 @@ public class UI {
       graphics2D.drawString(CURSOR_SELECTOR, x - 24, y);
       if (gamePanel.getKeyHandler().isEnterPressed()) {
         commandNum = 0;
-        npc.startDialogue(npc, MERCHANT_COME_AGAIN_DIALOGUE_KEY);
+        dialogueObject.startDialogue(dialogueObject, MERCHANT_COME_AGAIN_DIALOGUE_KEY);
       }
     }
   }
 
   private void tradeBuy() {
     drawInventory(gamePanel.getPlayer(), false);
-    drawInventory(npc, true);
+    drawInventory(dialogueObject, true);
 
     // DRAW HINT WINDOW
     int x = TILE_SIZE * 2;
@@ -326,7 +326,7 @@ public class UI {
 
     // DRAW PRICE WINDOW
     int itemIndex = getItemIndexFromInventory(npcSlotCol, npcSlotRow);
-    if (itemIndex < npc.getInventory().size()) {
+    if (itemIndex < dialogueObject.getInventory().size()) {
       x = (int) (TILE_SIZE * 5.5);
       y = (int) (TILE_SIZE * 5.5);
       width = (int) (TILE_SIZE * 2.5);
@@ -334,22 +334,22 @@ public class UI {
       drawSubWindow(x, y, width, height);
       graphics2D.drawImage(coin, x + 10, y + 8, 32, 32, null);
 
-      int price = npc.getInventory().get(itemIndex).getPrice();
+      int price = dialogueObject.getInventory().get(itemIndex).getPrice();
       x = getXForAlignTextToRight(String.valueOf(price), TILE_SIZE * 8 - 20);
       graphics2D.drawString(String.valueOf(price), x, y + 34);
 
       // BUY ITEM
       if (gamePanel.getKeyHandler().isEnterPressed()) {
-        if (npc.getInventory().get(itemIndex).getPrice() > gamePanel.getPlayer().getMoney()) {
-          subState = MENU;
+        if (dialogueObject.getInventory().get(itemIndex).getPrice() > gamePanel.getPlayer().getMoney()) {
+          subState = DEFAULT;
           gamePanel.setGameState(DIALOG_STATE);
-          npc.startDialogue(npc, MERCHANT_NO_MONEY_DIALOGUE_KEY);
-        } else if (!gamePanel.getPlayer().canObtainItem(npc.getInventory().get(itemIndex))) {
-          subState = MENU;
-          npc.startDialogue(npc, MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY);
+          dialogueObject.startDialogue(dialogueObject, MERCHANT_NO_MONEY_DIALOGUE_KEY);
+        } else if (!gamePanel.getPlayer().canObtainItem(dialogueObject.getInventory().get(itemIndex))) {
+          subState = DEFAULT;
+          dialogueObject.startDialogue(dialogueObject, MERCHANT_TO_MUCH_ITEMS_DIALOGUE_KEY);
         } else {
           gamePanel.getPlayer().setMoney(
-              gamePanel.getPlayer().getMoney() - npc.getInventory().get(itemIndex).getPrice()
+              gamePanel.getPlayer().getMoney() - dialogueObject.getInventory().get(itemIndex).getPrice()
           );
         }
       }
@@ -392,7 +392,7 @@ public class UI {
             || gamePanel.getPlayer().getInventory().get(itemIndex) == gamePanel.getPlayer().getCurrentShield()) {
           commandNum = 0;
           subState = MENU;
-          npc.startDialogue(npc, MERCHANT_CANNOT_SELL_KEY);
+          dialogueObject.startDialogue(dialogueObject, MERCHANT_CANNOT_SELL_KEY);
         } else {
           if (gamePanel.getPlayer().getInventory().get(itemIndex).getAmount() > 1){
             int currentAmount = gamePanel.getPlayer().getInventory().get(itemIndex).getAmount();
@@ -957,14 +957,14 @@ public class UI {
     x += TILE_SIZE;
     y += TILE_SIZE;
 
-    List<String> dialoguesForSet = npc.getDialogues().get(npc.getDialogueSet());
+    List<String> dialoguesForSet = dialogueObject.getDialogues().get(dialogueObject.getDialogueSet());
 
     if (Objects.nonNull(dialoguesForSet) && !dialoguesForSet.isEmpty()) {
-      if (npc.getDialogueIndex() >= dialoguesForSet.size()) {
-        npc.setDialogueIndex(0);
+      if (dialogueObject.getDialogueIndex() >= dialoguesForSet.size()) {
+        dialogueObject.setDialogueIndex(0);
       }
 
-      String fullDialogue = dialoguesForSet.get(npc.getDialogueIndex());
+      String fullDialogue = dialoguesForSet.get(dialogueObject.getDialogueIndex());
       currentDialogue = fullDialogue;
 
       if (characterIndex < fullDialogue.length()) {
@@ -979,12 +979,12 @@ public class UI {
 
         characterIndex = 0;
         combinedText.setLength(0);
-        npc.setDialogueIndex(npc.getDialogueIndex() + 1);
+        dialogueObject.setDialogueIndex(dialogueObject.getDialogueIndex() + 1);
         gamePanel.getKeyHandler().setEnterPressed(false);
 
 
-        if (npc.getDialogueIndex() >= dialoguesForSet.size()) {
-          npc.setDialogueIndex(0);
+        if (dialogueObject.getDialogueIndex() >= dialoguesForSet.size()) {
+          dialogueObject.setDialogueIndex(0);
           if (gamePanel.getGameState() == CUTSCENE_STATE) {
             gamePanel.getCutsceneManager().setScenePhase(gamePanel.getCutsceneManager().getScenePhase() + 1);
           } else {
@@ -993,7 +993,7 @@ public class UI {
         }
       }
     } else {
-      npc.setDialogueIndex(0);
+      dialogueObject.setDialogueIndex(0);
       if (gamePanel.getGameState() == DIALOG_STATE) {
         gamePanel.setGameState(PLAY_STATE);
       }
@@ -1003,6 +1003,11 @@ public class UI {
       graphics2D.drawString(line, x, y);
       y += 40;
     }
+  }
+
+  public int getXForCenteredText(String text) {
+    int length = (int) graphics2D.getFontMetrics().getStringBounds(text, graphics2D).getWidth();
+    return gamePanel.getScreenWidth() / 2 - length / 2;
   }
 
   private void drawSubWindow(int x, int y, int width, int height) {
@@ -1039,11 +1044,6 @@ public class UI {
     int y = gamePanel.getScreenHeight() / 2;
 
     graphics2D.drawString(TextManager.getUiText(UI_MESSAGES, PAUSED), x, y);
-  }
-
-  private int getXForCenteredText(String text) {
-    int length = (int) graphics2D.getFontMetrics().getStringBounds(text, graphics2D).getWidth();
-    return gamePanel.getScreenWidth() / 2 - length / 2;
   }
 
   private int getXForAlignTextToRight(String text, int tailX) {

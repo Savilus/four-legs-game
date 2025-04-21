@@ -45,16 +45,15 @@ public class Orc extends GameEntity {
     maxLife = 20;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
-    attack = 5;
-    attackValue = 8;
+    attack = 14;
     defense = 8;
     exp = 6;
     knockBackPower = 5;
 
     solidArea.x = 4;
     solidArea.y = 4;
-    solidArea.width = 40;
-    solidArea.height = 44;
+    solidArea.width = 37;
+    solidArea.height = 41;
     solidAreaDefaultX = solidArea.x;
     solidAreaDefaultY = solidArea.y;
     attackArea.width = 48;

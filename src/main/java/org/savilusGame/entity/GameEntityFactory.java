@@ -1,6 +1,7 @@
 package org.savilusGame.entity;
 
 import static org.savilusGame.enums.GameObject.AXE;
+import static org.savilusGame.enums.GameObject.BLUE_HEART;
 import static org.savilusGame.enums.GameObject.BLUE_SHIELD;
 import static org.savilusGame.enums.GameObject.BOOTS;
 import static org.savilusGame.enums.GameObject.BRONZE_COIN;
@@ -83,6 +84,7 @@ public class GameEntityFactory {
     entityMap.put(FIREBALL, () -> new Fireball(gamePanel));
     entityMap.put(ROCK, () -> new Rock(gamePanel));
     entityMap.put(PICKAXE, () -> new PickAxe(gamePanel));
+    entityMap.put(BLUE_HEART, () -> new BlueShield(gamePanel));
   }
 }
 

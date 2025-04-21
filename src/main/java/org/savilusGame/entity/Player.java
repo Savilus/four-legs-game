@@ -50,26 +50,24 @@ import static org.savilusGame.enums.Direction.RIGHT;
 import static org.savilusGame.enums.Direction.UP;
 import static org.savilusGame.enums.GameState.DIALOG_STATE;
 import static org.savilusGame.enums.GameState.GAME_OVER_STATE;
-import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
-import static org.savilusGame.enums.WorldGameTypes.PICK_UP;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 import static org.savilusGame.utils.CollisionDetector.INIT_INDEX;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
-import org.savilusGame.entity.items.Key;
-import org.savilusGame.entity.items.Lantern;
+import org.savilusGame.entity.items.Tent;
 import org.savilusGame.entity.projectile.Fireball;
 import org.savilusGame.entity.shield.WoodShield;
 import org.savilusGame.entity.weapon.Axe;
 import org.savilusGame.entity.weapon.NormalSword;
-import org.savilusGame.entity.weapon.PickAxe;
 import org.savilusGame.enums.WorldGameTypes;
 import org.savilusGame.utils.KeyHandler;
 import org.savilusGame.utils.text.TextManager;
@@ -119,13 +117,19 @@ public class Player extends GameEntity {
     solidAreaDefaultY = solidArea.y;
     solidArea.width = 32;
     solidArea.height = 32;
-
     setDefaultValues();
   }
 
   public void setSleepingImage(BufferedImage image) {
     this.mainImage = image;
+    this.up2 = image;
     this.down1 = image;
+    this.down2 = image;
+    this.left1 = image;
+    this.up1 = image;
+    this.left2 = image;
+    this.right1 = image;
+    this.right2 = image;
   }
 
   public void getAttackImage() {
@@ -230,6 +234,8 @@ public class Player extends GameEntity {
     inventory.clear();
     inventory.add(currentWeapon);
     inventory.add(currentShield);
+    inventory.add(new Axe(gamePanel));
+    inventory.add(new Tent(gamePanel));
   }
 
   public int getDefense() {
@@ -510,12 +516,14 @@ public class Player extends GameEntity {
       detectMonsterContact(monsterIndex);
 
       // CHECK INTERACTIVE TILE COLLISION
-      gamePanel.getCollisionDetector().checkEntity(
-          this,
-          gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP).stream()
-              .map(interactiveTile -> (GameEntity) interactiveTile)
-              .collect(Collectors.toList())
-      );
+      List<GameEntity> gameEntities = Optional.ofNullable(gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP))
+          .orElse(Collections.emptyList())
+          .stream()
+          .map(interactiveTile -> (GameEntity) interactiveTile)
+          .collect(Collectors.toList());
+
+      gamePanel.getCollisionDetector().checkEntity(this, gameEntities);
+
 
       // CHECK EVENT
       gamePanel.getEventHandler().checkEvent();

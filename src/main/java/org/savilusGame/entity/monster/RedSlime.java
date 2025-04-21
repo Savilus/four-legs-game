@@ -22,9 +22,9 @@ import lombok.experimental.FieldDefaults;
 public class RedSlime extends GameEntity {
 
   static int STOP_CHASE_DISTANCE = 15;
-  static int START_CHASE_DISTANCE = 10;
-  static int CHASE_POSSIBILITY_RATE = 100;
-  static int SHOOT_POSSIBILITY_RATE = 60;
+  static int START_CHASE_DISTANCE = 5;
+  static int CHASE_POSSIBILITY_RATE = 45;
+  static int SHOOT_POSSIBILITY_RATE = 80;
   static int SHOOT_INTERVAL = 50;
   static int RANDOM_DIRECTION_INTERVAL = 80;
 

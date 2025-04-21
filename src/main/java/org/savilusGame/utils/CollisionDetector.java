@@ -118,7 +118,7 @@ public class CollisionDetector {
 
   // NPC OR MONSTER COLLISION
   public int checkEntity(GameEntity gameEntity, List<GameEntity> target) {
-    if (Objects.isNull(target))
+    if (Objects.isNull(target) || target.isEmpty())
       return INIT_INDEX;
     int index = INIT_INDEX;
 

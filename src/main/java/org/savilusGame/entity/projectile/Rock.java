@@ -17,7 +17,7 @@ public class Rock extends Projectile {
     speed = 8;
     maxLife = 50;
     currentLife = maxLife;
-    attack = 1;
+    attack = 2;
     alive = false;
     setUseCost(1);
     getImage();

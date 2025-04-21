@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Main {
 
-  private static final String GAME_TITLE = "Four legs";
+  public static final String GAME_TITLE = "Four legs";
 
   public static JFrame window;
 
