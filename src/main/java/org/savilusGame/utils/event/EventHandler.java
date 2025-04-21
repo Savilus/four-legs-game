@@ -110,7 +110,7 @@ public class EventHandler {
 
   private void handleInteriorMapEvents() {
     if (hit(12, 13, Direction.ANY)) mapTeleport(MAIN_MAP, 10, 39, Area.OUTSIDE);
-    else if (hit(12, 9, Direction.UP)) speak(gamePanel.getMapsNpc().get(INTERIOR_MAP)[0]);
+    else if (hit(12, 9, Direction.UP)) speak(gamePanel.getMapsNpc().get(INTERIOR_MAP).getFirst());
   }
 
   private void speak(GameEntity gameEntity) {

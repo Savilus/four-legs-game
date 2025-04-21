@@ -26,7 +26,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Lighting {
 
-  static final int DAY_STATE_CHANGE_INTERVAL = 2000;
+  static final int DAY_STATE_CHANGE_INTERVAL = 3000;
   static final String DAY_STATUS_KEY = "dayStatus";
   static final String DAY_KEY = "day";
   static final String DUSK_KEY = "dusk";

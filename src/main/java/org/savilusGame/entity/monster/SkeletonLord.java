@@ -68,7 +68,7 @@ public class SkeletonLord extends GameEntity {
     boss = true;
     defaultSpeed = 1;
     speed = defaultSpeed;
-    maxLife = 10;
+    maxLife = 500;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
     attack = 10;

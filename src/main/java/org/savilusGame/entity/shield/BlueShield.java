@@ -19,6 +19,6 @@ public class BlueShield extends GameEntity {
     defenseValue = 2;
     description = String.format(TextManager.getItemDescription(GameObject.BLUE_SHIELD.getTextKey()), name);
     type = WorldGameTypes.SHIELD;
-    price = 25;
+    price = 40;
   }
 }

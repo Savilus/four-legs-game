@@ -133,11 +133,11 @@ public class SaveLoad {
           if (Objects.nonNull(currentLifeList) && Objects.nonNull(invincibleList) &&
               currentLifeList.size() == invincibleList.size()) {
             for (int index = 0; index < currentLifeList.size(); index++) {
-              if (gamePanel.getMapsInteractiveTiles().containsKey(mapName) && interactiveTiles.length > index && Objects.nonNull(interactiveTiles[index])) {
-                interactiveTiles[index].setCurrentLife(currentLifeList.get(index));
-                interactiveTiles[index].setInvincible(invincibleList.get(index));
-                if (interactiveTiles[index].getCurrentLife() <= 0 && Objects.nonNull(interactiveTiles[index].getDestroyedForm())) {
-                  gamePanel.getMapsInteractiveTiles().get(mapName)[index] = gamePanel.getMapsInteractiveTiles().get(mapName)[index].getDestroyedForm();
+              if (gamePanel.getMapsInteractiveTiles().containsKey(mapName) && interactiveTiles.size() > index && Objects.nonNull(interactiveTiles.get(index))) {
+                interactiveTiles.get(index).setCurrentLife(currentLifeList.get(index));
+                interactiveTiles.get(index).setInvincible(invincibleList.get(index));
+                if (interactiveTiles.get(index).getCurrentLife() <= 0 && Objects.nonNull(interactiveTiles.get(index).getDestroyedForm())) {
+                  gamePanel.getMapsInteractiveTiles().get(mapName).set(index, gamePanel.getMapsInteractiveTiles().get(mapName).get(index).getDestroyedForm());
                 }
               }
             }

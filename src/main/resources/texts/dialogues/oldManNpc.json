@@ -1,19 +1,22 @@
 {
   "oldManNpc": {
     "welcomeDialogue": [
-      "Hello, lad",
+      "Hello young voyager!",
       "So you've come to this island \n to find the treasure?",
-      "I used to be a great wizard but now... \n I'm a bit too old for taking an adventure",
-      "Well, good luck on you"
+      "I used to be a great wizard but now... \n I'm a bit too old for taking an adventure.",
+      "Well, good luck on you!",
+      "You can talk to me whenever you want!"
     ],
     "waterTip": [
-      "If you become tired, rest at the water.",
-      "However, the monsters reappear if you rest. \n I don't know why but that's how it works",
-      "In any case, don't push yourself too hard"
+      "If you become tired, rest at the water.\n Nothing helps as much as fresh water!",
+      "However, the monsters reappear if you drink it. \n Be careful!",
+      "In any case, don't push yourself too hard!"
     ],
     "keyTip": [
-      "I wonder how to open that door",
-      "I have never been able to find the key to them,\n maybe you will succeed"
+      "I've always wanted to locate a big blue diamond.",
+      "To gift it to my beloved, but now....,\n She's dead and I'm old...",
+      "You may be able to find it,it is said to be guarded \n by a fearsome warrior.",
+      "But getting it will bring you a lot of glory!"
     ]
   }
 }

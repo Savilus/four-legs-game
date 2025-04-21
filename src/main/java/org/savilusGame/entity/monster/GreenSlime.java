@@ -20,7 +20,7 @@ public class GreenSlime extends GameEntity {
   private final static int SHOOT_RATE = 100;
   private final static int RANDOM_DIRECTION_INTERVAL = 120;
   private final static int STOP_CHASING_DISTANCE = 15;
-  private final static int START_CHASING_DISTANCE = 5;
+  private final static int START_CHASING_DISTANCE = 8;
 
   public GreenSlime(GamePanel gamePanel) {
     super(gamePanel);

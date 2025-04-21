@@ -7,6 +7,7 @@ import static org.savilusGame.enums.GameState.PLAY_STATE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -61,19 +62,12 @@ public class CutsceneManager {
       gamePanel.getMapsObjects().get(CURRENT_MAP).add(ironDoor);
       gamePanel.playSoundEffect(DOOR_OPEN);
 
+      PlayerDummy dummy = new PlayerDummy(gamePanel);
+      dummy.setWorldX(gamePanel.getPlayer().getWorldX());
+      dummy.setWorldY(gamePanel.getPlayer().getWorldY());
+      dummy.setDirection(gamePanel.getPlayer().getDirection());
 
-      for (int i = 0; i < mapNpcs.length; i++) {
-        if (Objects.isNull(mapNpcs[i])) {
-          PlayerDummy dummy = new PlayerDummy(gamePanel);
-          dummy.setWorldX(gamePanel.getPlayer().getWorldX());
-          dummy.setWorldY(gamePanel.getPlayer().getWorldY());
-          dummy.setDirection(gamePanel.getPlayer().getDirection());
-
-          gamePanel.getMapsNpc().get(CURRENT_MAP)[i] = dummy;
-          break;
-        }
-      }
-
+      gamePanel.getMapsNpc().get(CURRENT_MAP).add(dummy);
       gamePanel.getPlayer().setDrawing(false);
       scenePhase++;
     }
@@ -111,11 +105,11 @@ public class CutsceneManager {
     }
 
     if (scenePhase == 4) {
-      for (int i = 0; i < mapNpcs.length; i++) {
-        if (Objects.nonNull(mapNpcs[i]) && mapNpcs[i] instanceof PlayerDummy) {
-          gamePanel.getPlayer().setWorldX(mapNpcs[i].getWorldX());
-          gamePanel.getPlayer().setWorldY(mapNpcs[i].getWorldY());
-          gamePanel.getMapsNpc().get(CURRENT_MAP)[i] = null;
+      for (int i = 0; i < mapNpcs.size(); i++) {
+        if (Objects.nonNull(mapNpcs.get(i)) && mapNpcs.get(i) instanceof PlayerDummy) {
+          gamePanel.getPlayer().setWorldX(mapNpcs.get(i).getWorldX());
+          gamePanel.getPlayer().setWorldY(mapNpcs.get(i).getWorldY());
+          mapNpcs.remove(i);
           break;
         }
       }

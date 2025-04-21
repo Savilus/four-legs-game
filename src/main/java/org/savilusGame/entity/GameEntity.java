@@ -21,12 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
+import org.savilusGame.entity.interactiveTile.InteractiveTile;
 import org.savilusGame.entity.items.Chest;
 import org.savilusGame.entity.projectile.Projectile;
 import org.savilusGame.enums.Direction;
@@ -422,7 +424,8 @@ public abstract class GameEntity {
         int monsterIndex = gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsMonsters().get(CURRENT_MAP));
         getPlayer().damageMonster(this, monsterIndex, attack, currentWeapon.knockBackPower);
 
-        int interactiveTileIndex = gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP));
+        int interactiveTileIndex = gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP).stream().map(tile -> (GameEntity) tile).collect(Collectors.toList()));
+
         getPlayer().damageInteractiveTile(interactiveTileIndex);
 
         int projectileIndex = gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getProjectiles().get(CURRENT_MAP));
@@ -512,7 +515,7 @@ public abstract class GameEntity {
     gamePanel.getCollisionDetector().checkObject(this, false);
     gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsNpc().get(CURRENT_MAP));
     gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsMonsters().get(CURRENT_MAP));
-    gamePanel.getCollisionDetector().checkEntity(this, gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP));
+    gamePanel.getCollisionDetector().checkEntity(this, new ArrayList<>(gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP)));
     boolean contactPlayer = gamePanel.getCollisionDetector().checkPlayer(this);
 
     if (this.type == MONSTER && contactPlayer && !gamePanel.getPlayer().invincible) {
@@ -637,12 +640,13 @@ public abstract class GameEntity {
 
   protected void checkIfShouldShoot(int rate, int shotInterval) {
     int randomNumber = new Random().nextInt(rate);
-    if (randomNumber == 0 && !projectile.alive && shootAvailableCounter == shotInterval) {
+    if (randomNumber == 0 && !projectile.isAlive() && shootAvailableCounter == shotInterval) {
       projectile.set(worldX, worldY, direction, true, this);
-      IntStream.range(0, gamePanel.getProjectiles().get(CURRENT_MAP).length)
-          .filter(emptyPlace -> Objects.isNull(gamePanel.getProjectiles().get(CURRENT_MAP)[emptyPlace]))
+      List<GameEntity> projectilesList = gamePanel.getProjectiles().get(CURRENT_MAP);
+      IntStream.range(0, projectilesList.size())
+          .filter(emptyPlace -> Objects.isNull(projectilesList.get(emptyPlace)))
           .findFirst()
-          .ifPresent(emptyPlace -> gamePanel.getProjectiles().get(CURRENT_MAP)[emptyPlace] = projectile);
+          .ifPresent(emptyPlace -> projectilesList.set(emptyPlace, projectile));
       shootAvailableCounter = 0;
     }
   }

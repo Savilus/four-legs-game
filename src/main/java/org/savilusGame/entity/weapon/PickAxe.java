@@ -15,7 +15,7 @@ public class PickAxe extends GameEntity {
     super(gamePanel);
     name = GameObject.PICKAXE.getName();
     down1 = setup(PICK_AXE, TILE_SIZE, TILE_SIZE);
-    attackValue = 2;
+    attackValue = 1;
     attackArea.width = 30;
     attackArea.height = 30;
     price = 55;

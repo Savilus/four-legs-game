@@ -14,7 +14,7 @@ public class DestructibleWall extends InteractiveTile {
 
   public DestructibleWall(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
-    currentLife = 1;
+    currentLife = 3;
     this.worldX = TILE_SIZE * col;
     this.worldY = TILE_SIZE * row;
 

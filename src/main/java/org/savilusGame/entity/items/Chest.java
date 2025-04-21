@@ -6,11 +6,17 @@ import static org.savilusGame.config.GameEntityNameFactory.CHEST_OPENED;
 import static org.savilusGame.config.GameEntityNameFactory.UNLOCK;
 import static org.savilusGame.enums.WorldGameTypes.OBSTACLE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.enums.GameObject;
 import org.savilusGame.utils.text.TextManager;
 
+import lombok.Getter;
+
+@Getter
 public class Chest extends GameEntity {
 
   private static final String FULL_INVENTORY_TEXT_KEY = "fullInventory";
@@ -35,13 +41,13 @@ public class Chest extends GameEntity {
 
   public Chest setLoot(GameEntity loot) {
     this.loot = loot;
-    dialogues = TextManager.getItemTexts(GameObject.CHEST.getTextKey(), loot.getName());
     return this;
   }
 
   @Override
   public void interact() {
     if (!opened) {
+      dialogues = TextManager.getItemTexts(GameObject.CHEST.getTextKey(), this.loot.getName());
       gamePanel.playSoundEffect(UNLOCK);
       if (!gamePanel.getPlayer().canObtainItem(loot)) {
         startDialogue(this, FULL_INVENTORY_TEXT_KEY);

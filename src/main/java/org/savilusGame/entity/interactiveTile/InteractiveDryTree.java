@@ -14,7 +14,7 @@ public class InteractiveDryTree extends InteractiveTile {
 
   public InteractiveDryTree(GamePanel gamePanel, int col, int row) {
     super(gamePanel);
-    currentLife = 1;
+    currentLife = 2;
     this.worldX = TILE_SIZE * col;
     this.worldY = TILE_SIZE * row;
 
