@@ -16,14 +16,14 @@ public class Axe extends GameEntity {
     name = GameObject.AXE.getName();
     mainImage = setup(AXE, TILE_SIZE, TILE_SIZE);
     down1 = setup(AXE, TILE_SIZE, TILE_SIZE);
-    attackValue = 1;
+    attackValue = 2;
     attackArea.width = 30;
     attackArea.height = 30;
     price = 40;
     description = String.format(TextManager.getItemDescription(GameObject.AXE.getTextKey()), name);
     type = WorldGameTypes.AXE;
-    knockBackPower = 5;
-    firstAttackMotionDuration = 20;
-    secondAttackMotionDuration = 40;
+    knockBackPower = 6;
+    firstAttackMotionDuration = 25;
+    secondAttackMotionDuration = 45;
   }
 }

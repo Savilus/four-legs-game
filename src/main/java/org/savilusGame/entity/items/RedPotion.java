@@ -25,7 +25,7 @@ public class RedPotion extends GameEntity {
     mainImage = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
     down1 = setup(RED_POTION, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.RED_POTION.getTextKey()), name, healingValue);
-    price = 3;
+    price = 8;
   }
 
   @Override

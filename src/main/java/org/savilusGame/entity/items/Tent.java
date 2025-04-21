@@ -20,7 +20,7 @@ public class Tent extends GameEntity {
     mainImage = setup(TENT, TILE_SIZE, TILE_SIZE);
     down1 = setup(TENT, TILE_SIZE, TILE_SIZE);
     description = String.format(TextManager.getItemDescription(GameObject.TENT.getTextKey()), name);
-    price = 25;
+    price = 40;
     stackable = true;
   }
 
@@ -30,7 +30,7 @@ public class Tent extends GameEntity {
     gamePanel.playSoundEffect(SLEEP);
     gamePanel.getPlayer().setCurrentLife(gamePanel.getPlayer().getMaxLife());
     gamePanel.getPlayer().setMana(gamePanel.getPlayer().getMaxMana());
-    gamePanel.getPlayer().getSleepingImage(mainImage);
+    gamePanel.getPlayer().setSleepingImage(mainImage);
     return true;
   }
 }

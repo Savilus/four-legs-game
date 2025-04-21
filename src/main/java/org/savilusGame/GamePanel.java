@@ -92,10 +92,10 @@ public class GamePanel extends JPanel implements Runnable {
   // ENTITY AND OBJECT
   Player player = new Player(this, keyHandler);
   Map<String, List<GameEntity>> mapsObjects = new HashMap<>();
-  Map<String, GameEntity[]> mapsNpc = new HashMap<>();
-  Map<String, GameEntity[]> mapsMonsters = new HashMap<>();
-  Map<String, InteractiveTile[]> mapsInteractiveTiles = new HashMap<>();
-  Map<String, GameEntity[]> projectiles = new HashMap<>();
+  Map<String, List<GameEntity>> mapsNpc = new HashMap<>();
+  Map<String, List<GameEntity>> mapsMonsters = new HashMap<>();
+  Map<String, List<InteractiveTile>> mapsInteractiveTiles = new HashMap<>();
+  Map<String, List<GameEntity>> projectiles = new HashMap<>();
   ArrayList<GameEntity> particleList = new ArrayList<>();
   ArrayList<GameEntity> gameObjects = new ArrayList<>();
 
@@ -155,8 +155,10 @@ public class GamePanel extends JPanel implements Runnable {
     currentArea = Area.OUTSIDE;
     assetSetter.setMonster();
     assetSetter.setNPC();
+    playMusic(OUTSIDE_MUSIC);
 
     if (restart) {
+      music.stop();
       player.setDefaultValues();
       player.setItems();
       assetSetter.setObject();
@@ -314,33 +316,36 @@ public class GamePanel extends JPanel implements Runnable {
       }
 
       if (Objects.nonNull(mapsMonsters.get(CURRENT_MAP))) {
-        for (int monsterIndex = 0; monsterIndex < mapsMonsters.get(CURRENT_MAP).length; monsterIndex++) {
-          var monster = mapsMonsters.get(CURRENT_MAP)[monsterIndex];
-          if (Objects.nonNull(monster)) {
-            if (monster.isAlive() && !monster.isDying())
-              monster.update();
-            if (!monster.isAlive()) {
-              monster.checkDrop();
-              mapsMonsters.get(CURRENT_MAP)[monsterIndex] = null;
-            }
+        var monsters = mapsMonsters.get(CURRENT_MAP);
+        for (int monsterIndex = 0; monsterIndex < monsters.size(); monsterIndex++) {
+          var monster = monsters.get(monsterIndex);
+          if (monster.isAlive() && !monster.isDying()) {
+            monster.update();
+          }
+          if (!monster.isAlive()) {
+            monster.checkDrop();
+            monsters.remove(monsterIndex);
+            monsterIndex--;
           }
         }
       }
 
-      for (int currentProjectile = 0; currentProjectile < projectiles.get(CURRENT_MAP).length; currentProjectile++) {
-        var projectile = projectiles.get(CURRENT_MAP)[currentProjectile];
-
+      var projectilesList = projectiles.get(CURRENT_MAP);
+      for (int currentProjectile = 0; currentProjectile < projectilesList.size(); currentProjectile++) {
+        var projectile = projectilesList.get(currentProjectile);
         if (Objects.nonNull(projectile) && projectile.isAlive()) {
           projectile.update();
         } else {
-          projectiles.get(CURRENT_MAP)[currentProjectile] = null;
+          projectilesList.remove(currentProjectile);
+          currentProjectile--;
         }
       }
 
-      if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP))) {
-        for (int objIndex = 0; objIndex < mapsInteractiveTiles.get(CURRENT_MAP).length; objIndex++) {
-          if (Objects.nonNull(mapsInteractiveTiles.get(CURRENT_MAP)[objIndex])) {
-            mapsInteractiveTiles.get(CURRENT_MAP)[objIndex].update();
+      var interactiveTiles = mapsInteractiveTiles.get(CURRENT_MAP);
+      if (Objects.nonNull(interactiveTiles)) {
+        for (InteractiveTile interactiveTile : interactiveTiles) {
+          if (Objects.nonNull(interactiveTile)) {
+            interactiveTile.update();
           }
         }
       }

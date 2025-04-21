@@ -10,6 +10,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.savilusGame.GamePanel;
@@ -48,13 +49,12 @@ public class BigRock extends GameEntity {
   private void detectPlate() {
     var currentMap = gamePanel.getMapsInteractiveTiles().get(CURRENT_MAP);
 
-    List<InteractiveTile> plateList = Arrays.stream(currentMap)
+    List<InteractiveTile> plateList = currentMap.stream()
         .filter(Objects::nonNull)
         .filter(tile -> StringUtils.equals(GameObject.METAL_PLATE.getName(), tile.getName()))
         .toList();
 
-    List<GameEntity> rockList = Arrays.stream(gamePanel.getMapsNpc().get(CURRENT_MAP))
-        .filter(Objects::nonNull)
+    List<GameEntity> rockList = gamePanel.getMapsNpc().get(CURRENT_MAP).stream()
         .filter(npc -> StringUtils.equals(GameObject.BIG_ROCK.getName(), npc.getName()))
         .toList();
 

@@ -35,19 +35,19 @@ public class Orc extends GameEntity {
   private final static int ATTACK_RATE = 30;
   private final static int RANDOM_DIRECTION_INTERVAL = 120;
   private final static int STOP_CHASING_DISTANCE = 15;
-  private final static int START_CHASING_DISTANCE = 5;
+  private final static int START_CHASING_DISTANCE = 8;
 
   public Orc(GamePanel gamePanel) {
     super(gamePanel);
     name = MonsterType.ORC.getName();
     defaultSpeed = 1;
     speed = defaultSpeed;
-    maxLife = 7;
+    maxLife = 20;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
     attack = 5;
     attackValue = 8;
-    defense = 2;
+    defense = 8;
     exp = 6;
     knockBackPower = 5;
 

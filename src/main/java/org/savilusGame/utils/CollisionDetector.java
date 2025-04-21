@@ -3,7 +3,9 @@ package org.savilusGame.utils;
 import static org.savilusGame.GamePanel.TILE_SIZE;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
+
 import java.awt.*;
+import java.util.List;
 import java.util.Objects;
 
 import org.savilusGame.GamePanel;
@@ -115,7 +117,7 @@ public class CollisionDetector {
   }
 
   // NPC OR MONSTER COLLISION
-  public int checkEntity(GameEntity gameEntity, GameEntity[] target) {
+  public int checkEntity(GameEntity gameEntity, List<GameEntity> target) {
     if (Objects.isNull(target))
       return INIT_INDEX;
     int index = INIT_INDEX;
@@ -126,8 +128,8 @@ public class CollisionDetector {
       direction = gameEntity.getKnockBackDirection();
     }
 
-    for (int targetIndex = 0; targetIndex < target.length; targetIndex++) {
-      var currentTarget = target[targetIndex];
+    for (int targetIndex = 0; targetIndex < target.size(); targetIndex++) {
+      var currentTarget = target.get(targetIndex);
       if (Objects.nonNull(currentTarget)) {
         //get entity's solid area position
         getSolidArea(gameEntity).x = getXSolidArea(gameEntity);
@@ -147,6 +149,7 @@ public class CollisionDetector {
         currentTarget.getSolidArea().y = currentTarget.getSolidAreaDefaultY();
       }
     }
+
     return index;
   }
 

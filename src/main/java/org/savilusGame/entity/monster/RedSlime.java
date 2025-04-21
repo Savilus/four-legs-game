@@ -22,9 +22,9 @@ import lombok.experimental.FieldDefaults;
 public class RedSlime extends GameEntity {
 
   static int STOP_CHASE_DISTANCE = 15;
-  static int START_CHASE_DISTANCE = 5;
+  static int START_CHASE_DISTANCE = 10;
   static int CHASE_POSSIBILITY_RATE = 100;
-  static int SHOOT_POSSIBILITY_RATE = 100;
+  static int SHOOT_POSSIBILITY_RATE = 60;
   static int SHOOT_INTERVAL = 50;
   static int RANDOM_DIRECTION_INTERVAL = 80;
 
@@ -38,7 +38,7 @@ public class RedSlime extends GameEntity {
     type = WorldGameTypes.MONSTER;
     attack = 7;
     defense = 0;
-    exp = 5;
+    exp = 4;
     projectile = new Rock(gamePanel);
 
     solidArea.x = 3;
