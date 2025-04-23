@@ -14,10 +14,10 @@ public class Rock extends Projectile {
   public Rock(GamePanel gamePanel) {
     super(gamePanel);
     name = GameObject.ROCK.getName();
-    speed = 8;
+    speed = 7;
     maxLife = 50;
     currentLife = maxLife;
-    attack = 2;
+    attack = 3;
     alive = false;
     setUseCost(1);
     getImage();

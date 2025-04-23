@@ -1,5 +1,0 @@
-1) Find a better solution for drawing strings and window
-10) add M map to controls
-
-
-

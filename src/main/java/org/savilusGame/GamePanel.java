@@ -23,6 +23,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 import org.savilusGame.ai.PathFinder;
+import org.savilusGame.config.Config;
 import org.savilusGame.data.SaveLoad;
 import org.savilusGame.entity.GameEntity;
 import org.savilusGame.entity.GameEntityFactory;

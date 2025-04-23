@@ -23,7 +23,6 @@ import org.savilusGame.entity.items.BlueHeart;
 import org.savilusGame.entity.items.BronzeCoin;
 import org.savilusGame.entity.items.Chest;
 import org.savilusGame.entity.items.Door;
-import org.savilusGame.entity.items.Heart;
 import org.savilusGame.entity.items.IronDoor;
 import org.savilusGame.entity.items.Key;
 import org.savilusGame.entity.items.Lantern;
@@ -39,7 +38,6 @@ import org.savilusGame.entity.npc.OldManNPC;
 import org.savilusGame.entity.shield.BlueShield;
 import org.savilusGame.entity.weapon.Axe;
 import org.savilusGame.entity.weapon.PickAxe;
-import org.savilusGame.enums.GameObject;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -115,7 +113,7 @@ public class AssetSetter {
     gamePanel.getMapsNpc().put(DUNGEON_FIRST_FLOR, new ArrayList<>(List.of(
         new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 20, TILE_SIZE * 25),
         new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 11, TILE_SIZE * 18),
-        new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 14)
+        new BigRock(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 15)
     )));
   }
 
@@ -137,10 +135,13 @@ public class AssetSetter {
         )),
         DUNGEON_FIRST_FLOR, new ArrayList<>(List.of(
             new Bat(gamePanel).setWorldPosition(TILE_SIZE * 34, TILE_SIZE * 39),
-            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 36, TILE_SIZE * 25),
-            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 39, TILE_SIZE * 26),
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 38, TILE_SIZE * 24),
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 37, TILE_SIZE * 25),
             new Bat(gamePanel).setWorldPosition(TILE_SIZE * 28, TILE_SIZE * 11),
-            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 10, TILE_SIZE * 20)
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 10, TILE_SIZE * 20),
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 17, TILE_SIZE * 37),
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 15, TILE_SIZE * 26),
+            new Bat(gamePanel).setWorldPosition(TILE_SIZE * 34, TILE_SIZE * 40)
         )),
         DUNGEON_SECOND_FLOR, new ArrayList<>(List.of(
             new SkeletonLord(gamePanel).setWorldPosition(TILE_SIZE * 23, TILE_SIZE * 16)

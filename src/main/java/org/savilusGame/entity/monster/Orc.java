@@ -18,14 +18,9 @@ import static org.savilusGame.config.GameEntityNameFactory.ORC_RIGHT2;
 import static org.savilusGame.config.GameEntityNameFactory.ORC_UP1;
 import static org.savilusGame.config.GameEntityNameFactory.ORC_UP2;
 
-import java.util.Random;
-
 import org.savilusGame.GamePanel;
 import org.savilusGame.entity.GameEntity;
-import org.savilusGame.entity.items.BronzeCoin;
-import org.savilusGame.entity.items.Heart;
 import org.savilusGame.entity.items.Key;
-import org.savilusGame.entity.items.ManaCrystal;
 import org.savilusGame.enums.MonsterType;
 import org.savilusGame.enums.WorldGameTypes;
 
@@ -34,7 +29,7 @@ public class Orc extends GameEntity {
   private final static int CHASE_RATE = 100;
   private final static int ATTACK_RATE = 30;
   private final static int RANDOM_DIRECTION_INTERVAL = 120;
-  private final static int STOP_CHASING_DISTANCE = 15;
+  private final static int STOP_CHASING_DISTANCE = 10;
   private final static int START_CHASING_DISTANCE = 8;
 
   public Orc(GamePanel gamePanel) {
@@ -42,10 +37,11 @@ public class Orc extends GameEntity {
     name = MonsterType.ORC.getName();
     defaultSpeed = 1;
     speed = defaultSpeed;
-    maxLife = 20;
+    maxLife = 24;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
-    attack = 14;
+    attack = 10;
+    attackValue = 16;
     defense = 8;
     exp = 6;
     knockBackPower = 5;
@@ -107,7 +103,6 @@ public class Orc extends GameEntity {
       getRandomDirection(RANDOM_DIRECTION_INTERVAL);
       checkIfShouldStartChasing(gamePanel.getPlayer(), STOP_CHASING_DISTANCE, CHASE_RATE);
     }
-
     if (!attacking) {
       checkIfShouldAttack(ATTACK_RATE, TILE_SIZE * 4, TILE_SIZE);
     }

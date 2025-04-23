@@ -23,12 +23,12 @@ public class Bat extends GameEntity {
     name = MonsterType.BAT.getName();
     defaultSpeed = 4;
     speed = defaultSpeed;
-    maxLife = 2;
+    maxLife = 15;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
-    attack = 7;
+    attack = 10;
     defense = 0;
-    exp = 7;
+    exp = 6;
 
     solidArea.x = 3;
     solidArea.y = 15;
