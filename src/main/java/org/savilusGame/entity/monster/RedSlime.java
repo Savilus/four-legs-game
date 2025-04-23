@@ -24,7 +24,7 @@ public class RedSlime extends GameEntity {
   static int STOP_CHASE_DISTANCE = 15;
   static int START_CHASE_DISTANCE = 5;
   static int CHASE_POSSIBILITY_RATE = 45;
-  static int SHOOT_POSSIBILITY_RATE = 80;
+  static int SHOOT_POSSIBILITY_RATE = 85;
   static int SHOOT_INTERVAL = 50;
   static int RANDOM_DIRECTION_INTERVAL = 80;
 
@@ -33,7 +33,7 @@ public class RedSlime extends GameEntity {
     name = MonsterType.RED_SLIME.getName();
     defaultSpeed = 2;
     speed = defaultSpeed;
-    maxLife = 8;
+    maxLife = 10;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
     attack = 7;

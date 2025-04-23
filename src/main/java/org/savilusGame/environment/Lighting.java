@@ -103,9 +103,11 @@ public class Lighting {
       case DAWN -> TextManager.getUiText(DAY_STATUS_KEY, DAWN_KEY);
     };
 
-    g2.setColor(WHITE);
-    g2.setFont(g2.getFont().deriveFont(50F));
-    g2.drawString(dayStateDebug, 800, 500);
+    if (gamePanel.getCutsceneManager().getSceneNum() == gamePanel.getCutsceneManager().getEnding()) {
+      g2.setColor(WHITE);
+      g2.setFont(g2.getFont().deriveFont(50F));
+      g2.drawString(dayStateDebug, 800, 500);
+    }
   }
 
   void update() {

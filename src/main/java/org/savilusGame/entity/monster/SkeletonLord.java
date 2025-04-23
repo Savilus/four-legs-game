@@ -38,8 +38,6 @@ import static org.savilusGame.config.GameEntityNameFactory.SKELETON_LORD_UP2;
 import static org.savilusGame.enums.MonsterType.SKELETON_LORD;
 import static org.savilusGame.tile.TileManager.CURRENT_MAP;
 
-import java.util.stream.IntStream;
-
 import org.savilusGame.GamePanel;
 import org.savilusGame.data.Progress;
 import org.savilusGame.entity.GameEntity;
@@ -68,10 +66,11 @@ public class SkeletonLord extends GameEntity {
     boss = true;
     defaultSpeed = 1;
     speed = defaultSpeed;
-    maxLife = 500;
+    maxLife = 60;
     currentLife = maxLife;
     type = WorldGameTypes.MONSTER;
-    attack = 10;
+    attack = 14;
+    attackValue = 18;
     defense = 2;
     exp = 50;
     knockBackPower = 5;

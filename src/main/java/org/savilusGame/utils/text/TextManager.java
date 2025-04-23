@@ -66,11 +66,11 @@ public class TextManager {
   }
 
   public Map<String, List<String>> getItemTexts(String itemTextKey, String... replacements) {
-    Map<String, String> itemTexts = items.get(itemTextKey);
-
-    if (Objects.isNull(itemTexts) || itemTexts.isEmpty()) {
+    Map<String, String> originalItemTexts = items.get(itemTextKey);
+    if (Objects.isNull(originalItemTexts) || originalItemTexts.isEmpty()) {
       return new HashMap<>();
     }
+    Map<String, String> itemTexts = new HashMap<>(originalItemTexts);
 
     if (formatKeys.containsKey(itemTextKey)) {
       String formatKey = formatKeys.get(itemTextKey);

@@ -1,4 +1,4 @@
-package org.savilusGame;
+package org.savilusGame.config;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.savilusGame.GamePanel;
 
 import io.vavr.control.Try;
 import lombok.AccessLevel;
@@ -24,7 +25,7 @@ public final class Config {
 
   GamePanel gamePanel;
 
-  void saveConfig() {
+  public void saveConfig() {
     Try.run(() -> {
       BufferedWriter writer = new BufferedWriter(new FileWriter(GAME_CONFIG_FILE_NAME));
       writer.write(gamePanel.isFullScreenOn() ? FULL_SCREEN_ON : FULL_SCREEN_OFF);
@@ -32,10 +33,11 @@ public final class Config {
       writer.write(String.valueOf(gamePanel.getMusic().getVolumeScale()));
       writer.newLine();
       writer.write(String.valueOf(gamePanel.getSoundEffect().getVolumeScale()));
+      writer.close();
     }).onFailure(e -> log.info("Could not save config: {}", e.getMessage()));
   }
 
-  void loadConfig() {
+  public void loadConfig() {
     Try.run(() -> {
       BufferedReader reader = new BufferedReader(new FileReader(GAME_CONFIG_FILE_NAME));
       String configLine = reader.readLine();

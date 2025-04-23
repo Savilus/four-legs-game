@@ -58,6 +58,8 @@ public class UI {
   static final String PROJECTILE_KEY = "F";
   static final String CHARACTER_KEY = "C";
   static final String PAUSE_KEY = "P";
+  static final String MAP_KEY = "X/M";
+  static final String MAP = "map";
   static final String CLOSE_KEY = "ESC";
   static final String SPACE_KEY = "SPACE";
   static final String DEFAULT_FONT = "SansSerif";
@@ -391,7 +393,7 @@ public class UI {
         if (gamePanel.getPlayer().getInventory().get(itemIndex) == gamePanel.getPlayer().getCurrentWeapon()
             || gamePanel.getPlayer().getInventory().get(itemIndex) == gamePanel.getPlayer().getCurrentShield()) {
           commandNum = 0;
-          subState = MENU;
+          subState = DEFAULT;
           dialogueObject.startDialogue(dialogueObject, MERCHANT_CANNOT_SELL_KEY);
         } else {
           if (gamePanel.getPlayer().getInventory().get(itemIndex).getAmount() > 1){
@@ -549,12 +551,13 @@ public class UI {
         TextManager.getSettingText(CONTROLS, PARRY),
         TextManager.getSettingText(CONTROLS, CHARACTER_SCREEN),
         TextManager.getSettingText(CONTROLS, PAUSE),
-        TextManager.getSettingText(MENU_OPTIONS, OPTIONS)
+        TextManager.getSettingText(MENU_OPTIONS, OPTIONS),
+        TextManager.getSettingText(CONTROLS, MAP)
     };
 
     for (String label : optionsLabels) {
       graphics2D.drawString(label, textX, textY);
-      textY += TILE_SIZE;
+      textY += TILE_SIZE - 10;
     }
 
     textX = frameX + TILE_SIZE * 6;
@@ -562,12 +565,12 @@ public class UI {
 
     String[] controlLabels = {
         CHARACTER_CONTROL, CONFIRM, PROJECTILE_KEY,
-        SPACE_KEY, CHARACTER_KEY, PAUSE_KEY, CLOSE_KEY
+        SPACE_KEY, CHARACTER_KEY, PAUSE_KEY, CLOSE_KEY, MAP_KEY
     };
 
     for (String key : controlLabels) {
       graphics2D.drawString(key, textX, textY);
-      textY += TILE_SIZE;
+      textY += TILE_SIZE - 10;
     }
 
     // BACK
